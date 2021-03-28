@@ -1,0 +1,9 @@
+/.vscode
+/.idea
+/.scannerwork
+/build
+/data
+/gen
+/tmp
+
+/client/node_modules

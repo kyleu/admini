@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../client/src/util.ts", "../../client/src/client.ts"],
+  "sourcesContent": ["export const appKey = \"admini\";\nexport const appName = \"Admini\";\n", "import {appName} from \"./util\";\n\nexport function init(): void {\n  console.log(appName + \"!!!\");\n}\n\ndocument.addEventListener(\"DOMContentLoaded\", init);\n"],
+  "mappings": ";;AACO,MAAM,UAAU;;;ACChB,kBAAsB;AAC3B,YAAQ,IAAI,UAAU;AAAA;AAGxB,WAAS,iBAAiB,oBAAoB;",
+  "names": []
+}
