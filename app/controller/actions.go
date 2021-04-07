@@ -67,3 +67,7 @@ func respondMIME(filename string, mime string, ext string, ba []byte, w http.Res
 func tmpl(_ int, err error) (string, error) {
 	return "", err
 }
+
+func ersp(msg string) (string, error) {
+	return "", errors.New(msg)
+}

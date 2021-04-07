@@ -12,6 +12,9 @@ func BuildRouter() (*mux.Router, error) {
 	// Home
 	r.Path("/").Methods(http.MethodGet).Handler(http.HandlerFunc(Home)).Name("home")
 
+	r.Path("/sandbox").Methods(http.MethodGet).Handler(http.HandlerFunc(SandboxList)).Name("sandbox.list")
+	r.Path("/sandbox/{key}").Methods(http.MethodGet).Handler(http.HandlerFunc(SandboxRun)).Name("sandbox.run")
+
 	// Assets
 	_ = r.Path("/assets").Subrouter()
 	r.Path("/favicon.ico").Methods(http.MethodGet).Handler(http.HandlerFunc(Favicon)).Name("favicon")

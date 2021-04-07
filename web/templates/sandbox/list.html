@@ -1,13 +1,15 @@
-<%: func Index(w io.Writer) (int, error) %>
+<%: func SandboxList(w io.Writer) (int, error) %>
 <%~ "layout/basic.html" %>
 <%@ nav { %><% Nav(_buffer) %><% } %>
 <%@ body { %>
 <div class="uk-section uk-section-small">
   <div class="uk-container">
     <div class="uk-card uk-card-body uk-card-default">
-      <h3 class="uk-card-title"><%= util.AppName %></h3>
+      <h3 class="uk-card-title">Sandboxes</h3>
       <ul class="uk-list uk-list-divider">
-        <li><a href="/sandbox">Sandboxes</a></li>
+        <% for _, s := range sandbox.AllSandboxes { %>
+          <li><a href="/sandbox/<%= s.Key %>"><%= s.Key %></a></li>
+        <% } %>
       </ul>
     </div>
   </div>
