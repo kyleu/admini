@@ -121,6 +121,6 @@ func (w *Wrapped) UnmarshalJSON(data []byte) error {
 		return errors.New("nil type returned from unmarshal")
 	}
 	w.K = wu.K
-	w.V = t
+	w.T = t
 	return nil
 }

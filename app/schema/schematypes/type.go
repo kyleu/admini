@@ -11,7 +11,7 @@ type Type interface {
 
 type Wrapped struct {
 	K string `json:"k"`
-	V Type   `json:"t,omitempty"`
+	T Type   `json:"t,omitempty"`
 }
 
 var _ Type = (*Wrapped)(nil)
@@ -21,7 +21,7 @@ func Wrap(t Type) Wrapped {
 	if ok {
 		return t.(Wrapped)
 	}
-	return Wrapped{K: t.Key(), V: t}
+	return Wrapped{K: t.Key(), T: t}
 }
 
 func (w Wrapped) Key() string {
@@ -29,5 +29,5 @@ func (w Wrapped) Key() string {
 }
 
 func (w Wrapped) String() string {
-	return w.V.String()
+	return w.T.String()
 }

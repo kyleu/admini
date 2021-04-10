@@ -3,6 +3,10 @@
 <%@ nav { %><% Nav(_buffer) %><% } %>
 <%@ menu { %><% Menu(_buffer) %><% } %>
 <%@ body { %>
-  <h3><%= key %></h3>
-  <pre><%= util.ToJSON(ret) %></pre>
+  <div class="content-padded">
+    <div class="card">
+      <h3><%= key %></h3>
+      <pre><%= util.ToJSON(ret) %></pre>
+    </div>
+  </div>
 <% } %>
