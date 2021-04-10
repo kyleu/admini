@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/kyleu/admini/app/util"
 )
 
 func act(key string, w http.ResponseWriter, r *http.Request, f func() (string, error)) {
 	writeCORS(w)
-
+	startNanos := time.Now().UnixNano()
 	redir, err := f()
 	if err != nil {
 		msg := "error running action [%v]: %+v"
@@ -22,6 +23,8 @@ func act(key string, w http.ResponseWriter, r *http.Request, f func() (string, e
 		w.Header().Set("Location", redir)
 		w.WriteHeader(http.StatusFound)
 	}
+	elapsedMicros := float64((time.Now().UnixNano() - startNanos) / int64(time.Microsecond)) / float64(1000)
+	util.LogInfo("processed [%v] in [%.3fms]", r.URL.Path, elapsedMicros)
 }
 
 func writeCORS(w http.ResponseWriter) {

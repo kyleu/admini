@@ -1,0 +1,11 @@
+body.theme-light #navbar {
+    background-color: #4f9abd;
+}
+
+body.theme-light #navbar a {
+    text-decoration: none;
+}
+
+body.theme-light .menu-container {
+    background-color: aliceblue;
+}

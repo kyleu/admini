@@ -1,0 +1,29 @@
+@import "./style/reset.css";
+@import "./style/util.css";
+@import "./style/nav.css";
+@import "./style/menu.css";
+@import "./style/content.css";
+@import "./style/theme-light.css";
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+#container-body {
+  display: flex;
+  height: calc(100% - 48px);
+}
+
+#content {
+  flex-grow: 1;
+  overflow: auto;
+}

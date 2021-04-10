@@ -7,4 +7,4 @@ set -euo pipefail
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $dir/../client
 
-esbuild src/client.ts --bundle --sourcemap --target=chrome58,firefox57,safari11,edge16 --outfile=../web/assets/client.js
+node build.js

@@ -1,0 +1,15 @@
+#navbar {
+  height: 48px;
+  display: flex;
+}
+
+#navbar .logo {
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+}
+
+#navbar .name {
+    margin-top: 12px;
+    font-size: 24px;
+}

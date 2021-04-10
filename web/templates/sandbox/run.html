@@ -1,13 +1,8 @@
-<%: func SandboxRun(key string, w io.Writer) (int, error) %>
+<%: func SandboxRun(key string, ret interface{}, w io.Writer) (int, error) %>
 <%~ "layout/basic.html" %>
 <%@ nav { %><% Nav(_buffer) %><% } %>
+<%@ menu { %><% Menu(_buffer) %><% } %>
 <%@ body { %>
-<div class="uk-section uk-section-small">
-  <div class="uk-container">
-    <div class="uk-card uk-card-body uk-card-default">
-      <h3 class="uk-card-title"><%= key %></h3>
-      <p>TODO</p>
-    </div>
-  </div>
-</div>
+  <h3><%= key %></h3>
+  <pre><%= util.ToJSON(ret) %></pre>
 <% } %>

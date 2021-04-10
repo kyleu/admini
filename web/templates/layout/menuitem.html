@@ -1,0 +1,7 @@
+<%: func MenuItem(item *menu.Item, indent int, buffer *bytes.Buffer) %><% for i := 0; i < indent; i++ { %><%== "  " %><% } %><li>
+<% for i := 0; i < indent + 1; i++ { %><%== "  " %><% } %><% if item.Key == "" { %><hr />
+<% for i := 0; i < indent; i++ { %><%== "  " %><% } %><% } else { %><a href="<%= item.Route %>"><%= item.Title %></a>
+<% if len(item.Children) > 0 { %>
+<% for i := 0; i < indent + 1; i++ { %><%== "  " %><% } %><ul>
+<% for _, i := range item.Children { %><% MenuItem(i, indent + 2, buffer) %><% } %><% for i := 0; i < indent + 1; i++ { %><%== "  " %><% } %></ul>
+<% } %><% for i := 0; i < indent; i++ { %><%== "  " %><% } %><% } %></li>

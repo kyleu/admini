@@ -8,4 +8,4 @@ dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $dir/../client
 
 echo "Watching TypeScript compilation for [client/src]..."
-esbuild src/client.ts --bundle --sourcemap --target=chrome58,firefox57,safari11,edge16 --outfile=../web/assets/client.js --watch
+watchexec --exts ts,css node build.js

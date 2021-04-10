@@ -1,14 +1,12 @@
-<%: func Index(w io.Writer) (int, error) %>
+<%: func Settings(w io.Writer) (int, error) %>
 <%~ "layout/basic.html" %>
 <%@ nav { %><% Nav(_buffer) %><% } %>
 <%@ menu { %><% Menu(_buffer) %><% } %>
 <%@ body { %>
   <div class="content-padded">
     <div class="card">
-      <h3><%= util.AppName %></h3>
-      <ul>
-        <li><a href="/sandbox">Sandboxes</a></li>
-      </ul>
+      <h3>Settings</h3>
+      <p>TODO!</p>
     </div>
   </div>
 <% } %>

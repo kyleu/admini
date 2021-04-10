@@ -1,9 +1,10 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/kyleu/admini/app/sandbox"
-	"net/http"
 
 	"github.com/kyleu/admini/gen/templates"
 )
@@ -21,6 +22,10 @@ func SandboxRun(w http.ResponseWriter, r *http.Request) {
 		if sb == nil {
 			return ersp("no sandbox with key [" + key + "]")
 		}
-		return tmpl(templates.SandboxRun(key, w))
+		ret, err := sb.Run()
+		if err != nil {
+			return "", err
+		}
+		return tmpl(templates.SandboxRun(key, ret, w))
 	})
 }
