@@ -1,0 +1,19 @@
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/app/util" %}
+
+{% code type SandboxRun struct {
+  layout.Basic
+  Key string
+  Title string
+  Result interface{}
+} %}
+
+{% func (p *SandboxRun) Body() %}
+  <div class="padded">
+    <div class="card">
+      <h3>{%s p.Title %}</h3>
+      <pre>{%s util.ToJSON(p.Result) %}</pre>
+    </div>
+  </div>
+{% endfunc %}
+

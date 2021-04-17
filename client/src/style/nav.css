@@ -4,12 +4,26 @@
 }
 
 #navbar .logo {
-    width: 32px;
-    height: 32px;
     margin: 8px;
 }
 
-#navbar .name {
-    margin-top: 12px;
-    font-size: 24px;
+#navbar .breadcrumbs {
+  height: 32px;
+  margin-top: 12px;
+  font-size: 24px;
+  flex-grow: 1;
 }
+
+#navbar .search-image {
+  display: block !important;
+}
+
+#navbar .breadcrumbs a {
+  text-decoration: none;
+  color: #000;
+}
+
+#navbar .profile {
+  margin: 12px;
+}
+

@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"github.com/kyleu/admini/app/ctx"
 	"net/http"
 	"strings"
 	"time"
@@ -10,10 +11,13 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
-func act(key string, w http.ResponseWriter, r *http.Request, f func() (string, error)) {
+func act(key string, w http.ResponseWriter, r *http.Request, f func(st *ctx.PageState) (string, error)) {
+	state := &ctx.PageState{
+		Router: ctx.ActiveRouter,
+	}
 	writeCORS(w)
 	startNanos := time.Now().UnixNano()
-	redir, err := f()
+	redir, err := f(state)
 	if err != nil {
 		msg := "error running action [%v]: %+v"
 		util.LogWarn(msg, key, err)

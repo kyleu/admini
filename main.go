@@ -1,3 +1,5 @@
+//go:generate qtc -dir=app/views
+
 package main
 
 import (

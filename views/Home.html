@@ -1,0 +1,15 @@
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/app/util" %}
+
+{% code type Home struct { layout.Basic } %}
+
+{% func (p *Home) Body() %}
+  <div class="padded">
+    <div class="card">
+      <h3>{%s util.AppName %}</h3>
+      <ul>
+        <li><a href="/sandbox">Sandboxes</a></li>
+      </ul>
+    </div>
+  </div>
+{% endfunc %}

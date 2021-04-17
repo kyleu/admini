@@ -5,3 +5,7 @@ const (
 	AppName = "Admini"
 	AppPort = 10111
 )
+
+const (
+	KeyRoutes = "routes"
+)

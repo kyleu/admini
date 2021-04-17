@@ -6,15 +6,20 @@ import (
 
 type Sandbox struct {
 	Key string
+	Title string
 	Run func() (interface{}, error)
 }
 
-var testbed = &Sandbox{Key: "testbed", Run: func() (interface{}, error) {
-	return "OK", nil
+var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func() (interface{}, error) {
+	return schema.GetExample(), nil
 }}
 
-var codegen = &Sandbox{Key: "codegen", Run: func() (interface{}, error) {
+var datasources = &Sandbox{Key: "datasources", Title: "Data Sources", Run: func() (interface{}, error) {
 	return schema.GetExample(), nil
+}}
+
+var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: func() (interface{}, error) {
+	return "OK", nil
 }}
 
 type Sandboxes []*Sandbox
@@ -28,4 +33,4 @@ func (s Sandboxes) Get(key string) *Sandbox {
 	return nil
 }
 
-var AllSandboxes = Sandboxes{codegen, testbed}
+var AllSandboxes = Sandboxes{codegen, datasources, testbed}

@@ -4,7 +4,7 @@ esbuild.build({
   entryPoints: ['src/client.ts'],
   bundle: true,
   sourcemap: true,
-  outfile: '../web/assets/client.js',
+  outfile: '../assets/client.js',
   watch: process.argv[2] === "watch" ? {
     onRebuild(error, result) {
       if (error) console.error('watch build failed:', error)

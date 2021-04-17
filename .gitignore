@@ -6,4 +6,8 @@
 /gen
 /tmp
 
+**/*.html.go
+**/*.tmp
+**/*~
+
 /client/node_modules

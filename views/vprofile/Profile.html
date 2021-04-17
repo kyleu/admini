@@ -1,0 +1,12 @@
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type Profile struct { layout.Basic } %}
+
+{% func (p *Profile) Body() %}
+  <div class="padded">
+    <div class="card">
+      <h3>Profile</h3>
+    </div>
+  </div>
+{% endfunc %}
+

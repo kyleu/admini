@@ -1,11 +1,29 @@
 body.theme-light #navbar {
-    background-color: #4f9abd;
+  background-color: #4f9abd;
 }
 
 body.theme-light #navbar a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 body.theme-light .menu-container {
-    background-color: aliceblue;
+  background-color: aliceblue;
+}
+
+body.theme-light .svg-stroke {
+  stroke: #000;
+}
+
+body.theme-light .svg-fill {
+  fill: #000;
+}
+
+/* Search */
+
+body.theme-light .search input {
+  color: #000;
+}
+
+body.theme-light .search input + div svg {
+  stroke: #000;
 }

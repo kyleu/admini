@@ -1,0 +1,54 @@
+{% import "reflect" %}
+{% import "github.com/kyleu/admini/app/menu" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func Menu(m menu.Items, breadcrumbs []string) %}
+<nav class="menu-container" role="navigation">
+  {% stripspace %}
+  <ul class="level-0">
+    {% for _, i := range m %}
+      {%= MenuItem(i, []string{}, breadcrumbs, 0) %}
+    {% endfor %}
+  {% endstripspace %}
+  </ul>
+  <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="display: none;"><polygon id="svg-arrow" fill="none" stroke="#000" points="6.5,5 14.5,10 6.5,15"></polygon></svg>
+</nav>
+{% endfunc %}
+
+{% func MenuItem(i *menu.Item, path []string, breadcrumbs []string, indent int) %}{% stripspace %}
+  {% code
+    path = append(path, i.Key)
+    active := false
+    if len(path) <= len(breadcrumbs) {
+      active = reflect.DeepEqual(breadcrumbs[0:len(path)], path)
+    }
+  %}
+  {%= vutil.Indent(true, indent + 1) %}
+  {% if active %}<li class="active">{% else %}<li>{% endif %}
+    {%= vutil.Indent(true, indent + 2) %}
+    {% if i.Key == "" %}
+      <hr />
+    {% elseif len(i.Children) > 0 %}
+      {% if active %}<input id="{%s i.Key %}-input" type="checkbox" checked="checked" hidden />{% else %}<input id="{%s i.Key %}-input" type="checkbox" hidden />{% endif %}
+      {%= vutil.Indent(true, indent + 2) %}
+      <label for="{%s i.Key %}-input">
+        <span class="expand"><svg style="height: 15px; width: 15px;"><use xlink:href="#svg-arrow" /></svg></span>
+        <span class="collapse"><svg style="height: 15px; width: 15px;transform: rotate(90deg);"><use xlink:href="#svg-arrow" /></span>
+        {% space %}
+        {%s i.Title %}
+      </label>
+      {%= vutil.Indent(true, indent + 2) %}
+      <ul class="level-{%d len(path) %}">
+        {% for _, i := range i.Children %}
+          {%= MenuItem(i, path, breadcrumbs, indent + 2) %}
+        {% endfor %}
+      {%= vutil.Indent(true, indent + 2) %}</ul>
+    {% else %}
+      {% if active %}
+        <a class="active" href="{%s i.Route %}">{%s i.Title %}</a>
+      {% else %}
+        <a href="{%s i.Route %}">{%s i.Title %}</a>
+      {% endif %}
+    {% endif %}
+  {%= vutil.Indent(true, indent + 1) %}</li>
+{% endstripspace %}{% endfunc %}

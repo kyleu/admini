@@ -1,0 +1,17 @@
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type SearchResults struct {
+  layout.Basic
+  Q string
+} %}
+
+{% func (p *SearchResults) Body() %}
+  <div class="padded">
+    <div class="card">
+      <h3>[<%= q %>] search results</h3>
+      <ul>
+        <li>TODO</li>
+      </ul>
+    </div>
+  </div>
+{% endfunc %}

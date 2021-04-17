@@ -8,7 +8,7 @@ import (
 	"github.com/kyleu/admini/app/assets"
 )
 
-const assetBase = "web/assets"
+const assetBase = "assets"
 
 func Favicon(w http.ResponseWriter, r *http.Request) {
 	data, hash, contentType, err := assets.Asset(assetBase, "/favicon.ico")

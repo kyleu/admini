@@ -1,0 +1,12 @@
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% func Render(p layout.Page) %}<!DOCTYPE html>
+<html lang="en">
+<head>{%= p.Head() %}</head>
+<body class="theme-light">
+{%= p.Nav() %}
+<div id="container-body">{%= p.Menu() %}<main id="content">{%= p.Body() %}</main>
+</div>
+</body>
+</html>
+{% endfunc %}

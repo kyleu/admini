@@ -22,7 +22,7 @@ endif
 
 .PHONY: clean
 clean: ## Clean builds
-	rm -rf gen
+	rm -rf tmp
 	rm -rf out
 
 .PHONY: dev
