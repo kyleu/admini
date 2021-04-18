@@ -8,10 +8,10 @@ type Error struct {
 
 var _ Type = (*Error)(nil)
 
-func (e Error) Key() string {
+func (e *Error) Key() string {
 	return KeyError
 }
 
-func (e Error) String() string {
+func (e *Error) String() string {
 	return "error(" + e.Message + ")"
 }

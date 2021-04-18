@@ -39,14 +39,17 @@ func sandboxItems() Items {
 }
 
 func sourceItems(sources *source.Service) Items {
-	ss := sources.List()
-	ret := make(Items, 0, len(ss))
+	ss, err := sources.List()
+	if err != nil {
+		return Items{{Key: "error", Title: "Error", Description: err.Error()}}
+	}
 
+	ret := make(Items, 0, len(ss))
 	for _, s := range ss {
 		ret = append(ret, &Item{
 			Key:         s.Key,
 			Title:       s.Title,
-			Description: "Source [" + s.Key + "]",
+			Description: s.Description,
 			Route:       "/source/" + s.Key,
 		})
 	}

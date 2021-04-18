@@ -7,15 +7,15 @@ import (
 const KeySet = "set"
 
 type Set struct {
-	T Wrapped
+	T *Wrapped
 }
 
 var _ Type = (*Set)(nil)
 
-func (t Set) Key() string {
+func (t *Set) Key() string {
 	return KeySet
 }
 
-func (t Set) String() string {
+func (t *Set) String() string {
 	return fmt.Sprintf("%v[%v]", t.Key(), t.T.String())
 }

@@ -2,6 +2,7 @@ package sandbox
 
 import (
 	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/util"
 )
 
 type Sandbox struct {
@@ -11,7 +12,12 @@ type Sandbox struct {
 }
 
 var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func() (interface{}, error) {
-	return schema.GetExample(), nil
+	var sch schema.Fields
+	err := util.FromJSON(util.ToJSONBytes(schema.GetExample(), true), &sch)
+	if err != nil {
+		return nil, err
+	}
+	return sch, nil
 }}
 
 var sources = &Sandbox{Key: "sources", Title: "Data Sources", Run: func() (interface{}, error) {

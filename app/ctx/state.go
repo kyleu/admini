@@ -7,8 +7,6 @@ import (
 	"github.com/kyleu/admini/app/source"
 )
 
-var App *AppState
-
 type AppState struct {
 	Router  *mux.Router
 	Files   filesystem.FileLoader

@@ -6,10 +6,10 @@ type Char struct{}
 
 var _ Type = (*Char)(nil)
 
-func (t Char) Key() string {
+func (t *Char) Key() string {
 	return KeyChar
 }
 
-func (t Char) String() string {
+func (t *Char) String() string {
 	return t.Key()
 }

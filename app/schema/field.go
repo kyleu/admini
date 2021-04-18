@@ -3,9 +3,9 @@ package schema
 import "github.com/kyleu/admini/app/schema/schematypes"
 
 type Field struct {
-	Key      string              `json:"key"`
-	Type     schematypes.Wrapped `json:"type"`
-	Metadata *Metadata           `json:"metadata,omitempty"`
+	Key      string               `json:"key"`
+	Type     *schematypes.Wrapped `json:"type"`
+	Metadata *Metadata            `json:"metadata,omitempty"`
 }
 
 func (f *Field) String() string {

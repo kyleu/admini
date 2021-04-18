@@ -6,10 +6,10 @@ type TimestampZoned struct{}
 
 var _ Type = (*TimestampZoned)(nil)
 
-func (t TimestampZoned) Key() string {
+func (t *TimestampZoned) Key() string {
 	return KeyTimestampZoned
 }
 
-func (t TimestampZoned) String() string {
+func (t *TimestampZoned) String() string {
 	return t.Key()
 }

@@ -8,7 +8,7 @@ import (
 )
 
 func Profile(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(st *ctx.PageState) (string, error) {
-		return render(w, &vprofile.Profile{}, st, "Profile")
+	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
+		return render(w, &vprofile.Profile{}, page, "Profile")
 	})
 }

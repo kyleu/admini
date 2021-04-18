@@ -37,6 +37,6 @@ func StartServer(address string, port uint16) error {
 	f := filesystem.NewFileSystem("data")
 	ds := source.NewService("source", f)
 
-	ctx.App = &ctx.AppState{Router: r, Files: f, Sources: ds}
+	controller.SetAppState(&ctx.AppState{Router: r, Files: f, Sources: ds})
 	return http.ListenAndServe(fmt.Sprintf("%s:%v", address, port), r)
 }

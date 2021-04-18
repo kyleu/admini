@@ -8,10 +8,10 @@ type Unknown struct {
 
 var _ Type = (*Unknown)(nil)
 
-func (t Unknown) Key() string {
+func (t *Unknown) Key() string {
 	return KeyUnknown
 }
 
-func (t Unknown) String() string {
+func (t *Unknown) String() string {
 	return t.Key() + "(" + t.X + ")"
 }

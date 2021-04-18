@@ -51,20 +51,20 @@ func validateModel(r *ValidationResult, s *Schema, m *Model) *ValidationResult {
 
 func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKey string, f schematypes.Type) {
 	switch t := f.(type) {
-	case schematypes.Wrapped:
+	case *schematypes.Wrapped:
 		validateType(r, s, mType, mKey, fKey, t.T)
-	case schematypes.Unknown:
+	case *schematypes.Unknown:
 		r.log(mType, mKey, "field ["+fKey+"] has unknown type ["+t.X+"]", LevelWarn)
-	case schematypes.Error:
+	case *schematypes.Error:
 		r.log(mType, mKey, "field ["+fKey+"] has error: "+t.Message, LevelWarn)
-	case schematypes.Option:
+	case *schematypes.Option:
 		validateType(r, s, mType, mKey, fKey, t.T)
-	case schematypes.List:
+	case *schematypes.List:
 		validateType(r, s, mType, mKey, fKey, t.T)
-	case schematypes.Map:
+	case *schematypes.Map:
 		validateType(r, s, mType, mKey, fKey, t.K)
 		validateType(r, s, mType, mKey, fKey, t.V)
-	case schematypes.Reference:
+	case *schematypes.Reference:
 		if s.Models.Get(t.Pkg, t.T) == nil && s.Scalars.Get(t.Pkg, t.T) == nil {
 			r.log(mType, mKey, "field ["+fKey+"] has reference to unknown type ["+t.Pkg.String()+"::"+t.T+"]", LevelWarn)
 		}

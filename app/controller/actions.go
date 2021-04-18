@@ -12,11 +12,17 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
-func act(key string, w http.ResponseWriter, r *http.Request, f func(st *ctx.PageState) (string, error)) {
-	state := &ctx.PageState{Menu: menu.For(ctx.App.Sources)}
+var currentApp *ctx.AppState
+
+func SetAppState(a *ctx.AppState) {
+	currentApp = a
+}
+
+func act(key string, w http.ResponseWriter, r *http.Request, f func(app *ctx.AppState, page *ctx.PageState) (string, error)) {
+	page := &ctx.PageState{Menu: menu.For(currentApp.Sources)}
 	startNanos := time.Now().UnixNano()
 	writeCORS(w)
-	redir, err := f(state)
+	redir, err := f(currentApp, page)
 	if err != nil {
 		msg := "error running action [%v]: %+v"
 		util.LogWarn(msg, key, err)

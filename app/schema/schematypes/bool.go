@@ -6,10 +6,10 @@ type Bool struct{}
 
 var _ Type = (*Bool)(nil)
 
-func (t Bool) Key() string {
+func (t *Bool) Key() string {
 	return KeyBool
 }
 
-func (t Bool) String() string {
+func (t *Bool) String() string {
 	return t.Key()
 }

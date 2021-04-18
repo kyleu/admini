@@ -25,27 +25,27 @@ func Options(w http.ResponseWriter, r *http.Request) {
 }
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(st *ctx.PageState) (string, error) {
+	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
 		writeCORS(w)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusNotFound)
 		log.Printf("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
-		return render(w, &views.NotFound{}, st, "Not Found")
+		return render(w, &views.NotFound{}, page, "Not Found")
 	})
 }
 
 func Modules(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(st *ctx.PageState) (string, error) {
+	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
 		mods, ok := debug.ReadBuildInfo()
 		if !ok {
 			return "", errors.New("unable to gather modules")
 		}
-		return render(w, &vhelp.Modules{Mods: mods.Deps}, st, "modules")
+		return render(w, &vhelp.Modules{Mods: mods.Deps}, page, "modules")
 	})
 }
 
 func Routes(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(st *ctx.PageState) (string, error) {
-		return render(w, &vhelp.Routes{Routes: cutil.ExtractRoutes(ctx.App.Router)}, st, "routes")
+	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
+		return render(w, &vhelp.Routes{Routes: cutil.ExtractRoutes(app.Router)}, page, "routes")
 	})
 }

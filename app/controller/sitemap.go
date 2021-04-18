@@ -9,10 +9,10 @@ import (
 )
 
 func SitemapXML(w http.ResponseWriter, r *http.Request) {
-	act("sitemap", w, r, func(st *ctx.PageState) (string, error) {
+	act("sitemap", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
 		ret := make([]string, 0)
 		ret = append(ret, `<?xml version="1.0" encoding="UTF-8"?>`, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		for _, rt := range cutil.ExtractRoutes(ctx.App.Router) {
+		for _, rt := range cutil.ExtractRoutes(app.Router) {
 			if routeMatches(rt) {
 				url := rt.Path
 				ret = append(ret, `  <url>`, `     <loc>`+url+`</loc>`, `     <changefreq>always</changefreq>`, `  </url>`)

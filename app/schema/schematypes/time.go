@@ -6,10 +6,10 @@ type Time struct{}
 
 var _ Type = (*Time)(nil)
 
-func (t Time) Key() string {
+func (t *Time) Key() string {
 	return KeyTime
 }
 
-func (t Time) String() string {
+func (t *Time) String() string {
 	return t.Key()
 }

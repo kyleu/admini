@@ -16,7 +16,6 @@ type Schema struct {
 	Key         string    `json:"key"`
 	Title       string    `json:"title"`
 	Paths       Paths     `json:"paths"`
-	Options     Options   `json:"options,omitempty"`
 	Scalars     Scalars   `json:"scalars,omitempty"`
 	Models      Models    `json:"models,omitempty"`
 	Errors      []string  `json:"errors,omitempty"`
@@ -43,17 +42,6 @@ func (s *Schema) AddPath(path string) bool {
 	}
 	s.Paths = append(s.Paths, path)
 	return true
-}
-
-func (s *Schema) AddOption(opt *Option) error {
-	if opt == nil {
-		return errors.New("nil opt")
-	}
-	if s.Options.Get(opt.T, opt.K) != nil {
-		return errors.New(alreadyExists("option", opt.T+":"+opt.K))
-	}
-	s.Options = append(s.Options, opt)
-	return nil
 }
 
 func (s *Schema) AddScalar(sc *Scalar) error {

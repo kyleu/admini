@@ -13,10 +13,10 @@ type Reference struct {
 	T   string   `json:"t"`
 }
 
-func (t Reference) Key() string {
+func (t *Reference) Key() string {
 	return KeyReference
 }
 
-func (t Reference) String() string {
+func (t *Reference) String() string {
 	return strings.Join(append(t.Pkg, t.T), ".")
 }

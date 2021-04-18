@@ -8,8 +8,8 @@ import (
 )
 
 func Search(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(st *ctx.PageState) (string, error) {
+	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
 		q := r.URL.Query().Get("q")
-		return render(w, &vsearch.SearchResults{Q: q}, st, "search")
+		return render(w, &vsearch.SearchResults{Q: q}, page, "search")
 	})
 }
