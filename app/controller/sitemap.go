@@ -1,24 +1,21 @@
 package controller
 
 import (
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/ctx"
 	"net/http"
 	"strings"
+
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/ctx"
 )
 
 func SitemapXML(w http.ResponseWriter, r *http.Request) {
 	act("sitemap", w, r, func(st *ctx.PageState) (string, error) {
 		ret := make([]string, 0)
-		ret = append(ret, `<?xml version="1.0" encoding="UTF-8"?>`)
-		ret = append(ret, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		ret = append(ret, `<?xml version="1.0" encoding="UTF-8"?>`, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
 		for _, rt := range cutil.ExtractRoutes(ctx.App.Router) {
 			if routeMatches(rt) {
 				url := rt.Path
-				ret = append(ret, `  <url>`)
-				ret = append(ret, `     <loc>`+url+`</loc>`)
-				ret = append(ret, `     <changefreq>always</changefreq>`)
-				ret = append(ret, `  </url>`)
+				ret = append(ret, `  <url>`, `     <loc>`+url+`</loc>`, `     <changefreq>always</changefreq>`, `  </url>`)
 			}
 		}
 		ret = append(ret, `</urlset>`)

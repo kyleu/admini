@@ -3,21 +3,25 @@ package menu
 import (
 	"github.com/kyleu/admini/app/sandbox"
 	"github.com/kyleu/admini/app/source"
+	"github.com/kyleu/admini/app/util"
 )
 
-func MenuFor(sources *source.Service) Items {
+var (
+	itemSeparator = &Item{}
+	itemSandbox   = &Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Route: "/sandbox", Children: sandboxItems()}
+	itemTest      = &Item{Key: "test", Title: "Tests", Description: "Tests!", Route: "/test", Children: testItems()}
+	itemSettings  = &Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Route: "/settings"}
+	itemModules   = &Item{Key: "modules", Title: "Modules", Description: "Lists the Go modules used by " + util.AppName, Route: "/modules"}
+	itemRoutes    = &Item{Key: "routes", Title: "Routes", Description: "Lists the available HTTP routes", Route: "/routes"}
+	itemFeedback  = &Item{Key: "feedback", Title: "Send feedback", Description: "Submit feedback so we can improve " + util.AppName, Route: "/feedback"}
+	itemHelp      = &Item{Key: "help", Title: "Help", Description: "Get assistance and advice for using " + util.AppName, Route: "/help"}
+)
+
+func For(sources *source.Service) Items {
+	var itemSources = &Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Route: "/source", Children: sourceItems(sources)}
 	return Items{
-		{Key: "sandbox", Title: "Sandboxes", Route: "/sandbox", Children: sandboxItems()},
-		{},
-		{Key: "sources", Title: "Sources", Route: "/source", Children: sourceItems(sources)},
-		{},
-		{Key: "test", Title: "Tests", Route: "/test", Children: testItems()},
-		{},
-		{Key: "settings", Title: "Settings", Route: "/settings"},
-		{Key: "modules", Title: "Modules", Route: "/modules"},
-		{Key: "routes", Title: "Routes", Route: "/routes"},
-		{Key: "feedback", Title: "Send feedback", Route: "/feedback"},
-		{Key: "help", Title: "Help", Route: "/help"},
+		itemSandbox, itemSeparator, itemSources, itemSeparator, itemTest,
+		itemSeparator, itemSettings, itemModules, itemRoutes, itemFeedback, itemHelp,
 	}
 }
 
@@ -25,9 +29,10 @@ func sandboxItems() Items {
 	ret := make(Items, 0, len(sandbox.AllSandboxes))
 	for _, s := range sandbox.AllSandboxes {
 		ret = append(ret, &Item{
-			Key:   s.Key,
-			Title: s.Title,
-			Route: "/sandbox/" + s.Key,
+			Key:         s.Key,
+			Title:       s.Title,
+			Description: "Sandbox [" + s.Key + "]",
+			Route:       "/sandbox/" + s.Key,
 		})
 	}
 	return ret
@@ -39,9 +44,10 @@ func sourceItems(sources *source.Service) Items {
 
 	for _, s := range ss {
 		ret = append(ret, &Item{
-			Key:   s.Key,
-			Title: s.Title,
-			Route: "/source/" + s.Key,
+			Key:         s.Key,
+			Title:       s.Title,
+			Description: "Source [" + s.Key + "]",
+			Route:       "/source/" + s.Key,
 		})
 	}
 

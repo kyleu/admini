@@ -1,8 +1,9 @@
 package cutil
 
 import (
-	"github.com/gorilla/mux"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 type RouteDescription struct {

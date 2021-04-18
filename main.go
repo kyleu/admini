@@ -3,8 +3,9 @@
 package main
 
 import (
-	"github.com/kyleu/admini/app/cmd"
 	"os"
+
+	"github.com/kyleu/admini/app/cmd"
 )
 
 func main() {

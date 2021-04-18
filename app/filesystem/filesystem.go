@@ -3,16 +3,16 @@ package filesystem
 import (
 	"errors"
 	"fmt"
-	"github.com/kyleu/admini/app/util"
 	"io/ioutil"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type FileSystem struct {
-	root   string
+	root string
 }
 
 var _ FileLoader = (*FileSystem)(nil)
@@ -23,11 +23,11 @@ func NewFileSystem(root string) *FileSystem {
 }
 
 func (f *FileSystem) getPath(ss ...string) string {
-	s := path.Join(ss...)
+	s := filepath.Join(ss...)
 	if strings.HasPrefix(s, f.root) {
 		return s
 	}
-	return path.Join(f.root, s)
+	return filepath.Join(f.root, s)
 }
 
 // Root directory, as a string
@@ -166,7 +166,7 @@ func (f *FileSystem) RemoveRecursive(pt string) error {
 			util.LogWarn("cannot list path ["+pt+"]: %+v", err)
 		}
 		for _, file := range files {
-			err := f.RemoveRecursive(path.Join(pt, file.Name()))
+			err := f.RemoveRecursive(filepath.Join(pt, file.Name()))
 			if err != nil {
 				return err
 			}

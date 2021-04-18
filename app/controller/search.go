@@ -1,9 +1,10 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/kyleu/admini/app/ctx"
 	"github.com/kyleu/admini/views/vsearch"
-	"net/http"
 )
 
 func Search(w http.ResponseWriter, r *http.Request) {

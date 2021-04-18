@@ -38,14 +38,18 @@
         <input id="{%s i.Key %}-input" type="checkbox" hidden />
       {% endif %}
       {%= vutil.Indent(true, indent + 2) %}
-      <label for="{%s i.Key %}-input">
+      <label for="{%s i.Key %}-input" title="{%s i.Description %}">
         {% if i.Route != "" %}
-          <div class="right"><a class="label-link" href="{%s i.Route %}"><svg viewBox="0 0 20 20" style="height: 15px; width: 15px;"><use xlink:href="#svg-link" /></svg></a></div>
+          {%= vutil.Indent(true, indent + 3) %}
+          <div class="label-link" style="display: none;"><a href="{%s i.Route %}"><svg viewBox="0 0 20 20" class="menu-icon"><use xlink:href="#svg-link" /></svg></a></div>
         {% endif %}
-        <span class="expand"><svg viewBox="0 0 20 20" style="height: 15px; width: 15px;"><use xlink:href="#svg-collapse" /></svg></span>
-        <span class="collapse"><svg viewBox="0 0 20 20" style="height: 15px; width: 15px;"><use xlink:href="#svg-expand" /></svg></span>
-        {% space %}
+        {%= vutil.Indent(true, indent + 3) %}
+        <div class="expand" style="display: none;"><svg viewBox="0 0 20 20" class="menu-icon"><use xlink:href="#svg-collapse" /></svg></div>
+        {%= vutil.Indent(true, indent + 3) %}
+        <div class="collapse" style="display: none;"><svg viewBox="0 0 20 20" class="menu-icon"><use xlink:href="#svg-expand" /></svg></div>
+        {%= vutil.Indent(true, indent + 3) %}
         {%s i.Title %}
+      {%= vutil.Indent(true, indent + 2) %}
       </label>
       {%= vutil.Indent(true, indent + 2) %}
       <ul class="level-{%d len(path) %}">
@@ -63,7 +67,7 @@
           finalClass += " active"
         }
       %}
-      <a class="{%s finalClass %}" href="{%s i.Route %}">{%s i.Title %}</a>
+      <a class="{%s finalClass %}" href="{%s i.Route %}" title="{%s i.Description %}">{%s i.Title %}</a>
     {% endif %}
   {%= vutil.Indent(true, indent + 1) %}</li>
 {% endstripspace %}{% endfunc %}

@@ -5,9 +5,9 @@ import (
 )
 
 type Sandbox struct {
-	Key string
+	Key   string
 	Title string
-	Run func() (interface{}, error)
+	Run   func() (interface{}, error)
 }
 
 var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func() (interface{}, error) {

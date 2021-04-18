@@ -2,14 +2,15 @@ package controller
 
 import (
 	"errors"
+	"log"
+	"net/http"
+	"runtime/debug"
+
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/ctx"
 	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
 	"github.com/kyleu/admini/views/vhelp"
-	"log"
-	"net/http"
-	"runtime/debug"
 )
 
 func render(w http.ResponseWriter, p layout.Page, st *ctx.PageState, bc ...string) (string, error) {

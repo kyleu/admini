@@ -1,9 +1,10 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/kyleu/admini/app/ctx"
 	"github.com/kyleu/admini/views"
-	"net/http"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {

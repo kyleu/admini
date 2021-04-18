@@ -236,6 +236,11 @@ table thead th {
 .menu-container .final {
   background-color: antiquewhite;
 }
+.menu-container .label-link {
+  float: right;
+  display: block !important;
+  padding-right: 6px;
+}
 .menu-container a {
   text-decoration: none;
   color: #000;
@@ -271,16 +276,24 @@ table thead th {
   max-height: 1000px;
 }
 .menu-container input[type=checkbox] + label .expand {
-  display: inline;
+  display: inline !important;
 }
 .menu-container input[type=checkbox] + label .collapse {
-  display: none;
+  display: none !important;
 }
 .menu-container input[type=checkbox]:checked + label .expand {
-  display: none;
+  display: none !important;
 }
 .menu-container input[type=checkbox]:checked + label .collapse {
-  display: inline;
+  display: inline !important;
+}
+.menu-container .expand,
+.menu-container .collapse {
+  float: left;
+}
+.menu-container .menu-icon {
+  height: 15px;
+  width: 15px;
 }
 
 /* src/style/content.css */

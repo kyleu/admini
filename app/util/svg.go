@@ -1,7 +1,7 @@
 package util
 
 var SVGLibrary = map[string]string{
-	"app": appIcon,
+	"app":     appIcon,
 	"profile": profileIcon,
 }
 

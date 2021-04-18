@@ -3,8 +3,9 @@ package schema
 import (
 	"encoding/json"
 	"errors"
-	"github.com/kyleu/admini/app/util"
 	"reflect"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type ModelType struct {

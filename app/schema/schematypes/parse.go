@@ -11,6 +11,7 @@ type wrappedUnmarshal struct {
 	T json.RawMessage `json:"t"`
 }
 
+// nolint
 func (w *Wrapped) UnmarshalJSON(data []byte) error {
 	var wu wrappedUnmarshal
 	err := json.Unmarshal(data, &wu)

@@ -1,8 +1,9 @@
 package schema
 
 import (
-	"github.com/kyleu/admini/app/util"
 	"reflect"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type Scalar struct {
