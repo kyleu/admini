@@ -1,0 +1,21 @@
+{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type SourceList struct {
+  layout.Basic
+  Sources source.Sources
+} %}
+
+{% func (p *SourceList) Body(st *ctx.PageState) %}
+  <div class="padded">
+    <div class="card">
+      <h3>Sources</h3>
+      <ul>
+        {% for _, d := range p.Sources %}
+          <li><a href="/source/{%s d.Key %}">{%s d.Title %}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endfunc %}

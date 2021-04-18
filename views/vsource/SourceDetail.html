@@ -1,19 +1,18 @@
 {% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type SandboxRun struct {
+{% code type SourceDetail struct {
   layout.Basic
-  Key string
-  Title string
-  Result interface{}
+  Source *source.Source
 } %}
 
-{% func (p *SandboxRun) Body(st *ctx.PageState) %}
+{% func (p *SourceDetail) Body(st *ctx.PageState) %}
   <div class="padded">
     <div class="card">
-      <h3>{%s p.Title %}</h3>
-      <pre>{%s util.ToJSON(p.Result) %}</pre>
+      <h3>{%s p.Source.Title %}</h3>
+      <pre>{%s util.ToJSON(p.Source) %}</pre>
     </div>
   </div>
 {% endfunc %}

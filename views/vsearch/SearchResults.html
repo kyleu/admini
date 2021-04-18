@@ -1,3 +1,4 @@
+{% import "github.com/kyleu/admini/app/ctx" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type SearchResults struct {
@@ -5,7 +6,7 @@
   Q string
 } %}
 
-{% func (p *SearchResults) Body() %}
+{% func (p *SearchResults) Body(st *ctx.PageState) %}
   <div class="padded">
     <div class="card">
       <h3>[<%= q %>] search results</h3>

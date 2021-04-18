@@ -220,45 +220,42 @@ table thead th {
 .menu-container {
   width: 256px;
   overflow: auto;
+  padding-top: 12px;
 }
 .menu-container ul {
   margin: 0;
   list-style: none;
   padding: 0;
 }
-.menu-container a,
+.menu-container .label-item,
 .menu-container label {
   display: block;
-  padding: 2px 0;
-  -webkit-transition: all .1s ease-in;
-  transition: all .1s ease-in;
+  padding: 4px 0;
+  user-select: none;
 }
-.menu-container .active > a,
-.menu-container .active > label {
+.menu-container .final {
   background-color: antiquewhite;
+}
+.menu-container a {
+  text-decoration: none;
+  color: #000;
 }
 .menu-container label {
   cursor: pointer;
 }
-.menu-container a:focus,
-.menu-container a:hover,
-.menu-container label:focus,
-.menu-container label:hover {
-  background: darkseagreen;
-}
-.level-1 a,
+.level-1 .label-item,
 .level-1 label {
   padding-left: 8px;
 }
-.level-2 a,
+.level-2 .label-item,
 .level-2 label {
   padding-left: 16px;
 }
-.level-3 a,
+.level-3 .label-item,
 .level-3 label {
   padding-left: 24px;
 }
-.level-4 a,
+.level-4 .label-item,
 .level-4 label {
   padding-left: 32px;
 }
@@ -270,7 +267,7 @@ table thead th {
   max-height: 0;
   overflow: hidden;
 }
-.level-0 input[type=checkbox]:checked + label + ul {
+.menu-container input[type=checkbox]:checked + label + ul {
   max-height: 1000px;
 }
 .menu-container input[type=checkbox] + label .expand {

@@ -1,5 +1,6 @@
-{% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/views/layout" %}
 {% import "strings" %}
 
 {% code type Routes struct {
@@ -7,7 +8,7 @@
   Routes []*cutil.RouteDescription
 } %}
 
-{% func (p *Routes) Body() %}
+{% func (p *Routes) Body(st *ctx.PageState) %}
   <div class="padded">
     <table>
       <thead>

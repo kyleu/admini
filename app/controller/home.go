@@ -8,7 +8,6 @@ import (
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	act("home", w, r, func(st *ctx.PageState) (string, error) {
-		views.WriteRender(w, &views.Home{Basic: with(st)})
-		return "", nil
+		return render(w, &views.Home{}, st)
 	})
 }

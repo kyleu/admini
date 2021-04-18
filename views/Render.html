@@ -1,11 +1,12 @@
+{% import "github.com/kyleu/admini/app/ctx" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% func Render(p layout.Page) %}<!DOCTYPE html>
+{% func Render(p layout.Page, st *ctx.PageState) %}<!DOCTYPE html>
 <html lang="en">
-<head>{%= p.Head() %}</head>
+<head>{%= p.Head(st) %}</head>
 <body class="theme-light">
-{%= p.Nav() %}
-<div id="container-body">{%= p.Menu() %}<main id="content">{%= p.Body() %}</main>
+{%= p.Nav(st) %}
+<div id="container-body">{%= p.Menu(st) %}<main id="content">{%= p.Body(st) %}</main>
 </div>
 </body>
 </html>

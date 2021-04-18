@@ -11,7 +11,9 @@
     {% endfor %}
   {% endstripspace %}
   </ul>
-  <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="display: none;"><polygon id="svg-arrow" fill="none" stroke="#000" points="6.5,5 14.5,10 6.5,15"></polygon></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><polyline id="svg-collapse" fill="none" stroke="#000" stroke-width="1.03" points="7 4 13 10 7 16"></polyline></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><polyline id="svg-expand" fill="none" stroke="#000" stroke-width="1.03" points="16 7 10 13 4 7"></polyline></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><g id="svg-link"><path fill="none" stroke="#000" stroke-width="1.1" d="M10.625,12.375 L7.525,15.475 C6.825,16.175 5.925,16.175 5.225,15.475 L4.525,14.775 C3.825,14.074 3.825,13.175 4.525,12.475 L7.625,9.375"></path><path fill="none" stroke="#000" stroke-width="1.1" d="M9.325,7.375 L12.425,4.275 C13.125,3.575 14.025,3.575 14.724,4.275 L15.425,4.975 C16.125,5.675 16.125,6.575 15.425,7.275 L12.325,10.375"></path><path fill="none" stroke="#000" stroke-width="1.1" d="M7.925,11.875 L11.925,7.975"></path></g></svg>
 </nav>
 {% endfunc %}
 
@@ -22,6 +24,7 @@
     if len(path) <= len(breadcrumbs) {
       active = reflect.DeepEqual(breadcrumbs[0:len(path)], path)
     }
+    final := reflect.DeepEqual(breadcrumbs, path)
   %}
   {%= vutil.Indent(true, indent + 1) %}
   {% if active %}<li class="active">{% else %}<li>{% endif %}
@@ -29,11 +32,18 @@
     {% if i.Key == "" %}
       <hr />
     {% elseif len(i.Children) > 0 %}
-      {% if active %}<input id="{%s i.Key %}-input" type="checkbox" checked="checked" hidden />{% else %}<input id="{%s i.Key %}-input" type="checkbox" hidden />{% endif %}
+      {% if active %}
+        <input id="{%s i.Key %}-input" type="checkbox" checked="checked" hidden />
+      {% else %}
+        <input id="{%s i.Key %}-input" type="checkbox" hidden />
+      {% endif %}
       {%= vutil.Indent(true, indent + 2) %}
       <label for="{%s i.Key %}-input">
-        <span class="expand"><svg style="height: 15px; width: 15px;"><use xlink:href="#svg-arrow" /></svg></span>
-        <span class="collapse"><svg style="height: 15px; width: 15px;transform: rotate(90deg);"><use xlink:href="#svg-arrow" /></span>
+        {% if i.Route != "" %}
+          <div class="right"><a class="label-link" href="{%s i.Route %}"><svg viewBox="0 0 20 20" style="height: 15px; width: 15px;"><use xlink:href="#svg-link" /></svg></a></div>
+        {% endif %}
+        <span class="expand"><svg viewBox="0 0 20 20" style="height: 15px; width: 15px;"><use xlink:href="#svg-collapse" /></svg></span>
+        <span class="collapse"><svg viewBox="0 0 20 20" style="height: 15px; width: 15px;"><use xlink:href="#svg-expand" /></svg></span>
         {% space %}
         {%s i.Title %}
       </label>
@@ -44,11 +54,16 @@
         {% endfor %}
       {%= vutil.Indent(true, indent + 2) %}</ul>
     {% else %}
-      {% if active %}
-        <a class="active" href="{%s i.Route %}">{%s i.Title %}</a>
-      {% else %}
-        <a href="{%s i.Route %}">{%s i.Title %}</a>
-      {% endif %}
+      {% code
+        finalClass := "label-item"
+        if final {
+          finalClass += " final"
+        }
+        if active {
+          finalClass += " active"
+        }
+      %}
+      <a class="{%s finalClass %}" href="{%s i.Route %}">{%s i.Title %}</a>
     {% endif %}
   {%= vutil.Indent(true, indent + 1) %}</li>
 {% endstripspace %}{% endfunc %}

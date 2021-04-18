@@ -2,7 +2,6 @@ package controller
 
 import (
 	"github.com/kyleu/admini/app/ctx"
-	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/vsandbox"
 	"net/http"
 
@@ -12,8 +11,7 @@ import (
 
 func SandboxList(w http.ResponseWriter, r *http.Request) {
 	act("sandbox.list", w, r, func(st *ctx.PageState) (string, error) {
-		views.WriteRender(w, &vsandbox.SandboxList{Basic: with(st, "sandbox")})
-		return "", nil
+		return render(w, &vsandbox.SandboxList{}, st, "sandbox")
 	})
 }
 
@@ -28,7 +26,6 @@ func SandboxRun(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", err
 		}
-		views.WriteRender(w, &vsandbox.SandboxRun{Basic: with(st, "sandbox", sb.Key), Key: key, Title: sb.Title, Result: ret})
-		return "", nil
+		return render(w, &vsandbox.SandboxRun{Key: key, Title: sb.Title, Result: ret}, st, "sandbox", sb.Key)
 	})
 }

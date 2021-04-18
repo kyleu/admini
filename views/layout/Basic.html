@@ -1,10 +1,7 @@
-{% import "github.com/kyleu/admini/app/menu" %}
 {% import "github.com/kyleu/admini/app/ctx" %}
 
-{% code type Basic struct {
-  State *ctx.PageState
-} %}
-{% func (p *Basic) Head() %}{%= Head() %}{% endfunc %}
-{% func (p *Basic) Nav() %}{%= Nav(menu.Menu, p.State.Breadcrumbs) %}{% endfunc %}
-{% func (p *Basic) Menu() %}{%= Menu(menu.Menu, p.State.Breadcrumbs) %}{% endfunc %}
-{% func (p *Basic) Body() %}default body{% endfunc %}
+{% code type Basic struct {} %}
+{% func (p *Basic) Head(st *ctx.PageState) %}{%= Head() %}{% endfunc %}
+{% func (p *Basic) Nav(st *ctx.PageState) %}{%= Nav(st.Menu, st.Breadcrumbs) %}{% endfunc %}
+{% func (p *Basic) Menu(st *ctx.PageState) %}{%= Menu(st.Menu, st.Breadcrumbs) %}{% endfunc %}
+{% func (p *Basic) Body(st *ctx.PageState) %}default body{% endfunc %}

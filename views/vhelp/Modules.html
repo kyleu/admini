@@ -1,3 +1,4 @@
+{% import "github.com/kyleu/admini/app/ctx" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "runtime/debug" %}
 
@@ -6,7 +7,7 @@
   Mods []*debug.Module
 } %}
 
-{% func (p *Modules) Body() %}
+{% func (p *Modules) Body(st *ctx.PageState) %}
   <div class="padded">
     <table>
       <thead>

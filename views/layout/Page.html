@@ -1,10 +1,12 @@
 This is a base page template. All the other template pages implement this interface.
 
+{% import "github.com/kyleu/admini/app/ctx" %}
+
 {% interface
   Page {
-    Head()
-    Nav()
-    Menu()
-    Body()
+    Head(st *ctx.PageState)
+    Nav(st *ctx.PageState)
+    Menu(st *ctx.PageState)
+    Body(st *ctx.PageState)
   }
 %}

@@ -1,8 +1,9 @@
+{% import "github.com/kyleu/admini/app/ctx" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type TODO struct { layout.Basic } %}
 
-{% func (p *TODO) Body() %}
+{% func (p *TODO) Body(st *ctx.PageState) %}
   <div class="padded">
     <div class="card">
       <h3>TODO</h3>

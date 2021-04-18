@@ -12,7 +12,7 @@ func SitemapXML(w http.ResponseWriter, r *http.Request) {
 		ret := make([]string, 0)
 		ret = append(ret, `<?xml version="1.0" encoding="UTF-8"?>`)
 		ret = append(ret, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		for _, rt := range cutil.ExtractRoutes(st.Router) {
+		for _, rt := range cutil.ExtractRoutes(ctx.App.Router) {
 			if routeMatches(rt) {
 				url := rt.Path
 				ret = append(ret, `  <url>`)

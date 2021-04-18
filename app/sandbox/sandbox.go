@@ -14,7 +14,7 @@ var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func() (in
 	return schema.GetExample(), nil
 }}
 
-var datasources = &Sandbox{Key: "datasources", Title: "Data Sources", Run: func() (interface{}, error) {
+var sources = &Sandbox{Key: "sources", Title: "Data Sources", Run: func() (interface{}, error) {
 	return schema.GetExample(), nil
 }}
 
@@ -33,4 +33,4 @@ func (s Sandboxes) Get(key string) *Sandbox {
 	return nil
 }
 
-var AllSandboxes = Sandboxes{codegen, datasources, testbed}
+var AllSandboxes = Sandboxes{codegen, sources, testbed}

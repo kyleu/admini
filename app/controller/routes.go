@@ -22,6 +22,10 @@ func BuildRouter() (*mux.Router, error) {
 	r.Path("/sandbox").Methods(http.MethodGet).Handler(http.HandlerFunc(SandboxList)).Name("sandbox.list")
 	r.Path("/sandbox/{key}").Methods(http.MethodGet).Handler(http.HandlerFunc(SandboxRun)).Name("sandbox.run")
 
+	// Source
+	r.Path("/source").Methods(http.MethodGet).Handler(http.HandlerFunc(SourceList)).Name("source.list")
+	r.Path("/source/{key}").Methods(http.MethodGet).Handler(http.HandlerFunc(SourceDetail)).Name("source.detail")
+
 	// Util
 	r.Path("/modules").Methods(http.MethodGet).Handler(http.HandlerFunc(Modules)).Name("modules")
 	r.Path("/routes").Methods(http.MethodGet).Handler(http.HandlerFunc(Routes)).Name("routes")

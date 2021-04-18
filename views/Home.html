@@ -1,14 +1,16 @@
-{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/app/ctx" %}
 {% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Home struct { layout.Basic } %}
 
-{% func (p *Home) Body() %}
+{% func (p *Home) Body(st *ctx.PageState) %}
   <div class="padded">
     <div class="card">
       <h3>{%s util.AppName %}</h3>
       <ul>
         <li><a href="/sandbox">Sandboxes</a></li>
+        <li><a href="/source">Sources</a></li>
       </ul>
     </div>
   </div>

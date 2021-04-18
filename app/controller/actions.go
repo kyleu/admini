@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/kyleu/admini/app/ctx"
+	"github.com/kyleu/admini/app/menu"
 	"net/http"
 	"strings"
 	"time"
@@ -12,11 +13,9 @@ import (
 )
 
 func act(key string, w http.ResponseWriter, r *http.Request, f func(st *ctx.PageState) (string, error)) {
-	state := &ctx.PageState{
-		Router: ctx.ActiveRouter,
-	}
-	writeCORS(w)
 	startNanos := time.Now().UnixNano()
+	state := &ctx.PageState{Menu: menu.MenuFor(ctx.App.Sources)}
+	writeCORS(w)
 	redir, err := f(state)
 	if err != nil {
 		msg := "error running action [%v]: %+v"

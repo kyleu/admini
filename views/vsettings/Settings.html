@@ -1,8 +1,9 @@
+{% import "github.com/kyleu/admini/app/ctx" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Settings struct { layout.Basic } %}
 
-{% func (p *Settings) Body() %}
+{% func (p *Settings) Body(st *ctx.PageState) %}
   <div class="padded">
     <div class="card">
       <h3>Settings</h3>
