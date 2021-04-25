@@ -47,7 +47,7 @@ func menuAddModel(as *app.State, source string, ret menu.Items, m *schema.Model)
 		Key:         m.Key,
 		Title:       m.Key,
 		Description: m.Type.String() + " model [" + m.Key + "]",
-		Route:       as.Route("workspace", "key", source) + m.Path(),
+		Route:       as.Route("workspace", "key", source) + "/" + m.Path(),
 	})
 }
 

@@ -51,6 +51,7 @@ func Workspace(w http.ResponseWriter, r *http.Request) {
 		if len(paths) == 0 {
 			return render(r, w, as, &vworkspace.WorkspaceOverview{Schema: sch}, ps)
 		}
+
 		i, remaining := sch.ModelsByPackage().Get(paths)
 
 		switch t := i.(type) {
@@ -60,6 +61,8 @@ func Workspace(w http.ResponseWriter, r *http.Request) {
 			return handlePackage(w, r, as, ps, t, remaining)
 		case error:
 			return ersp("provided path [%v] can't be loaded: %+v", r.URL.Path, t)
+		case nil:
+			return ersp("nil path [%v] can't be loaded: %+v", r.URL.Path, t)
 		default:
 			return ersp("unhandled type: %T", t)
 		}
@@ -69,7 +72,7 @@ func Workspace(w http.ResponseWriter, r *http.Request) {
 func handleModel(w http.ResponseWriter, r *http.Request, as *app.State, ps *cutil.PageState, m *schema.Model, remaining []string) (string, error) {
 	if len(remaining) == 0 {
 		ps.Data = m
-		page := &views.TODO{Message: "Model: " + m.Path()}
+		page := &vworkspace.ModelList{Model: m}
 		return render(r, w, as, page, ps, append(m.Pkg, m.Key)...)
 	}
 	ps.Data = m
@@ -78,6 +81,12 @@ func handleModel(w http.ResponseWriter, r *http.Request, as *app.State, ps *cuti
 }
 
 func handlePackage(w http.ResponseWriter, r *http.Request, as *app.State, ps *cutil.PageState, mp *schema.ModelPackage, remaining []string) (string, error) {
-	page := &views.TODO{Message: "Package: " + mp.Path()}
+	if len(remaining) == 0 {
+		ps.Data = mp
+		page := &vworkspace.PackageDetail{Pkg: mp}
+		return render(r, w, as, page, ps, append(mp.Pkg, mp.Key)...)
+	}
+	ps.Data = mp
+	page := &views.TODO{Message: fmt.Sprintf("unhandled package action [%v]", strings.Join(remaining, "/"))}
 	return render(r, w, as, page, ps, append(mp.Pkg, mp.Key)...)
 }

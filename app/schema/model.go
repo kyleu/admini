@@ -56,7 +56,7 @@ func (m *Model) AddIndex(i *Index) error {
 }
 
 func (m *Model) Path() string {
-	return "/" + m.Pkg.ToPath(m.Key)
+	return m.Pkg.ToPath(m.Key)
 }
 
 type Models []*Model

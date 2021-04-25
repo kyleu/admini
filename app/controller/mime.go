@@ -24,8 +24,7 @@ func respondMIME(filename string, mime string, ext string, ba []byte, w http.Res
 	if len(ba) == 0 {
 		return "", fmt.Errorf("no bytes available to write")
 	}
-	_, err := w.Write(ba)
-	if err != nil {
+	if _, err := w.Write(ba); err != nil {
 		return "", fmt.Errorf("cannot write to response: %w", err)
 	}
 
@@ -41,8 +40,7 @@ func writeCORS(w http.ResponseWriter) {
 
 func getContentType(r *http.Request) string {
 	ret := r.Header.Get("Content-Type")
-	idx := strings.Index(ret, ";")
-	if idx > -1 {
+	if idx := strings.Index(ret, ";"); idx > -1 {
 		ret = ret[0:idx]
 	}
 	return strings.TrimSpace(ret)
