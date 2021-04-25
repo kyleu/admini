@@ -2,8 +2,8 @@ package schematypes
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
+
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -39,7 +39,6 @@ func (w *Wrapped) MarshalJSON() ([]byte, error) {
 	b := util.ToJSONBytes(w.T, true)
 	if len(b) == 2 {
 		return json.Marshal(w.K)
-		// return json.Marshal(wrappedKeyOnly{K: w.K})
 	}
 	return json.Marshal(wrappedUnmarshal{K: w.K, T: b})
 }
@@ -118,6 +117,10 @@ func (w *Wrapped) UnmarshalJSON(data []byte) error {
 		tgt := &Option{}
 		err = json.Unmarshal(wu.T, &tgt)
 		t = tgt
+	case KeyRange:
+		tgt := &Range{}
+		err = json.Unmarshal(wu.T, &tgt)
+		t = tgt
 	case KeySet:
 		tgt := &Set{}
 		err = json.Unmarshal(wu.T, &tgt)
@@ -157,7 +160,7 @@ func (w *Wrapped) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("unable to unmarshal wrapped field of type [%v]: %w", wu.K, err)
 	}
 	if t == nil {
-		return errors.New("nil type returned from unmarshal")
+		return fmt.Errorf("nil type returned from unmarshal")
 	}
 	w.K = wu.K
 	w.T = t

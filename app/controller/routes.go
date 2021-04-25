@@ -21,20 +21,29 @@ func BuildRouter() (*mux.Router, error) {
 	r.Path("/search").Methods(http.MethodGet).Handler(wrap(Search)).Name("search")
 	r.Path("/profile").Methods(http.MethodGet).Handler(wrap(Profile)).Name("profile")
 	r.Path("/settings").Methods(http.MethodGet).Handler(wrap(Settings)).Name("settings")
-	r.Path("/feedback").Methods(http.MethodGet).Handler(wrap(Feedback)).Name("feedback")
-	r.Path("/help").Methods(http.MethodGet).Handler(wrap(Help)).Name("help")
 
-	// Sandbox
-	r.Path("/sandbox").Methods(http.MethodGet).Handler(wrap(SandboxList)).Name("sandbox.list")
-	r.Path("/sandbox/{key}").Methods(http.MethodGet).Handler(wrap(SandboxRun)).Name("sandbox.run")
+	help := r.Path("/help").Subrouter()
+	help.Methods(http.MethodGet).Handler(wrap(Help)).Name("help")
+	r.Path("/feedback").Methods(http.MethodGet).Handler(wrap(Feedback)).Name("feedback")
 
 	// Source
-	r.Path("/source").Methods(http.MethodGet).Handler(wrap(SourceList)).Name("source.list")
+	source := r.Path("/source").Subrouter()
+	source.Methods(http.MethodGet).Handler(wrap(SourceList)).Name("source.list")
 	r.Path("/source/{key}").Methods(http.MethodGet).Handler(wrap(SourceDetail)).Name("source.detail")
+	r.Path("/source/{key}/refresh").Methods(http.MethodGet).Handler(wrap(SourceRefresh)).Name("source.refresh")
+
+	// Workspace
+	_ = r.PathPrefix("/x/{key}").Handler(wrap(Workspace)).Name("workspace")
+
+	// Sandbox
+	sandbox := r.Path("/sandbox").Subrouter()
+	sandbox.Methods(http.MethodGet).Handler(wrap(SandboxList)).Name("sandbox.list")
+	r.Path("/sandbox/{key}").Methods(http.MethodGet).Handler(wrap(SandboxRun)).Name("sandbox.run")
 
 	// Util
-	r.Path("/modules").Methods(http.MethodGet).Handler(wrap(Modules)).Name("modules")
-	r.Path("/routes").Methods(http.MethodGet).Handler(wrap(Routes)).Name("routes")
+	_ = r.Path("/util").Subrouter()
+	r.Path("/util/modules").Methods(http.MethodGet).Handler(wrap(Modules)).Name("modules")
+	r.Path("/util/routes").Methods(http.MethodGet).Handler(wrap(Routes)).Name("routes")
 
 	// Assets
 	_ = r.Path("/assets").Subrouter()

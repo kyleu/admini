@@ -1,19 +1,22 @@
 {% import "reflect" %}
 {% import "github.com/kyleu/admini/app/menu" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func Menu(m menu.Items, breadcrumbs []string) %}
+{% func Menu(ps *cutil.PageState) %}
 <nav class="menu-container" role="navigation">
+  <div class="menu">
   {% stripspace %}
   <ul class="level-0">
-    {% for _, i := range m %}
-      {%= MenuItem(i, []string{}, breadcrumbs, 0) %}
+    {% for _, i := range ps.Menu %}
+      {%= MenuItem(i, []string{}, ps.Breadcrumbs, 1) %}
     {% endfor %}
-  {% endstripspace %}
+    {%= vutil.Indent(true, 1) %}
   </ul>
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><polyline id="svg-collapse" fill="none" stroke="#000" stroke-width="1.03" points="7 4 13 10 7 16"></polyline></svg>
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><polyline id="svg-expand" fill="none" stroke="#000" stroke-width="1.03" points="16 7 10 13 4 7"></polyline></svg>
-  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><g id="svg-link"><path fill="none" stroke="#000" stroke-width="1.1" d="M10.625,12.375 L7.525,15.475 C6.825,16.175 5.925,16.175 5.225,15.475 L4.525,14.775 C3.825,14.074 3.825,13.175 4.525,12.475 L7.625,9.375"></path><path fill="none" stroke="#000" stroke-width="1.1" d="M9.325,7.375 L12.425,4.275 C13.125,3.575 14.025,3.575 14.724,4.275 L15.425,4.975 C16.125,5.675 16.125,6.575 15.425,7.275 L12.325,10.375"></path><path fill="none" stroke="#000" stroke-width="1.1" d="M7.925,11.875 L11.925,7.975"></path></g></svg>
+  {% code ps.AddIcon(`collapse`, `expand`, `link`) %}
+  {% endstripspace %}
+  </div>
 </nav>
 {% endfunc %}
 
@@ -26,12 +29,13 @@
     }
     final := reflect.DeepEqual(breadcrumbs, path)
   %}
-  {%= vutil.Indent(true, indent + 1) %}
-  {% if active %}<li class="active">{% else %}<li>{% endif %}
-    {%= vutil.Indent(true, indent + 2) %}
     {% if i.Key == "" %}
-      <hr />
+      {%= vutil.Indent(true, indent + 1) %}
+      <li class="separator"><hr /></li>
     {% elseif len(i.Children) > 0 %}
+      {%= vutil.Indent(true, indent + 1) %}
+      {% if active %}<li class="active">{% else %}<li>{% endif %}
+      {%= vutil.Indent(true, indent + 2) %}
       {% if active %}
         <input id="{%s i.Key %}-input" type="checkbox" checked="checked" hidden />
       {% else %}
@@ -41,12 +45,9 @@
       <label for="{%s i.Key %}-input" title="{%s i.Description %}">
         {% if i.Route != "" %}
           {%= vutil.Indent(true, indent + 3) %}
-          <div class="label-link" style="display: none;"><a href="{%s i.Route %}"><svg viewBox="0 0 20 20" class="menu-icon"><use xlink:href="#svg-link" /></svg></a></div>
+          <div class="label-link" style="display: none;"><a href="{%s i.Route %}"><svg viewBox="0 0 20 20" class="small-icon"><use xlink:href="#svg-link" /></svg></a></div>
         {% endif %}
-        {%= vutil.Indent(true, indent + 3) %}
-        <div class="expand" style="display: none;"><svg viewBox="0 0 20 20" class="menu-icon"><use xlink:href="#svg-collapse" /></svg></div>
-        {%= vutil.Indent(true, indent + 3) %}
-        <div class="collapse" style="display: none;"><svg viewBox="0 0 20 20" class="menu-icon"><use xlink:href="#svg-expand" /></svg></div>
+        {%= components.ExpandCollapse(indent + 3) %}
         {%= vutil.Indent(true, indent + 3) %}
         {%s i.Title %}
       {%= vutil.Indent(true, indent + 2) %}
@@ -57,9 +58,10 @@
           {%= MenuItem(i, path, breadcrumbs, indent + 2) %}
         {% endfor %}
       {%= vutil.Indent(true, indent + 2) %}</ul>
+      {%= vutil.Indent(true, indent + 1) %}</li>
     {% else %}
       {% code
-        finalClass := "label-item"
+        finalClass := "item"
         if final {
           finalClass += " final"
         }
@@ -67,7 +69,7 @@
           finalClass += " active"
         }
       %}
-      <a class="{%s finalClass %}" href="{%s i.Route %}" title="{%s i.Description %}">{%s i.Title %}</a>
+      {%= vutil.Indent(true, indent + 1) %}
+      <li><a class="{%s finalClass %}" href="{%s i.Route %}" title="{%s i.Description %}">{%s i.Title %}</a></li>
     {% endif %}
-  {%= vutil.Indent(true, indent + 1) %}</li>
 {% endstripspace %}{% endfunc %}

@@ -2,12 +2,12 @@ table {
   width: 100%;
   border-collapse: collapse;
 }
+
 table td, table th {
   border: 1px solid #ddd;
   padding: 4px;
 }
-table thead {
-}
-table thead th {
+
+table th {
   font-weight: bold;
 }

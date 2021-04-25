@@ -1,5 +1,5 @@
+{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/ctx" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "strings" %}
 
@@ -8,29 +8,27 @@
   Routes []*cutil.RouteDescription
 } %}
 
-{% func (p *Routes) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Methods</th>
-          <th>Path</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for _, r := range p.Routes %}
-          {% if r.Path == "" %}
-          {% elseif len(r.Methods) == 0 %}<tr>
-            <td scope="row" colspan="3"><div class="mt">{%s strings.TrimPrefix(r.Path, "/") %}</div></td>
-          </tr>{% else %}<tr>
-            <td>{%s r.Name %}</td>
-            <td>{%s r.Methods %}</td>
-            <td>
-              {% if strings.Contains(r.Methods, "GET") && !strings.Contains(r.Path, "{") %}<a href="{%s r.Path %}">{%s r.Path %}</a>{% else %}{%s r.Path %}{% endif %}
-            </td>
-          </tr>{% endif %}{% endfor %}
-      </tbody>
-    </table>
-  </div>
+{% func (p *Routes) Body(as *app.State, ps *cutil.PageState) %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Methods</th>
+        <th>Path</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for _, r := range p.Routes %}
+        {% if r.Path == "" %}
+        {% elseif len(r.Methods) == 0 %}<tr>
+          <th scope="row" colspan="3"><div class="mt">{%s strings.TrimPrefix(r.Path, "/") %}</div></th>
+        </tr>{% else %}<tr>
+          <td>{%s r.Name %}</td>
+          <td>{%s r.Methods %}</td>
+          <td>
+            {% if strings.Contains(r.Methods, "GET") && !strings.Contains(r.Path, "{") %}<a href="{%s r.Path %}">{%s r.Path %}</a>{% else %}{%s r.Path %}{% endif %}
+          </td>
+        </tr>{% endif %}{% endfor %}
+    </tbody>
+  </table>
 {% endfunc %}

@@ -7,7 +7,7 @@ import (
 const KeySet = "set"
 
 type Set struct {
-	T *Wrapped
+	T *Wrapped `json:"t"`
 }
 
 var _ Type = (*Set)(nil)

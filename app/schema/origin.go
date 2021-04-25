@@ -12,12 +12,12 @@ type Origin struct {
 var (
 	OriginGraphQL    = Origin{Key: "graphql", Title: "GraphQL", Icon: "social", Description: "GraphQL schema and queries"}
 	OriginProtobuf   = Origin{Key: "protobuf", Title: "Protobuf", Icon: "move", Description: "File describing proto3 definitions"}
-	OriginDatabase   = Origin{Key: "database", Title: "Database", Icon: "database", Description: "Database system from an IntelliJ data source"}
+	OriginPostgres   = Origin{Key: "postgres", Title: "Database", Icon: "database", Description: "PostgreSQL database schema"}
 	OriginJSONSchema = Origin{Key: "jsonschema", Title: "JSONSchema", Icon: "location", Description: "JSON Schema definition files"}
 	OriginUnknown    = Origin{Key: "unknown", Title: "Unknown", Icon: "question", Description: "Not quite sure what this is"}
 )
 
-var AllOrigins = []Origin{OriginGraphQL, OriginProtobuf, OriginDatabase, OriginJSONSchema}
+var AllOrigins = []Origin{OriginGraphQL, OriginProtobuf, OriginPostgres, OriginJSONSchema}
 
 func OriginFromString(s string) Origin {
 	for _, t := range AllOrigins {

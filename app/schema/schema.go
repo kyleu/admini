@@ -1,32 +1,22 @@
 package schema
 
-import "errors"
-
-type Summary struct {
-	Key         string    `json:"key"`
-	Title       string    `json:"title"`
-	Paths       Paths     `json:"paths"`
-	Description string    `json:"description,omitempty"`
-	Metadata    *Metadata `json:"metadata,omitempty"`
-}
-
-type Summaries []*Summary
+import (
+	"fmt"
+)
 
 type Schema struct {
-	Key         string    `json:"key"`
-	Title       string    `json:"title"`
-	Paths       Paths     `json:"paths"`
-	Scalars     Scalars   `json:"scalars,omitempty"`
-	Models      Models    `json:"models,omitempty"`
-	Errors      []string  `json:"errors,omitempty"`
-	Description string    `json:"description,omitempty"`
-	Metadata    *Metadata `json:"metadata,omitempty"`
+	Paths           Paths     `json:"paths,omitempty"`
+	Scalars         Scalars   `json:"scalars,omitempty"`
+	Models          Models    `json:"models,omitempty"`
+	Errors          []string  `json:"errors,omitempty"`
+	Metadata        *Metadata `json:"metadata,omitempty"`
+	modelsByPackage *ModelPackage
 }
 
 type Schemata []*Schema
 
-func NewSchema(key string, title string, paths []string, md *Metadata) *Schema {
-	return &Schema{Key: key, Title: title, Paths: paths, Metadata: md}
+func NewSchema(paths []string, md *Metadata) *Schema {
+	return &Schema{Paths: paths, Metadata: md}
 }
 
 func alreadyExists(t string, key string) string {
@@ -46,10 +36,10 @@ func (s *Schema) AddPath(path string) bool {
 
 func (s *Schema) AddScalar(sc *Scalar) error {
 	if sc == nil {
-		return errors.New("nil scalar")
+		return fmt.Errorf("nil scalar")
 	}
 	if s.Scalars.Get(sc.Pkg, sc.Key) != nil {
-		return errors.New(alreadyExists("scalar", sc.Key))
+		return fmt.Errorf(alreadyExists("scalar", sc.Key))
 	}
 	s.Scalars = append(s.Scalars, sc)
 	return nil
@@ -57,10 +47,10 @@ func (s *Schema) AddScalar(sc *Scalar) error {
 
 func (s *Schema) AddModel(m *Model) error {
 	if m == nil {
-		return errors.New("nil model")
+		return fmt.Errorf("nil model")
 	}
 	if s.Models.Get(m.Pkg, m.Key) != nil {
-		return errors.New(alreadyExists("model", m.Key))
+		return fmt.Errorf(alreadyExists("model", m.Key))
 	}
 	s.Models = append(s.Models, m)
 	return nil
@@ -71,6 +61,13 @@ func (s *Schema) Validate() *ValidationResult {
 }
 
 func (s *Schema) ValidateModel(model *Model) *ValidationResult {
-	r := &ValidationResult{Schema: s.Key}
+	r := &ValidationResult{Schema: "TODO"}
 	return validateModel(r, s, model)
+}
+
+func (s *Schema) ModelsByPackage() *ModelPackage {
+	if s.modelsByPackage == nil {
+		s.modelsByPackage = ToModelPackage(s.Models)
+	}
+	return s.modelsByPackage
 }

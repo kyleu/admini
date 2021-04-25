@@ -1,0 +1,17 @@
+#flash-container input:checked ~ * {
+  display: none;
+}
+
+#flash-container label {
+  float: right;
+  padding: 12px;
+  cursor: pointer;
+}
+
+#flash-container .flash-success {
+  color: green;
+}
+
+#flash-container .flash-error {
+  color: red;
+}

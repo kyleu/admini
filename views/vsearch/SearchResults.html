@@ -1,18 +1,32 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type SearchResults struct {
   layout.Basic
   Q string
+  Results []string
 } %}
 
-{% func (p *SearchResults) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>[<%= q %>] search results</h3>
-      <ul>
-        <li>TODO</li>
-      </ul>
-    </div>
-  </div>
+{% func (p *SearchResults) Body(as *app.State, ps *cutil.PageState) %}
+<div class="card">
+  <h3>{% if p.Q == "" %}Search{% else %}[{%s p.Q %}] search results{% endif %}</h3>
+  <form action="{%s as.Route(`search`) %}">
+    <input name="q" value="{%s p.Q %}" />
+  </form>
+</div>
+{% if p.Q != "" %}
+<div class="card">
+  <h3>Results</h3>
+  {% if len(p.Results) == 0 %}
+  <em>no results</em>
+  {% else %}
+  <ul>
+    {% for _, res := range p.Results %}
+    <li>TODO: {%s res %}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+{% endif %}
 {% endfunc %}

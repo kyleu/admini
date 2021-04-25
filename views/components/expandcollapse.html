@@ -1,0 +1,8 @@
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func ExpandCollapse(indent int) %}{% stripspace %}
+{%= vutil.Indent(true, indent) %}
+<div class="expand" style="display: none;"><svg viewBox="0 0 20 20"><use xlink:href="#svg-collapse" /></svg></div>
+{%= vutil.Indent(true, indent) %}
+<div class="collapse" style="display: none;"><svg viewBox="0 0 20 20"><use xlink:href="#svg-expand" /></svg></div>
+{% endstripspace %}{% endfunc %}

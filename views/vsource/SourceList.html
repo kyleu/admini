@@ -1,4 +1,5 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
@@ -7,15 +8,13 @@
   Sources source.Sources
 } %}
 
-{% func (p *SourceList) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>Sources</h3>
-      <ul>
-        {% for _, d := range p.Sources %}
-          <li><a href="/source/{%s d.Key %}">{%s d.Title %}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
+{% func (p *SourceList) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>Sources</h3>
+    <ul>
+      {% for _, d := range p.Sources %}
+        <li><a href="{%s as.Route(`source.detail`, `key`, d.Key) %}">{%s d.Title %}</a></li>
+      {% endfor %}
+    </ul>
   </div>
 {% endfunc %}

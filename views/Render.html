@@ -1,13 +1,37 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% func Render(p layout.Page, st *ctx.PageState) %}<!DOCTYPE html>
+{% func Render(page layout.Page, as *app.State, ps *cutil.PageState) %}<!DOCTYPE html>
 <html lang="en">
-<head>{%= p.Head(st) %}</head>
+<head>{%= page.Head(ps) %}</head>
 <body class="theme-light">
-{%= p.Nav(st) %}
-<div id="container-body">{%= p.Menu(st) %}<main id="content">{%= p.Body(st) %}</main>
+{%= page.Nav(ps) %}
+<div id="container-body">{%= page.Menu(ps) %}<main id="content">{% if len(ps.Flashes) > 0 %}{%= renderFlashes(ps.Flashes) %}{% endif %}{%= page.Body(as, ps) %}</main>
 </div>
+{% if len(ps.Icons) > 0 %}<div class="icon-list" style="display: none;">{% for _, icon := range ps.Icons %}
+  {%= components.SVG(icon) %}{% endfor %}
+</div>
+{% endif %}<noscript>{%s util.AppName %} attempts to work without JavaScript. Good luck!</noscript>
 </body>
 </html>
 {% endfunc %}
+
+{% func renderFlashes(flashes []string) %}{% stripspace %}
+  {% if len(flashes) > 0 %}
+    <div id="flash-container">
+      {% for idx, f := range flashes %}
+        {% code level, msg := util.SplitString(f, ':', true) %}
+        <div>
+          <input type="radio" style="display:none;" id="hide-flash-{%d idx %}">
+          <label for="hide-flash-{%d idx %}"><span>X</span></label>
+          <div class="card flash-{%s level %}">
+            {%s msg %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endstripspace %}{% endfunc %}

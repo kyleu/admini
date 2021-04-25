@@ -9,8 +9,8 @@ const KeyMap = "map"
 var _ Type = (*Map)(nil)
 
 type Map struct {
-	K *Wrapped
-	V *Wrapped
+	K *Wrapped `json:"k"`
+	V *Wrapped `json:"v"`
 }
 
 func (t *Map) Key() string {

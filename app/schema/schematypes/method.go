@@ -6,7 +6,7 @@ import (
 )
 
 type Argument struct {
-	Key  string  `json:"key"`
+	Key  string   `json:"key"`
 	Type *Wrapped `json:"type"`
 }
 
@@ -20,7 +20,7 @@ const KeyMethod = "method"
 
 type Method struct {
 	Args Arguments `json:"args,omitempty"`
-	Ret  *Wrapped   `json:"ret,omitempty"`
+	Ret  *Wrapped  `json:"ret,omitempty"`
 }
 
 var _ Type = (*Method)(nil)

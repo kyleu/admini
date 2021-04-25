@@ -3,11 +3,16 @@
 @import "./style/util.css";
 
 @import "./style/table.css";
+@import "./style/accordion.css";
+@import "./style/card.css";
 
 @import "./style/nav.css";
-@import "./style/menu.css";
-@import "./style/content.css";
 @import "./style/search.css";
+
+@import "./style/menu.css";
+
+@import "./style/flash.css";
 
 @import "./style/theme-light.css";
 
+@import "./style/formatter.css";

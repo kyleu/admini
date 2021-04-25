@@ -1,8 +1,6 @@
 package schema
 
 import (
-	"reflect"
-
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -18,7 +16,7 @@ type Scalars []*Scalar
 
 func (s Scalars) Get(pkg util.Pkg, key string) *Scalar {
 	for _, x := range s {
-		if reflect.DeepEqual(x.Pkg, pkg) && x.Key == key {
+		if x.Pkg.Equals(pkg) && x.Key == key {
 			return x
 		}
 	}

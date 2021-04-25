@@ -7,6 +7,7 @@ import (
 const KeyString = "string"
 
 type String struct {
+	MinLength int    `json:"minLength,omitempty"`
 	MaxLength int    `json:"maxLength,omitempty"`
 	Pattern   string `json:"pattern,omitempty"`
 }

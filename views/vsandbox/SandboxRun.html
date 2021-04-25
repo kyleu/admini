@@ -1,5 +1,6 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
-{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type SandboxRun struct {
@@ -9,12 +10,10 @@
   Result interface{}
 } %}
 
-{% func (p *SandboxRun) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>{%s p.Title %}</h3>
-      <pre>{%s util.ToJSON(p.Result) %}</pre>
-    </div>
+{% func (p *SandboxRun) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>{%s p.Title %}</h3>
+    {%= fieldview.JSON(p.Result) %}
   </div>
 {% endfunc %}
 

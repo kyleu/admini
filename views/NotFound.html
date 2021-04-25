@@ -1,14 +1,13 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type NotFound struct { layout.Basic } %}
 
-{% func (p *NotFound) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>404 not found</h3>
-      <p>Sorry about that</p>
-    </div>
+{% func (p *NotFound) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>404 not found</h3>
+    <p>Sorry about that</p>
   </div>
 {% endfunc %}
 

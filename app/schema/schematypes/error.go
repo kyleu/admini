@@ -3,7 +3,7 @@ package schematypes
 const KeyError = "error"
 
 type Error struct {
-	Message string `json:"t"`
+	Message string `json:"message"`
 }
 
 var _ Type = (*Error)(nil)

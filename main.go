@@ -1,4 +1,5 @@
 //go:generate qtc -ext .html -dir views
+//go:generate qtc -ext .sql -dir queries
 
 package main
 

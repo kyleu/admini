@@ -1,18 +1,17 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/sandbox" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type SandboxList struct { layout.Basic } %}
 
-{% func (p *SandboxList) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>Sandboxes</h3>
-      <ul>
-        {% for _, s := range sandbox.AllSandboxes %}
-          <li><a href="/sandbox/{%s s.Key %}">{%s s.Title %}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
+{% func (p *SandboxList) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>Sandboxes</h3>
+    <ul>
+      {% for _, s := range sandbox.AllSandboxes %}
+        <li><a href="{%s as.Route(`sandbox.run`, `key`, s.Key) %}">{%s s.Title %}</a></li>
+      {% endfor %}
+    </ul>
   </div>
 {% endfunc %}

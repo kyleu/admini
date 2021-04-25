@@ -1,30 +1,24 @@
 package sandbox
 
 import (
-	"github.com/kyleu/admini/app/schema"
-	"github.com/kyleu/admini/app/util"
+	"github.com/kyleu/admini/app"
 )
 
 type Sandbox struct {
-	Key   string
-	Title string
-	Run   func() (interface{}, error)
+	Key   string                                   `json:"key,omitempty"`
+	Title string                                   `json:"title,omitempty"`
+	Run   func(st *app.State) (interface{}, error) `json:"-"`
 }
 
-var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func() (interface{}, error) {
-	var sch schema.Fields
-	err := util.FromJSON(util.ToJSONBytes(schema.GetExample(), true), &sch)
-	if err != nil {
-		return nil, err
-	}
-	return sch, nil
+var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func(st *app.State) (interface{}, error) {
+	return "TODO", nil
 }}
 
-var sources = &Sandbox{Key: "sources", Title: "Data Sources", Run: func() (interface{}, error) {
-	return schema.GetExample(), nil
+var sources = &Sandbox{Key: "sources", Title: "Data Sources", Run: func(st *app.State) (interface{}, error) {
+	return st.Sources.List()
 }}
 
-var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: func() (interface{}, error) {
+var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: func(st *app.State) (interface{}, error) {
 	return "OK", nil
 }}
 

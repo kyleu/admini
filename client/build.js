@@ -3,6 +3,7 @@ const esbuild = require('esbuild');
 esbuild.build({
   entryPoints: ['src/client.ts'],
   bundle: true,
+  minify: true,
   sourcemap: true,
   outfile: '../assets/client.js',
   watch: process.argv[2] === "watch" ? {

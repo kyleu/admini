@@ -1,13 +1,17 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type Profile struct { layout.Basic } %}
+{% code type Profile struct {
+  layout.Basic
+  Profile interface{}
+} %}
 
-{% func (p *Profile) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>Profile</h3>
-    </div>
+{% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>Profile</h3>
+    {%= fieldview.JSON(p.Profile) %}
   </div>
 {% endfunc %}
 

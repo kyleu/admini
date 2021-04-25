@@ -11,7 +11,8 @@ type FileLoader interface {
 	ListJSON(path string) []string
 	ListExtension(path string, ext string) []string
 	ListDirectories(path string) []string
-	Exists(path string) (bool, bool)
+	Exists(path string) bool
+	IsDir(path string) bool
 	Remove(path string) error
 	RemoveRecursive(pt string) error
 }

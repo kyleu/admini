@@ -4,15 +4,15 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/ctx"
 )
 
 func SitemapXML(w http.ResponseWriter, r *http.Request) {
-	act("sitemap", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
+	act("sitemap", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ret := make([]string, 0)
 		ret = append(ret, `<?xml version="1.0" encoding="UTF-8"?>`, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		for _, rt := range cutil.ExtractRoutes(app.Router) {
+		for _, rt := range cutil.ExtractRoutes(as.Router) {
 			if routeMatches(rt) {
 				url := rt.Path
 				ret = append(ret, `  <url>`, `     <loc>`+url+`</loc>`, `     <changefreq>always</changefreq>`, `  </url>`)

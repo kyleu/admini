@@ -5,3 +5,8 @@
 .right {
   float: right;
 }
+
+.expand, .collapse {
+  float: left;
+  margin-top: 1px;
+}

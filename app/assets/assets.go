@@ -17,7 +17,6 @@ func Asset(base, path string) ([]byte, string, string, error) {
 	file := base + path
 
 	data, err := ioutil.ReadFile(file)
-
 	if err != nil {
 		return nil, "", "", fmt.Errorf("error reading asset at ["+path+"]: %w", err)
 	}

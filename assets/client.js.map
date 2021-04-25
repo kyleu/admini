@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../client/src/util.ts", "../client/src/client.ts"],
-  "sourcesContent": ["export const appKey = \"admini\";\nexport const appName = \"Admini\";\n", "import {appName} from \"./util\";\nimport \"./client.css\"\n\nexport function init(): void {\n  console.log(appName + \"!!!\");\n}\n\ndocument.addEventListener(\"DOMContentLoaded\", init);\n"],
-  "mappings": ";;AACO,MAAM,UAAU;;;ACEhB,kBAAsB;AAC3B,YAAQ,IAAI,UAAU;AAAA;AAGxB,WAAS,iBAAiB,oBAAoB;",
+  "sourcesContent": ["export const appKey = \"admini\";\nexport const appName = \"Admini\";\n", "import {appName} from \"./util\";\nimport \"./client.css\"\n\nfunction scrollInit() {\n  const x = document.querySelectorAll(\".menu-container .final\")\n  for (const n of x) {\n    n.scrollIntoView({block: \"nearest\"});\n  }\n}\n\nexport function init(): void {\n  console.log(appName + \"!!!\");\n  scrollInit()\n}\n\ndocument.addEventListener(\"DOMContentLoaded\", init);\n"],
+  "mappings": "MACO,GAAM,GAAU,SCEvB,YAAsB,CACpB,GAAM,GAAI,SAAS,iBAAiB,0BACpC,OAAW,KAAK,GACd,EAAE,eAAe,CAAC,MAAO,YAItB,YAAsB,CAC3B,QAAQ,IAAI,EAAU,OACtB,IAGF,SAAS,iBAAiB,mBAAoB",
   "names": []
 }

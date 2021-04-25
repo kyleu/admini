@@ -5,8 +5,13 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/kyleu/admini/app/loader"
+	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/source/postgres"
+
+	"github.com/kyleu/admini/app"
+
 	"github.com/kyleu/admini/app/controller"
-	"github.com/kyleu/admini/app/ctx"
 	"github.com/kyleu/admini/app/filesystem"
 	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
@@ -35,8 +40,12 @@ func StartServer(address string, port uint16) error {
 	}
 
 	f := filesystem.NewFileSystem("data")
-	ds := source.NewService("source", f)
+	ls := loader.NewService()
+	ls.Set(schema.OriginPostgres, &postgres.Loader{})
+	ds := source.NewService("source", f, ls)
 
-	controller.SetAppState(&ctx.AppState{Router: r, Files: f, Sources: ds})
+	State := &app.State{Router: r, Files: f, Sources: ds}
+	controller.SetState(State)
+
 	return http.ListenAndServe(fmt.Sprintf("%s:%v", address, port), r)
 }

@@ -24,12 +24,25 @@ func PkgFromString(s string) Pkg {
 func (p Pkg) StringWith(extra ...string) string {
 	return strings.Join(append(p, extra...), "::")
 }
+
 func (p Pkg) String() string {
 	return p.StringWith()
 }
 
 func (p Pkg) ToPath(extra ...string) string {
 	return strings.Join(append(p, extra...), "/")
+}
+
+func (p Pkg) Equals(other Pkg) bool {
+	if len(p) != len(other) {
+		return false
+	}
+	for idx, v := range p {
+		if v != other[idx] {
+			return false
+		}
+	}
+	return true
 }
 
 func (p Pkg) Trim(src Pkg) Pkg {

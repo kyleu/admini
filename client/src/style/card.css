@@ -1,11 +1,8 @@
-.padded {
-  padding: 12px;
-}
-
 .card {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 12px;
+  margin-bottom: 12px;
 }
 
 .card h3 {

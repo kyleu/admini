@@ -1,22 +1,68 @@
 package controller
 
 import (
-	"errors"
-	"log"
+	"fmt"
 	"net/http"
+	"os"
 	"runtime/debug"
+	"strings"
 
+	"github.com/gorilla/sessions"
+	"github.com/kyleu/admini/app/util"
+
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/ctx"
 	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
 	"github.com/kyleu/admini/views/vhelp"
 )
 
-func render(w http.ResponseWriter, p layout.Page, st *ctx.PageState, bc ...string) (string, error) {
-	st.Breadcrumbs = bc
-	views.WriteRender(w, p, st)
+var currentApp *app.State
+
+var initialIcons = []string{"app", "search", "profile"}
+
+var sessionKey = func() string {
+	x := os.Getenv("SESSION_KEY")
+	if x == "" {
+		x = "random_secret_key"
+	}
+	return x
+}()
+
+var store = sessions.NewCookieStore([]byte(sessionKey))
+
+func SetState(a *app.State) {
+	currentApp = a
+}
+
+func render(r *http.Request, w http.ResponseWriter, appState *app.State, page layout.Page, pageState *cutil.PageState, bc ...string) (string, error) {
+	pageState.Breadcrumbs = bc
+	if pageState.Data != nil && isContentTypeJSON(getContentType(r)) {
+		return respondJSON(w, "", pageState.Data)
+	}
+	views.WriteRender(w, page, appState, pageState)
 	return "", nil
+}
+
+func ersp(msg string, args ...interface{}) (string, error) {
+	return "", fmt.Errorf(msg, args...)
+}
+
+func flashAndRedir(success bool, msg string, redir string, w http.ResponseWriter, r *http.Request, ps *cutil.PageState) (string, error) {
+	status := "error"
+	if success {
+		status = "success"
+	}
+	ps.Session.AddFlash(status + ":" + msg)
+	_ = ps.Session.Save(r, w)
+	if strings.HasPrefix(redir, "/") {
+		return redir, nil
+	}
+	if strings.HasPrefix(redir, "http") {
+		util.LogWarn("flash redirect attempted for non-local request")
+		return "/", nil
+	}
+	return redir, nil
 }
 
 func Options(w http.ResponseWriter, r *http.Request) {
@@ -25,27 +71,31 @@ func Options(w http.ResponseWriter, r *http.Request) {
 }
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
+	act("notfound", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		writeCORS(w)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusNotFound)
-		log.Printf("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
-		return render(w, &views.NotFound{}, page, "Not Found")
+		util.LogInfo("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
+		ps.Data = "404 not found"
+		return render(r, w, as, &views.NotFound{}, ps, "Not Found")
 	})
 }
 
 func Modules(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
+	act("modules", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		mods, ok := debug.ReadBuildInfo()
 		if !ok {
-			return "", errors.New("unable to gather modules")
+			return "", fmt.Errorf("unable to gather modules")
 		}
-		return render(w, &vhelp.Modules{Mods: mods.Deps}, page, "modules")
+		ps.Data = mods.Deps
+		return render(r, w, as, &vhelp.Modules{Mods: mods.Deps}, ps, "modules")
 	})
 }
 
 func Routes(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(app *ctx.AppState, page *ctx.PageState) (string, error) {
-		return render(w, &vhelp.Routes{Routes: cutil.ExtractRoutes(app.Router)}, page, "routes")
+	act("routes", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		routes := cutil.ExtractRoutes(as.Router)
+		ps.Data = routes
+		return render(r, w, as, &vhelp.Routes{Routes: routes}, ps, "routes")
 	})
 }

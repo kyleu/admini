@@ -1,68 +1,20 @@
 package schema
 
 import (
-	"encoding/json"
-	"errors"
-	"reflect"
+	"fmt"
+	"sort"
 
 	"github.com/kyleu/admini/app/util"
 )
 
-type ModelType struct {
-	Key    string
-	Title  string
-	Plural string
-}
-
-var ModelTypeEnum = ModelType{Key: "enum", Title: "Enum", Plural: "Enums"}
-var ModelTypeInput = ModelType{Key: "input", Title: "Input", Plural: "Inputs"}
-var ModelTypeStruct = ModelType{Key: "struct", Title: "Struct", Plural: "Structs"}
-var ModelTypeInterface = ModelType{Key: "interface", Title: "Interface", Plural: "Interfaces"}
-var ModelTypeService = ModelType{Key: "service", Title: "Service", Plural: "Services"}
-var ModelTypeUnion = ModelType{Key: "union", Title: "Union", Plural: "Unions"}
-var ModelTypeIntersection = ModelType{Key: "intersection", Title: "Intersection", Plural: "Intersections"}
-
-var AllModelTypes = []ModelType{
-	ModelTypeEnum, ModelTypeInput, ModelTypeStruct,
-	ModelTypeInterface, ModelTypeService, ModelTypeUnion, ModelTypeIntersection,
-}
-
-func modelTypeFromString(s string) ModelType {
-	for _, t := range AllModelTypes {
-		if t.Key == s {
-			return t
-		}
-	}
-	return ModelTypeStruct
-}
-
-func (t *ModelType) String() string {
-	return t.Key
-}
-
-func (t *ModelType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.Key)
-}
-
-func (t *ModelType) UnmarshalJSON(data []byte) error {
-	var s string
-	err := json.Unmarshal(data, &s)
-	if err != nil {
-		return err
-	}
-	*t = modelTypeFromString(s)
-	return nil
-}
-
 type Model struct {
-	Key         string    `json:"key"`
-	Pkg         util.Pkg  `json:"pkg,omitempty"`
-	Type        ModelType `json:"type"`
-	Interfaces  []string  `json:"interfaces,omitempty"`
-	Fields      Fields    `json:"fields,omitempty"`
-	Indexes     Indexes   `json:"indexes,omitempty"`
-	Description string    `json:"description,omitempty"`
-	Metadata    *Metadata `json:"metadata,omitempty"`
+	Key        string    `json:"key"`
+	Pkg        util.Pkg  `json:"pkg,omitempty"`
+	Type       ModelType `json:"type"`
+	Interfaces []string  `json:"interfaces,omitempty"`
+	Fields     Fields    `json:"fields,omitempty"`
+	Indexes    Indexes   `json:"indexes,omitempty"`
+	Metadata   *Metadata `json:"metadata,omitempty"`
 }
 
 func (m *Model) String() string {
@@ -82,31 +34,36 @@ func (m *Model) PropName() string {
 
 func (m *Model) AddField(f *Field) error {
 	if f == nil {
-		return errors.New("nil field")
+		return fmt.Errorf("nil field")
 	}
 	if m.Fields.Get(f.Key) != nil {
-		return errors.New(alreadyExists("field", f.Key))
+		return fmt.Errorf(alreadyExists("field", f.Key))
 	}
 	m.Fields = append(m.Fields, f)
+	m.Fields.Sort()
 	return nil
 }
 
 func (m *Model) AddIndex(i *Index) error {
 	if i == nil {
-		return errors.New("nil index")
+		return fmt.Errorf("nil index")
 	}
 	if m.Fields.Get(i.Key) != nil {
-		return errors.New(alreadyExists("index", i.Key))
+		return fmt.Errorf(alreadyExists("index", i.Key))
 	}
 	m.Indexes = append(m.Indexes, i)
 	return nil
+}
+
+func (m *Model) Path() string {
+	return "/" + m.Pkg.ToPath(m.Key)
 }
 
 type Models []*Model
 
 func (m Models) Get(pkg util.Pkg, key string) *Model {
 	for _, x := range m {
-		if reflect.DeepEqual(x.Pkg, pkg) && x.Key == key {
+		if x.Pkg.Equals(pkg) && x.Key == key {
 			return x
 		}
 	}
@@ -139,4 +96,10 @@ func (m Models) ByType(t ModelType) Models {
 		}
 	}
 	return ret
+}
+
+func (m Models) Sort() {
+	sort.Slice(m, func(l int, r int) bool {
+		return m[l].Key < m[r].Key
+	})
 }

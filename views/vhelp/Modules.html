@@ -1,4 +1,5 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "runtime/debug" %}
 
@@ -7,24 +8,22 @@
   Mods []*debug.Module
 } %}
 
-{% func (p *Modules) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Version</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for _, m := range p.Mods %}
-        <tr>
-          <td><a target="_blank" rel="noopener noreferrer" href="https://{%s m.Path %}">{%s m.Path %}</a></td>
-          <td title="{%s m.Sum %}">{%s m.Version %}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+{% func (p *Modules) Body(as *app.State, ps *cutil.PageState) %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Version</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for _, m := range p.Mods %}
+      <tr>
+        <td><a target="_blank" rel="noopener noreferrer" href="https://{%s m.Path %}">{%s m.Path %}</a></td>
+        <td title="{%s m.Sum %}">{%s m.Version %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endfunc %}
 

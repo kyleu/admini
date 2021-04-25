@@ -29,6 +29,9 @@ func (i Items) GetByPath(path []string) *Item {
 		return nil
 	}
 	ret := i.Get(path[0])
+	if ret == nil {
+		return nil
+	}
 	if len(path) > 1 {
 		return ret.Children.GetByPath(path[1:])
 	}

@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"strings"
+
 	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
@@ -11,24 +13,24 @@ const (
 )
 
 type ValidationMessage struct {
-	Category string
-	ModelKey string
-	Msg      string
-	Level    int
+	Category string `json:"category,omitempty"`
+	ModelKey string `json:"modelKey,omitempty"`
+	Message  string `json:"message,omitempty"`
+	Level    int    `json:"level,omitempty"`
 }
 
 type ValidationResult struct {
-	Schema   string
-	Messages []ValidationMessage
-	Duration int64
+	Schema   string              `json:"schema,omitempty"`
+	Messages []ValidationMessage `json:"messages,omitempty"`
+	Duration int64               `json:"duration,omitempty"`
 }
 
 func (v *ValidationResult) log(category string, modelKey string, msg string, level int) {
-	v.Messages = append(v.Messages, ValidationMessage{Category: category, ModelKey: modelKey, Msg: msg, Level: level})
+	v.Messages = append(v.Messages, ValidationMessage{Category: category, ModelKey: modelKey, Message: msg, Level: level})
 }
 
 func validateSchema(s *Schema) *ValidationResult {
-	r := &ValidationResult{Schema: s.Key}
+	r := &ValidationResult{Schema: "TODO"}
 	for _, m := range s.Models {
 		r = validateModel(r, s, m)
 	}
@@ -61,12 +63,20 @@ func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKe
 		validateType(r, s, mType, mKey, fKey, t.T)
 	case *schematypes.List:
 		validateType(r, s, mType, mKey, fKey, t.T)
+	case *schematypes.Range:
+		validateType(r, s, mType, mKey, fKey, t.T)
 	case *schematypes.Map:
 		validateType(r, s, mType, mKey, fKey, t.K)
 		validateType(r, s, mType, mKey, fKey, t.V)
 	case *schematypes.Reference:
 		if s.Models.Get(t.Pkg, t.T) == nil && s.Scalars.Get(t.Pkg, t.T) == nil {
-			r.log(mType, mKey, "field ["+fKey+"] has reference to unknown type ["+t.Pkg.String()+"::"+t.T+"]", LevelWarn)
+			pkg := strings.Join(t.Pkg, ".")
+			r.log(mType, mKey, "field ["+fKey+"] has reference to unknown type ["+pkg+"::"+t.T+"]", LevelWarn)
+		}
+
+	default:
+		if fKey == "" {
+			r.log(mType, mKey, "field has an empty key", LevelError)
 		}
 	}
 }

@@ -1,13 +1,16 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type Settings struct { layout.Basic } %}
+{% code type Settings struct {
+  layout.Basic
+  Settings interface{}
+} %}
 
-{% func (p *Settings) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>Settings</h3>
-      <p>TODO!</p>
-    </div>
+{% func (p *Settings) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>Settings</h3>
+    {%= fieldview.JSON(p.Settings) %}
   </div>
 {% endfunc %}

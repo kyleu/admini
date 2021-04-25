@@ -1,17 +1,16 @@
-{% import "github.com/kyleu/admini/app/ctx" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Home struct { layout.Basic } %}
 
-{% func (p *Home) Body(st *ctx.PageState) %}
-  <div class="padded">
-    <div class="card">
-      <h3>{%s util.AppName %}</h3>
-      <ul>
-        <li><a href="/sandbox">Sandboxes</a></li>
-        <li><a href="/source">Sources</a></li>
-      </ul>
-    </div>
+{% func (p *Home) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>{%s util.AppName %}</h3>
+    <ul>
+      <li><a href="{%s as.Route(`sandbox.list`) %}">Sandboxes</a></li>
+      <li><a href="{%s as.Route(`source.list`) %}">Sources</a></li>
+    </ul>
   </div>
 {% endfunc %}

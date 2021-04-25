@@ -1,7 +1,11 @@
 .menu-container {
   width: 256px;
   overflow: auto;
+}
+
+.menu-container .menu {
   padding-top: 12px;
+  padding-bottom: 24px;
 }
 
 .menu-container ul {
@@ -10,7 +14,7 @@
   padding: 0;
 }
 
-.menu-container .label-item, .menu-container label {
+.menu-container .item, .menu-container label {
   display: block;
   padding: 4px 0;
   user-select: none;
@@ -35,15 +39,15 @@
   cursor: pointer;
 }
 
-.level-1 .label-item, .level-1 label {
+.level-1 .item, .level-1 label {
   padding-left: 8px;
 }
 
-.level-2 .label-item, .level-2 label {
+.level-2 .item, .level-2 label {
   padding-left: 16px;
 }
 
-.level-3 .label-item, .level-3 label {
+.level-3 .item, .level-3 label {
   padding-left: 24px;
 }
 
@@ -58,7 +62,7 @@
 }
 
 .menu-container input[type=checkbox]:checked + label + ul {
-  max-height: 1000px;
+  max-height: 10000px;
 }
 
 .menu-container input[type=checkbox] + label .expand {
@@ -74,11 +78,8 @@
   display: inline !important;
 }
 
-.menu-container .expand, .menu-container .collapse {
-  float: left;
-}
-
-.menu-container .menu-icon {
+.small-icon, .expand, .collapse {
   height: 15px;
   width: 15px;
 }
+

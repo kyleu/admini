@@ -2,14 +2,12 @@ package schematypes
 
 import (
 	"strings"
-
-	"github.com/kyleu/admini/app/util"
 )
 
 const KeyReference = "reference"
 
 type Reference struct {
-	Pkg util.Pkg `json:"pkg,omitempty"`
+	Pkg []string `json:"pkg,omitempty"`
 	T   string   `json:"t"`
 }
 
@@ -18,5 +16,5 @@ func (t *Reference) Key() string {
 }
 
 func (t *Reference) String() string {
-	return strings.Join(append(t.Pkg, t.T), ".")
+	return "ref:" + strings.Join(append(t.Pkg, t.T), ".")
 }

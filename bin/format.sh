@@ -7,6 +7,6 @@ dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $dir/..
 
 echo "=== formatting ==="
-gofmt -w .
+gofumpt -w .
 echo "=== organizing imports ==="
 goimports -w .

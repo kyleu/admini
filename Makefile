@@ -51,13 +51,13 @@ endif
 .PHONY: build-release
 build-release: goversion compile-templates ## Build all binaries without debug information
 	@bin/asset-embed.sh
-	@env GOOS=${GOOS} GOARCH=${GOARCH} ${MAKE} GOARGS="${GOARGS} -trimpath" BUILD_DIR="${BUILD_DIR}/release" build
+	@env GOOS=${GOOS} GOARCH=${GOARCH} ${MAKE} GOARGS="${GOARGS} -ldflags '-s -w' -trimpath" BUILD_DIR="${BUILD_DIR}/release" build
 	@bin/asset-reset.sh
 
 .PHONY: build-release-ci
 build-release-ci: goversion compile-templates ## Build all binaries without debug information
 	@bin/asset-embed.sh
-	@env GOOS=${GOOS} GOARCH=${GOARCH} ${MAKE} GOARGS="${GOARGS} -trimpath" BUILD_DIR="${BUILD_DIR}/release" build
+	@env GOOS=${GOOS} GOARCH=${GOARCH} ${MAKE} GOARGS="${GOARGS} -ldflags '-s -w' -trimpath" BUILD_DIR="${BUILD_DIR}/release" build
 
 .PHONY: build-debug
 build-debug: goversion compile-templates ## Build all binaries with remote debugging capabilities

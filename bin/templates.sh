@@ -9,11 +9,11 @@ cd $dir/..
 FORCE="${1:-}"
 
 function tmpl {
-  echo "updating [$2] templates"
+  echo "updating [$1] templates"
   if test -f "$ftgt"; then
     mv "$ftgt" "$fsrc"
   fi
-  qtc -ext .html -dir "$2"
+  qtc -ext $2 -dir "$1"
 }
 
 function check {
@@ -22,7 +22,7 @@ function check {
 
   mkdir -p tmp/
 
-  find "./views" -type f | grep \.html$ | xargs md5sum > "$ftgt"
+  find "$1" -type f | grep "\.$2$" | xargs md5sum > "$ftgt"
 
   if cmp -s "$fsrc" "$ftgt"; then
     if [ "$FORCE" = "force" ]; then
@@ -35,4 +35,5 @@ function check {
   fi
 }
 
-check "templates" "views"
+check "queries" "sql"
+check "views" "html"
