@@ -10,11 +10,25 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
+var lineNums *html.Formatter
+var noLineNums *html.Formatter
+
 func Format(v interface{}) (string, error) {
 	s := styles.MonokaiLight
 	l := lexers.Get("json")
-	f := html.New(html.WithClasses(true), html.WithLineNumbers(true), html.LineNumbersInTable(true))
 	j := util.ToJSON(v)
+	var f *html.Formatter
+	if strings.Contains(j, "\n") {
+		if lineNums == nil {
+			lineNums = html.New(html.WithClasses(true), html.WithLineNumbers(true), html.LineNumbersInTable(true))
+		}
+		f = lineNums
+	} else {
+		if noLineNums == nil {
+			noLineNums = html.New(html.WithClasses(true))
+		}
+		f = noLineNums
+	}
 	i, err := l.Tokenise(nil, j)
 	if err != nil {
 		return "", fmt.Errorf("can't tokenize: %w", err)
@@ -25,5 +39,9 @@ func Format(v interface{}) (string, error) {
 		return "", fmt.Errorf("can't format: %w", err)
 	}
 
-	return x.String(), nil
+	ret := x.String()
+	ret = strings.ReplaceAll(ret, "\n</span>", "<br></span>")
+	ret = strings.ReplaceAll(ret, "</span>\n", "</span><br>")
+	ret = strings.ReplaceAll(ret, "\n", "")
+	return ret, nil
 }

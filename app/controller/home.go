@@ -11,6 +11,7 @@ import (
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	act("home", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		return render(r, w, as, &views.Home{}, ps)
+		sources, _ := as.Sources.List()
+		return render(r, w, as, &views.Home{Sources: sources}, ps)
 	})
 }

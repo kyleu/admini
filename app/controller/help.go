@@ -3,6 +3,8 @@ package controller
 import (
 	"net/http"
 
+	"github.com/kyleu/admini/app/util"
+
 	"github.com/kyleu/admini/app/controller/cutil"
 
 	"github.com/kyleu/admini/app"
@@ -11,7 +13,7 @@ import (
 
 func Feedback(w http.ResponseWriter, r *http.Request) {
 	act("feedback", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		ps.Data = "to submit feedback, email TODO@TODO.com"
+		ps.Data = "to submit feedback, email " + util.AppContact
 		return render(r, w, as, &vhelp.Feedback{}, ps, "feedback")
 	})
 }

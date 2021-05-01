@@ -20,7 +20,7 @@ func act(key string, w http.ResponseWriter, r *http.Request, f func(as *app.Stat
 	ps.SearchPath = currentApp.Route("search")
 	ps.ProfilePath = currentApp.Route("profile")
 	ps.Menu = menu.For(currentApp)
-	actComplete(key, ps, r.URL.Path, w, func() (string, error) { return f(currentApp, ps) })
+	actComplete(key, ps, w, func() (string, error) { return f(currentApp, ps) })
 }
 
 func actPrepare(r *http.Request, w http.ResponseWriter) *cutil.PageState {
@@ -48,10 +48,10 @@ func actPrepare(r *http.Request, w http.ResponseWriter) *cutil.PageState {
 		}
 	}
 
-	return &cutil.PageState{Flashes: flashes, Session: session, Icons: initialIcons}
+	return &cutil.PageState{URL: r.URL, Flashes: flashes, Session: session, Icons: initialIcons}
 }
 
-func actComplete(key string, p *cutil.PageState, path string, w http.ResponseWriter, f func() (string, error)) {
+func actComplete(key string, ps *cutil.PageState, w http.ResponseWriter, f func() (string, error)) {
 	startNanos := time.Now().UnixNano()
 	writeCORS(w)
 	redir, err := f()
@@ -65,5 +65,5 @@ func actComplete(key string, p *cutil.PageState, path string, w http.ResponseWri
 		w.WriteHeader(http.StatusFound)
 	}
 	elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
-	util.LogInfo("processed [%v] in [%.3fms]", path, elapsedMillis)
+	util.LogInfo("processed [%v] in [%.3fms]", ps.URL.Path, elapsedMillis)
 }

@@ -3,28 +3,38 @@ package cutil
 import (
 	"github.com/gorilla/sessions"
 	"github.com/kyleu/admini/app/menu"
+	"github.com/kyleu/admini/app/util"
+	"net/url"
 )
 
 type PageState struct {
-	Menu        menu.Items        `json:"menu,omitempty"`
-	Breadcrumbs []string          `json:"breadcrumbs,omitempty"`
-	Flashes     []string          `json:"flashes,omitempty"`
-	Session     *sessions.Session `json:"-"`
-	Icons       []string          `json:"-"`
-	RootPath    string            `json:"-"`
-	RootTitle   string            `json:"-"`
-	SearchPath  string            `json:"-"`
-	ProfilePath string            `json:"-"`
-	Data        interface{}       `json:"-"`
+	Title       string
+	Description string
+	URL         *url.URL
+	Menu        menu.Items
+	Breadcrumbs []string
+	Flashes     []string
+	Session     *sessions.Session
+	Icons       []string
+	RootPath    string
+	RootTitle   string
+	SearchPath  string
+	ProfilePath string
+	Data        interface{}
 }
 
-func (p *PageState) AddIcon(icons ...string) {
-	for _, test := range icons {
-		for _, icon := range p.Icons {
-			if icon == test {
-				break
-			}
+func (p *PageState) AddIcon(n string) {
+	for _, icon := range p.Icons {
+		if icon == n {
+			return
 		}
-		p.Icons = append(p.Icons, test)
 	}
+	p.Icons = append(p.Icons, n)
+}
+
+func (p *PageState) TitleString() string {
+	if p.Title == "" {
+		return util.AppName
+	}
+	return p.Title + " - " + util.AppName
 }

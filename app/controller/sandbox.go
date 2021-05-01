@@ -31,6 +31,9 @@ func SandboxRun(w http.ResponseWriter, r *http.Request) {
 			return "", err
 		}
 		ps.Data = ret
+		if sb.Key == "testbed" {
+			return render(r, w, as, &vsandbox.SandboxTestbed{}, ps, "sandbox", sb.Key)
+		}
 		return render(r, w, as, &vsandbox.SandboxRun{Key: key, Title: sb.Title, Result: ret}, ps, "sandbox", sb.Key)
 	})
 }
