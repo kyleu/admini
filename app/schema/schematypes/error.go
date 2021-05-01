@@ -20,6 +20,6 @@ func (t *Error) Sortable() bool {
 	return false
 }
 
-func NewError() *Wrapped {
-	return Wrap(&Error{})
+func NewError(msg string) *Wrapped {
+	return Wrap(&Error{Message: msg})
 }

@@ -22,6 +22,17 @@ type Result struct {
 	Timing *Timing         `json:"timing,omitempty"`
 }
 
+func NewResult(title string, count int, q string, fields schema.Fields, data [][]interface{}, timing *Timing) *Result {
+	return &Result{
+		Title:  title,
+		Count:  count,
+		Query:  q,
+		Fields: fields,
+		Data:   data,
+		Timing: timing,
+	}
+}
+
 func (r *Result) Size() int {
 	return len(r.Data)
 }

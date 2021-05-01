@@ -25,17 +25,16 @@ func (l *Loader) List(source string, cfg []byte, model *schema.Model, params uti
 		return nil, fmt.Errorf("error listing models for [%v]: %w", model.Key, err)
 	}
 
-	timing := &result.Timing{}
-	ret, err := NewResult(model.Key, q, timing, rows)
-	if err != nil {
-		return nil, fmt.Errorf("error constructing result for [%v]: %w", model.Key, err)
-	}
-
 	count, err := l.Count(source, cfg, model)
 	if err != nil {
 		return nil, fmt.Errorf("error constructing result for [%v]: %w", model.Key, err)
 	}
-	ret.Count = count
+
+	timing := &result.Timing{}
+	ret, err := ParseResultFields(model.Key, count, q, timing, model.Fields, rows)
+	if err != nil {
+		return nil, fmt.Errorf("error constructing result for [%v]: %w", model.Key, err)
+	}
 
 	return ret, nil
 }

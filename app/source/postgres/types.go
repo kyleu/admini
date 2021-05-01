@@ -11,36 +11,17 @@ func TypeForName(t string) *schematypes.Wrapped {
 	if strings.HasPrefix(t, "_") {
 		return schematypes.NewList(TypeForName(t[1:]))
 	}
-	return simpleType(strings.ToLower(t))
+	return typeFor(t, nil)
 }
 
-func typeFor(cr *columnResult) *schematypes.Wrapped {
-	ret := simpleType(cr.DataType)
-	if err := enhance(cr, ret); err != nil {
-		return schematypes.NewUnknown("ERROR: " + err.Error())
+func typeFor(t string, cr *columnResult) *schematypes.Wrapped {
+	if strings.HasPrefix(t, "_") || t == "ARRAY" {
+		return schematypes.NewList(typeFor(t[1:], cr))
 	}
-
-	return ret
-}
-
-func enhance(cr *columnResult, ret *schematypes.Wrapped) error {
-	switch t := ret.T.(type) {
-	case *schematypes.String:
-		t.MaxLength = int(cr.CharLength.Int32)
-	case *schematypes.List:
-		if t.T == nil && cr.ArrayType.Valid {
-			t.T = simpleType(cr.ArrayType.String)
-		}
-	}
-	return nil
-}
-
-func simpleType(t string) *schematypes.Wrapped {
-	switch t {
+	println(t)
+	switch strings.ToLower(t) {
 	case "aclitem":
 		// return schematypes.NewACL()
-	case "array", "ARRAY":
-		return schematypes.NewList(nil)
 	case "bit":
 		return schematypes.NewBit()
 	case "varbit", "bit varying":
@@ -50,13 +31,13 @@ func simpleType(t string) *schematypes.Wrapped {
 	case "box":
 		// return schematypes.NewBox()
 	case "bpchar":
-		// return schematypes.NewBpchar()
+		return stringFor(cr)
 	case "bytea":
 		return schematypes.NewList(schematypes.NewByte())
 	case "char", "character":
 		return schematypes.NewChar()
 	case "character varying", "varchar":
-		return schematypes.NewString()
+		return stringFor(cr)
 	case "cid":
 		// return schematypes.NewCID()
 	case "cidr":
@@ -66,27 +47,27 @@ func simpleType(t string) *schematypes.Wrapped {
 	case "date":
 		return schematypes.NewDate()
 	case "daterange":
-		return schematypes.NewList(schematypes.NewDate())
+		return schematypes.NewRange(schematypes.NewDate())
 	case "float4", "real", "float":
-		return schematypes.NewFloat()
+		return schematypes.NewFloat(32)
 	case "float8", "double precision", "double":
-		return schematypes.NewFloat()
+		return schematypes.NewFloat(64)
 	case "hstore":
 		return schematypes.NewMap(schematypes.NewString(), schematypes.NewString())
 	case "inet":
 		// return schematypes.NewInet()
-	case "int1", "tinyint":
-		return schematypes.NewInt()
 	case "int2", "smallint":
-		return schematypes.NewInt()
+		return schematypes.NewInt(16)
+	case "int2range":
+		return schematypes.NewRange(schematypes.NewInt(16))
 	case "int4", "integer", "int", "mediumint":
-		return schematypes.NewInt()
+		return schematypes.NewInt(32)
 	case "int4range":
-		return schematypes.NewList(schematypes.NewInt())
+		return schematypes.NewRange(schematypes.NewInt(32))
 	case "int8", "bigint":
-		return schematypes.NewInt()
+		return schematypes.NewInt(64)
 	case "int8range":
-		return schematypes.NewList(schematypes.NewInt())
+		return schematypes.NewRange(schematypes.NewInt(64))
 	case "interval":
 		// return schematypes.NewInterval()
 	case "json":
@@ -102,13 +83,13 @@ func simpleType(t string) *schematypes.Wrapped {
 	case "money":
 		// return schematypes.NewMoney()
 	case "name":
-		return schematypes.NewString()
+		return stringFor(cr)
 	case "numeric", "decimal":
 		// return schematypes.NewNumeric()
 	case "numrange":
-		return schematypes.NewList(schematypes.NewFloat())
+		return schematypes.NewRange(schematypes.NewFloat(64))
 	case "oid":
-		// return schematypes.NewOID()
+		return schematypes.NewInt(32)
 	case "path":
 		// return schematypes.NewPath()
 	case "point":
@@ -118,7 +99,7 @@ func simpleType(t string) *schematypes.Wrapped {
 	case "record":
 		// return schematypes.NewRecord()
 	case "text":
-		return schematypes.NewString()
+		return stringFor(cr)
 	case "tid":
 		// return schematypes.NewTID()
 	case "time", "time without time zone":
@@ -150,4 +131,12 @@ func simpleType(t string) *schematypes.Wrapped {
 	}
 	util.LogWarn("unhandled type: " + t)
 	return schematypes.NewUnknown(t)
+}
+
+func stringFor(cr *columnResult) *schematypes.Wrapped {
+	max := 0
+	if cr != nil && cr.CharLength.Valid {
+		max = int(cr.CharLength.Int32)
+	}
+	return schematypes.NewStringArgs(0, max, "")
 }

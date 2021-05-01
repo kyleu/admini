@@ -22,6 +22,8 @@ var mockData = map[string]*mockObj{
 				},
 			},
 		},
-		Data: map[string]*result.Result{},
+		Data: map[string]*result.Result{
+			"a1x1": result.NewResult("mock", 0, "mock", nil, nil, nil),
+		},
 	},
 }

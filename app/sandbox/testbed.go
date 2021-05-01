@@ -17,7 +17,7 @@ var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: onTestbed}
 
 func onTestbed(st *app.State) (interface{}, error) {
 	ret := map[string]interface{}{}
-	sourceKey := "reporting"
+	sourceKey := "admini_test"
 	source, err := st.Sources.Load(sourceKey)
 	if err != nil {
 		return nil, fmt.Errorf("can't load source: %w", err)
@@ -40,7 +40,7 @@ func onTestbed(st *app.State) (interface{}, error) {
 			return fmt.Errorf("can't query %v: %w", key, err)
 		}
 		var res *result.Result
-		res, err = lpostgres.NewResult(key, q, nil, rows)
+		res, err = lpostgres.ParseResult(key, 0, q, nil, rows)
 		if err != nil {
 			return fmt.Errorf("can't parse result for %v: %w", key, err)
 		}

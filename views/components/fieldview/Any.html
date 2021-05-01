@@ -1,3 +1,4 @@
+{% import "fmt" %}
 {% import "github.com/kyleu/admini/app/schema/schematypes" %}
 
 {% func Any(x interface{}, t schematypes.Type) %}{% stripspace %}
@@ -13,4 +14,7 @@
   {% endif %}
 {% endstripspace %}{% endfunc %}
 
-{% func Default(x interface{}, t string) %}<div title="unhandled type:{% space %}{%s t %}">{%v x %}</div>{% endfunc %}
+{% func Default(x interface{}, t string) %}{% stripspace %}
+  {% code msg := fmt.Sprintf("unhandled type: %v (%T)", t, x) %}
+  <div title="{%s msg %}">{%v x %}</div>
+{% endstripspace %}{% endfunc %}

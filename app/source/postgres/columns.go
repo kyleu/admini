@@ -45,7 +45,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool) *schema.Field {
 	}
 	return &schema.Field{
 		Key:      cr.Name,
-		Type:     typeFor(cr),
+		Type:     typeFor(cr.UDTName, cr),
 		Default:  d,
 		Nullable: cr.Nullable == pgYes,
 		ReadOnly: readOnlyOverride || (cr.Updatable == pgNo),

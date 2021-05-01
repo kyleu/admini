@@ -2,7 +2,9 @@ package schematypes
 
 const KeyInt = "int"
 
-type Int struct{}
+type Int struct {
+	BitSize int
+}
 
 var _ Type = (*Int)(nil)
 
@@ -18,6 +20,6 @@ func (t *Int) Sortable() bool {
 	return true
 }
 
-func NewInt() *Wrapped {
-	return Wrap(&Int{})
+func NewInt(bitSize int) *Wrapped {
+	return Wrap(&Int{BitSize: bitSize})
 }
