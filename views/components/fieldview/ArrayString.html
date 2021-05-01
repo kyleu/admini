@@ -1,0 +1,5 @@
+{% func ArrayString(v []string) %}{% stripspace %}
+  {% for idx , x := range v %}
+    {%s x %}{% if len(v) < idx %},{% space %}{% endif %}
+  {% endfor %}
+{% endstripspace %}{% endfunc %}

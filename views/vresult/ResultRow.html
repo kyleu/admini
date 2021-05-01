@@ -1,0 +1,21 @@
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/schema" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func ResultRow(idx int, row []interface{}, fields schema.Fields, indent int, showNum bool, params *util.Params, ps *cutil.PageState) %}{% stripspace %}
+  {%= vutil.Indent(true, indent) %}
+  <tr>
+    {% if showNum %}
+      {%= vutil.Indent(true, indent + 1) %}
+      <th><em>{%d idx + 1 %}</em></th>
+    {% endif %}
+    {% for fIdx, f := range fields %}
+      {%code col := row[fIdx] %}
+      {%= vutil.Indent(true, indent + 1) %}
+      <td>{%= fieldview.Any(col, f.Type) %}</td>
+    {% endfor %}
+    {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}

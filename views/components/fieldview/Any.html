@@ -1,0 +1,16 @@
+{% import "github.com/kyleu/admini/app/schema/schematypes" %}
+
+{% func Any(x interface{}, t schematypes.Type) %}{% stripspace %}
+  {% code k := t.Key() %}
+  {% if x == nil %}
+    &lt;nil&gt;
+  {% elseif k == "string" %}
+    {%= String(x.(string)) %}
+  {% elseif k == "bool" %}
+    {%= Boolean(x.(bool)) %}
+  {% else %}
+    {%= Default(x, t.String()) %}
+  {% endif %}
+{% endstripspace %}{% endfunc %}
+
+{% func Default(x interface{}, t string) %}<div title="unhandled type:{% space %}{%s t %}">{%v x %}</div>{% endfunc %}

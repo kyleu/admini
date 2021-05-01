@@ -1,20 +1,30 @@
+{% import "fmt" %}
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% func Render(page layout.Page, as *app.State, ps *cutil.PageState) %}<!DOCTYPE html>
+{% func Render(page layout.Page, as *app.State, ps *cutil.PageState) %}{%code
+	defer func() {
+		x := recover()
+		if x != nil {
+			util.LogError(fmt.Sprintf("Error processing template: %T: %+v", x, x))
+      panic(x)
+		}
+	}()
+%}<!DOCTYPE html>
 <html lang="en">
+<!-- {%s cutil.PageComment %} -->
 <head>{%= page.Head(ps) %}</head>
-<body class="theme-light">
+<body>
 {%= page.Nav(ps) %}
 <div id="container-body">{%= page.Menu(ps) %}<main id="content">{% if len(ps.Flashes) > 0 %}{%= renderFlashes(ps.Flashes) %}{% endif %}{%= page.Body(as, ps) %}</main>
 </div>
 {% if len(ps.Icons) > 0 %}<div class="icon-list" style="display: none;">{% for _, icon := range ps.Icons %}
   {%= components.SVG(icon) %}{% endfor %}
 </div>
-{% endif %}<noscript>{%s util.AppName %} attempts to work without JavaScript. Good luck!</noscript>
+{% endif %}<noscript>{%s cutil.NoScript %}</noscript>
 </body>
 </html>
 {% endfunc %}
@@ -26,7 +36,7 @@
         {% code level, msg := util.SplitString(f, ':', true) %}
         <div>
           <input type="radio" style="display:none;" id="hide-flash-{%d idx %}">
-          <label for="hide-flash-{%d idx %}"><span>X</span></label>
+          <label for="hide-flash-{%d idx %}"><span>&times;</span></label>
           <div class="card flash-{%s level %}">
             {%s msg %}
           </div>

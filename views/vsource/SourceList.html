@@ -1,20 +1,32 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
 
 {% code type SourceList struct {
   layout.Basic
   Sources source.Sources
 } %}
 
-{% func (p *SourceList) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *SourceList) Body(as *app.State, ps *cutil.PageState) %}{% stripspace %}
+  {%= vutil.Indent(true, 1) %}
   <div class="card">
+    {%= vutil.Indent(true, 2) %}
     <h3>Sources</h3>
+    {%= vutil.Indent(true, 2) %}
     <ul>
-      {% for _, d := range p.Sources %}
-        <li><a href="{%s as.Route(`source.detail`, `key`, d.Key) %}">{%s d.Title %}</a></li>
+      {% for _, s := range p.Sources %}
+        {%= vutil.Indent(true, 3) %}
+        <li>
+          <a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%= components.SVGRef(s.Type.Icon, 0, 0, `inline-icon`, ``, ps) %}</a>
+          <a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Title %}</a>
+          <div class="clear"></div>
+        </li>
       {% endfor %}
+    {%= vutil.Indent(true, 2) %}
     </ul>
+  {%= vutil.Indent(true, 1) %}
   </div>
-{% endfunc %}
+{% endstripspace %}{% endfunc %}

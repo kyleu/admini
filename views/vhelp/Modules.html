@@ -1,5 +1,6 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "runtime/debug" %}
 
@@ -19,8 +20,8 @@
     <tbody>
       {% for _, m := range p.Mods %}
       <tr>
-        <td><a target="_blank" rel="noopener noreferrer" href="https://{%s m.Path %}">{%s m.Path %}</a></td>
-        <td title="{%s m.Sum %}">{%s m.Version %}</td>
+        <td><a target="_blank" rel="noopener noreferrer" href="https://{%s m.Path %}">{%= fieldview.String(m.Path) %}</a></td>
+        <td title="{%s m.Sum %}">{%= fieldview.String(m.Version) %}</td>
       </tr>
       {% endfor %}
     </tbody>

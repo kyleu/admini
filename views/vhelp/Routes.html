@@ -1,5 +1,6 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "strings" %}
 
@@ -23,11 +24,9 @@
         {% elseif len(r.Methods) == 0 %}<tr>
           <th scope="row" colspan="3"><div class="mt">{%s strings.TrimPrefix(r.Path, "/") %}</div></th>
         </tr>{% else %}<tr>
-          <td>{%s r.Name %}</td>
-          <td>{%s r.Methods %}</td>
-          <td>
-            {% if strings.Contains(r.Methods, "GET") && !strings.Contains(r.Path, "{") %}<a href="{%s r.Path %}">{%s r.Path %}</a>{% else %}{%s r.Path %}{% endif %}
-          </td>
+          <td>{%= fieldview.String(r.Name) %}</td>
+          <td>{%= fieldview.String(r.Methods) %}</td>
+          <td>{% if strings.Contains(r.Methods, "GET") && !strings.Contains(r.Path, "{") %}<a href="{%s r.Path %}">{%= fieldview.String(r.Path) %}</a>{% else %}{%= fieldview.String(r.Path) %}{% endif %}</td>
         </tr>{% endif %}{% endfor %}
     </tbody>
   </table>

@@ -1,0 +1,5 @@
+{% import "github.com/kyleu/admini/app/schema/schematypes" %}
+
+{% func Type(v schematypes.Type) %}{% stripspace %}
+  {%s v.String() %}
+{% endstripspace %}{% endfunc %}

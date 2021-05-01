@@ -1,5 +1,6 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Feedback struct { layout.Basic } %}
@@ -7,6 +8,6 @@
 {% func (p *Feedback) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>Feedback</h3>
-    <p>TODO!</p>
+    <p>For now, email <a href="mailto:{%s util.AppContact %}">{%s util.AppContact %}</a></p>
   </div>
 {% endfunc %}

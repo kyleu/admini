@@ -6,13 +6,41 @@
 
 {% code type PackageDetail struct {
   layout.Basic
+  Source string
   Pkg *schema.ModelPackage
 } %}
 
 {% func (p *PackageDetail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%s p.Pkg.Key %}</h3>
-    {%= fieldview.JSON(p.Pkg) %}
+    {% if len(p.Pkg.Pkg) > 0 %}{%= PackageNav(as, p.Source, p.Pkg.Pkg) %}{% endif %}
+    {% if len(p.Pkg.ChildPackages) > 0 %}
+    <h4>Packages</h4>
+    <ul>
+      {% for _, cp := range p.Pkg.ChildPackages %}<li><a href="{%= WorkspaceLink(as, p.Source, cp.Path()...) %}">{%s cp.Key %}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% if len(p.Pkg.ChildModels) > 0 %}
+    <h4>Models</h4>
+    <ul>
+      {% for _, cm := range p.Pkg.ChildModels %}<li><a href="{%= WorkspaceLink(as, p.Source, cm.Path()...) %}">{%s cm.Key %}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <a href="#modal-json"><button type="button">JSON</button></a>
+
+    <div id="modal-json" class="modal" style="display: none;">
+      <a class="backdrop" href="#"></a>
+      <div class="modal-content">
+        <div class="modal-header">
+          <a href="#" class="modal-close">&times;</a>
+          <h2>Package definition</h2>
+        </div>
+        <div class="modal-body">
+          {%= fieldview.JSON(p.Pkg) %}
+        </div>
+      </div>
+    </div>
   </div>
 {% endfunc %}
-

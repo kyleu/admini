@@ -1,0 +1,14 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "strings" %}
+
+{% func WorkspaceLink(as *app.State, source string, paths ...string) %}{% stripspace %}
+  {%s as.Route("workspace", "key", source) %}{% if len(paths) > 0 %}/{%s strings.Join(paths, "/") %}{% endif %}
+{% endstripspace %}{% endfunc %}
+
+{% func PackageNav(as *app.State, source string, pkg util.Pkg) %}{% stripspace %}
+  {% for idx, x := range pkg %}
+    <a href="{%= WorkspaceLink(as, source, pkg[:idx + 1]...) %}">{%s x %}</a>
+    {% if idx < len(pkg) - 1 %}{% space %}/{% space %}{% endif %}
+  {% endfor %}
+{% endstripspace %}{% endfunc %}

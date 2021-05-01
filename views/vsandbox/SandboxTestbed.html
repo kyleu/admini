@@ -1,0 +1,48 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vresult" %}
+{% import "github.com/kyleu/admini/queries" %}
+
+{% code type SandboxTestbed struct { layout.Basic } %}
+
+{% func (p *SandboxTestbed) Body(as *app.State, ps *cutil.PageState) %}
+  {% code data := ps.Data.(map[string]interface{}) %}
+  <div class="card">
+    <h3>Testbed!</h3>
+    <div><a href="#modal-x">Open modal</a></div>
+  </div>
+  <div id="modal-x" class="modal" style="display: none;">
+    <a class="backdrop" href="#"></a>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="modal-close">&times;</a>
+        <h2>Modal</h2>
+      </div>
+      <div class="modal-body">
+        Here's a modal body!
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>GetTables</h3>
+    <h4>SQL</h4>
+    <pre>{%s queries.ListTables("") %}</pre>
+    <h4>Results</h4>
+    {%= vresult.ResultView(data["tables"].(*result.Result), 3, nil, ps) %}
+  </div>
+  <div class="card">
+    <h3>GetColumns</h3>
+    <h4>SQL</h4>
+    <pre>{%s queries.ListColumns("") %}</pre>
+    <h4>Results</h4>
+    {%= vresult.ResultView(data["columns"].(*result.Result), 3, nil, ps) %}
+  </div>
+  <div class="card">
+    <h3>GetIndexes</h3>
+    <pre>{%s queries.ListIndexes("") %}</pre>
+    <h4>Results</h4>
+    {%= vresult.ResultView(data["indexes"].(*result.Result), 3, nil, ps) %}
+  </div>
+{% endfunc %}

@@ -1,19 +1,97 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/result" %}
 {% import "github.com/kyleu/admini/app/schema" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vresult" %}
 
 {% code type ModelList struct {
   layout.Basic
+  Source string
   Model *schema.Model
+  ParamSet util.ParamSet
+  Result *result.Result
 } %}
 
 {% func (p *ModelList) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
+    {% if len(p.Model.Pkg) > 0 %}<div class="right">{%= PackageNav(as, p.Source, p.Model.Pkg) %}</div>{% endif %}
     <h3>{%s p.Model.Key %}</h3>
     <em>{%s p.Model.Type.String() %}</em>
-    {%= fieldview.JSON(p.Model) %}
+
+    <a href="#modal-model"><button type="button">Model</button></a>
+
+    <div id="modal-model" class="modal" style="display: none;">
+      <a class="backdrop" href="#"></a>
+      <div class="modal-content">
+        <div class="modal-header">
+          <a href="#" class="modal-close">&times;</a>
+          <h2>Model</h2>
+        </div>
+        <div class="modal-body">
+          {%= fieldview.JSON(p.Model) %}
+        </div>
+      </div>
+    </div>
+
+    <a href="#modal-json"><button type="button">Result</button></a>
+
+    <div id="modal-json" class="modal" style="display: none;">
+      <a class="backdrop" href="#"></a>
+      <div class="modal-content">
+        <div class="modal-header">
+          <a href="#" class="modal-close">&times;</a>
+          <h2>Result</h2>
+        </div>
+        <div class="modal-body">
+          {%= fieldview.JSON(p.Result) %}
+        </div>
+      </div>
+    </div>
   </div>
+  {%= vresult.ResultView(p.Result, 2, p.ParamSet.Get(p.Model.Key, p.Model.Fields.Names()), ps) %}
+  {% if len(p.Model.Fields) > 0 %}<div class="card">
+    <h3>Fields</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for _, f := range p.Model.Fields %}<tr>
+          <td>{%= fieldview.String(f.Key) %}</td>
+          <td>{%= fieldview.Type(f.Type) %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>{% endif %}
+  {% if len(p.Model.Indexes) > 0 %}<div class="card">
+    <h3>Indexes</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Fields</th>
+          <th title="Unique constraint">Uniq</th>
+          <th title="Primary key">PK</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for _, i := range p.Model.Indexes %}<tr>
+          <td>{%= fieldview.String(i.Key) %}</td>
+          <td>{%= fieldview.ArrayString(i.Fields) %}</td>
+          <td>{%= fieldview.Boolean(i.Unique) %}</td>
+          <td>{%= fieldview.Boolean(i.Primary) %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
 {% endfunc %}
 
