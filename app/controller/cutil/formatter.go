@@ -10,8 +10,10 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
-var lineNums *html.Formatter
-var noLineNums *html.Formatter
+var (
+	lineNums   *html.Formatter
+	noLineNums *html.Formatter
+)
 
 func Format(v interface{}) (string, error) {
 	s := styles.MonokaiLight

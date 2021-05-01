@@ -45,7 +45,6 @@ func markup(key string, bytes []byte) string {
 	return replaced
 }
 
-
 func loadSVGs(src string) ([]*SVG, error) {
 	files, err := ioutil.ReadDir(src)
 	if err != nil {
@@ -75,7 +74,7 @@ func loadSVGs(src string) ([]*SVG, error) {
 
 func template(src string, svgs []*SVG) string {
 	out := strings.Builder{}
-	var w = func(s string) {
+	w := func(s string) {
 		out.WriteString(s)
 		out.WriteString("\n")
 	}

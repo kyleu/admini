@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// A map with arbitrary string keys associated to a string array containing all allowed columns
+// AllowedColumns A map with arbitrary string keys associated to a string array containing all allowed columns
 var AllowedColumns = map[string][]string{}
 
 // Details of a specific set of ordering parameters, with limit and offset
@@ -92,7 +92,7 @@ func (p *Params) GetOrdering(col string) *Ordering {
 
 // converts this Params into a SQL order by clause
 func (p *Params) OrderByString() string {
-	var ret = make([]string, 0, len(p.Orderings))
+	ret := make([]string, 0, len(p.Orderings))
 
 	for _, o := range p.Orderings {
 		dir := ""
@@ -107,7 +107,6 @@ func (p *Params) OrderByString() string {
 
 // Filters this Params, limiting columns to those matching the AllowedColumns
 func (p *Params) Filtered(available []string) *Params {
-
 	if available == nil {
 		available = AllowedColumns[p.Key]
 	}
@@ -166,7 +165,7 @@ func (p *Params) ToQueryString(u *url.URL) string {
 		return ""
 	}
 
-	var ret = u.Query()
+	ret := u.Query()
 
 	delete(ret, p.Key+".o")
 	delete(ret, p.Key+".l")

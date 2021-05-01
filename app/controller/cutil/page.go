@@ -1,10 +1,11 @@
 package cutil
 
 import (
+	"net/url"
+
 	"github.com/gorilla/sessions"
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/util"
-	"net/url"
 )
 
 type PageState struct {

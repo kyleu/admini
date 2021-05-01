@@ -8,12 +8,12 @@ type Error struct {
 
 var _ Type = (*Error)(nil)
 
-func (e *Error) Key() string {
+func (t *Error) Key() string {
 	return KeyError
 }
 
-func (e *Error) String() string {
-	return "error(" + e.Message + ")"
+func (t *Error) String() string {
+	return "error(" + t.Message + ")"
 }
 
 func (t *Error) Sortable() bool {

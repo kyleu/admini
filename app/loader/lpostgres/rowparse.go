@@ -51,7 +51,7 @@ func parseRows(rows *sqlx.Rows) (schema.Fields, [][]interface{}, error) {
 
 func fieldFor(ct *sql.ColumnType) (*schema.Field, error) {
 	return &schema.Field{
-		Key:     ct.Name(),
-		Type:    postgres.TypeForName(ct.DatabaseTypeName()),
+		Key:  ct.Name(),
+		Type: postgres.TypeForName(ct.DatabaseTypeName()),
 	}, nil
 }

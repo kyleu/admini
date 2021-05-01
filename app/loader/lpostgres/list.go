@@ -2,13 +2,16 @@ package lpostgres
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/util"
 	"strings"
+
+	"github.com/kyleu/admini/app/util"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/result"
 	"github.com/kyleu/admini/app/schema"
 )
+
+var publicSchema = "public"
 
 func (l *Loader) List(source string, cfg []byte, model *schema.Model, params util.ParamSet) (*result.Result, error) {
 	db, err := l.openDatabase(source, cfg)
@@ -44,7 +47,7 @@ func (l *Loader) Count(source string, cfg []byte, model *schema.Model) (int, err
 	}
 
 	q := modelCountQuery(model)
-	c := struct{
+	c := struct {
 		C int `db:"c"`
 	}{}
 	err = db.Get(&c, q, nil)
@@ -57,13 +60,13 @@ func (l *Loader) Count(source string, cfg []byte, model *schema.Model) (int, err
 func modelListQuery(m *schema.Model, params *util.Params) string {
 	cols := make([]string, 0, len(m.Fields))
 	for _, f := range m.Fields {
-		def := "\""+f.Key+"\""
+		def := "\"" + f.Key + "\""
 		cols = append(cols, def)
 	}
-	tbl := "\""+m.Key+"\""
-	if len(m.Pkg) > 0{
+	tbl := "\"" + m.Key + "\""
+	if len(m.Pkg) > 0 {
 		l := m.Pkg.Last()
-		if l != "public" {
+		if l != publicSchema {
 			tbl = "\"" + l + "\"." + tbl
 		}
 	}
@@ -72,10 +75,10 @@ func modelListQuery(m *schema.Model, params *util.Params) string {
 }
 
 func modelCountQuery(m *schema.Model) string {
-	tbl := "\""+m.Key+"\""
-	if len(m.Pkg) > 0{
+	tbl := "\"" + m.Key + "\""
+	if len(m.Pkg) > 0 {
 		l := m.Pkg.Last()
-		if l != "public" {
+		if l != publicSchema {
 			tbl = "\"" + l + "\"." + tbl
 		}
 	}

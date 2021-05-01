@@ -2,6 +2,10 @@ package sandbox
 
 import (
 	"fmt"
+
+	"github.com/jmoiron/sqlx"
+	"github.com/kyleu/admini/app/result"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/loader/lpostgres"
@@ -24,14 +28,19 @@ func onTestbed(st *app.State) (interface{}, error) {
 		return nil, fmt.Errorf("can't get connection: %w", err)
 	}
 
-	conn := connInterface.(*database.Service)
+	conn, ok := connInterface.(*database.Service)
+	if !ok {
+		return nil, fmt.Errorf("invalid config object [%T]", connInterface)
+	}
 
-	var run = func(key string, q string) error {
-		rows, err := conn.Query(q, nil)
+	run := func(key string, q string) error {
+		var rows *sqlx.Rows
+		rows, err = conn.Query(q, nil)
 		if err != nil {
 			return fmt.Errorf("can't query %v: %w", key, err)
 		}
-		res, err := lpostgres.NewResult(key, q, nil, rows)
+		var res *result.Result
+		res, err = lpostgres.NewResult(key, q, nil, rows)
 		if err != nil {
 			return fmt.Errorf("can't parse result for %v: %w", key, err)
 		}

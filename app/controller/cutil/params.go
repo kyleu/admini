@@ -1,10 +1,11 @@
 package cutil
 
 import (
-	"github.com/kyleu/admini/app/util"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 func ParamSetFromRequest(r *http.Request) util.ParamSet {

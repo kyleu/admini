@@ -8,7 +8,7 @@ type Option struct {
 
 var _ Type = (*Option)(nil)
 
-func (o *Option) Key() string {
+func (t *Option) Key() string {
 	return KeyOption
 }
 
@@ -16,6 +16,6 @@ func (t *Option) Sortable() bool {
 	return t.T.Sortable()
 }
 
-func (o *Option) String() string {
-	return "*" + o.T.String()
+func (t *Option) String() string {
+	return "*" + t.T.String()
 }

@@ -14,7 +14,7 @@ type String struct {
 
 var _ Type = (*String)(nil)
 
-func (s *String) Key() string {
+func (t *String) Key() string {
 	return KeyString
 }
 
@@ -22,11 +22,11 @@ func (t *String) Sortable() bool {
 	return true
 }
 
-func (s *String) String() string {
-	if s.MaxLength > 0 {
-		return fmt.Sprintf("%v(%v)", s.Key(), s.MaxLength)
+func (t *String) String() string {
+	if t.MaxLength > 0 {
+		return fmt.Sprintf("%v(%v)", t.Key(), t.MaxLength)
 	}
-	return s.Key()
+	return t.Key()
 }
 
 func NewString() *Wrapped {
