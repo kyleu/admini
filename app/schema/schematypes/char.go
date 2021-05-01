@@ -13,3 +13,11 @@ func (t *Char) Key() string {
 func (t *Char) String() string {
 	return t.Key()
 }
+
+func (t *Char) Sortable() bool {
+	return true
+}
+
+func NewChar() *Wrapped {
+	return Wrap(&Char{})
+}

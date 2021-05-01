@@ -30,6 +30,10 @@ func (w *Wrapped) String() string {
 	return w.T.String()
 }
 
+func (w *Wrapped) Sortable() bool {
+	return w.T.Sortable()
+}
+
 type wrappedUnmarshal struct {
 	K string          `json:"k"`
 	T json.RawMessage `json:"t,omitempty"`
@@ -119,6 +123,10 @@ func (w *Wrapped) UnmarshalJSON(data []byte) error {
 		t = tgt
 	case KeyRange:
 		tgt := &Range{}
+		err = json.Unmarshal(wu.T, &tgt)
+		t = tgt
+	case KeyReference:
+		tgt := &Reference{}
 		err = json.Unmarshal(wu.T, &tgt)
 		t = tgt
 	case KeySet:

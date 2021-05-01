@@ -69,9 +69,9 @@ func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKe
 		validateType(r, s, mType, mKey, fKey, t.K)
 		validateType(r, s, mType, mKey, fKey, t.V)
 	case *schematypes.Reference:
-		if s.Models.Get(t.Pkg, t.T) == nil && s.Scalars.Get(t.Pkg, t.T) == nil {
+		if s.Models.Get(t.Pkg, t.K) == nil && s.Scalars.Get(t.Pkg, t.K) == nil {
 			pkg := strings.Join(t.Pkg, ".")
-			r.log(mType, mKey, "field ["+fKey+"] has reference to unknown type ["+pkg+"::"+t.T+"]", LevelWarn)
+			r.log(mType, mKey, "field ["+fKey+"] has reference to unknown type ["+pkg+"::"+t.K+"]", LevelWarn)
 		}
 
 	default:

@@ -1,14 +1,23 @@
 package postgres
 
 import (
+	"strings"
+
 	"github.com/kyleu/admini/app/schema/schematypes"
 	"github.com/kyleu/admini/app/util"
 )
 
+func TypeForName(t string) *schematypes.Wrapped {
+	if strings.HasPrefix(t, "_") {
+		return schematypes.NewList(TypeForName(t[1:]))
+	}
+	return simpleType(strings.ToLower(t))
+}
+
 func typeFor(cr *columnResult) *schematypes.Wrapped {
 	ret := simpleType(cr.DataType)
 	if err := enhance(cr, ret); err != nil {
-		return schematypes.Wrap(&schematypes.Unknown{X: "ERROR: " + err.Error()})
+		return schematypes.NewUnknown("ERROR: " + err.Error())
 	}
 
 	return ret
@@ -27,174 +36,118 @@ func enhance(cr *columnResult, ret *schematypes.Wrapped) error {
 }
 
 func simpleType(t string) *schematypes.Wrapped {
-	var ret schematypes.Type
 	switch t {
 	case "aclitem":
-		// TODO
-		// ret = &schematypes.ACL
+		// return schematypes.NewACL()
 	case "array", "ARRAY":
-		// TODO
-		ret = &schematypes.List{}
+		return schematypes.NewList(nil)
 	case "bit":
-		// TODO
-		ret = &schematypes.Bit{}
+		return schematypes.NewBit()
 	case "varbit", "bit varying":
-		// TODO
-		ret = &schematypes.List{T: schematypes.Wrap(&schematypes.Bit{})}
+		return schematypes.NewList(schematypes.NewBit())
 	case "bool", "boolean":
-		ret = &schematypes.Bool{}
+		return schematypes.NewBool()
 	case "box":
-		// TODO
-		// ret = &schematypes.Box
+		// return schematypes.NewBox()
 	case "bpchar":
-		// TODO
-		// ret = &schematypes.Bpchar
+		// return schematypes.NewBpchar()
 	case "bytea":
-		// TODO
-		ret = &schematypes.List{T: schematypes.Wrap(&schematypes.Byte{})}
+		return schematypes.NewList(schematypes.NewByte())
 	case "char", "character":
-		// TODO
-		ret = &schematypes.Char{}
+		return schematypes.NewChar()
 	case "character varying", "varchar":
-		// TODO
-		ret = &schematypes.String{}
+		return schematypes.NewString()
 	case "cid":
-		// TODO
-		// ret = &schematypes.CID
+		// return schematypes.NewCID()
 	case "cidr":
-		// TODO
-		// ret = &schematypes.CIDR
+		// return schematypes.NewCIDR()
 	case "circle":
-		// TODO
-		// ret = &schematypes.Circle
+		// return schematypes.NewCircle()
 	case "date":
-		// TODO
-		ret = &schematypes.Date{}
+		return schematypes.NewDate()
 	case "daterange":
-		// TODO
-		ret = &schematypes.List{T: schematypes.Wrap(&schematypes.Date{})}
+		return schematypes.NewList(schematypes.NewDate())
 	case "float4", "real", "float":
-		// TODO
-		ret = &schematypes.Float{}
+		return schematypes.NewFloat()
 	case "float8", "double precision", "double":
-		// TODO
-		ret = &schematypes.Float{}
+		return schematypes.NewFloat()
 	case "hstore":
-		// TODO
-		ret = &schematypes.Map{K: schematypes.Wrap(&schematypes.String{}), V: schematypes.Wrap(&schematypes.String{})}
+		return schematypes.NewMap(schematypes.NewString(), schematypes.NewString())
 	case "inet":
-		// TODO
-		// ret = &schematypes.Inet
+		// return schematypes.NewInet()
 	case "int1", "tinyint":
-		// TODO
-		ret = &schematypes.Int{}
+		return schematypes.NewInt()
 	case "int2", "smallint":
-		// TODO
-		ret = &schematypes.Int{}
+		return schematypes.NewInt()
 	case "int4", "integer", "int", "mediumint":
-		// TODO
-		ret = &schematypes.Int{}
+		return schematypes.NewInt()
 	case "int4range":
-		// TODO
-		ret = &schematypes.List{T: schematypes.Wrap(&schematypes.Int{})}
+		return schematypes.NewList(schematypes.NewInt())
 	case "int8", "bigint":
-		// TODO
-		ret = &schematypes.Int{}
+		return schematypes.NewInt()
 	case "int8range":
-		// TODO
-		ret = &schematypes.List{T: schematypes.Wrap(&schematypes.Int{})}
+		return schematypes.NewList(schematypes.NewInt())
 	case "interval":
-		// TODO
-		// ret = &schematypes.Interval
+		// return schematypes.NewInterval()
 	case "json":
-		ret = &schematypes.JSON{}
+		return schematypes.NewJSON()
 	case "jsonb":
-		ret = &schematypes.JSON{}
+		return schematypes.NewJSON()
 	case "line":
-		// TODO
-		// ret = &schematypes.Line
+		// return schematypes.NewLine()
 	case "lseg":
-		// TODO
-		// ret = &schematypes.LineSegment
+		// return schematypes.NewLineSegment()
 	case "macaddr":
-		// TODO
-		// ret = &schematypes.MacAddr
+		// return schematypes.NewMacAddr()
 	case "money":
-		// TODO
-		// ret = &schematypes.Money
+		// return schematypes.NewMoney()
 	case "name":
-		// TODO
-		// ret = &schematypes.Name
+		return schematypes.NewString()
 	case "numeric", "decimal":
-		// TODO
-		// ret = &schematypes.Numeric
+		// return schematypes.NewNumeric()
 	case "numrange":
-		// TODO
-		ret = &schematypes.List{T: schematypes.Wrap(&schematypes.Float{})}
+		return schematypes.NewList(schematypes.NewFloat())
 	case "oid":
-		// TODO
-		// ret = &schematypes.OID
+		// return schematypes.NewOID()
 	case "path":
-		// TODO
-		// ret = &schematypes.Path
+		// return schematypes.NewPath()
 	case "point":
-		// TODO
-		// ret = &schematypes.Point
+		// return schematypes.NewPoint()
 	case "polygon":
-		// TODO
-		// ret = &schematypes.Polygon
+		// return schematypes.NewPolygon()
 	case "record":
-		// TODO
-		// ret = &schematypes.Record
+		// return schematypes.NewRecord()
 	case "text":
-		ret = &schematypes.String{}
+		return schematypes.NewString()
 	case "tid":
-		// TODO
-		// ret = &schematypes.TID
+		// return schematypes.NewTID()
 	case "time", "time without time zone":
-		// TODO
-		ret = &schematypes.Time{}
+		return schematypes.NewTime()
 	case "timetz", "time with time zone":
-		// TODO
-		// ret = &schematypes.TimeTZ
+		// return schematypes.NewTimeTZ()
 	case "timestamp", "timestamp without time zone", "datetime":
-		// TODO
-		ret = &schematypes.Timestamp{}
+		return schematypes.NewTimestamp()
 	case "timestamptz", "timestamp with time zone":
-		// TODO
-		ret = &schematypes.TimestampZoned{}
+		return schematypes.NewTimestampZoned()
 	case "tsrange":
-		// TODO
-		ret = &schematypes.Range{T: schematypes.Wrap(&schematypes.Timestamp{})}
+		return schematypes.NewRange(schematypes.NewTimestamp())
 	case "tsquery":
-		// TODO
-		// ret = &schematypes.TsQuery
+		// return schematypes.NewTsQuery()
 	case "tsvector":
-		// TODO
-		ret = &schematypes.List{T: schematypes.Wrap(&schematypes.Timestamp{})}
+		return schematypes.NewList(schematypes.NewTimestamp())
 	case "tstzrange":
-		// TODO
-		ret = &schematypes.Range{T: schematypes.Wrap(&schematypes.TimestampZoned{})}
+		return schematypes.NewRange(schematypes.NewTimestampZoned())
 	case "uuid":
-		ret = &schematypes.UUID{}
+		return schematypes.NewUUID()
 	case "USER-DEFINED":
-		// TODO
-		ret = &schematypes.Reference{}
+		return schematypes.NewReference()
 	case "xid":
-		// TODO
-		// ret = &schematypes.XID
+		// return schematypes.NewXID()
 	case "xml":
-		// TODO
-		ret = &schematypes.XML{}
+		return schematypes.NewXML()
 	case "year":
-		// TODO
-		// ret = &schematypes.Year
-	default:
-		util.LogWarn("unhandled type: " + t)
-		ret = &schematypes.Unknown{X: "unhandled: " + t}
+		// return schematypes.NewYear()
 	}
-	if ret == nil {
-		ret = &schematypes.Unknown{X: t}
-	}
-	return schematypes.Wrap(ret)
+	util.LogWarn("unhandled type: " + t)
+	return schematypes.NewUnknown(t)
 }

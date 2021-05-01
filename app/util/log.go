@@ -11,3 +11,7 @@ func LogInfo(msg string, args ...interface{}) {
 func LogWarn(msg string, args ...interface{}) {
 	log.Printf("WARN: "+msg, args...)
 }
+
+func LogError(msg string, args ...interface{}) {
+	log.Printf("ERROR: "+msg, args...)
+}

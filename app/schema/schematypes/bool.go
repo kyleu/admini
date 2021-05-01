@@ -13,3 +13,11 @@ func (t *Bool) Key() string {
 func (t *Bool) String() string {
 	return t.Key()
 }
+
+func (t *Bool) Sortable() bool {
+	return true
+}
+
+func NewBool() *Wrapped {
+	return Wrap(&Bool{})
+}

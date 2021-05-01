@@ -40,7 +40,6 @@ func (m *Model) AddField(f *Field) error {
 		return fmt.Errorf(alreadyExists("field", f.Key))
 	}
 	m.Fields = append(m.Fields, f)
-	m.Fields.Sort()
 	return nil
 }
 
@@ -55,7 +54,16 @@ func (m *Model) AddIndex(i *Index) error {
 	return nil
 }
 
-func (m *Model) Path() string {
+func (m *Model) Path() []string {
+	ret := make([]string, 0, len(m.Pkg)+1)
+	for _, x := range m.Pkg {
+		ret = append(ret, x)
+	}
+	ret = append(ret, m.Key)
+	return ret
+}
+
+func (m *Model) PathString() string {
 	return m.Pkg.ToPath(m.Key)
 }
 

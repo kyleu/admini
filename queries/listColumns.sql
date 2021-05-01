@@ -1,4 +1,4 @@
--- {% func ListColumns() %}
+-- {% func ListColumns(schema string) %}
 select
   c.table_schema,
   c.table_name,
@@ -27,7 +27,8 @@ from
     (c.table_catalog, c.table_schema, c.table_name, 'TABLE', c.dtd_identifier) = (e.object_catalog, e.object_schema, e.object_name, e.object_type, e.collection_type_identifier)
   )
 where
-  table_schema = 'public'
+  c.table_schema not in ('information_schema', 'pg_catalog')
+  {% if schema != "" %} and c.table_schema = '{%s schema %}'{% endif %}
 order by
   c.table_schema, c.table_name, c.ordinal_position;
 -- {% endfunc %}

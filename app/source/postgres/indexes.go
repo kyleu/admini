@@ -30,7 +30,7 @@ func (r indexResult) AsIndex() *schema.Index {
 
 func loadIndexes(models schema.Models, db *database.Service) error {
 	idxs := []*indexResult{}
-	err := db.Select(&idxs, queries.ListIndexes(), nil)
+	err := db.Select(&idxs, queries.ListIndexes(db.SchemaName), nil)
 	if err != nil {
 		return fmt.Errorf("can't list indexes: %w", err)
 	}

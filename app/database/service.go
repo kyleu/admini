@@ -11,13 +11,15 @@ import (
 
 // Database access service
 type Service struct {
-	debug bool
-	db    *sqlx.DB
+	DatabaseName string
+	SchemaName   string
+	debug        bool
+	db           *sqlx.DB
 }
 
 // Returns a fresh Service
-func NewService(debug bool, db *sqlx.DB) *Service {
-	return &Service{debug: debug, db: db}
+func NewService(dbName string, schName string, debug bool, db *sqlx.DB) *Service {
+	return &Service{DatabaseName: dbName, SchemaName: schName, debug: debug, db: db}
 }
 
 // Begins a transaction, be sure to commit it when you're done

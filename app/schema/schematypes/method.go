@@ -36,3 +36,16 @@ func (t *Method) String() string {
 	}
 	return fmt.Sprintf("fn(%v) %v", strings.Join(argStrings, ", "), t.Ret.String())
 }
+
+func (t *Method) Sortable() bool {
+	for _, a := range t.Args {
+		if !a.Type.Sortable() {
+			return false
+		}
+	}
+	return t.Ret.Sortable()
+}
+
+func NewMethod(ret *Wrapped) *Wrapped {
+	return Wrap(&Method{Ret: ret})
+}

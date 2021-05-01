@@ -38,7 +38,7 @@ func OpenDatabase(params *DBParams) (*Service, error) {
 		return nil, fmt.Errorf("error opening database: %w", err)
 	}
 
-	svc := NewService(params.Debug, db)
+	svc := NewService(params.Database, params.Schema, params.Debug, db)
 
 	return svc, nil
 }

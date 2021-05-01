@@ -8,15 +8,15 @@ import (
 
 func For(as *app.State) Items {
 	return Items{
-		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Route: as.Route("sandbox.list"), Children: sandboxItems(as)},
-		&Item{},
-		&Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Route: as.Route("source.list"), Children: sourceItems(as)},
-		&Item{},
-		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Route: as.Route("settings")},
-		&Item{Key: "modules", Title: "Modules", Description: "Lists the Go modules used by " + util.AppName, Route: as.Route("modules")},
-		&Item{Key: "routes", Title: "Routes", Description: "Lists the available HTTP routes", Route: as.Route("routes")},
-		&Item{Key: "feedback", Title: "Send feedback", Description: "Submit feedback so we can improve " + util.AppName, Route: as.Route("feedback")},
-		&Item{Key: "help", Title: "Help", Description: "Get assistance and advice for using " + util.AppName, Route: as.Route("help")},
+		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "star", Route: as.Route("sandbox.list"), Children: sandboxItems(as)},
+		Separator,
+		&Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Icon: "star", Route: as.Route("source.list"), Children: sourceItems(as)},
+		Separator,
+		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "star", Route: as.Route("settings")},
+		&Item{Key: "modules", Title: "Modules", Description: "Lists the Go modules used by " + util.AppName, Icon: "star", Route: as.Route("modules")},
+		&Item{Key: "routes", Title: "Routes", Description: "Lists the available HTTP routes", Icon: "star", Route: as.Route("routes")},
+		&Item{Key: "feedback", Title: "Send feedback", Description: "Submit feedback so we can improve " + util.AppName, Icon: "star", Route: as.Route("feedback")},
+		&Item{Key: "help", Title: "Help", Description: "Get assistance and advice for using " + util.AppName, Icon: "star", Route: as.Route("help")},
 	}
 }
 

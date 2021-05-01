@@ -1,3 +1,7 @@
+a {
+  text-decoration: none;
+}
+
 .left {
   float: left;
 }
@@ -6,7 +10,35 @@
   float: right;
 }
 
+.clear {
+  clear: both;
+}
+
 .expand, .collapse {
   float: left;
   margin-top: 1px;
+}
+
+.sort-title {
+  padding-right: 24px;
+}
+
+.sort-icon {
+  display: inline-block;
+  float: right;
+  height: 18px;
+  width: 18px;
+}
+
+.sort-hover .sort-icon {
+  display: none;
+}
+
+.sort-hover:hover .sort-icon {
+  display: block;
+}
+
+.inline-icon {
+  float: left;
+  margin-right: 4px;
 }

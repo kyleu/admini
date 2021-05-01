@@ -10,14 +10,15 @@ type Origin struct {
 }
 
 var (
-	OriginGraphQL    = Origin{Key: "graphql", Title: "GraphQL", Icon: "social", Description: "GraphQL schema and queries"}
-	OriginProtobuf   = Origin{Key: "protobuf", Title: "Protobuf", Icon: "move", Description: "File describing proto3 definitions"}
-	OriginPostgres   = Origin{Key: "postgres", Title: "Database", Icon: "database", Description: "PostgreSQL database schema"}
-	OriginJSONSchema = Origin{Key: "jsonschema", Title: "JSONSchema", Icon: "location", Description: "JSON Schema definition files"}
-	OriginUnknown    = Origin{Key: "unknown", Title: "Unknown", Icon: "question", Description: "Not quite sure what this is"}
+	OriginGraphQL    = Origin{Key: "graphql", Title: "GraphQL", Icon: "star", Description: "GraphQL schema and queries"}
+	OriginProtobuf   = Origin{Key: "protobuf", Title: "Protobuf", Icon: "star", Description: "File describing proto3 definitions"}
+	OriginPostgres   = Origin{Key: "postgres", Title: "PostgreSQL", Icon: "database", Description: "PostgreSQL database schema"}
+	OriginJSONSchema = Origin{Key: "jsonschema", Title: "JSON Schema", Icon: "star", Description: "JSON Schema definition files"}
+	OriginMock       = Origin{Key: "mock", Title: "Mock", Icon: "star", Description: "JSON Schema definition files"}
+	OriginUnknown    = Origin{Key: "unknown", Title: "Unknown", Icon: "star", Description: "Not quite sure what this is"}
 )
 
-var AllOrigins = []Origin{OriginGraphQL, OriginProtobuf, OriginPostgres, OriginJSONSchema}
+var AllOrigins = []Origin{OriginGraphQL, OriginProtobuf, OriginPostgres, OriginJSONSchema, OriginMock}
 
 func OriginFromString(s string) Origin {
 	for _, t := range AllOrigins {

@@ -1,14 +1,11 @@
 package schema
 
 import (
-	"sort"
-
 	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
 type Field struct {
 	Key      string               `json:"key"`
-	Ordinal  int                  `json:"ordinal,omitempty"`
 	Type     *schematypes.Wrapped `json:"type"`
 	Default  interface{}          `json:"default,omitempty"`
 	Nullable bool                 `json:"nullable,omitempty"`
@@ -31,11 +28,10 @@ func (s Fields) Get(key string) *Field {
 	return nil
 }
 
-func (s Fields) Sort() {
-	sort.Slice(s, func(l int, r int) bool {
-		if s[l].Ordinal == s[r].Ordinal {
-			return s[l].Key < s[r].Key
-		}
-		return s[l].Ordinal < s[r].Ordinal
-	})
+func (s Fields) Names() []string {
+	ret := make([]string, 0, len(s))
+	for _, x := range s {
+		ret = append(ret, x.Key)
+	}
+	return ret
 }

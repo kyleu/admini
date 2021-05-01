@@ -13,3 +13,11 @@ func (t *Byte) Key() string {
 func (t *Byte) String() string {
 	return t.Key()
 }
+
+func (t *Byte) Sortable() bool {
+	return true
+}
+
+func NewByte() *Wrapped {
+	return Wrap(&Byte{})
+}

@@ -1,0 +1,60 @@
+package sandbox
+
+import (
+	"fmt"
+	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/loader/lpostgres"
+	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/queries"
+)
+
+var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: onTestbed}
+
+func onTestbed(st *app.State) (interface{}, error) {
+	ret := map[string]interface{}{}
+	sourceKey := "reporting"
+	source, err := st.Sources.Load(sourceKey)
+	if err != nil {
+		return nil, fmt.Errorf("can't load source: %w", err)
+	}
+
+	connInterface, err := st.Loaders.Get(schema.OriginPostgres).Connection(source.Key, source.Config)
+	if err != nil {
+		return nil, fmt.Errorf("can't get connection: %w", err)
+	}
+
+	conn := connInterface.(*database.Service)
+
+	var run = func(key string, q string) error {
+		rows, err := conn.Query(q, nil)
+		if err != nil {
+			return fmt.Errorf("can't query %v: %w", key, err)
+		}
+		res, err := lpostgres.NewResult(key, q, nil, rows)
+		if err != nil {
+			return fmt.Errorf("can't parse result for %v: %w", key, err)
+		}
+		ret[key] = res
+		return nil
+	}
+
+	sch := ""
+	x := []struct {
+		Key string
+		SQL string
+	}{
+		{Key: "tables", SQL: queries.ListTables(sch)},
+		{Key: "columns", SQL: queries.ListColumns(sch)},
+		{Key: "indexes", SQL: queries.ListIndexes(sch)},
+	}
+
+	for _, q := range x {
+		err = run(q.Key, q.SQL)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return ret, nil
+}

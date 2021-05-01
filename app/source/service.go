@@ -90,7 +90,7 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 	if ld == nil {
 		return nil, 0, fmt.Errorf("no loader defined for type [" + source.Type.String() + "]")
 	}
-	sch, err := ld.GetSchema(source.Config)
+	sch, err := ld.Schema(source.Key, source.Config)
 	if err != nil {
 		return nil, 0, fmt.Errorf("can't load schema with key [%s]: %w", key, err)
 	}

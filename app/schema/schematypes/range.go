@@ -19,3 +19,11 @@ func (t *Range) Key() string {
 func (t *Range) String() string {
 	return fmt.Sprintf("range[%v]", t.T.String())
 }
+
+func (t *Range) Sortable() bool {
+	return t.T.Sortable()
+}
+
+func NewRange(t *Wrapped) *Wrapped {
+	return Wrap(&Range{T: t})
+}

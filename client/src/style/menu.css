@@ -1,11 +1,12 @@
 .menu-container {
   width: 256px;
+  min-width: 256px;
   overflow: auto;
+  background-color: aliceblue;
 }
 
 .menu-container .menu {
-  padding-top: 12px;
-  padding-bottom: 24px;
+  padding: 12px 12px 24px;
 }
 
 .menu-container ul {
@@ -24,10 +25,15 @@
   background-color: antiquewhite;
 }
 
+.menu-container .separator {
+  margin: 6px 0;
+  border-bottom: 1px solid #ddd;
+}
+
 .menu-container .label-link {
   float: right;
-  display: block !important;
-  padding-right: 6px;
+  margin-right: 6px;
+  margin-top: 3px;
 }
 
 .menu-container a {
@@ -66,20 +72,14 @@
 }
 
 .menu-container input[type=checkbox] + label .expand {
-  display: inline !important;
+  display: inline;
 }
 .menu-container input[type=checkbox] + label .collapse {
-  display: none !important;
+  display: none;
 }
 .menu-container input[type=checkbox]:checked + label .expand {
-  display: none !important;
+  display: none;
 }
 .menu-container input[type=checkbox]:checked + label .collapse {
-  display: inline !important;
+  display: inline;
 }
-
-.small-icon, .expand, .collapse {
-  height: 15px;
-  width: 15px;
-}
-

@@ -10,6 +10,14 @@ func (t *TimestampZoned) Key() string {
 	return KeyTimestampZoned
 }
 
+func (t *TimestampZoned) Sortable() bool {
+	return true
+}
+
 func (t *TimestampZoned) String() string {
 	return t.Key()
+}
+
+func NewTimestampZoned() *Wrapped {
+	return Wrap(&TimestampZoned{})
 }

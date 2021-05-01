@@ -19,3 +19,11 @@ func (t *List) Key() string {
 func (t *List) String() string {
 	return fmt.Sprintf("[]%v", t.T.String())
 }
+
+func (t *List) Sortable() bool {
+	return t.T.Sortable()
+}
+
+func NewList(t *Wrapped) *Wrapped {
+	return Wrap(&List{T: t})
+}

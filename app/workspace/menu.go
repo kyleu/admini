@@ -25,6 +25,7 @@ func SchemaMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 			Description: "Overview of the project, displaying details about the configuration",
 			Route:       as.Route("workspace", "key", source),
 		},
+		menu.Separator,
 	}
 
 	mp := sch.ModelsByPackage()
@@ -37,7 +38,7 @@ func SchemaMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 		ret = menuAddPackage(as, source, ret, p, []string{})
 	}
 
-	ret = append(ret, menuItemBack)
+	ret = append(ret, menu.Separator, menuItemBack)
 
 	return ret
 }
@@ -47,7 +48,7 @@ func menuAddModel(as *app.State, source string, ret menu.Items, m *schema.Model)
 		Key:         m.Key,
 		Title:       m.Key,
 		Description: m.Type.String() + " model [" + m.Key + "]",
-		Route:       as.Route("workspace", "key", source) + "/" + m.Path(),
+		Route:       as.Route("workspace", "key", source) + "/" + m.PathString(),
 	})
 }
 

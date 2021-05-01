@@ -15,3 +15,11 @@ func (e *Error) Key() string {
 func (e *Error) String() string {
 	return "error(" + e.Message + ")"
 }
+
+func (t *Error) Sortable() bool {
+	return false
+}
+
+func NewError() *Wrapped {
+	return Wrap(&Error{})
+}

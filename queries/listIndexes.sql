@@ -1,4 +1,4 @@
--- {% func ListIndexes() %}
+-- {% func ListIndexes(schema string) %}
 select
   n.nspname as schema_name,
   t.relname as table_name,
@@ -19,7 +19,10 @@ where
   and n.oid = t.relnamespace
   and a.attnum = any(idx.indkey)
   and t.relkind = 'r'
-  and n.nspname = current_schema()
+  and n.nspname not in ('information_schema', 'pg_catalog')
+  {% if schema != "" %}
+  and n.nspname = '{%s schema %}'
+  {% endif %}
 group by
   n.nspname,
   t.relname,

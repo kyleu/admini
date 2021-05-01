@@ -13,3 +13,11 @@ func (t *EnumValue) Key() string {
 func (t *EnumValue) String() string {
 	return t.Key()
 }
+
+func (t *EnumValue) Sortable() bool {
+	return true
+}
+
+func NewEnumValue() *Wrapped {
+	return Wrap(&EnumValue{})
+}

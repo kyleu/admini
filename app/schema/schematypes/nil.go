@@ -10,6 +10,10 @@ func (t *Nil) Key() string {
 	return KeyNil
 }
 
+func (t *Nil) Sortable() bool {
+	return false
+}
+
 func (t *Nil) String() string {
 	return t.Key()
 }

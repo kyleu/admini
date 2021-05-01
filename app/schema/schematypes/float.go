@@ -13,3 +13,11 @@ func (t *Float) Key() string {
 func (t *Float) String() string {
 	return t.Key()
 }
+
+func (t *Float) Sortable() bool {
+	return true
+}
+
+func NewFloat() *Wrapped {
+	return Wrap(&Float{})
+}

@@ -45,7 +45,6 @@ func (cr *columnResult) AsField(readOnlyOverride bool) *schema.Field {
 	}
 	return &schema.Field{
 		Key:      cr.Name,
-		Ordinal:  int(cr.Ordinal),
 		Type:     typeFor(cr),
 		Default:  d,
 		Nullable: cr.Nullable == pgYes,
@@ -56,7 +55,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool) *schema.Field {
 
 func loadColumns(models schema.Models, db *database.Service) error {
 	cols := []*columnResult{}
-	err := db.Select(&cols, queries.ListColumns(), nil)
+	err := db.Select(&cols, queries.ListColumns(db.SchemaName), nil)
 	if err != nil {
 		return fmt.Errorf("can't list columns: %w", err)
 	}

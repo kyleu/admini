@@ -1,4 +1,4 @@
--- {% func ListTables() %}
+-- {% func ListTables(schema string) %}
 select
   n.nspname as "schema",
   c.relname as "name",
@@ -19,10 +19,11 @@ from
   left join pg_catalog.pg_namespace n ON n.oid = c.relnamespace
 where
   c.relkind IN ('r','p','v','m','S','f','')
-  and n.nspname <> 'pg_catalog'
-  and n.nspname <> 'information_schema'
+  and n.nspname not in ('information_schema', 'pg_catalog')
   and n.nspname !~ '^pg_toast'
-  and pg_catalog.pg_table_is_visible(c.oid)
+  {% if schema != "" %}
+  and n.nspname = '{%s schema %}'
+  {% endif %}
 order by
   "schema",
   "name"

@@ -11,7 +11,11 @@ type ModelPackage struct {
 	ChildPackages ModelPackages `json:"childPackages,omitempty"`
 }
 
-func (p *ModelPackage) Path() string {
+func (p *ModelPackage) Path() []string {
+	return append([]string{}, p.Pkg.Push(p.Key)...)
+}
+
+func (p *ModelPackage) PathString() string {
 	return p.Pkg.ToPath(p.Key)
 }
 
@@ -22,7 +26,7 @@ func (p *ModelPackage) GetPkg(key string, createIfMissing bool) *ModelPackage {
 		}
 	}
 	if createIfMissing {
-		pkgs := append(p.Pkg, p.Key)
+		pkgs := p.Path()
 		if pkgs[0] == "_root" {
 			pkgs = pkgs[1:]
 		}

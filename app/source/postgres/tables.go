@@ -38,7 +38,7 @@ func (t tableResult) ToModel() *schema.Model {
 
 func loadTables(db *database.Service) (schema.Models, error) {
 	tables := []*tableResult{}
-	err := db.Select(&tables, queries.ListTables(), nil)
+	err := db.Select(&tables, queries.ListTables(db.SchemaName), nil)
 	if err != nil {
 		return nil, fmt.Errorf("can't list tables: %w", err)
 	}

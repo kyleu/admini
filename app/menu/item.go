@@ -1,5 +1,7 @@
 package menu
 
+var Separator = &Item{}
+
 type Item struct {
 	Key         string `json:"key"`
 	Title       string `json:"title,omitempty"`

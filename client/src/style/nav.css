@@ -1,6 +1,11 @@
 #navbar {
   height: 48px;
   display: flex;
+  background-color: #4f9abd;
+}
+
+#navbar a {
+  text-decoration: none;
 }
 
 #navbar .logo {

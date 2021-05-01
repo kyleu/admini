@@ -2,7 +2,6 @@ package loader
 
 import (
 	"github.com/kyleu/admini/app/schema"
-	"github.com/kyleu/admini/app/source/postgres"
 )
 
 type Service struct {
@@ -13,7 +12,7 @@ func NewService() *Service {
 	return &Service{loaders: map[schema.Origin]Loader{}}
 }
 
-func (s *Service) Set(o schema.Origin, l *postgres.Loader) {
+func (s *Service) Set(o schema.Origin, l Loader) {
 	s.loaders[o] = l
 }
 

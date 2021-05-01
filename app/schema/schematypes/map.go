@@ -20,3 +20,11 @@ func (t *Map) Key() string {
 func (t *Map) String() string {
 	return fmt.Sprintf("%v[%v]%v", t.Key(), t.K.String(), t.V.String())
 }
+
+func (t *Map) Sortable() bool {
+	return t.K.Sortable() && t.V.Sortable()
+}
+
+func NewMap(k *Wrapped, v *Wrapped) *Wrapped {
+	return Wrap(&Map{K: k, V: v})
+}

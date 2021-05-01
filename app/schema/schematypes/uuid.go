@@ -10,6 +10,14 @@ func (t *UUID) Key() string {
 	return KeyUUID
 }
 
+func (t *UUID) Sortable() bool {
+	return true
+}
+
 func (t *UUID) String() string {
 	return t.Key()
+}
+
+func NewUUID() *Wrapped {
+	return Wrap(&UUID{})
 }

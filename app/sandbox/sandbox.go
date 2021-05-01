@@ -10,18 +10,6 @@ type Sandbox struct {
 	Run   func(st *app.State) (interface{}, error) `json:"-"`
 }
 
-var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func(st *app.State) (interface{}, error) {
-	return "TODO", nil
-}}
-
-var sources = &Sandbox{Key: "sources", Title: "Data Sources", Run: func(st *app.State) (interface{}, error) {
-	return st.Sources.List()
-}}
-
-var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: func(st *app.State) (interface{}, error) {
-	return "OK", nil
-}}
-
 type Sandboxes []*Sandbox
 
 func (s Sandboxes) Get(key string) *Sandbox {
@@ -34,3 +22,11 @@ func (s Sandboxes) Get(key string) *Sandbox {
 }
 
 var AllSandboxes = Sandboxes{codegen, sources, testbed}
+
+var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func(st *app.State) (interface{}, error) {
+	return "TODO", nil
+}}
+
+var sources = &Sandbox{Key: "sources", Title: "Data Sources", Run: func(st *app.State) (interface{}, error) {
+	return st.Sources.List()
+}}

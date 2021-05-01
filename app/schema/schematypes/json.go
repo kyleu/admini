@@ -13,3 +13,11 @@ func (t *JSON) Key() string {
 func (t *JSON) String() string {
 	return t.Key()
 }
+
+func (t *JSON) Sortable() bool {
+	return false
+}
+
+func NewJSON() *Wrapped {
+	return Wrap(&JSON{})
+}

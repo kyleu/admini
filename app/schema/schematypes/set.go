@@ -16,6 +16,10 @@ func (t *Set) Key() string {
 	return KeySet
 }
 
+func (t *Set) Sortable() bool {
+	return t.T.Sortable()
+}
+
 func (t *Set) String() string {
 	return fmt.Sprintf("%v[%v]", t.Key(), t.T.String())
 }
