@@ -6,9 +6,13 @@
   {%s as.Route("workspace", "key", source) %}{% if len(paths) > 0 %}/{%s strings.Join(paths, "/") %}{% endif %}
 {% endstripspace %}{% endfunc %}
 
-{% func PackageNav(as *app.State, source string, pkg util.Pkg) %}{% stripspace %}
+{% func WorkspaceSourceLink(as *app.State, source string, paths ...string) %}{% stripspace %}
+  {%s as.Route(`workspace.source`, `key`, source) %}{% if len(paths) > 0 %}/{%s strings.Join(paths, "/") %}{% endif %}
+{% endstripspace %}{% endfunc %}
+
+{% func WorkspaceSourcePackage(as *app.State, source string, pkg util.Pkg) %}{% stripspace %}
   {% for idx, x := range pkg %}
-    <a href="{%= WorkspaceLink(as, source, pkg[:idx + 1]...) %}">{%s x %}</a>
+    <a href="{%= WorkspaceSourceLink(as, source, pkg[:idx + 1]...) %}">{%s x %}</a>
     {% if idx < len(pkg) - 1 %}{% space %}/{% space %}{% endif %}
   {% endfor %}
 {% endstripspace %}{% endfunc %}

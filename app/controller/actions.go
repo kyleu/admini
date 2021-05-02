@@ -23,6 +23,11 @@ func act(key string, w http.ResponseWriter, r *http.Request, f func(as *app.Stat
 	actComplete(key, ps, w, func() (string, error) { return f(currentApp, ps) })
 }
 
+func actWorkspace(key string, w http.ResponseWriter, r *http.Request, f func(as *app.State, ps *cutil.PageState) (string, error)) {
+	ps := actPrepare(r, w)
+	actComplete(key, ps, w, func() (string, error) { return f(currentApp, ps) })
+}
+
 func actPrepare(r *http.Request, w http.ResponseWriter) *cutil.PageState {
 	session, err := store.Get(r, util.AppKey)
 	if err != nil {

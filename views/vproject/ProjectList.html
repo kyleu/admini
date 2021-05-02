@@ -1,0 +1,27 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% code type ProjectList struct {
+  layout.Basic
+  Projects project.Projects
+} %}
+
+{% func (p *ProjectList) Body(as *app.State, ps *cutil.PageState) %}{% stripspace %}
+  {%= vutil.Indent(true, 1) %}
+  <div class="card">
+    {%= vutil.Indent(true, 2) %}
+    <h3>Projects</h3>
+    {%= vutil.Indent(true, 2) %}
+    <ul>
+      {% for _, s := range p.Projects %}
+        {%= vutil.Indent(true, 3) %}
+        <li><a href="{%s as.Route(`project.detail`, `key`, s.Key) %}">{%s s.Title %}</a></li>
+      {% endfor %}
+    {%= vutil.Indent(true, 2) %}
+    </ul>
+  {%= vutil.Indent(true, 1) %}
+  </div>
+{% endstripspace %}{% endfunc %}

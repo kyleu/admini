@@ -17,13 +17,13 @@ var menuItemBack = &menu.Item{
 	Route:       "/",
 }
 
-func SchemaMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
+func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	ret := menu.Items{
 		{
 			Key:         "overview",
 			Title:       "Project overview",
-			Description: "Overview of the project, displaying details about the configuration",
-			Route:       as.Route("workspace", "key", source),
+			Description: "Overview of the data source, displaying details about the configuration",
+			Route:       as.Route("workspace.source", "key", source),
 		},
 		menu.Separator,
 	}
@@ -31,11 +31,11 @@ func SchemaMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	mp := sch.ModelsByPackage()
 
 	for _, m := range mp.ChildModels {
-		ret = menuAddModel(as, source, ret, m)
+		ret = sourceMenuAddModel(as, source, ret, m)
 	}
 
 	for _, p := range mp.ChildPackages {
-		ret = menuAddPackage(as, source, ret, p, []string{})
+		ret = sourceMenuAddPackage(as, source, ret, p, []string{})
 	}
 
 	ret = append(ret, menu.Separator, menuItemBack)
@@ -43,16 +43,16 @@ func SchemaMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	return ret
 }
 
-func menuAddModel(as *app.State, source string, ret menu.Items, m *schema.Model) menu.Items {
+func sourceMenuAddModel(as *app.State, source string, ret menu.Items, m *schema.Model) menu.Items {
 	return append(ret, &menu.Item{
 		Key:         m.Key,
 		Title:       m.Key,
 		Description: m.Type.String() + " model [" + m.Key + "]",
-		Route:       as.Route("workspace", "key", source) + "/" + m.PathString(),
+		Route:       as.Route("workspace.source", "key", source) + "/" + m.PathString(),
 	})
 }
 
-func menuAddPackage(as *app.State, source string, ret menu.Items, mp *schema.ModelPackage, path []string) menu.Items {
+func sourceMenuAddPackage(as *app.State, source string, ret menu.Items, mp *schema.ModelPackage, path []string) menu.Items {
 	path = append(path, mp.Key)
 	desc := fmt.Sprintf("package [%v], containing [%v] models", mp.Key, len(mp.ChildModels))
 
@@ -63,15 +63,15 @@ func menuAddPackage(as *app.State, source string, ret menu.Items, mp *schema.Mod
 		Key:         mp.Key,
 		Title:       mp.Key,
 		Description: desc,
-		Route:       as.Route("workspace", "key", source) + "/" + strings.Join(path, "/"),
+		Route:       as.Route("workspace.source", "key", source) + "/" + strings.Join(path, "/"),
 	}
 
 	for _, m := range mp.ChildModels {
-		i.Children = menuAddModel(as, source, i.Children, m)
+		i.Children = sourceMenuAddModel(as, source, i.Children, m)
 	}
 
 	for _, p := range mp.ChildPackages {
-		i.Children = menuAddPackage(as, source, i.Children, p, path)
+		i.Children = sourceMenuAddPackage(as, source, i.Children, p, path)
 	}
 
 	return append(ret, i)

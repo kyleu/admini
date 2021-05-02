@@ -10,6 +10,8 @@ func For(as *app.State) Items {
 	return Items{
 		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "star", Route: as.Route("sandbox.list"), Children: sandboxItems(as)},
 		Separator,
+		&Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: as.Route("project.list"), Children: projectItems(as)},
+		Separator,
 		&Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Icon: "star", Route: as.Route("source.list"), Children: sourceItems(as)},
 		Separator,
 		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "star", Route: as.Route("settings")},
@@ -30,6 +32,24 @@ func sandboxItems(as *app.State) Items {
 			Route:       as.Route("sandbox.run", "key", s.Key),
 		})
 	}
+	return ret
+}
+
+func projectItems(as *app.State) Items {
+	ss, err := as.Projects.List()
+	if err != nil {
+		return Items{{Key: "error", Title: "Error", Description: err.Error()}}
+	}
+
+	ret := make(Items, 0, len(ss))
+	for _, s := range ss {
+		ret = append(ret, &Item{
+			Key:         s.Key,
+			Title:       s.Title,
+			Route:       as.Route("project.detail", "key", s.Key),
+		})
+	}
+
 	return ret
 }
 

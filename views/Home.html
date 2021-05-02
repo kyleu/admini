@@ -26,6 +26,30 @@
   </div>
 
   <div class="card">
+    <h3><a href="{%s as.Route(`project.list`) %}">Projects</a></h3>
+    {% if len(p.Sources) == 0 %}
+    <p>no projects available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
+    {% else %}
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for _, p := range p.Projects %}
+        <tr>
+          <td><a href="{%s as.Route(`project.detail`, `key`, p.Key) %}">{%s p.Title %}</a></td>
+          <td class="shrink"><a href="{%s as.Route(`workspace`, `key`, p.Key) %}"><button type="button">workspace</button></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+
+  <div class="card">
     <h3><a href="{%s as.Route(`source.list`) %}">Sources</a></h3>
     {% if len(p.Sources) == 0 %}
     <p>no sources available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
@@ -33,7 +57,7 @@
     <table>
       <thead>
         <tr>
-          <th>Source</th>
+          <th>Name</th>
           <th>Description</th>
           <th>Type</th>
           <th></th>
@@ -47,9 +71,9 @@
           </td>
           <td>{%s s.Description %}</td>
           <td>{%s s.Type.String() %}</td>
-          <td>
+          <td class="shrink">
             <a href="{%s as.Route(`source.refresh`, `key`, s.Key) %}"><button type="button">refresh</button></a>
-            <a href="{%s as.Route(`workspace`, `key`, s.Key) %}"><button type="button">workspace</button></a>
+            <a href="{%s as.Route(`workspace.source`, `key`, s.Key) %}"><button type="button">workspace</button></a>
           </td>
         </tr>
         {% endfor %}

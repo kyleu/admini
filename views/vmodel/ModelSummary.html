@@ -15,7 +15,7 @@
     </label>
     <div class="bd">
       <div>
-        <a href="{%= vutil.WorkspaceLink(as, schemaKey, model.Path()...) %}"><button type="button">View</button></a>
+        <a href="{%= vutil.WorkspaceSourceLink(as, schemaKey, model.Path()...) %}"><button type="button">View</button></a>
       </div>
       {% if len(model.Fields) == 0 %}
       <div>No fields in {%s model.Type.String() %}</div>

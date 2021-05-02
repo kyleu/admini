@@ -41,7 +41,7 @@
         <input id="{%s i.Key %}-input" type="checkbox" hidden />
       {% endif %}
       {%= vutil.Indent(true, indent + 2) %}
-      <label for="{%s i.Key %}-input" title="{%s i.Description %}">
+      {% if final %}<label class="final" for="{%s i.Key %}-input" title="{%s i.Description %}">{% else %}<label for="{%s i.Key %}-input" title="{%s i.Description %}">{% endif %}
         {% if i.Route != "" %}
           {%= vutil.Indent(true, indent + 3) %}
           <a class="label-link" href="{%s i.Route %}">{%= components.SVGRef(`link`, 15, 15, ``, ``, ps) %}</a>

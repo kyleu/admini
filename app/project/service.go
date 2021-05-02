@@ -42,17 +42,17 @@ func (s *Service) List() (Projects, error) {
 }
 
 func (s *Service) Load(key string) (*Project, error) {
-	p := filepath.Join(s.root, key, "source.json")
+	p := filepath.Join(s.root, key, "project.json")
 
 	out, err := s.files.ReadFile(p)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read source ["+key+"]: %w", err)
+		return nil, fmt.Errorf("unable to read project ["+key+"]: %w", err)
 	}
 
 	ret := &Project{}
 	err = util.FromJSON(out, ret)
 	if err != nil {
-		return nil, fmt.Errorf("unable : %w", err)
+		return nil, fmt.Errorf("unable to parse project: %w", err)
 	}
 
 	ret.Key = key

@@ -1,11 +1,9 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type WorkspaceOverview struct {
   layout.Basic
-  Schema *schema.Schema
 } %}
 
 {% func (p *WorkspaceOverview) Body(as *app.State, ps *cutil.PageState) %}

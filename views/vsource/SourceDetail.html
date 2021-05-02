@@ -18,7 +18,7 @@
     <h3>{%= components.SVGRef(p.Source.Type.Icon, 0, 0, ``, ``, ps) %} {%s p.Source.Title %}</h3>
     <p>
       <a href="{%s as.Route(`source.refresh`, `key`, p.Source.Key) %}"><button type="button">Refresh</button></a>
-      <a href="{%s as.Route(`workspace`, `key`, p.Source.Key) %}"><button type="button">Workspace</button></a>
+      <a href="{%s as.Route(`workspace.source`, `key`, p.Source.Key) %}"><button type="button">Workspace</button></a>
       <a href="#modal-source"><button type="button">Source</button></a>
       <a href="#modal-schema"><button type="button">Schema</button></a>
     </p>

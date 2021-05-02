@@ -6,9 +6,9 @@ import (
 )
 
 type Project struct {
-	Key string
-	Title string
-	Schemata []string
+	Key string `json:"key"`
+	Title string `json:"title,omitempty"`
+	Schemata []string `json:"schemata"`
 }
 
 func (p Project) ModelsByPackage() *schema.ModelPackage {
@@ -18,7 +18,7 @@ func (p Project) ModelsByPackage() *schema.ModelPackage {
 type Projects []*Project
 
 type View struct {
-	Project *Project
-	Schemata map[string]*schema.Schema
-	Sources map[string]*source.Source
+	Project *Project `json:"project"`
+	Schemata map[string]*schema.Schema `json:"schemata,omitempty"`
+	Sources map[string]*source.Source `json:"sources,omitempty"`
 }
