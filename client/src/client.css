@@ -1,5 +1,9 @@
-@import "./style/core.css";
 @import "./style/reset.css";
+
+@import "./style/theme-light.css";
+@import "./style/theme-dark.css";
+
+@import "./style/core.css";
 @import "./style/util.css";
 
 @import "./style/table.css";

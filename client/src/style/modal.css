@@ -1,5 +1,5 @@
 .modal {
-  border: 1px solid #ccc;
+  border: var(--border);
   border-radius: 8px;
   z-index: 100;
 }
@@ -11,7 +11,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(77, 77, 77, .7);
+  background: var(--color-modal-backdrop);
 }
 
 .modal {
@@ -40,19 +40,19 @@
   min-width: 50%;
   max-width: 90%;
   max-height: 90%;
-  background: #fff;
+  background: var(--color-background);
   display: flex;
   flex-direction: column;
 }
 
 .modal-content .modal-header {
   flex-grow: 0;
-  padding: 12px;
+  padding: var(--padding);
 }
 
 .modal-content .modal-body {
   flex-grow: 1;
-  padding: 12px;
+  padding: var(--padding);
   overflow: auto;
   height: 100%;
 }
@@ -64,6 +64,4 @@
 .modal-close {
   float: right;
   font-size: 150%;
-  color: #585858;
-  text-decoration: none;
 }

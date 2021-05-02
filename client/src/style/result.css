@@ -27,6 +27,6 @@
   font-weight: normal;
   position: sticky;
   left: 0;
-  padding-right: 6px;
-  background-color: #fff;
+  padding-right: var(--padding-small);
+  background-color: var(--color-background);
 }

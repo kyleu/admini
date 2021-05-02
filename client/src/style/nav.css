@@ -1,11 +1,8 @@
 #navbar {
   height: 48px;
   display: flex;
-  background-color: #4f9abd;
-}
-
-#navbar a {
-  text-decoration: none;
+  color: var(--color-nav-foreground);
+  background-color: var(--color-nav-background);
 }
 
 #navbar .logo {
@@ -24,11 +21,18 @@
 }
 
 #navbar .breadcrumbs a {
-  text-decoration: none;
-  color: #000;
+  color: var(--color-nav-foreground);
 }
 
 #navbar .profile {
   margin: 12px;
+}
+
+#navbar .svg-fill, .nav-svg-fill {
+  fill: var(--color-nav-foreground);
+}
+
+#navbar .svg-stroke, .nav-svg-stroke {
+  stroke: var(--color-nav-foreground);
 }
 

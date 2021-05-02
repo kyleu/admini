@@ -12,10 +12,12 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
 }
 
 main {
-  padding: 12px;
+  padding: var(--padding);
 }
 
 #container-body {
@@ -26,4 +28,17 @@ main {
 #content {
   flex-grow: 1;
   overflow: auto;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: var(--link-text-decoration);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: var(--color-link-visited);
 }

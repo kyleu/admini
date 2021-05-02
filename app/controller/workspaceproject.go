@@ -8,6 +8,7 @@ import (
 	"github.com/kyleu/admini/app/workspace"
 	"github.com/kyleu/admini/views/vworkspace"
 	"net/http"
+	"strings"
 
 	"github.com/kyleu/admini/app"
 )
@@ -45,5 +46,5 @@ func loadProject(r *http.Request, w http.ResponseWriter, projectKey string, path
 		return render(r, w, as, &vworkspace.WorkspaceOverview{}, ps)
 	}
 
-	return ersp("unhandled project")
+	return ersp("unhandled [%v] project action [%v]", prj.Key, strings.Join(paths, "/"))
 }

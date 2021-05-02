@@ -5,7 +5,7 @@
 }
 
 .accordion li {
-  border-top: 1px solid #ddd;
+  border-top: var(--border);
 }
 .accordion li:first-child {
   border-top: none;
@@ -13,13 +13,13 @@
 
 .accordion .bd {
   display: none;
-  padding: 6px;
+  padding: var(--padding-small);
 }
 
 .accordion label {
   display: block;
   cursor: pointer;
-  padding: 6px;
+  padding: var(--padding-small);
 }
 
 .accordion input[type=checkbox]:checked ~ .bd {
@@ -37,8 +37,4 @@
 }
 .accordion input[type=checkbox]:checked ~ label .collapse {
   display: block;
-}
-
-.accordion .expand, .accordion .collapse {
-  margin-top: 2px;
 }

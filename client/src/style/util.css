@@ -1,7 +1,3 @@
-a {
-  text-decoration: none;
-}
-
 .left {
   float: left;
 }
@@ -16,7 +12,8 @@ a {
 
 .expand, .collapse {
   float: left;
-  margin-top: 1px;
+  margin-top: 2px;
+  margin-right: 4px;
 }
 
 .sort-title {
@@ -41,4 +38,12 @@ a {
 .inline-icon {
   float: left;
   margin-right: 4px;
+}
+
+.svg-fill {
+  fill: var(--color-foreground);
+}
+
+.svg-stroke {
+  stroke: var(--color-foreground);
 }

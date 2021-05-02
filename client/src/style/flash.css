@@ -4,14 +4,14 @@
 
 #flash-container label {
   float: right;
-  padding: 12px;
+  padding: var(--padding);
   cursor: pointer;
 }
 
 #flash-container .flash-success {
-  color: green;
+  color: var(--color-success);
 }
 
 #flash-container .flash-error {
-  color: red;
+  color: var(--color-error);
 }
