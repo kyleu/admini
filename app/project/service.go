@@ -2,9 +2,10 @@ package project
 
 import (
 	"fmt"
+	"path/filepath"
+
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
-	"path/filepath"
 
 	"github.com/kyleu/admini/app/loader"
 

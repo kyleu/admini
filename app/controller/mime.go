@@ -8,6 +8,8 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
+const jsonMIME = "application/json"
+
 func respondJSON(w http.ResponseWriter, filename string, body interface{}) (string, error) {
 	return respondMIME(filename, "application/json", "json", util.ToJSONBytes(body, true), w)
 }
@@ -43,9 +45,17 @@ func getContentType(r *http.Request) string {
 	if idx := strings.Index(ret, ";"); idx > -1 {
 		ret = ret[0:idx]
 	}
-	return strings.TrimSpace(ret)
+	t := r.URL.Query().Get("t")
+	switch t {
+	case "":
+		return strings.TrimSpace(ret)
+	case "json":
+		return jsonMIME
+	default:
+		return strings.TrimSpace(ret)
+	}
 }
 
 func isContentTypeJSON(c string) bool {
-	return c == "application/json" || c == "text/json"
+	return c == jsonMIME || c == "text/json"
 }

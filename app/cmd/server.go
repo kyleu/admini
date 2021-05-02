@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/project"
 	"net/http"
+
+	"github.com/kyleu/admini/app/project"
 
 	"github.com/kyleu/admini/app/loader/lmock"
 	"github.com/kyleu/admini/app/loader/lpostgres"

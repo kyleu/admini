@@ -8,11 +8,11 @@ import (
 
 func For(as *app.State) Items {
 	return Items{
-		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "star", Route: as.Route("sandbox.list"), Children: sandboxItems(as)},
-		Separator,
 		&Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: as.Route("project.list"), Children: projectItems(as)},
 		Separator,
 		&Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Icon: "star", Route: as.Route("source.list"), Children: sourceItems(as)},
+		Separator,
+		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "star", Route: as.Route("sandbox.list"), Children: sandboxItems(as)},
 		Separator,
 		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "star", Route: as.Route("settings")},
 		&Item{Key: "modules", Title: "Modules", Description: "Lists the Go modules used by " + util.AppName, Icon: "star", Route: as.Route("modules")},
@@ -44,9 +44,9 @@ func projectItems(as *app.State) Items {
 	ret := make(Items, 0, len(ss))
 	for _, s := range ss {
 		ret = append(ret, &Item{
-			Key:         s.Key,
-			Title:       s.Title,
-			Route:       as.Route("project.detail", "key", s.Key),
+			Key:   s.Key,
+			Title: s.Title,
+			Route: as.Route("project.detail", "key", s.Key),
 		})
 	}
 

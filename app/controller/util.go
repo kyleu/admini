@@ -37,7 +37,8 @@ func SetState(a *app.State) {
 
 func render(r *http.Request, w http.ResponseWriter, appState *app.State, page layout.Page, pageState *cutil.PageState, bc ...string) (string, error) {
 	pageState.Breadcrumbs = bc
-	if pageState.Data != nil && isContentTypeJSON(getContentType(r)) {
+	ct := getContentType(r)
+	if pageState.Data != nil && isContentTypeJSON(ct) {
 		return respondJSON(w, "", pageState.Data)
 	}
 	views.WriteRender(w, page, appState, pageState)

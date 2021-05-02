@@ -10,11 +10,11 @@ import (
 )
 
 type State struct {
-	Router  *mux.Router
-	Files   filesystem.FileLoader
-	Sources *source.Service
+	Router   *mux.Router
+	Files    filesystem.FileLoader
+	Sources  *source.Service
 	Projects *project.Service
-	Loaders *loader.Service
+	Loaders  *loader.Service
 }
 
 func (a *State) Route(act string, pairs ...string) string {
