@@ -3,7 +3,7 @@
 {% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
-{% import "github.com/kyleu/admini/views/vworkspace" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func ModelSummary(schemaKey string, idx int, model *schema.Model, as *app.State, ps *cutil.PageState) %}
   <li>
@@ -15,7 +15,7 @@
     </label>
     <div class="bd">
       <div>
-        <a href="{%= vworkspace.WorkspaceLink(as, schemaKey, model.Path()...) %}"><button type="button">View</button></a>
+        <a href="{%= vutil.WorkspaceLink(as, schemaKey, model.Path()...) %}"><button type="button">View</button></a>
       </div>
       {% if len(model.Fields) == 0 %}
       <div>No fields in {%s model.Type.String() %}</div>

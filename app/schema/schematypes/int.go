@@ -1,5 +1,7 @@
 package schematypes
 
+import "fmt"
+
 const KeyInt = "int"
 
 type Int struct {
@@ -13,6 +15,9 @@ func (t *Int) Key() string {
 }
 
 func (t *Int) String() string {
+	if t.BitSize > 0 {
+		return fmt.Sprintf("%v%v", t.Key(), t.BitSize)
+	}
 	return t.Key()
 }
 

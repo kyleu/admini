@@ -1,5 +1,6 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project" %}
 {% import "github.com/kyleu/admini/app/sandbox" %}
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/app/util" %}
@@ -8,6 +9,7 @@
 {% code type Home struct {
   layout.Basic
   Sources []*source.Source
+  Projects []*project.Project
 } %}
 
 {% func (p *Home) Body(as *app.State, ps *cutil.PageState) %}

@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/kyleu/admini/app/filesystem"
 	"github.com/kyleu/admini/app/loader"
+	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
 )
@@ -12,6 +13,7 @@ type State struct {
 	Router  *mux.Router
 	Files   filesystem.FileLoader
 	Sources *source.Service
+	Projects *project.Service
 	Loaders *loader.Service
 }
 

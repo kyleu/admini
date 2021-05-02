@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/project"
 	"net/http"
 
 	"github.com/kyleu/admini/app/loader/lmock"
@@ -30,8 +31,9 @@ func StartServer(address string, port uint16) error {
 	ls.Set(schema.OriginPostgres, lpostgres.NewLoader())
 	ls.Set(schema.OriginMock, lmock.NewLoader())
 	ss := source.NewService("source", f, ls)
+	ps := project.NewService("project", f, ss, ls)
 
-	State := &app.State{Router: r, Files: f, Sources: ss, Loaders: ls}
+	State := &app.State{Router: r, Files: f, Sources: ss, Projects: ps, Loaders: ls}
 	controller.SetState(State)
 
 	return http.ListenAndServe(fmt.Sprintf("%s:%v", address, port), r)
