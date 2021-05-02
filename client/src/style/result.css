@@ -24,18 +24,3 @@
   white-space: nowrap;
   background-color: var(--color-background);
 }
-
-.result-table thead th {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-.result-table tbody th {
-  font-weight: normal;
-  position: sticky;
-  left: 0;
-  padding-right: var(--padding-small);
-  background-color: var(--color-background);
-}

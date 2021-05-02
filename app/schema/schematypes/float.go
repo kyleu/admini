@@ -3,7 +3,7 @@ package schematypes
 const KeyFloat = "float"
 
 type Float struct {
-	BitSize int
+	Bits int
 }
 
 var _ Type = (*Float)(nil)
@@ -20,6 +20,6 @@ func (t *Float) Sortable() bool {
 	return true
 }
 
-func NewFloat(bitSize int) *Wrapped {
-	return Wrap(&Float{BitSize: bitSize})
+func NewFloat(bits int) *Wrapped {
+	return Wrap(&Float{Bits: bits})
 }

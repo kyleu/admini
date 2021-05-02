@@ -18,14 +18,6 @@
   </div>
 
   <div class="card">
-    <h3><a href="{%s as.Route(`sandbox.list`) %}">Sandboxes</a></h3>
-    <ul>
-      {% for _, s := range sandbox.AllSandboxes %}<li><a href="{%s as.Route(`sandbox.run`, `key`, s.Key) %}">{%s s.Title %}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <div class="card">
     <h3><a href="{%s as.Route(`project.list`) %}">Projects</a></h3>
     {% if len(p.Sources) == 0 %}
     <p>no projects available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
@@ -80,5 +72,13 @@
       </tbody>
     </table>
     {% endif %}
+  </div>
+
+  <div class="card">
+    <h3><a href="{%s as.Route(`sandbox.list`) %}">Sandboxes</a></h3>
+    <ul>
+      {% for _, s := range sandbox.AllSandboxes %}<li><a href="{%s as.Route(`sandbox.run`, `key`, s.Key) %}">{%s s.Title %}</a></li>
+      {% endfor %}
+    </ul>
   </div>
 {% endfunc %}

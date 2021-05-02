@@ -32,7 +32,7 @@
         {% for rIdx, row := range r.Data %}
           {%= ResultRow(rIdx, row, r.Fields, indent + 3, showNum, params, ps) %}
         {% endfor %}
-        {% if true %}
+        {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
           {%= vutil.Indent(true, indent + 3) %}
           <tr>
             <td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ps.URL) %}</td>
