@@ -2,6 +2,7 @@ package project
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/project/action"
 	"path/filepath"
 
 	"github.com/kyleu/admini/app/schema"
@@ -43,9 +44,10 @@ func (s *Service) List() (Projects, error) {
 }
 
 func (s *Service) Load(key string) (*Project, error) {
-	p := filepath.Join(s.root, key, "project.json")
+	dir := filepath.Join(s.root, key)
+	pf := filepath.Join(dir, "project.json")
 
-	out, err := s.files.ReadFile(p)
+	out, err := s.files.ReadFile(pf)
 	if err != nil {
 		return nil, fmt.Errorf("unable to read project ["+key+"]: %w", err)
 	}
@@ -60,6 +62,13 @@ func (s *Service) Load(key string) (*Project, error) {
 	if ret.Title == "" {
 		ret.Title = key
 	}
+
+	actions, err := action.Load(filepath.Join(dir, "actions"), s.files)
+	if err != nil {
+		return nil, fmt.Errorf("unable to load actions: %w", err)
+	}
+	ret.Actions = actions
+
 	return ret, nil
 }
 

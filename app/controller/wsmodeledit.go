@@ -14,7 +14,6 @@ func modelEdit(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 }
 
 func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (string, error) {
-	println(strings.Join(req.Path, "/"))
 	changes, err := cutil.ParseForm(req.R)
 	if err != nil {
 		return ersp("unable to parse changes: %w", err)

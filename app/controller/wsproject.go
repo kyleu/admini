@@ -42,7 +42,9 @@ func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
 			return render(r, w, as, &vworkspace.WorkspaceOverview{}, ps)
 		}
 
-		wr := &workspaceRequest{T: workspaceProjectRoute, K: prj.Key, W: w, R: r, AS: as, PS: ps, I: nil, Path: paths, Src: nil}
+		action, remaining := prj.Actions.Get(paths)
+
+		wr := &workspaceRequest{T: workspaceProjectRoute, K: prj.Key, W: w, R: r, AS: as, PS: ps, I: action, Path: remaining, Src: nil}
 		return handle(wr)
 	})
 }

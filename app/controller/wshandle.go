@@ -2,6 +2,8 @@ package controller
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/project"
+	"github.com/kyleu/admini/app/project/action"
 	"net/http"
 	"strings"
 
@@ -27,10 +29,13 @@ type workspaceRequest struct {
 	I    interface{}
 	Path []string
 	Src  *source.Source
+	Prj  *project.Project
 }
 
 func handle(req *workspaceRequest) (string, error) {
 	switch t := req.I.(type) {
+	case *action.Action:
+		return handleAction(req, t)
 	case *model.Model:
 		return handleModel(req, t)
 	case *model.Package:

@@ -2,9 +2,8 @@ package workspace
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/kyleu/admini/app/model"
+	"path/filepath"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/menu"
@@ -30,14 +29,14 @@ func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 		menu.Separator,
 	}
 
+	path := as.Route("workspace.source", "key", source)
+
 	mp := sch.ModelsByPackage()
-
 	for _, m := range mp.ChildModels {
-		ret = sourceMenuAddModel(as, source, ret, m)
+		ret = sourceMenuAddModel(ret, m, path)
 	}
-
 	for _, p := range mp.ChildPackages {
-		ret = sourceMenuAddPackage(as, source, ret, p, []string{})
+		ret = sourceMenuAddPackage(ret, p, path)
 	}
 
 	ret = append(ret, menu.Separator, menuItemBack)
@@ -45,17 +44,17 @@ func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	return ret
 }
 
-func sourceMenuAddModel(as *app.State, source string, ret menu.Items, m *model.Model) menu.Items {
+func sourceMenuAddModel(ret menu.Items, m *model.Model, path string) menu.Items {
 	return append(ret, &menu.Item{
 		Key:         m.Key,
 		Title:       m.Key,
 		Description: m.Type.String() + " model [" + m.Key + "]",
-		Route:       as.Route("workspace.source", "key", source) + "/" + m.PathString(),
+		Route:       filepath.Join(path, m.Key),
 	})
 }
 
-func sourceMenuAddPackage(as *app.State, source string, ret menu.Items, mp *model.Package, path []string) menu.Items {
-	path = append(path, mp.Key)
+func sourceMenuAddPackage(ret menu.Items, mp *model.Package, path string) menu.Items {
+	path = filepath.Join(path, mp.Key)
 	desc := fmt.Sprintf("package [%v], containing [%v] models", mp.Key, len(mp.ChildModels))
 
 	if len(mp.ChildPackages) > 0 {
@@ -65,15 +64,15 @@ func sourceMenuAddPackage(as *app.State, source string, ret menu.Items, mp *mode
 		Key:         mp.Key,
 		Title:       mp.Key,
 		Description: desc,
-		Route:       as.Route("workspace.source", "key", source) + "/" + strings.Join(path, "/"),
+		Route:       path,
 	}
 
 	for _, m := range mp.ChildModels {
-		i.Children = sourceMenuAddModel(as, source, i.Children, m)
+		i.Children = sourceMenuAddModel(i.Children, m, path)
 	}
 
 	for _, p := range mp.ChildPackages {
-		i.Children = sourceMenuAddPackage(as, source, i.Children, p, path)
+		i.Children = sourceMenuAddPackage(i.Children, p, path)
 	}
 
 	return append(ret, i)
