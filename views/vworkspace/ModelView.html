@@ -1,0 +1,42 @@
+{% import "strings" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% code type ModelView struct {
+  layout.Basic
+  CtxT string
+  CtxK string
+  Model *model.Model
+  Result []interface{}
+} %}
+
+{% func (p *ModelView) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    {% code
+      rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(), p.Result)
+      if err != nil {
+        panic(err)
+      }
+      link := append(append(p.Model.Path(), `x`), rowPK...)
+    %}
+    <div class="right"><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, link...) %}">Edit</a></div>
+    <h3>{%s strings.Join(rowPK, "/") %}</h3>
+    <em><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, p.Model.Path()...) %}">{%s p.Model.Key %}</a></em>
+    <div class="spacer"></div>
+    <table>
+      <tbody>
+        {% for idx, f := range p.Model.Fields %}
+          <tr>
+            <th class="shrink">{%s f.Key %}</th>
+            <td class="overflow">{%= fieldview.Any(p.Result[idx], f.Type) %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endfunc %}
+

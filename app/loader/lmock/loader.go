@@ -3,6 +3,8 @@ package lmock
 import (
 	"fmt"
 
+	"github.com/kyleu/admini/app/model"
+
 	"github.com/kyleu/admini/app/util"
 
 	"github.com/kyleu/admini/app/loader"
@@ -31,15 +33,19 @@ func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
 	return o.Schema, nil
 }
 
-func (l *Loader) List(source string, cfg []byte, model *schema.Model, params util.ParamSet) (*result.Result, error) {
+func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error) {
 	o, ok := mockData[source]
 	if !ok {
 		return nil, fmt.Errorf("no mock data for [%v]", source)
 	}
 
-	return o.Data[model.Key], nil
+	return o.Data[m.Key], nil
 }
 
-func (l *Loader) Count(source string, cfg []byte, model *schema.Model) (int, error) {
+func (l *Loader) Count(source string, cfg []byte, m *model.Model) (int, error) {
 	return 1000, nil
+}
+
+func (l *Loader) Get(key string, config []byte, m *model.Model, ids []interface{}) (*result.Result, error) {
+	panic("implement me")
 }

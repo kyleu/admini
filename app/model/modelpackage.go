@@ -1,25 +1,25 @@
-package schema
+package model
 
 import (
 	"github.com/kyleu/admini/app/util"
 )
 
-type ModelPackage struct {
-	Key           string        `json:"key"`
-	Pkg           util.Pkg      `json:"pkg"`
-	ChildModels   Models        `json:"childModels,omitempty"`
-	ChildPackages ModelPackages `json:"childPackages,omitempty"`
+type Package struct {
+	Key           string   `json:"key"`
+	Pkg           util.Pkg `json:"pkg"`
+	ChildModels   Models   `json:"childModels,omitempty"`
+	ChildPackages Packages `json:"childPackages,omitempty"`
 }
 
-func (p *ModelPackage) Path() []string {
+func (p *Package) Path() []string {
 	return append([]string{}, p.Pkg.Push(p.Key)...)
 }
 
-func (p *ModelPackage) PathString() string {
+func (p *Package) PathString() string {
 	return p.Pkg.ToPath(p.Key)
 }
 
-func (p *ModelPackage) GetPkg(key string, createIfMissing bool) *ModelPackage {
+func (p *Package) GetPkg(key string, createIfMissing bool) *Package {
 	for _, x := range p.ChildPackages {
 		if x.Key == key {
 			return x
@@ -30,14 +30,14 @@ func (p *ModelPackage) GetPkg(key string, createIfMissing bool) *ModelPackage {
 		if pkgs[0] == "_root" {
 			pkgs = pkgs[1:]
 		}
-		x := &ModelPackage{Key: key, Pkg: pkgs}
+		x := &Package{Key: key, Pkg: pkgs}
 		p.ChildPackages = append(p.ChildPackages, x)
 		return x
 	}
 	return nil
 }
 
-func (p *ModelPackage) GetModel(key string) *Model {
+func (p *Package) GetModel(key string) *Model {
 	for _, x := range p.ChildModels {
 		if x.Key == key {
 			return x
@@ -46,7 +46,7 @@ func (p *ModelPackage) GetModel(key string) *Model {
 	return nil
 }
 
-func (p *ModelPackage) Add(pkg util.Pkg, m *Model) {
+func (p *Package) Add(pkg util.Pkg, m *Model) {
 	if len(pkg) == 0 {
 		p.ChildModels = append(p.ChildModels, m)
 	} else {
@@ -55,7 +55,7 @@ func (p *ModelPackage) Add(pkg util.Pkg, m *Model) {
 	}
 }
 
-func (p *ModelPackage) Get(paths []string) (interface{}, []string) {
+func (p *Package) Get(paths []string) (interface{}, []string) {
 	if len(paths) == 0 {
 		return p, nil
 	}
@@ -69,10 +69,10 @@ func (p *ModelPackage) Get(paths []string) (interface{}, []string) {
 	return m, paths[1:]
 }
 
-type ModelPackages []*ModelPackage
+type Packages []*Package
 
-func ToModelPackage(models Models) *ModelPackage {
-	ret := &ModelPackage{Key: "_root"}
+func ToModelPackage(models Models) *Package {
+	ret := &Package{Key: "_root"}
 	for _, m := range models {
 		ret.Add(m.Pkg, m)
 	}

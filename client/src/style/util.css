@@ -10,6 +10,10 @@
   clear: both;
 }
 
+.spacer {
+  height: 24px;
+}
+
 .expand, .collapse {
   float: left;
   margin-top: 2px;

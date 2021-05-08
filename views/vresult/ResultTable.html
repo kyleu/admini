@@ -1,11 +1,13 @@
 {% import "fmt" %}
+{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ResultTable(r *result.Result, indent int, showNum bool, params *util.Params, ps *cutil.PageState) %}{% stripspace %}
+{% func ResultTable(ctxT string, ctxK string, r *result.Result, model *model.Model, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <div class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
@@ -30,13 +32,12 @@
       {%= vutil.Indent(true, indent + 2) %}
       <tbody>
         {% for rIdx, row := range r.Data %}
-          {%= ResultRow(rIdx, row, r.Fields, indent + 3, showNum, params, ps) %}
+          {%= ResultRow(ctxT, ctxK, rIdx, row, r.Fields, model, indent + 3, showNum, params, as, ps) %}
         {% endfor %}
+
         {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
           {%= vutil.Indent(true, indent + 3) %}
-          <tr>
-            <td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ps.URL) %}</td>
-          </tr>
+          <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ps.URL) %}</td></tr>
         {% endif %}
       {%= vutil.Indent(true, indent + 2) %}
       </tbody>

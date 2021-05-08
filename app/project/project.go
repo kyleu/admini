@@ -1,6 +1,7 @@
 package project
 
 import (
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
 )
@@ -11,7 +12,7 @@ type Project struct {
 	Schemata []string `json:"schemata"`
 }
 
-func (p Project) ModelsByPackage() *schema.ModelPackage {
+func (p Project) ModelsByPackage() *model.Package {
 	return nil
 }
 

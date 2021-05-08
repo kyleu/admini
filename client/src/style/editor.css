@@ -1,0 +1,24 @@
+.editor label {
+  display: block;
+}
+
+.editor input[type='color'],
+.editor input[type='date'],
+.editor input[type='datetime'],
+.editor input[type='datetime-local'],
+.editor input[type='email'],
+.editor input[type='month'],
+.editor input[type='number'],
+.editor input[type='password'],
+.editor input[type='search'],
+.editor input[type='tel'],
+.editor input[type='text'],
+.editor input[type='url'],
+.editor input[type='week'],
+.editor input:not([type]),
+.editor textarea,
+.editor select {
+  border: 0.1rem solid #d1d1d1;
+  padding: 6px 12px;
+  width: 100%;
+}

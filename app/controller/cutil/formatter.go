@@ -42,8 +42,8 @@ func Format(v interface{}) (string, error) {
 	}
 
 	ret := x.String()
-	ret = strings.ReplaceAll(ret, "\n</span>", "<br></span>")
-	ret = strings.ReplaceAll(ret, "</span>\n", "</span><br>")
+	ret = strings.ReplaceAll(ret, "\n</span>", "<br /></span>")
+	ret = strings.ReplaceAll(ret, "</span>\n", "</span><br />")
 	ret = strings.ReplaceAll(ret, "\n", "")
 	return ret, nil
 }

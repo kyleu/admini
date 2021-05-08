@@ -2,8 +2,10 @@ package lpostgres
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/kyleu/admini/app/loader"
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/source/postgres"
 
 	"github.com/kyleu/admini/app/database"
@@ -61,4 +63,20 @@ func (l *Loader) openDatabase(source string, cfg []byte) (*database.Service, err
 
 	l.cache[source] = db
 	return db, nil
+}
+
+func forTable(m *model.Model) (string, string) {
+	cols := make([]string, 0, len(m.Fields))
+	for _, f := range m.Fields {
+		def := "\"" + f.Key + "\""
+		cols = append(cols, def)
+	}
+	tbl := "\"" + m.Key + "\""
+	if len(m.Pkg) > 0 {
+		l := m.Pkg.Last()
+		if l != publicSchema {
+			tbl = "\"" + l + "\"." + tbl
+		}
+	}
+	return strings.Join(cols, ", "), tbl
 }

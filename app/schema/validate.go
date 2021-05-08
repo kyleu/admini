@@ -3,6 +3,8 @@ package schema
 import (
 	"strings"
 
+	"github.com/kyleu/admini/app/model"
+
 	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
@@ -37,7 +39,7 @@ func validateSchema(s *Schema) *ValidationResult {
 	return r
 }
 
-func validateModel(r *ValidationResult, s *Schema, m *Model) *ValidationResult {
+func validateModel(r *ValidationResult, s *Schema, m *model.Model) *ValidationResult {
 	encountered := map[string]bool{}
 	for _, f := range m.Fields {
 		if encountered[f.Key] {

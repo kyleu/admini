@@ -1,6 +1,7 @@
 package lmock
 
 import (
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
@@ -14,11 +15,11 @@ type mockObj struct {
 var mockData = map[string]*mockObj{
 	"mock": {
 		Schema: &schema.Schema{
-			Models: schema.Models{
+			Models: model.Models{
 				{
 					Key:  "a1x1",
 					Pkg:  util.Pkg{"a", "1", "x"},
-					Type: schema.ModelTypeStruct,
+					Type: model.ModelTypeStruct,
 				},
 			},
 		},

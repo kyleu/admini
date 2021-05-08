@@ -24,8 +24,7 @@
 {% if len(ps.Icons) > 0 %}<div class="icon-list" style="display: none;">{% for _, icon := range ps.Icons %}
   {%= components.SVG(icon) %}{% endfor %}
 </div>
-{% endif %}<noscript>{%s cutil.NoScript %}</noscript>
-</body>
+{% endif %}</body>
 </html>
 {% endfunc %}
 

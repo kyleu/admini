@@ -63,6 +63,22 @@ insert into pktest (
   0, 'a', '00000000-0000-0000-0000-000000000000'
 );
 
+create table pktestrel (
+  id integer,
+  foo varchar(100),
+  fk_id integer,
+  fk_foo varchar(100),
+  bar uuid unique,
+  primary key (id, foo),
+  constraint fk_pktestrel foreign key(fk_id, fk_foo) references pktest(id, foo)
+);
+
+insert into pktestrel (
+  id, foo, fk_id, fk_foo, bar
+) values (
+  0, 'a', 0, 'a', '00000000-0000-0000-0000-000000000000'
+);
+
 create view testview as select * from simple;
 
 -- {% endfunc %}

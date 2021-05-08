@@ -4,8 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/kyleu/admini/app/field"
+	"github.com/kyleu/admini/app/model"
+
 	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries"
 )
@@ -38,12 +40,12 @@ func (cr *columnResult) IsNullable() bool {
 	return cr.Nullable == pgYes
 }
 
-func (cr *columnResult) AsField(readOnlyOverride bool) *schema.Field {
+func (cr *columnResult) AsField(readOnlyOverride bool) *field.Field {
 	var d interface{}
 	if cr.Default.Valid {
 		d = cr.Default.String
 	}
-	return &schema.Field{
+	return &field.Field{
 		Key:      cr.Name,
 		Type:     typeFor(cr.UDTName, cr),
 		Default:  d,
@@ -53,7 +55,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool) *schema.Field {
 	}
 }
 
-func loadColumns(models schema.Models, db *database.Service) error {
+func loadColumns(models model.Models, db *database.Service) error {
 	cols := []*columnResult{}
 	err := db.Select(&cols, queries.ListColumns(db.SchemaName), nil)
 	if err != nil {
@@ -65,7 +67,7 @@ func loadColumns(models schema.Models, db *database.Service) error {
 		if mod == nil {
 			return fmt.Errorf("no table [%v] found among [%v] candidates", col.Table, len(models))
 		}
-		err = mod.AddField(col.AsField(mod.Type == schema.ModelTypeInterface))
+		err = mod.AddField(col.AsField(mod.Type == model.ModelTypeInterface))
 		if err != nil {
 			return fmt.Errorf("can't add field: %w", err)
 		}

@@ -56,6 +56,7 @@ func onTestbed(st *app.State) (interface{}, error) {
 		{Key: "tables", SQL: queries.ListTables(sch)},
 		{Key: "columns", SQL: queries.ListColumns(sch)},
 		{Key: "indexes", SQL: queries.ListIndexes(sch)},
+		{Key: "fks", SQL: queries.ListForeignKeys(sch)},
 	}
 
 	for _, q := range x {

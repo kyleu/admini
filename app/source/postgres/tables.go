@@ -3,8 +3,9 @@ package postgres
 import (
 	"fmt"
 
+	"github.com/kyleu/admini/app/model"
+
 	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries"
 )
@@ -16,27 +17,27 @@ type tableResult struct {
 	Owner  string `db:"owner"`
 }
 
-func (t tableResult) ToModel() *schema.Model {
-	ret := &schema.Model{
+func (t tableResult) ToModel() *model.Model {
+	ret := &model.Model{
 		Key: t.Name,
 		Pkg: util.Pkg{t.Schema},
 	}
 
 	switch t.Type {
 	case "table":
-		ret.Type = schema.ModelTypeStruct
+		ret.Type = model.ModelTypeStruct
 	case "view":
-		ret.Type = schema.ModelTypeInterface
+		ret.Type = model.ModelTypeInterface
 	case "sequence":
-		ret.Type = schema.ModelTypeSequence
+		ret.Type = model.ModelTypeSequence
 	default:
 		util.LogWarn("unknown model type [" + t.Type + "]")
-		ret.Type = schema.ModelTypeUnknown
+		ret.Type = model.ModelTypeUnknown
 	}
 	return ret
 }
 
-func loadTables(db *database.Service) (schema.Models, error) {
+func loadTables(db *database.Service) (model.Models, error) {
 	tables := []*tableResult{}
 	err := db.Select(&tables, queries.ListTables(db.SchemaName), nil)
 	if err != nil {
@@ -45,7 +46,7 @@ func loadTables(db *database.Service) (schema.Models, error) {
 
 	util.LogInfo(fmt.Sprintf("loading [%v] tables", len(tables)))
 
-	ret := make(schema.Models, 0, len(tables))
+	ret := make(model.Models, 0, len(tables))
 	for _, t := range tables {
 		ret = append(ret, t.ToModel())
 	}

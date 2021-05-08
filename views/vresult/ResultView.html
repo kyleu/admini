@@ -1,15 +1,18 @@
+{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ResultView(r *result.Result, indent int, params *util.Params, ps *cutil.PageState) %}{% stripspace %}
+{% func ResultView(ctxT string, ctxK string, r *result.Result, model *model.Model, indent int, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   <div class="card">
     {%= vutil.Indent(true, indent) %}
-    <div class="right">{%d len(r.Data) %}{% space %}rows</div>
+    <div class="right">{%= components.Plural(len(r.Data), `row`, `rows`) %}</div>
     {%= vutil.Indent(true, indent) %}
     <h3>{%s r.Title %}</h3>
-    {%= ResultTable(r, indent, false, params, ps) %}
+    {%= ResultTable(ctxT, ctxK, r, model, indent, false, params, as, ps) %}
   {%= vutil.Indent(true, indent - 1) %}
   </div>
 {% endstripspace %}{% endfunc %}

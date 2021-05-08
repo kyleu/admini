@@ -2,25 +2,23 @@ package schema
 
 import (
 	"fmt"
+
+	"github.com/kyleu/admini/app/model"
 )
 
 type Schema struct {
-	Paths           Paths     `json:"paths,omitempty"`
-	Scalars         Scalars   `json:"scalars,omitempty"`
-	Models          Models    `json:"models,omitempty"`
-	Errors          []string  `json:"errors,omitempty"`
-	Metadata        *Metadata `json:"metadata,omitempty"`
-	modelsByPackage *ModelPackage
+	Paths           Paths        `json:"paths,omitempty"`
+	Scalars         Scalars      `json:"scalars,omitempty"`
+	Models          model.Models `json:"models,omitempty"`
+	Errors          []string     `json:"errors,omitempty"`
+	Metadata        *Metadata    `json:"metadata,omitempty"`
+	modelsByPackage *model.Package
 }
 
 type Schemata []*Schema
 
 func NewSchema(paths []string, md *Metadata) *Schema {
 	return &Schema{Paths: paths, Metadata: md}
-}
-
-func alreadyExists(t string, key string) string {
-	return t + " [" + key + "] already exists"
 }
 
 func (s *Schema) AddPath(path string) bool {
@@ -39,18 +37,18 @@ func (s *Schema) AddScalar(sc *Scalar) error {
 		return fmt.Errorf("nil scalar")
 	}
 	if s.Scalars.Get(sc.Pkg, sc.Key) != nil {
-		return fmt.Errorf(alreadyExists("scalar", sc.Key))
+		return fmt.Errorf("scalar [" + sc.Key + "] already exists")
 	}
 	s.Scalars = append(s.Scalars, sc)
 	return nil
 }
 
-func (s *Schema) AddModel(m *Model) error {
+func (s *Schema) AddModel(m *model.Model) error {
 	if m == nil {
 		return fmt.Errorf("nil model")
 	}
 	if s.Models.Get(m.Pkg, m.Key) != nil {
-		return fmt.Errorf(alreadyExists("model", m.Key))
+		return fmt.Errorf("model [" + m.Key + "] already exists")
 	}
 	s.Models = append(s.Models, m)
 	return nil
@@ -60,14 +58,14 @@ func (s *Schema) Validate() *ValidationResult {
 	return validateSchema(s)
 }
 
-func (s *Schema) ValidateModel(model *Model) *ValidationResult {
+func (s *Schema) ValidateModel(m *model.Model) *ValidationResult {
 	r := &ValidationResult{Schema: "TODO"}
-	return validateModel(r, s, model)
+	return validateModel(r, s, m)
 }
 
-func (s *Schema) ModelsByPackage() *ModelPackage {
+func (s *Schema) ModelsByPackage() *model.Package {
 	if s.modelsByPackage == nil {
-		s.modelsByPackage = ToModelPackage(s.Models)
+		s.modelsByPackage = model.ToModelPackage(s.Models)
 	}
 	return s.modelsByPackage
 }

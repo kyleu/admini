@@ -26,23 +26,23 @@
     </div>
   </div>
   <div class="card">
-    <h3>GetTables</h3>
-    <h4>SQL</h4>
+    <h3>Tables</h3>
     <pre>{%s queries.ListTables("") %}</pre>
-    <h4>Results</h4>
-    {%= vresult.ResultView(data["tables"].(*result.Result), 3, nil, ps) %}
+    {%= vresult.ResultView("", "", data["tables"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
   <div class="card">
-    <h3>GetColumns</h3>
-    <h4>SQL</h4>
+    <h3>Columns</h3>
     <pre>{%s queries.ListColumns("") %}</pre>
-    <h4>Results</h4>
-    {%= vresult.ResultView(data["columns"].(*result.Result), 3, nil, ps) %}
+    {%= vresult.ResultView("", "", data["columns"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
   <div class="card">
-    <h3>GetIndexes</h3>
+    <h3>Indexes</h3>
     <pre>{%s queries.ListIndexes("") %}</pre>
-    <h4>Results</h4>
-    {%= vresult.ResultView(data["indexes"].(*result.Result), 3, nil, ps) %}
+    {%= vresult.ResultView("", "", data["indexes"].(*result.Result), nil, 3, nil, as, ps) %}
+  </div>
+  <div class="card">
+    <h3>Foreign Keys</h3>
+    <pre>{%s queries.ListForeignKeys("") %}</pre>
+    {%= vresult.ResultView("", "", data["fks"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
 {% endfunc %}

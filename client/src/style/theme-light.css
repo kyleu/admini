@@ -9,6 +9,7 @@
   --link-text-decoration: none;
 
   --color-foreground: black;
+  --color-foreground-muted: #999;
   --color-background: white;
   --color-link: #2d414e;
   --color-link-visited: #406379;

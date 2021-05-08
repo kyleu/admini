@@ -1,0 +1,18 @@
+{% import "fmt" %}
+{% import "github.com/kyleu/admini/app/schema/schematypes" %}
+
+{% func Any(x interface{}, t schematypes.Type, k string) %}{% stripspace %}
+  {% code tk := t.Key() %}
+  {% if tk == "string" %}
+    {%= Default(x, t.String(), k) %}
+  {% elseif tk == "bool" %}
+    {%= Default(x, t.String(), k) %}
+  {% else %}
+    {%= Default(x, t.String(), k) %}
+  {% endif %}
+{% endstripspace %}{% endfunc %}
+
+{% func Default(x interface{}, t string, k string) %}{% stripspace %}
+  {% code msg := fmt.Sprintf("unhandled type: %v (%T)", t, x) %}
+  <input title="{%s msg %}" value="{%v x %}" name="{%s k %}" />
+{% endstripspace %}{% endfunc %}

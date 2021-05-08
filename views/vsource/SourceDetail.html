@@ -5,7 +5,6 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vmodel" %}
 
 {% code type SourceDetail struct {
   layout.Basic
@@ -27,7 +26,7 @@
   <div class="card">
     <ul class="accordion">
     {% if p.Schema != nil %}{% for idx, model := range p.Schema.Models %}
-      {%= vmodel.ModelSummary(p.Source.Key, idx, model, as, ps) %}
+      {%= ModelSummary(p.Source.Key, idx, model, as, ps) %}
     {% endfor %}{% endif %}
     </ul>
   </div>

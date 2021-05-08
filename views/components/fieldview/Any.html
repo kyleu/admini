@@ -4,7 +4,7 @@
 {% func Any(x interface{}, t schematypes.Type) %}{% stripspace %}
   {% code k := t.Key() %}
   {% if x == nil %}
-    &lt;nil&gt;
+    <span class="null" title="null value">∅</span>
   {% elseif k == "string" %}
     {%= String(x.(string)) %}
   {% elseif k == "bool" %}
@@ -16,5 +16,5 @@
 
 {% func Default(x interface{}, t string) %}{% stripspace %}
   {% code msg := fmt.Sprintf("unhandled type: %v (%T)", t, x) %}
-  <div title="{%s msg %}">{%v x %}</div>
+  <span title="{%s msg %}">{%v x %}</span>
 {% endstripspace %}{% endfunc %}

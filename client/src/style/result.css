@@ -15,12 +15,44 @@
   }
 }
 
+.result-table {
+  max-height: 80vh;
+  padding-bottom: 12px;
+}
+
 .result-table table {
   text-align: left;
   position: relative;
 }
 
-.result-table th {
-  white-space: nowrap;
+.result-table thead th {
   background-color: var(--color-background);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.result-table tbody th {
+  background-color: var(--color-background);
+  position: sticky;
+  left: 0;
+  font-weight: normal;
+}
+
+.result-table th {
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.result-table td {
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.result-table .null {
+  color: var(--color-foreground-muted);
+}
+
+.result-table .pre {
+  white-space: pre;
 }

@@ -1,0 +1,93 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+
+{% func ModelAttributes(m *model.Model, as *app.State, ps *cutil.PageState) %}
+  <ul class="accordion">
+    <li>
+      <input id="model-accordion-fields" type="checkbox" hidden />
+      <label for="model-accordion-fields">
+        {%= components.ExpandCollapse(3, ps) %}
+        {%= components.Plural(len(m.Fields), `field`, `fields`) %}
+      </label>
+      <div class="bd">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for _, f := range m.Fields %}<tr>
+              <td>{%= fieldview.String(f.Key) %}</td>
+              <td>{%= fieldview.Type(f.Type) %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </li>
+    <li>
+      <input id="model-accordion-indexes" type="checkbox" hidden />
+      <label for="model-accordion-indexes">
+        {%= components.ExpandCollapse(3, ps) %}
+        {%= components.Plural(len(m.Indexes), `index`, `indexes`) %}
+      </label>
+      <div class="bd">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Fields</th>
+              <th title="Unique constraint">Uniq</th>
+              <th title="Primary key">PK</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for _, i := range m.Indexes %}<tr>
+              <td>{%= fieldview.String(i.Key) %}</td>
+              <td>{%= fieldview.ArrayString(i.Fields) %}</td>
+              <td>{%= fieldview.Boolean(i.Unique) %}</td>
+              <td>{%= fieldview.Boolean(i.Primary) %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </li>
+    <li>
+      <input id="model-accordion-relationships" type="checkbox" hidden />
+      <label for="model-accordion-relationships">
+        {%= components.ExpandCollapse(3, ps) %}
+        {%= components.Plural(len(m.Relationships), `relationship`, `relationships`) %}
+      </label>
+      <div class="bd">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Fields</th>
+              <th>Target Package</th>
+              <th>Target Model</th>
+              <th>Target Fields</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for _, rel := range m.Relationships %}<tr>
+              <td>{%= fieldview.String(rel.Key) %}</td>
+              <td>{%= fieldview.ArrayString(rel.SourceFields) %}</td>
+              <td>{%= fieldview.Package(rel.TargetPkg) %}</td>
+              <td>{%= fieldview.String(rel.TargetModel) %}</td>
+              <td>{%= fieldview.ArrayString(rel.TargetFields) %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </li>
+  </ul>
+{% endfunc %}
+

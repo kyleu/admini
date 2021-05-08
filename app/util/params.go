@@ -40,7 +40,7 @@ func (p *Params) CloneOrdering(orderings ...*Ordering) *Params {
 
 // Indicates if there is more data past the provided page
 func (p *Params) HasNextPage(count int) bool {
-	if p.Limit == 0 {
+	if p == nil || p.Limit == 0 {
 		return false
 	}
 	return count > (p.Offset + p.Limit)
@@ -61,7 +61,7 @@ func (p *Params) NextPage() *Params {
 
 // Indicates if there is data prior to the provided page
 func (p *Params) HasPreviousPage() bool {
-	return p.Offset > 0
+	return p != nil && p.Offset > 0
 }
 
 // Returns a clone of this Params, configured for the previous page

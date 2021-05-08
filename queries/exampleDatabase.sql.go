@@ -87,34 +87,50 @@ insert into pktest (
   0, 'a', '00000000-0000-0000-0000-000000000000'
 );
 
+create table pktestrel (
+  id integer,
+  foo varchar(100),
+  fk_id integer,
+  fk_foo varchar(100),
+  bar uuid unique,
+  primary key (id, foo),
+  constraint fk_pktestrel foreign key(fk_id, fk_foo) references pktest(id, foo)
+);
+
+insert into pktestrel (
+  id, foo, fk_id, fk_foo, bar
+) values (
+  0, 'a', 0, 'a', '00000000-0000-0000-0000-000000000000'
+);
+
 create view testview as select * from simple;
 
 -- `)
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 }
 
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 func WriteExampleDatabase(qq422016 qtio422016.Writer) {
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	StreamExampleDatabase(qw422016)
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	qt422016.ReleaseWriter(qw422016)
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 }
 
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 func ExampleDatabase() string {
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	qb422016 := qt422016.AcquireByteBuffer()
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	WriteExampleDatabase(qb422016)
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	qs422016 := string(qb422016.B)
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	qt422016.ReleaseByteBuffer(qb422016)
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 	return qs422016
-//line queries/ExampleDatabase.sql:68
+//line queries/ExampleDatabase.sql:84
 }

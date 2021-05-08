@@ -1,0 +1,50 @@
+{% import "strings" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/views/components/fieldedit" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% code type ModelEdit struct {
+  layout.Basic
+  CtxT string
+  CtxK string
+  Model *model.Model
+  Result []interface{}
+} %}
+
+{% func (p *ModelEdit) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    {% code
+      rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(), p.Result)
+      if err != nil {
+        panic(err)
+      }
+      link := append(append(p.Model.Path(), `v`), rowPK...)
+      saveLink := append(append(p.Model.Path(), `x`), rowPK...)
+    %}
+    <h3>Edit <a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, link...) %}">{%s strings.Join(rowPK, "/") %}</a></h3>
+    <em><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, p.Model.Path()...) %}">{%s p.Model.Key %}</a></em>
+    <div class="spacer"></div>
+    <form class="editor" action="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, saveLink...) %}" method="post" enctype="application/x-www-form-urlencoded">
+      <table>
+        <tbody>
+          {% for idx, f := range p.Model.Fields %}
+            <tr>
+              <th class="shrink"><label><input type="checkbox" value="true" name="{%s f.Key %}--selected" /> {%s f.Key %}</label></th>
+              <td>{%= fieldedit.Any(p.Result[idx], f.Type, f.Key) %}</td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3">
+              <button type="submit">Save Changes</button>
+              <button type="reset">Reset</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+{% endfunc %}
+

@@ -18,7 +18,6 @@ func typeFor(t string, cr *columnResult) *schematypes.Wrapped {
 	if strings.HasPrefix(t, "_") || t == "ARRAY" {
 		return schematypes.NewList(typeFor(t[1:], cr))
 	}
-	println(t)
 	switch strings.ToLower(t) {
 	case "aclitem":
 		// return schematypes.NewACL()

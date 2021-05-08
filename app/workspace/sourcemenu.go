@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/kyleu/admini/app/model"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/schema"
@@ -43,7 +45,7 @@ func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	return ret
 }
 
-func sourceMenuAddModel(as *app.State, source string, ret menu.Items, m *schema.Model) menu.Items {
+func sourceMenuAddModel(as *app.State, source string, ret menu.Items, m *model.Model) menu.Items {
 	return append(ret, &menu.Item{
 		Key:         m.Key,
 		Title:       m.Key,
@@ -52,7 +54,7 @@ func sourceMenuAddModel(as *app.State, source string, ret menu.Items, m *schema.
 	})
 }
 
-func sourceMenuAddPackage(as *app.State, source string, ret menu.Items, mp *schema.ModelPackage, path []string) menu.Items {
+func sourceMenuAddPackage(as *app.State, source string, ret menu.Items, mp *model.Package, path []string) menu.Items {
 	path = append(path, mp.Key)
 	desc := fmt.Sprintf("package [%v], containing [%v] models", mp.Key, len(mp.ChildModels))
 

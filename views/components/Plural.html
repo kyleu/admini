@@ -1,0 +1,4 @@
+{% func Plural(count int, sing string, plur string) %}{% stripspace %}
+  {%d count %}{% space %}
+  {% if count == 1 %}{%s sing %}{% else %}{%s plur %}{% endif %}
+{% endstripspace %}{% endfunc %}

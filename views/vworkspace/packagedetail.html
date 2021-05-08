@@ -1,31 +1,32 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/schema" %}
+{% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% code type PackageDetail struct {
   layout.Basic
-  Source string
-  Pkg *schema.ModelPackage
+  CtxT string
+  CtxK string
+  Pkg *model.Package
 } %}
 
 {% func (p *PackageDetail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%s p.Pkg.Key %}</h3>
-    {% if len(p.Pkg.Pkg) > 0 %}{%= PackageNav(as, p.Source, p.Pkg.Pkg) %}{% endif %}
+    {% if len(p.Pkg.Pkg) > 0 %}{%= vutil.WorkspacePackage(as, p.CtxT, p.CtxK, p.Pkg.Pkg) %}{% endif %}
     {% if len(p.Pkg.ChildPackages) > 0 %}
     <h4>Packages</h4>
     <ul>
-      {% for _, cp := range p.Pkg.ChildPackages %}<li><a href="{%= vutil.WorkspaceSourceLink(as, p.Source, cp.Path()...) %}">{%s cp.Key %}</a></li>
+      {% for _, cp := range p.Pkg.ChildPackages %}<li><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, cp.Path()...) %}">{%s cp.Key %}</a></li>
       {% endfor %}
     </ul>
     {% endif %}
     {% if len(p.Pkg.ChildModels) > 0 %}
     <h4>Models</h4>
     <ul>
-      {% for _, cm := range p.Pkg.ChildModels %}<li><a href="{%= vutil.WorkspaceSourceLink(as, p.Source, cm.Path()...) %}">{%s cm.Key %}</a></li>
+      {% for _, cm := range p.Pkg.ChildModels %}<li><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, cm.Path()...) %}">{%s cm.Key %}</a></li>
       {% endfor %}
     </ul>
     {% endif %}

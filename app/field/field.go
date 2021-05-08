@@ -1,4 +1,4 @@
-package schema
+package field
 
 import (
 	"github.com/kyleu/admini/app/schema/schematypes"

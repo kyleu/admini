@@ -4,6 +4,7 @@
     --link-text-decoration: none;
 
     --color-foreground: white;
+    --color-foreground-muted: #999;
     --color-background: #121212;
     --color-link: #ddd;
     --color-link-visited: #aaa;

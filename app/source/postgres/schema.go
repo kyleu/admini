@@ -38,6 +38,11 @@ func LoadDatabaseSchema(db *database.Service) (*schema.Schema, error) {
 		addErr(fmt.Errorf("can't load indexes: %w", err))
 	}
 
+	err = loadForeignKeys(models, db)
+	if err != nil {
+		addErr(fmt.Errorf("can't load foreign keys: %w", err))
+	}
+
 	ret := &schema.Schema{
 		Paths:    []string{"postgres:" + db.DatabaseName},
 		Scalars:  scalars,

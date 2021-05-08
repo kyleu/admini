@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/field"
 )
 
 type Timing struct {
@@ -17,12 +17,12 @@ type Result struct {
 	Title  string          `json:"title,omitempty"`
 	Count  int             `json:"count,omitempty"`
 	Query  string          `json:"query,omitempty"`
-	Fields schema.Fields   `json:"fields"`
+	Fields field.Fields    `json:"fields"`
 	Data   [][]interface{} `json:"data"`
 	Timing *Timing         `json:"timing,omitempty"`
 }
 
-func NewResult(title string, count int, q string, fields schema.Fields, data [][]interface{}, timing *Timing) *Result {
+func NewResult(title string, count int, q string, fields field.Fields, data [][]interface{}, timing *Timing) *Result {
 	return &Result{
 		Title:  title,
 		Count:  count,
