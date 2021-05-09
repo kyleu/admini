@@ -1,21 +1,35 @@
 package schematypes
 
+import "strings"
+
 const KeyBool = "bool"
 
 type Bool struct{}
 
 var _ Type = (*Bool)(nil)
 
-func (t *Bool) Key() string {
+func (x *Bool) Key() string {
 	return KeyBool
 }
 
-func (t *Bool) String() string {
-	return t.Key()
+func (x *Bool) String() string {
+	return x.Key()
 }
 
-func (t *Bool) Sortable() bool {
+func (x *Bool) Sortable() bool {
 	return true
+}
+
+func (x *Bool) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	case bool:
+		return t
+	case string:
+		lt := strings.ToLower(t)
+		return lt == "true" || lt == "yes" || lt == "t"
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewBool() *Wrapped {

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/util"
 	"strings"
 
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -13,13 +14,46 @@ func modelEdit(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 	return modelLink(req, m, idStrings, "x")
 }
 
+const sfx = "--selected"
+
 func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (string, error) {
-	changes, err := cutil.ParseForm(req.R)
+	form, err := cutil.ParseForm(req.R)
+	if err != nil {
+		return ersp("unable to parse form: %w", err)
+	}
+	changes, err := parseChanges(form)
 	if err != nil {
 		return ersp("unable to parse changes: %w", err)
 	}
 
 	msg := fmt.Sprintf("saved [%v] changes to %v [%v]", len(changes), m.Key, strings.Join(idStrings, "/"))
 	url := vutil.WorkspaceLink(req.AS, req.T, req.K, append(append(m.Path(), "v"), idStrings...)...)
+
+	println(fmt.Sprintf("EDIT:\n%v\n%v\n%v", msg, url, util.ToJSON(changes)))
+
 	return flashAndRedir(true, msg, url, req.W, req.R, req.PS)
+}
+
+func parseChanges(changes cutil.FormValues) (map[string]interface{}, error) {
+	keys := []string{}
+	vals := map[string]interface{}{}
+
+	for _, f := range changes {
+		if strings.HasSuffix(f.Key, sfx) {
+			k := strings.TrimSuffix(f.Key, sfx)
+			keys = append(keys, k)
+		} else {
+			curr, ok := vals[f.Key]
+			if ok {
+				return nil, fmt.Errorf("multiple values presented for [%v] (%v/%v)", f.Key, curr, f.Value)
+			}
+			vals[f.Key] = f.Value
+		}
+	}
+
+	ret := make(map[string]interface{}, len(keys))
+	for _, k := range keys {
+		ret[k] = vals[k]
+	}
+	return ret, nil
 }

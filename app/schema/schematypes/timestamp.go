@@ -6,16 +6,23 @@ type Timestamp struct{}
 
 var _ Type = (*Timestamp)(nil)
 
-func (t *Timestamp) Key() string {
+func (x *Timestamp) Key() string {
 	return KeyTimestamp
 }
 
-func (t *Timestamp) Sortable() bool {
+func (x *Timestamp) String() string {
+	return x.Key()
+}
+
+func (x *Timestamp) Sortable() bool {
 	return true
 }
 
-func (t *Timestamp) String() string {
-	return t.Key()
+func (x *Timestamp) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewTimestamp() *Wrapped {

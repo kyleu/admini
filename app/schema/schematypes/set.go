@@ -12,14 +12,25 @@ type Set struct {
 
 var _ Type = (*Set)(nil)
 
-func (t *Set) Key() string {
+func (x *Set) Key() string {
 	return KeySet
 }
 
-func (t *Set) Sortable() bool {
-	return t.T.Sortable()
+func (x *Set) String() string {
+	return fmt.Sprintf("%v[%v]", x.Key(), x.T.String())
 }
 
-func (t *Set) String() string {
-	return fmt.Sprintf("%v[%v]", t.Key(), t.T.String())
+func (x *Set) Sortable() bool {
+	return x.T.Sortable()
+}
+
+func (x *Set) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
+}
+
+func NewSet() *Wrapped {
+	return Wrap(&Set{})
 }

@@ -12,16 +12,20 @@ type Range struct {
 	T *Wrapped `json:"t"`
 }
 
-func (t *Range) Key() string {
+func (x *Range) Key() string {
 	return KeyRange
 }
 
-func (t *Range) String() string {
-	return fmt.Sprintf("range[%v]", t.T.String())
+func (x *Range) String() string {
+	return fmt.Sprintf("range[%v]", x.T.String())
 }
 
-func (t *Range) Sortable() bool {
-	return t.T.Sortable()
+func (x *Range) Sortable() bool {
+	return x.T.Sortable()
+}
+
+func (x *Range) From(v interface{}) interface{} {
+	return invalidInput(x.Key(), v)
 }
 
 func NewRange(t *Wrapped) *Wrapped {

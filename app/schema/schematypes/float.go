@@ -8,16 +8,23 @@ type Float struct {
 
 var _ Type = (*Float)(nil)
 
-func (t *Float) Key() string {
+func (x *Float) Key() string {
 	return KeyFloat
 }
 
-func (t *Float) String() string {
-	return t.Key()
+func (x *Float) String() string {
+	return x.Key()
 }
 
-func (t *Float) Sortable() bool {
+func (x *Float) Sortable() bool {
 	return true
+}
+
+func (x *Float) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewFloat(bits int) *Wrapped {

@@ -22,16 +22,20 @@ func Wrap(t Type) *Wrapped {
 	return &Wrapped{K: t.Key(), T: t}
 }
 
-func (w *Wrapped) Key() string {
-	return w.K
+func (x *Wrapped) Key() string {
+	return x.K
 }
 
-func (w *Wrapped) String() string {
-	return w.T.String()
+func (x *Wrapped) Sortable() bool {
+	return x.T.Sortable()
 }
 
-func (w *Wrapped) Sortable() bool {
-	return w.T.Sortable()
+func (x *Wrapped) String() string {
+	return x.T.String()
+}
+
+func (x *Wrapped) From(v interface{}) interface{} {
+		return x.T.From(v)
 }
 
 type wrappedUnmarshal struct {
@@ -39,16 +43,16 @@ type wrappedUnmarshal struct {
 	T json.RawMessage `json:"t,omitempty"`
 }
 
-func (w *Wrapped) MarshalJSON() ([]byte, error) {
-	b := util.ToJSONBytes(w.T, true)
+func (x *Wrapped) MarshalJSON() ([]byte, error) {
+	b := util.ToJSONBytes(x.T, true)
 	if len(b) == 2 {
-		return json.Marshal(w.K)
+		return json.Marshal(x.K)
 	}
-	return json.Marshal(wrappedUnmarshal{K: w.K, T: b})
+	return json.Marshal(wrappedUnmarshal{K: x.K, T: b})
 }
 
 // nolint
-func (w *Wrapped) UnmarshalJSON(data []byte) error {
+func (x *Wrapped) UnmarshalJSON(data []byte) error {
 	var wu wrappedUnmarshal
 	err := json.Unmarshal(data, &wu)
 	if err != nil {
@@ -170,7 +174,7 @@ func (w *Wrapped) UnmarshalJSON(data []byte) error {
 	if t == nil {
 		return fmt.Errorf("nil type returned from unmarshal")
 	}
-	w.K = wu.K
-	w.T = t
+	x.K = wu.K
+	x.T = t
 	return nil
 }

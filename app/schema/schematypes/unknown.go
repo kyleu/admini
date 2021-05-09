@@ -8,16 +8,20 @@ type Unknown struct {
 
 var _ Type = (*Unknown)(nil)
 
-func (t *Unknown) Key() string {
+func (x *Unknown) Key() string {
 	return KeyUnknown
 }
 
-func (t *Unknown) Sortable() bool {
+func (x *Unknown) String() string {
+	return x.Key() + "(" + x.X + ")"
+}
+
+func (x *Unknown) Sortable() bool {
 	return false
 }
 
-func (t *Unknown) String() string {
-	return t.Key() + "(" + t.X + ")"
+func (x *Unknown) From(v interface{}) interface{} {
+	return invalidInput(x.Key(), v)
 }
 
 func NewUnknown(x string) *Wrapped {

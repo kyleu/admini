@@ -1,0 +1,9 @@
+{% func Boolean(x bool, t string, k string) %}{% stripspace %}
+  {% if x %}
+    <label class="radiolabel"><input value="true" name="{%s k %}" type="radio" checked="checked" /> true</label>
+    <label class="radiolabel"><input value="false" name="{%s k %}" type="radio" /> false</label>
+  {% else %}
+    <label class="radiolabel"><input value="true" name="{%s k %}" type="radio" /> true</label>
+    <label class="radiolabel"><input value="false" name="{%s k %}" type="radio" checked="checked" /> false</label>
+  {% endif %}
+{% endstripspace %}{% endfunc %}

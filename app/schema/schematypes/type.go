@@ -6,6 +6,7 @@ import (
 
 type Type interface {
 	Key() string
-	Sortable() bool
 	fmt.Stringer
+	Sortable() bool
+	From(v interface{}) interface{}
 }

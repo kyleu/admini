@@ -6,7 +6,7 @@
   {% if tk == "string" %}
     {%= Default(x, t.String(), k) %}
   {% elseif tk == "bool" %}
-    {%= Default(x, t.String(), k) %}
+    {%= Boolean(x.(bool), t.String(), k) %}
   {% else %}
     {%= Default(x, t.String(), k) %}
   {% endif %}

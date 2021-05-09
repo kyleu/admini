@@ -25,25 +25,32 @@ type Method struct {
 
 var _ Type = (*Method)(nil)
 
-func (t *Method) Key() string {
+func (x *Method) Key() string {
 	return KeyMethod
 }
 
-func (t *Method) String() string {
-	argStrings := make([]string, 0, len(t.Args))
-	for _, arg := range t.Args {
+func (x *Method) String() string {
+	argStrings := make([]string, 0, len(x.Args))
+	for _, arg := range x.Args {
 		argStrings = append(argStrings, arg.String())
 	}
-	return fmt.Sprintf("fn(%v) %v", strings.Join(argStrings, ", "), t.Ret.String())
+	return fmt.Sprintf("fn(%v) %v", strings.Join(argStrings, ", "), x.Ret.String())
 }
 
-func (t *Method) Sortable() bool {
-	for _, a := range t.Args {
+func (x *Method) Sortable() bool {
+	for _, a := range x.Args {
 		if !a.Type.Sortable() {
 			return false
 		}
 	}
-	return t.Ret.Sortable()
+	return x.Ret.Sortable()
+}
+
+func (x *Method) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewMethod(ret *Wrapped) *Wrapped {

@@ -13,16 +13,23 @@ type Map struct {
 	V *Wrapped `json:"v"`
 }
 
-func (t *Map) Key() string {
+func (x *Map) Key() string {
 	return KeyMap
 }
 
-func (t *Map) String() string {
-	return fmt.Sprintf("%v[%v]%v", t.Key(), t.K.String(), t.V.String())
+func (x *Map) String() string {
+	return fmt.Sprintf("%v[%v]%v", x.Key(), x.K.String(), x.V.String())
 }
 
-func (t *Map) Sortable() bool {
-	return t.K.Sortable() && t.V.Sortable()
+func (x *Map) Sortable() bool {
+	return x.K.Sortable() && x.V.Sortable()
+}
+
+func (x *Map) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewMap(k *Wrapped, v *Wrapped) *Wrapped {

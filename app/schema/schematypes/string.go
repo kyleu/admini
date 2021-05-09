@@ -14,19 +14,28 @@ type String struct {
 
 var _ Type = (*String)(nil)
 
-func (t *String) Key() string {
+func (x *String) Key() string {
 	return KeyString
 }
 
-func (t *String) Sortable() bool {
+func (x *String) String() string {
+	if x.MaxLength > 0 {
+		return fmt.Sprintf("%v(%v)", x.Key(), x.MaxLength)
+	}
+	return x.Key()
+}
+
+func (x *String) Sortable() bool {
 	return true
 }
 
-func (t *String) String() string {
-	if t.MaxLength > 0 {
-		return fmt.Sprintf("%v(%v)", t.Key(), t.MaxLength)
+func (x *String) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	case string:
+		return t
+	default:
+		return invalidInput(x.Key(), t)
 	}
-	return t.Key()
 }
 
 func NewString() *Wrapped {

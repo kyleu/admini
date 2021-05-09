@@ -1,5 +1,9 @@
-.editor label {
+.editor th label {
   display: block;
+}
+
+.editor .radiolabel {
+  margin-right: 12px;
 }
 
 .editor input[type='color'],

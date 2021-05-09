@@ -6,16 +6,23 @@ type Char struct{}
 
 var _ Type = (*Char)(nil)
 
-func (t *Char) Key() string {
+func (x *Char) Key() string {
 	return KeyChar
 }
 
-func (t *Char) String() string {
-	return t.Key()
+func (x *Char) String() string {
+	return x.Key()
 }
 
-func (t *Char) Sortable() bool {
+func (x *Char) Sortable() bool {
 	return true
+}
+
+func (x *Char) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewChar() *Wrapped {

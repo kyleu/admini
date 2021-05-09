@@ -6,16 +6,23 @@ type UUID struct{}
 
 var _ Type = (*UUID)(nil)
 
-func (t *UUID) Key() string {
+func (x *UUID) Key() string {
 	return KeyUUID
 }
 
-func (t *UUID) Sortable() bool {
+func (x *UUID) Sortable() bool {
 	return true
 }
 
-func (t *UUID) String() string {
-	return t.Key()
+func (x *UUID) String() string {
+	return x.Key()
+}
+
+func (x *UUID) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewUUID() *Wrapped {

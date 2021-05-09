@@ -13,22 +13,29 @@ type Reference struct {
 	K   string   `json:"k"`
 }
 
-func (t *Reference) Key() string {
+func (x *Reference) Key() string {
 	return KeyReference
 }
 
-func (t *Reference) Sortable() bool {
+func (x *Reference) Sortable() bool {
 	return true
 }
 
-func (t *Reference) String() string {
-	return "ref:" + strings.Join(t.Path(), ".")
+func (x *Reference) String() string {
+	return "ref:" + strings.Join(x.Path(), ".")
 }
 
-func (t *Reference) Path() []string {
-	ret := make([]string, 0, len(t.Pkg)+1)
-	copy(ret, t.Pkg)
-	return append(ret, t.K)
+func (x *Reference) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
+}
+
+func (x *Reference) Path() []string {
+	ret := make([]string, 0, len(x.Pkg)+1)
+	copy(ret, x.Pkg)
+	return append(ret, x.K)
 }
 
 func NewReference() *Wrapped {

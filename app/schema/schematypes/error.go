@@ -8,16 +8,25 @@ type Error struct {
 
 var _ Type = (*Error)(nil)
 
-func (t *Error) Key() string {
+func (x *Error) Key() string {
 	return KeyError
 }
 
-func (t *Error) String() string {
-	return "error(" + t.Message + ")"
+func (x *Error) String() string {
+	return "error(" + x.Message + ")"
 }
 
-func (t *Error) Sortable() bool {
+func (x *Error) Sortable() bool {
 	return false
+}
+
+func (x *Error) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	case error:
+		return t
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewError(msg string) *Wrapped {

@@ -6,16 +6,23 @@ type XML struct{}
 
 var _ Type = (*XML)(nil)
 
-func (t *XML) Key() string {
+func (x *XML) Key() string {
 	return KeyXML
 }
 
-func (t *XML) Sortable() bool {
+func (x *XML) String() string {
+	return x.Key()
+}
+
+func (x *XML) Sortable() bool {
 	return true
 }
 
-func (t *XML) String() string {
-	return t.Key()
+func (x *XML) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewXML() *Wrapped {

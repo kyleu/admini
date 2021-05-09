@@ -6,16 +6,23 @@ type JSON struct{}
 
 var _ Type = (*JSON)(nil)
 
-func (t *JSON) Key() string {
+func (x *JSON) Key() string {
 	return KeyJSON
 }
 
-func (t *JSON) String() string {
-	return t.Key()
+func (x *JSON) String() string {
+	return x.Key()
 }
 
-func (t *JSON) Sortable() bool {
+func (x *JSON) Sortable() bool {
 	return false
+}
+
+func (x *JSON) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewJSON() *Wrapped {

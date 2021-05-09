@@ -8,14 +8,25 @@ type Option struct {
 
 var _ Type = (*Option)(nil)
 
-func (t *Option) Key() string {
+func (x *Option) Key() string {
 	return KeyOption
 }
 
-func (t *Option) Sortable() bool {
-	return t.T.Sortable()
+func (x *Option) String() string {
+	return "*" + x.T.String()
 }
 
-func (t *Option) String() string {
-	return "*" + t.T.String()
+func (x *Option) Sortable() bool {
+	return x.T.Sortable()
+}
+
+func (x *Option) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
+}
+
+func NewOption() *Wrapped {
+	return Wrap(&Option{})
 }

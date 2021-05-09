@@ -2,6 +2,7 @@ package schematypes
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/util"
 )
 
 const KeyList = "list"
@@ -12,16 +13,26 @@ type List struct {
 	T *Wrapped `json:"t"`
 }
 
-func (t *List) Key() string {
+func (x *List) Key() string {
 	return KeyList
 }
 
-func (t *List) String() string {
-	return fmt.Sprintf("[]%v", t.T.String())
+func (x *List) String() string {
+	return fmt.Sprintf("[]%v", x.T.String())
 }
 
-func (t *List) Sortable() bool {
-	return t.T.Sortable()
+func (x *List) Sortable() bool {
+	return x.T.Sortable()
+}
+
+func (x *List) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	case string:
+		lt := util.SplitAndTrim(t, ",")
+		return lt
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewList(t *Wrapped) *Wrapped {

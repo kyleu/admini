@@ -6,16 +6,23 @@ type Time struct{}
 
 var _ Type = (*Time)(nil)
 
-func (t *Time) Key() string {
+func (x *Time) Key() string {
 	return KeyTime
 }
 
-func (t *Time) Sortable() bool {
+func (x *Time) Sortable() bool {
 	return true
 }
 
-func (t *Time) String() string {
-	return t.Key()
+func (x *Time) String() string {
+	return x.Key()
+}
+
+func (x *Time) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewTime() *Wrapped {

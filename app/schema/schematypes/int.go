@@ -10,19 +10,32 @@ type Int struct {
 
 var _ Type = (*Int)(nil)
 
-func (t *Int) Key() string {
+func (x *Int) Key() string {
 	return KeyInt
 }
 
-func (t *Int) String() string {
-	if t.Bits > 0 {
-		return fmt.Sprintf("%v%v", t.Key(), t.Bits)
+func (x *Int) String() string {
+	if x.Bits > 0 {
+		return fmt.Sprintf("%v%v", x.Key(), x.Bits)
 	}
-	return t.Key()
+	return x.Key()
 }
 
-func (t *Int) Sortable() bool {
+func (x *Int) Sortable() bool {
 	return true
+}
+
+func (x *Int) From(v interface{}) interface{} {
+	switch t := v.(type) {
+	case int:
+		return t
+	case int32:
+		return t
+	case int64:
+		return t
+	default:
+		return invalidInput(x.Key(), t)
+	}
 }
 
 func NewInt(bits int) *Wrapped {
