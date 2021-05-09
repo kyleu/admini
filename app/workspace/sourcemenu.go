@@ -19,17 +19,25 @@ var menuItemBack = &menu.Item{
 }
 
 func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
+	path := as.Route("workspace.source", "key", source)
 	ret := menu.Items{
 		{
 			Key:         "overview",
 			Title:       "Project overview",
 			Description: "Overview of the data source, displaying details about the configuration",
-			Route:       as.Route("workspace.source", "key", source),
+			Route:       path,
 		},
 		menu.Separator,
 	}
 
-	path := as.Route("workspace.source", "key", source)
+	ret = append(ret, sourceMenuDetails(sch, path)...)
+	ret = append(ret, menu.Separator, menuItemBack)
+
+	return ret
+}
+
+func sourceMenuDetails(sch *schema.Schema, path string) menu.Items {
+	ret := menu.Items{}
 
 	mp := sch.ModelsByPackage()
 	for _, m := range mp.ChildModels {
@@ -38,8 +46,6 @@ func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	for _, p := range mp.ChildPackages {
 		ret = sourceMenuAddPackage(ret, p, path)
 	}
-
-	ret = append(ret, menu.Separator, menuItemBack)
 
 	return ret
 }

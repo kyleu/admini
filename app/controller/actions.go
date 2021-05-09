@@ -53,22 +53,26 @@ func actPrepare(r *http.Request, w http.ResponseWriter) *cutil.PageState {
 		}
 	}
 
-	return &cutil.PageState{URL: r.URL, Flashes: flashes, Session: session, Icons: initialIcons}
+	return &cutil.PageState{Method: r.Method, URL: r.URL, Flashes: flashes, Session: session, Icons: initialIcons}
 }
 
 func actComplete(key string, ps *cutil.PageState, w http.ResponseWriter, f func() (string, error)) {
 	startNanos := time.Now().UnixNano()
 	writeCORS(w)
 	redir, err := f()
+	status := http.StatusOK
 	if err != nil {
+		status = http.StatusInternalServerError
+		w.WriteHeader(status)
 		msg := "error running action [%v]: %+v"
-		util.LogWarn(msg, key, err)
-		http.Error(w, fmt.Sprintf(msg, key, err), http.StatusInternalServerError)
+		util.LogError(msg, key, err)
+		_, _ = w.Write([]byte(fmt.Sprintf(msg, key, err)))
 	}
 	if redir != "" {
 		w.Header().Set("Location", redir)
-		w.WriteHeader(http.StatusFound)
+		status = http.StatusFound
+		w.WriteHeader(status)
 	}
 	elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
-	util.LogInfo("processed [%v] in [%.3fms]", ps.URL.Path, elapsedMillis)
+	util.LogInfo("processed [%v %v] with %v in [%.3fms]", ps.Method, ps.URL.Path, status, elapsedMillis)
 }

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
 	"os"
 	"runtime/debug"
@@ -46,7 +47,7 @@ func render(r *http.Request, w http.ResponseWriter, appState *app.State, page la
 }
 
 func ersp(msg string, args ...interface{}) (string, error) {
-	return "", fmt.Errorf(msg, args...)
+	return "", errors.New(fmt.Sprintf(msg, args...))
 }
 
 func flashAndRedir(success bool, msg string, redir string, w http.ResponseWriter, r *http.Request, ps *cutil.PageState) (string, error) {
@@ -86,7 +87,7 @@ func Modules(w http.ResponseWriter, r *http.Request) {
 	act("modules", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		mods, ok := debug.ReadBuildInfo()
 		if !ok {
-			return "", fmt.Errorf("unable to gather modules")
+			return "", errors.New("unable to gather modules")
 		}
 		ps.Data = mods.Deps
 		return render(r, w, as, &vhelp.Modules{Mods: mods.Deps}, ps, "modules")

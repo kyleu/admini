@@ -2,6 +2,7 @@ package lpostgres
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"strings"
 
 	"github.com/kyleu/admini/app/database"
@@ -12,7 +13,7 @@ import (
 func (l *Loader) Get(source string, cfg []byte, m *model.Model, ids []interface{}) (*result.Result, error) {
 	db, err := l.openDatabase(source, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("error opening database: %w", err)
+		return nil, errors.Wrap(err, "error opening database")
 	}
 
 	q, err := modelGetByPKQuery(m)
@@ -21,13 +22,13 @@ func (l *Loader) Get(source string, cfg []byte, m *model.Model, ids []interface{
 	}
 	rows, err := db.Query(q, nil, ids...)
 	if err != nil {
-		return nil, fmt.Errorf("error listing models for [%v]: %w", m.Key, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("error listing models for [%v]", m.Key))
 	}
 
 	var timing *result.Timing
 	ret, err := ParseResultFields(m.Key, 0, q, timing, m.Fields, rows)
 	if err != nil {
-		return nil, fmt.Errorf("error constructing result for [%v]: %w", m.Key, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("error constructing result for [%v]", m.Key))
 	}
 
 	return ret, nil
@@ -37,7 +38,7 @@ func modelGetByPKQuery(m *model.Model) (string, error) {
 	cols, tbl := forTable(m)
 	pk := m.GetPK()
 	if len(pk) == 0 {
-		return "", fmt.Errorf("no PK for model [%v]", m.Key)
+		return "", errors.New(fmt.Sprintf("no PK for model [%v]", m.Key))
 	}
 	where := []string{}
 	for idx, pkf := range pk {

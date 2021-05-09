@@ -1,7 +1,8 @@
-import {appName} from "./util";
 import "./client.css"
+import {appName} from "./util";
+import {editorInit} from "./editor";
 
-function scrollInit() {
+function menuInit() {
   const x = document.querySelectorAll(".menu-container .final")
   for (const n of x) {
     n.scrollIntoView({block: "nearest"});
@@ -10,7 +11,8 @@ function scrollInit() {
 
 export function init(): void {
   console.log(appName + "!!!");
-  scrollInit()
+  menuInit();
+  editorInit();
 }
 
 document.addEventListener("DOMContentLoaded", init);

@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 
@@ -33,17 +34,17 @@ func loadIndexes(models model.Models, db *database.Service) error {
 	idxs := []*indexResult{}
 	err := db.Select(&idxs, queries.ListIndexes(db.SchemaName), nil)
 	if err != nil {
-		return fmt.Errorf("can't list indexes: %w", err)
+		return errors.Wrap(err, "can't list indexes")
 	}
 
 	for _, idx := range idxs {
 		mod := models.Get(util.Pkg{idx.Schema}, idx.Table)
 		if mod == nil {
-			return fmt.Errorf("no table [%v] found among [%v] candidates", idx.Table, len(models))
+			return errors.New(fmt.Sprintf("no table [%v] found among [%v] candidates", idx.Table, len(models)))
 		}
 		err = mod.AddIndex(idx.AsIndex())
 		if err != nil {
-			return fmt.Errorf("can't add field: %w", err)
+			return errors.Wrap(err, "can't add field")
 		}
 	}
 	return nil

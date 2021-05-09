@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path"
@@ -48,7 +49,7 @@ func markup(key string, bytes []byte) string {
 func loadSVGs(src string) ([]*SVG, error) {
 	files, err := ioutil.ReadDir(src)
 	if err != nil {
-		return nil, fmt.Errorf("cannot list path [%v]: %w", src, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("cannot list path [%v]", src))
 	}
 	svgs := make([]*SVG, 0)
 	for _, f := range files {

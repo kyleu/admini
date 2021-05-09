@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"sort"
 
 	"github.com/kyleu/admini/app/model"
@@ -37,13 +38,13 @@ func loadForeignKeys(models model.Models, db *database.Service) error {
 	keys := foreignKeyResults{}
 	err := db.Select(&keys, queries.ListForeignKeys(db.SchemaName), nil)
 	if err != nil {
-		return fmt.Errorf("can't list foreign keys: %w", err)
+		return errors.Wrap(err, "can't list foreign keys")
 	}
 
 	for _, k := range keys {
 		mod := models.Get(util.Pkg{k.Schema}, k.Table)
 		if mod == nil {
-			return fmt.Errorf("no table [%v] found among [%v] candidates", k.Table, len(models))
+			return errors.New(fmt.Sprintf("no table [%v] found among [%v] candidates", k.Table, len(models)))
 		}
 
 		curr := mod.Relationships.Get(k.Name)

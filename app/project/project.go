@@ -8,10 +8,10 @@ import (
 )
 
 type Project struct {
-	Key      string         `json:"key"`
-	Title    string         `json:"title,omitempty"`
-	Schemata []string       `json:"schemata"`
-	Actions  action.Actions `json:"actions,omitempty"`
+	Key     string         `json:"key"`
+	Title   string         `json:"title,omitempty"`
+	Sources []string       `json:"sources"`
+	Actions action.Actions `json:"actions,omitempty"`
 }
 
 func (p Project) ModelsByPackage() *model.Package {
@@ -19,6 +19,15 @@ func (p Project) ModelsByPackage() *model.Package {
 }
 
 type Projects []*Project
+
+func (p Projects) Get(key string) *Project {
+	for _, x := range p {
+		if x.Key == key {
+			return x
+		}
+	}
+	return nil
+}
 
 type View struct {
 	Project  *Project                  `json:"project"`

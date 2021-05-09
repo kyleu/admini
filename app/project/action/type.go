@@ -7,17 +7,21 @@ import (
 )
 
 type Type struct {
-	Key   string
-	Title string
+	Key         string
+	Title       string
+	Description string
 }
 
 var (
-	ActionTypeFoo = Type{Key: "foo", Title: "Foo"}
-	ActionTypeBar = Type{Key: "bar", Title: "Bar"}
-	ActionTypeUnknown = Type{Key: "unknown", Title: "Unknown"}
+	ActionTypeSource  = Type{Key: "source", Title: "Source", Description: "provides actions for each model in the source"}
+	ActionTypeStatic  = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
+	ActionTypeTest    = Type{Key: "test", Title: "Test", Description: "a test action, who knows what it'll do"}
+	ActionTypeUnknown = Type{Key: "unknown", Title: "Unknown", Description: "an unknown action type"}
 )
 
-var AllActionTypes = []Type{ActionTypeFoo, ActionTypeBar}
+var AllActionTypes = []Type{
+	ActionTypeSource, ActionTypeStatic, ActionTypeTest,
+}
 
 func actionTypeFromString(s string) Type {
 	for _, t := range AllActionTypes {

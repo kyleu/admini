@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -17,7 +18,7 @@ func (s *Service) Insert(q string, tx *sqlx.Tx, values ...interface{}) error {
 		return err
 	}
 	if aff == 0 {
-		return fmt.Errorf("no rows affected by insert using sql [%v] and %v values", q, len(values))
+		return errors.New(fmt.Sprintf("no rows affected by insert using sql [%v] and %v values", q, len(values)))
 	}
 	return nil
 }
@@ -42,7 +43,7 @@ func (s *Service) Delete(q string, tx *sqlx.Tx, expected int, values ...interfac
 func (s *Service) DeleteOne(q string, tx *sqlx.Tx, values ...interface{}) error {
 	_, err := s.Delete(q, tx, 1, values...)
 	if err != nil {
-		return fmt.Errorf(errMessage("delete", q, values)+": %w", err)
+		return errors.Wrap(err, errMessage("delete", q, values)+"")
 	}
 	return err
 }
@@ -65,11 +66,11 @@ func (s *Service) execUnknown(q string, tx *sqlx.Tx, values ...interface{}) (int
 		err = e
 	}
 	if err != nil {
-		return 0, fmt.Errorf(errMessage("exec", q, values)+": %w", err)
+		return 0, errors.Wrap(err, errMessage("exec", q, values)+"")
 	}
 	aff, _ := ret.RowsAffected()
 	// if err != nil {
-	// 	return 0, fmt.Errorf("%w", err)
+	// 	return 0, err
 	// }
 	return int(aff), nil
 }
@@ -81,11 +82,11 @@ func (s *Service) process(key string, past string, q string, tx *sqlx.Tx, expect
 
 	aff, err := s.execUnknown(q, tx, values...)
 	if err != nil {
-		return 0, fmt.Errorf(errMessage(past, q, values)+": %w", err)
+		return 0, errors.Wrap(err, errMessage(past, q, values))
 	}
 	if expected > -1 && aff != expected {
 		const msg = "expected [%v] %v row(s), but [%v] records affected from sql [%v] with values [%s]"
-		return aff, fmt.Errorf(msg, expected, past, aff, q, valueStrings(values))
+		return aff, errors.New(fmt.Sprintf(msg, expected, past, aff, q, valueStrings(values)))
 	}
 	return aff, nil
 }

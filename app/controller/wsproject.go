@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/pkg/errors"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -26,7 +27,7 @@ func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
 
 		prj, err := currentApp.Projects.Load(projectKey)
 		if err != nil {
-			return ersp("error loading project [%v]: %w", projectKey, err)
+			return "", errors.Wrap(err, "error loading project [" + projectKey + "]")
 		}
 
 		paths = paths[2:]
@@ -36,7 +37,11 @@ func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
 		ps.RootTitle = prj.Title
 		ps.SearchPath = currentApp.Route("search")
 		ps.ProfilePath = currentApp.Route("profile")
-		ps.Menu = workspace.ProjectMenu(currentApp, prj)
+		m, err := workspace.ProjectMenu(currentApp, prj)
+		if err != nil {
+			return "", errors.Wrap(err, "error creating menu for project [" + projectKey + "]")
+		}
+		ps.Menu = m
 
 		if len(paths) == 0 {
 			return render(r, w, as, &vworkspace.WorkspaceOverview{}, ps)

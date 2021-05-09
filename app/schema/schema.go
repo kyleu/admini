@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 )
@@ -34,10 +34,10 @@ func (s *Schema) AddPath(path string) bool {
 
 func (s *Schema) AddScalar(sc *Scalar) error {
 	if sc == nil {
-		return fmt.Errorf("nil scalar")
+		return errors.New("nil scalar")
 	}
 	if s.Scalars.Get(sc.Pkg, sc.Key) != nil {
-		return fmt.Errorf("scalar [" + sc.Key + "] already exists")
+		return errors.New("scalar [" + sc.Key + "] already exists")
 	}
 	s.Scalars = append(s.Scalars, sc)
 	return nil
@@ -45,10 +45,10 @@ func (s *Schema) AddScalar(sc *Scalar) error {
 
 func (s *Schema) AddModel(m *model.Model) error {
 	if m == nil {
-		return fmt.Errorf("nil model")
+		return errors.New("nil model")
 	}
 	if s.Models.Get(m.Pkg, m.Key) != nil {
-		return fmt.Errorf("model [" + m.Key + "] already exists")
+		return errors.New("model [" + m.Key + "] already exists")
 	}
 	s.Models = append(s.Models, m)
 	return nil

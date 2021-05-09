@@ -3,6 +3,7 @@ package project
 import (
 	"fmt"
 	"github.com/kyleu/admini/app/project/action"
+	"github.com/pkg/errors"
 	"path/filepath"
 
 	"github.com/kyleu/admini/app/schema"
@@ -34,7 +35,7 @@ func (s *Service) List() (Projects, error) {
 		for _, dir := range dirs {
 			src, err := s.Load(dir)
 			if err != nil {
-				return nil, fmt.Errorf("unable to load source [%v]: %w", dir, err)
+				return nil, errors.Wrap(err, fmt.Sprintf("unable to load source [%v]", dir))
 			}
 			ret = append(ret, src)
 		}
@@ -44,18 +45,23 @@ func (s *Service) List() (Projects, error) {
 }
 
 func (s *Service) Load(key string) (*Project, error) {
+	curr := s.cache.Get(key)
+	if curr != nil {
+		return curr, nil
+	}
+
 	dir := filepath.Join(s.root, key)
 	pf := filepath.Join(dir, "project.json")
 
 	out, err := s.files.ReadFile(pf)
 	if err != nil {
-		return nil, fmt.Errorf("unable to read project ["+key+"]: %w", err)
+		return nil, errors.Wrap(err, "unable to read project ["+key+"]")
 	}
 
 	ret := &Project{}
 	err = util.FromJSON(out, ret)
 	if err != nil {
-		return nil, fmt.Errorf("unable to parse project: %w", err)
+		return nil, errors.Wrap(err, "unable to parse project")
 	}
 
 	ret.Key = key
@@ -65,7 +71,7 @@ func (s *Service) Load(key string) (*Project, error) {
 
 	actions, err := action.Load(filepath.Join(dir, "actions"), s.files)
 	if err != nil {
-		return nil, fmt.Errorf("unable to load actions: %w", err)
+		return nil, errors.Wrap(err, "unable to load actions")
 	}
 	ret.Actions = actions
 
@@ -93,7 +99,7 @@ func (s *Service) SaveProject(key string, prj *Project) error {
 	j := util.ToJSONBytes(prj, true)
 	err := s.files.WriteFile(p, j, true)
 	if err != nil {
-		return fmt.Errorf("unable to save project [%v]: %w", key, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to save project [%v]", key))
 	}
 	return nil
 }
@@ -101,13 +107,13 @@ func (s *Service) SaveProject(key string, prj *Project) error {
 func (s *Service) SchemataFor(key string) (map[string]*schema.Schema, error) {
 	p, err := s.Load(key)
 	if err != nil {
-		return nil, fmt.Errorf("can't load project [%v]: %w", key, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("can't load project [%v]", key))
 	}
 	ret := map[string]*schema.Schema{}
-	for _, sch := range p.Schemata {
+	for _, sch := range p.Sources {
 		x, err := s.sources.SchemaFor(sch)
 		if err != nil {
-			return nil, fmt.Errorf("can't load schema [%v] for project [%v]: %w", sch, p.Key, err)
+			return nil, errors.Wrap(err, fmt.Sprintf("can't load schema [%v] for project [%v]", sch, p.Key))
 		}
 		ret[sch] = x
 	}
@@ -117,13 +123,13 @@ func (s *Service) SchemataFor(key string) (map[string]*schema.Schema, error) {
 func (s *Service) SourcesFor(key string) (map[string]*source.Source, error) {
 	p, err := s.Load(key)
 	if err != nil {
-		return nil, fmt.Errorf("can't load project [%v]: %w", key, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("can't load project [%v]", key))
 	}
 	ret := map[string]*source.Source{}
-	for _, sch := range p.Schemata {
+	for _, sch := range p.Sources {
 		x, err := s.sources.Load(sch)
 		if err != nil {
-			return nil, fmt.Errorf("can't load source [%v] for project [%v]: %w", sch, p.Key, err)
+			return nil, errors.Wrap(err, fmt.Sprintf("can't load source [%v] for project [%v]", sch, p.Key))
 		}
 		ret[sch] = x
 	}

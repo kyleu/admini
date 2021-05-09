@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	// load postgres driver
 	_ "github.com/jackc/pgx/v4/stdlib"
@@ -35,7 +36,7 @@ func OpenDatabase(params *DBParams) (*Service, error) {
 
 	db, err := sqlx.Open("pgx", url)
 	if err != nil {
-		return nil, fmt.Errorf("error opening database: %w", err)
+		return nil, errors.Wrap(err, "error opening database")
 	}
 
 	svc := NewService(params.Database, params.Schema, params.Debug, db)

@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -53,7 +54,7 @@ func (s *Service) SingleInt(q string, tx *sqlx.Tx, values ...interface{}) (int64
 		err = tx.Get(x, q, values...)
 	}
 	if err != nil {
-		return -1, fmt.Errorf("returned value is not an integer: %w", err)
+		return -1, errors.Wrap(err, "returned value is not an integer")
 	}
 	if x.X == nil {
 		return 0, nil

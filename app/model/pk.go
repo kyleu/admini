@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/field"
 	"github.com/kyleu/admini/app/util"
@@ -33,7 +34,7 @@ func (m *Model) IsPK(key string) bool {
 
 func GetValues(src field.Fields, tgt []string, vals []interface{}) ([]interface{}, error) {
 	if len(src) != len(vals) {
-		return nil, fmt.Errorf("[%d] fields provided, but [%d] values provided", len(src), len(vals))
+		return nil, errors.New(fmt.Sprintf("[%d] fields provided, but [%d] values provided", len(src), len(vals)))
 	}
 	ret := make([]interface{}, 0, len(tgt))
 	for _, t := range tgt {

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
 	"strings"
 
@@ -24,10 +24,10 @@ func respondMIME(filename string, mime string, ext string, ba []byte, w http.Res
 	}
 	writeCORS(w)
 	if len(ba) == 0 {
-		return "", fmt.Errorf("no bytes available to write")
+		return "", errors.New("no bytes available to write")
 	}
 	if _, err := w.Write(ba); err != nil {
-		return "", fmt.Errorf("cannot write to response: %w", err)
+		return "", errors.Wrap(err, "cannot write to response")
 	}
 
 	return "", nil

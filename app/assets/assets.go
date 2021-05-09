@@ -5,7 +5,7 @@ import (
 	"compress/gzip"
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"mime"
 	"path/filepath"
@@ -18,7 +18,7 @@ func Asset(base, path string) ([]byte, string, string, error) {
 
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
-		return nil, "", "", fmt.Errorf("error reading asset at ["+path+"]: %w", err)
+		return nil, "", "", errors.Wrap(err, "error reading asset at ["+path+"]")
 	}
 
 	if data != nil {

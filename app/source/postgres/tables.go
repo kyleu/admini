@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 
@@ -41,7 +42,7 @@ func loadTables(db *database.Service) (model.Models, error) {
 	tables := []*tableResult{}
 	err := db.Select(&tables, queries.ListTables(db.SchemaName), nil)
 	if err != nil {
-		return nil, fmt.Errorf("can't list tables: %w", err)
+		return nil, errors.Wrap(err, "can't list tables")
 	}
 
 	util.LogInfo(fmt.Sprintf("loading [%v] tables", len(tables)))

@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/schema"
@@ -15,32 +16,32 @@ func LoadDatabaseSchema(db *database.Service) (*schema.Schema, error) {
 
 	metadata, err := loadMetadata(db)
 	if err != nil {
-		addErr(fmt.Errorf("can't load metadata: %w", err))
+		addErr(errors.Wrap(err, "can't load metadata"))
 	}
 
 	scalars, err := loadScalars(db)
 	if err != nil {
-		addErr(fmt.Errorf("can't load scalars: %w", err))
+		addErr(errors.Wrap(err, "can't load scalars"))
 	}
 
 	models, err := loadTables(db)
 	if err != nil {
-		addErr(fmt.Errorf("can't load tables: %w", err))
+		addErr(errors.Wrap(err, "can't load tables"))
 	}
 
 	err = loadColumns(models, db)
 	if err != nil {
-		addErr(fmt.Errorf("can't load columns: %w", err))
+		addErr(errors.Wrap(err, "can't load columns"))
 	}
 
 	err = loadIndexes(models, db)
 	if err != nil {
-		addErr(fmt.Errorf("can't load indexes: %w", err))
+		addErr(errors.Wrap(err, "can't load indexes"))
 	}
 
 	err = loadForeignKeys(models, db)
 	if err != nil {
-		addErr(fmt.Errorf("can't load foreign keys: %w", err))
+		addErr(errors.Wrap(err, "can't load foreign keys"))
 	}
 
 	ret := &schema.Schema{

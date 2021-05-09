@@ -2,6 +2,7 @@ package sandbox
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/kyleu/admini/app/result"
@@ -20,29 +21,29 @@ func onTestbed(st *app.State) (interface{}, error) {
 	sourceKey := "admini_test"
 	source, err := st.Sources.Load(sourceKey)
 	if err != nil {
-		return nil, fmt.Errorf("can't load source: %w", err)
+		return nil, errors.Wrap(err, "can't load source")
 	}
 
 	connInterface, err := st.Loaders.Get(schema.OriginPostgres).Connection(source.Key, source.Config)
 	if err != nil {
-		return nil, fmt.Errorf("can't get connection: %w", err)
+		return nil, errors.Wrap(err, "can't get connection")
 	}
 
 	conn, ok := connInterface.(*database.Service)
 	if !ok {
-		return nil, fmt.Errorf("invalid config object [%T]", connInterface)
+		return nil, errors.New(fmt.Sprintf("invalid config object [%T]", connInterface))
 	}
 
 	run := func(key string, q string) error {
 		var rows *sqlx.Rows
 		rows, err = conn.Query(q, nil)
 		if err != nil {
-			return fmt.Errorf("can't query %v: %w", key, err)
+			return errors.Wrap(err, fmt.Sprintf("can't query %v", key))
 		}
 		var res *result.Result
 		res, err = lpostgres.ParseResult(key, 0, q, nil, rows)
 		if err != nil {
-			return fmt.Errorf("can't parse result for %v: %w", key, err)
+			return errors.Wrap(err, fmt.Sprintf("can't parse result for %v", key))
 		}
 		ret[key] = res
 		return nil

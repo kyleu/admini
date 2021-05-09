@@ -1,7 +1,7 @@
 package cutil
 
 import (
-	"fmt"
+	"github.com/pkg/errors"
 	"strings"
 
 	"github.com/alecthomas/chroma/formatters/html"
@@ -33,12 +33,12 @@ func Format(v interface{}) (string, error) {
 	}
 	i, err := l.Tokenise(nil, j)
 	if err != nil {
-		return "", fmt.Errorf("can't tokenize: %w", err)
+		return "", errors.Wrap(err, "can't tokenize")
 	}
 	x := &strings.Builder{}
 	err = f.Format(x, s, i)
 	if err != nil {
-		return "", fmt.Errorf("can't format: %w", err)
+		return "", errors.Wrap(err, "can't format")
 	}
 
 	ret := x.String()

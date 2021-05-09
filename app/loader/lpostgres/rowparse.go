@@ -2,7 +2,7 @@ package lpostgres
 
 import (
 	"database/sql"
-	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/field"
 
@@ -14,7 +14,7 @@ import (
 func ParseResult(title string, count int, q string, timing *result.Timing, rows *sqlx.Rows) (*result.Result, error) {
 	fields, err := parseColumns(rows)
 	if err != nil {
-		return nil, fmt.Errorf("error processing columns: %w", err)
+		return nil, errors.Wrap(err, "error processing columns")
 	}
 	return ParseResultFields(title, count, q, timing, fields, rows)
 }
@@ -22,7 +22,7 @@ func ParseResult(title string, count int, q string, timing *result.Timing, rows 
 func ParseResultFields(title string, count int, q string, timing *result.Timing, fields field.Fields, rows *sqlx.Rows) (*result.Result, error) {
 	data, err := parseRows(rows)
 	if err != nil {
-		return nil, fmt.Errorf("error processing database rows: %w", err)
+		return nil, errors.Wrap(err, "error processing database rows")
 	}
 	if count == 0 {
 		count = len(data)
@@ -34,14 +34,14 @@ func ParseResultFields(title string, count int, q string, timing *result.Timing,
 func parseColumns(rows *sqlx.Rows) (field.Fields, error) {
 	cts, err := rows.ColumnTypes()
 	if err != nil {
-		return nil, fmt.Errorf("unable to determine column types: %w", err)
+		return nil, errors.Wrap(err, "unable to determine column types")
 	}
 
 	fs := make(field.Fields, 0, len(cts))
 	for _, ct := range cts {
 		f, err := fieldFor(ct)
 		if err != nil {
-			return nil, fmt.Errorf("unable to parse column type: %w", err)
+			return nil, errors.Wrap(err, "unable to parse column type")
 		}
 		fs = append(fs, f)
 	}
@@ -53,7 +53,7 @@ func parseRows(rows *sqlx.Rows) ([][]interface{}, error) {
 	for rows.Next() {
 		d, err := rows.SliceScan()
 		if err != nil {
-			return nil, fmt.Errorf("unable to scan results: %w", err)
+			return nil, errors.Wrap(err, "unable to scan results")
 		}
 
 		data = append(data, d)

@@ -11,6 +11,7 @@ import (
 type PageState struct {
 	Title       string
 	Description string
+	Method      string
 	URL         *url.URL
 	Menu        menu.Items
 	Breadcrumbs []string

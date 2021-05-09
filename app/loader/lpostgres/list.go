@@ -2,6 +2,7 @@ package lpostgres
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/util"
@@ -15,24 +16,24 @@ var publicSchema = "public"
 func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error) {
 	db, err := l.openDatabase(source, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("error opening database: %w", err)
+		return nil, errors.Wrap(err, "error opening database")
 	}
 
 	q := modelListQuery(m, params.Get(m.Key, m.Fields.Names()))
 	rows, err := db.Query(q, nil)
 	if err != nil {
-		return nil, fmt.Errorf("error listing models for [%v]: %w", m.Key, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("error listing models for [%v]", m.Key))
 	}
 
 	count, err := l.Count(source, cfg, m)
 	if err != nil {
-		return nil, fmt.Errorf("error constructing result for [%v]: %w", m.Key, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("error constructing result for [%v]", m.Key))
 	}
 
 	var timing *result.Timing
 	ret, err := ParseResultFields(m.Key, count, q, timing, m.Fields, rows)
 	if err != nil {
-		return nil, fmt.Errorf("error constructing result for [%v]: %w", m.Key, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("error constructing result for [%v]", m.Key))
 	}
 
 	return ret, nil
@@ -41,7 +42,7 @@ func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.Par
 func (l *Loader) Count(source string, cfg []byte, m *model.Model) (int, error) {
 	db, err := l.openDatabase(source, cfg)
 	if err != nil {
-		return 0, fmt.Errorf("error opening database: %w", err)
+		return 0, errors.Wrap(err, "error opening database")
 	}
 
 	q := modelCountQuery(m)
@@ -50,7 +51,7 @@ func (l *Loader) Count(source string, cfg []byte, m *model.Model) (int, error) {
 	}{}
 	err = db.Get(&c, q, nil)
 	if err != nil {
-		return 0, fmt.Errorf("error listing models for [%v]: %w", m.Key, err)
+		return 0, errors.Wrap(err, fmt.Sprintf("error listing models for [%v]", m.Key))
 	}
 	return c.C, nil
 }

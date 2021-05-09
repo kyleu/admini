@@ -2,6 +2,7 @@ package filesystem
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	"io/fs"
 	"io/ioutil"
 	"os"
@@ -39,7 +40,7 @@ func (f *FileSystem) Root() string {
 func (f *FileSystem) ReadFile(path string) ([]byte, error) {
 	b, err := ioutil.ReadFile(f.getPath(path))
 	if err != nil {
-		return nil, fmt.Errorf("unable to read file [%v]: %w", path, err)
+		return nil, errors.Wrap(err, fmt.Sprintf("unable to read file [%v]", path))
 	}
 	return b, nil
 }
@@ -48,7 +49,7 @@ func (f *FileSystem) ReadFile(path string) ([]byte, error) {
 func (f *FileSystem) CreateDirectory(path string) error {
 	p := f.getPath(path)
 	if err := os.MkdirAll(p, 0o755); err != nil {
-		return fmt.Errorf("unable to create data directory [%v]: %w", p, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to create data directory [%v]", p))
 	}
 	return nil
 }
@@ -58,21 +59,21 @@ func (f *FileSystem) WriteFile(path string, content []byte, overwrite bool) erro
 	p := f.getPath(path)
 	_, err := os.Stat(p)
 	if os.IsExist(err) && !overwrite {
-		return fmt.Errorf("file [" + p + "] exists, will not overwrite")
+		return errors.New("file [" + p + "] exists, will not overwrite")
 	}
 	dd := filepath.Dir(path)
 	err = f.CreateDirectory(dd)
 	if err != nil {
-		return fmt.Errorf("unable to create data directory [%v]: %w", dd, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to create data directory [%v]", dd))
 	}
 	file, err := os.Create(p)
 	if err != nil {
-		return fmt.Errorf("unable to create file [%v]: %w", p, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to create file [%v]", p))
 	}
 	defer func() { _ = file.Close() }()
 	_, err = file.Write(content)
 	if err != nil {
-		return fmt.Errorf("unable to write content to file [%v]: %w", p, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to write content to file [%v]", p))
 	}
 	return nil
 }
@@ -83,7 +84,7 @@ func (f *FileSystem) CopyFile(src string, tgt string) error {
 	tp := f.getPath(tgt)
 
 	if targetExists := f.Exists(tp); targetExists {
-		return fmt.Errorf("file [" + tp + "] exists, will not overwrite")
+		return errors.New("file [" + tp + "] exists, will not overwrite")
 	}
 
 	input, err := f.ReadFile(sp)
@@ -156,7 +157,7 @@ func (f *FileSystem) Remove(path string) error {
 	p := f.getPath(path)
 	util.LogWarn("removing file at path [" + p + "]")
 	if err := os.Remove(p); err != nil {
-		return fmt.Errorf("error removing file [%v]: %w", path, err)
+		return errors.Wrap(err, fmt.Sprintf("error removing file [%v]", path))
 	}
 	return nil
 }
@@ -166,7 +167,7 @@ func (f *FileSystem) RemoveRecursive(path string) error {
 	p := f.getPath(path)
 	s, err := os.Stat(p)
 	if err != nil {
-		return fmt.Errorf("unable to stat file [%v]: %w", path, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to stat file [%v]", path))
 	}
 	if s.IsDir() {
 		var files []fs.FileInfo
@@ -183,7 +184,7 @@ func (f *FileSystem) RemoveRecursive(path string) error {
 	}
 	err = os.Remove(p)
 	if err != nil {
-		return fmt.Errorf("unable to remove file [%v]: %w", path, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to remove file [%v]", path))
 	}
 	return nil
 }

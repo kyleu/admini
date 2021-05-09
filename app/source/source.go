@@ -16,3 +16,12 @@ type Source struct {
 }
 
 type Sources []*Source
+
+func (s Sources) Get(key string) *Source {
+	for _, x := range s {
+		if x.Key == key {
+			return x
+		}
+	}
+	return nil
+}

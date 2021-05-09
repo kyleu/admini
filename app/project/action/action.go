@@ -6,14 +6,15 @@ import (
 )
 
 type Action struct {
-	Key         string   `json:"key"`
-	Type        Type     `json:"type"`
-	Title       string   `json:"title,omitempty"`
-	Description string   `json:"description,omitempty"`
-	Icon        string   `json:"icon,omitempty"`
-	Ordinal     int      `json:"ordinal"`
-	Children    Actions  `json:"-"`
-	Pkg         util.Pkg `json:"-"`
+	Key         string            `json:"key"`
+	Type        Type              `json:"type"`
+	Title       string            `json:"title,omitempty"`
+	Description string            `json:"description,omitempty"`
+	Icon        string            `json:"icon,omitempty"`
+	Ordinal     int               `json:"ordinal,omitempty"`
+	Children    Actions           `json:"children,omitempty"`
+	Pkg         util.Pkg          `json:"-"`
+	Config      map[string]string `json:"config,omitempty"`
 }
 
 func (a Action) TitleString() string {
@@ -42,9 +43,6 @@ func (a Actions) Get(paths []string) (*Action, []string) {
 	if curr == nil {
 		return nil, paths
 	}
-	if len(paths) == 1 {
-		return curr, paths[1:]
-	}
 	if len(curr.Children) > 0 {
 		x, remaining := curr.Children.Get(paths[1:])
 		if x == nil {
@@ -53,7 +51,7 @@ func (a Actions) Get(paths []string) (*Action, []string) {
 		return x, remaining
 	}
 
-	return nil, paths
+	return curr, paths[1:]
 }
 
 func (a Actions) Find(key string) *Action {

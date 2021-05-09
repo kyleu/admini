@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/pkg/errors"
 	"net/http"
 	"strings"
 
@@ -41,7 +42,7 @@ func modelList(req *workspaceRequest, m *model.Model) (string, error) {
 
 	rs, err := l.List(req.Src.Key, req.Src.Config, m, params)
 	if err != nil {
-		return ersp("unable to list model ["+m.Key+"]: %w", err)
+		return "", errors.Wrap(err, "unable to list model ["+m.Key+"]")
 	}
 
 	req.PS.Data = rs
@@ -63,7 +64,7 @@ func modelLink(req *workspaceRequest, m *model.Model, idStrings []string, act st
 
 	rs, err := l.Get(req.Src.Key, req.Src.Config, m, ids)
 	if err != nil {
-		return ersp("unable to list model ["+m.Key+"]: %w", err)
+		return "", errors.Wrap(err, "unable to list model ["+m.Key+"]")
 	}
 
 	req.PS.Data = rs

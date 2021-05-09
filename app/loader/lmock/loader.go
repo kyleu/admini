@@ -2,6 +2,7 @@ package lmock
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 
@@ -27,7 +28,7 @@ func (l *Loader) Connection(source string, cfg []byte) (interface{}, error) {
 func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
 	o, ok := mockData[source]
 	if !ok {
-		return nil, fmt.Errorf("no mock data for [%v]", source)
+		return nil, errors.New(fmt.Sprintf("no mock data for [%v]", source))
 	}
 
 	return o.Schema, nil
@@ -36,7 +37,7 @@ func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
 func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error) {
 	o, ok := mockData[source]
 	if !ok {
-		return nil, fmt.Errorf("no mock data for [%v]", source)
+		return nil, errors.New(fmt.Sprintf("no mock data for [%v]", source))
 	}
 
 	return o.Data[m.Key], nil

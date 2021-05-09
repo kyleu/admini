@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
 	"strings"
 
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -19,11 +20,11 @@ const sfx = "--selected"
 func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (string, error) {
 	form, err := cutil.ParseForm(req.R)
 	if err != nil {
-		return ersp("unable to parse form: %w", err)
+		return "", errors.Wrap(err, "unable to parse form")
 	}
 	changes, err := parseChanges(form)
 	if err != nil {
-		return ersp("unable to parse changes: %w", err)
+		return "", errors.Wrap(err, "unable to parse changes")
 	}
 
 	msg := fmt.Sprintf("saved [%v] changes to %v [%v]", len(changes), m.Key, strings.Join(idStrings, "/"))
@@ -45,7 +46,7 @@ func parseChanges(changes cutil.FormValues) (map[string]interface{}, error) {
 		} else {
 			curr, ok := vals[f.Key]
 			if ok {
-				return nil, fmt.Errorf("multiple values presented for [%v] (%v/%v)", f.Key, curr, f.Value)
+				return nil, errors.New(fmt.Sprintf("multiple values presented for [%v] (%v/%v)", f.Key, curr, f.Value))
 			}
 			vals[f.Key] = f.Value
 		}

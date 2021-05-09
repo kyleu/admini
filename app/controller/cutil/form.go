@@ -1,7 +1,7 @@
 package cutil
 
 import (
-	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
 	"sort"
 	"strings"
@@ -16,7 +16,7 @@ type FormValues []*FormValue
 
 func ParseForm(req *http.Request) (FormValues, error) {
 	if err := req.ParseForm(); err != nil {
-		return nil, fmt.Errorf("can't parse form: %w", err)
+		return nil, errors.Wrap(err, "can't parse form")
 	}
 
 	frm := make(map[string]interface{}, len(req.Form))

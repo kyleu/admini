@@ -1,7 +1,7 @@
 package lpostgres
 
 import (
-	"fmt"
+	"github.com/pkg/errors"
 	"strings"
 
 	"github.com/kyleu/admini/app/loader"
@@ -26,7 +26,7 @@ var _ loader.Loader = (*Loader)(nil)
 func (l *Loader) Connection(source string, cfg []byte) (interface{}, error) {
 	db, err := l.openDatabase(source, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("error opening database: %w", err)
+		return nil, errors.Wrap(err, "error opening database")
 	}
 
 	return db, nil
@@ -35,7 +35,7 @@ func (l *Loader) Connection(source string, cfg []byte) (interface{}, error) {
 func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
 	db, err := l.openDatabase(source, cfg)
 	if err != nil {
-		return nil, fmt.Errorf("error opening database: %w", err)
+		return nil, errors.Wrap(err, "error opening database")
 	}
 
 	return postgres.LoadDatabaseSchema(db)
@@ -49,16 +49,16 @@ func (l *Loader) openDatabase(source string, cfg []byte) (*database.Service, err
 	config := &database.DBParams{}
 	err := util.FromJSON(cfg, config)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing database config: %w", err)
+		return nil, errors.Wrap(err, "error parsing database config")
 	}
 	db, err := database.OpenDatabase(config)
 	if err != nil {
-		return nil, fmt.Errorf("error opening database: %w", err)
+		return nil, errors.Wrap(err, "error opening database")
 	}
 
 	_, err = db.SingleInt("select 1 as x", nil)
 	if err != nil {
-		return nil, fmt.Errorf("error connecting to database: %w", err)
+		return nil, errors.Wrap(err, "error connecting to database")
 	}
 
 	l.cache[source] = db

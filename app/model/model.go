@@ -1,7 +1,7 @@
 package model
 
 import (
-	"fmt"
+	"github.com/pkg/errors"
 	"sort"
 
 	"github.com/kyleu/admini/app/field"
@@ -60,10 +60,10 @@ func (m Models) Sort() {
 
 func (m *Model) AddField(f *field.Field) error {
 	if f == nil {
-		return fmt.Errorf("nil field")
+		return errors.New("nil field")
 	}
 	if m.Fields.Get(f.Key) != nil {
-		return fmt.Errorf("field [" + f.Key + "] already exists")
+		return errors.New("field [" + f.Key + "] already exists")
 	}
 	m.Fields = append(m.Fields, f)
 	return nil
@@ -71,10 +71,10 @@ func (m *Model) AddField(f *field.Field) error {
 
 func (m *Model) AddIndex(i *Index) error {
 	if i == nil {
-		return fmt.Errorf("nil index")
+		return errors.New("nil index")
 	}
 	if m.Indexes.Get(i.Key) != nil {
-		return fmt.Errorf("index [" + i.Key + "] already exists")
+		return errors.New("index [" + i.Key + "] already exists")
 	}
 	m.Indexes = append(m.Indexes, i)
 	return nil
@@ -82,10 +82,10 @@ func (m *Model) AddIndex(i *Index) error {
 
 func (m *Model) AddRelationship(r *Relationship) error {
 	if r == nil {
-		return fmt.Errorf("nil relation")
+		return errors.New("nil relation")
 	}
 	if m.Relationships.Get(r.Key) != nil {
-		return fmt.Errorf("relation [" + r.Key + "] already exists")
+		return errors.New("relation [" + r.Key + "] already exists")
 	}
 	m.Relationships = append(m.Relationships, r)
 	return nil

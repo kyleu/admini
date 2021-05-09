@@ -3,6 +3,7 @@ package schematypes
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/util"
 )
@@ -169,10 +170,10 @@ func (x *Wrapped) UnmarshalJSON(data []byte) error {
 		t = &Unknown{X: "unmarshal:" + wu.K}
 	}
 	if err != nil {
-		return fmt.Errorf("unable to unmarshal wrapped field of type [%v]: %w", wu.K, err)
+		return errors.Wrap(err, fmt.Sprintf("unable to unmarshal wrapped field of type [%v]", wu.K))
 	}
 	if t == nil {
-		return fmt.Errorf("nil type returned from unmarshal")
+		return errors.New("nil type returned from unmarshal")
 	}
 	x.K = wu.K
 	x.T = t
