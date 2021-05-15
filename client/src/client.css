@@ -4,6 +4,7 @@
 @import "./style/theme-dark.css";
 
 @import "./style/core.css";
+@import "./style/dragdrop.css";
 @import "./style/util.css";
 
 @import "./style/table.css";

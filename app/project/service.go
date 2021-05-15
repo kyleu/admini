@@ -1,10 +1,12 @@
 package project
 
 import (
-	"fmt"
+	"path/filepath"
+
+	"go.uber.org/zap"
+
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/pkg/errors"
-	"path/filepath"
 
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
@@ -21,10 +23,12 @@ type Service struct {
 	files   filesystem.FileLoader
 	sources *source.Service
 	loaders *loader.Service
+	logger  *zap.SugaredLogger
 }
 
-func NewService(root string, files filesystem.FileLoader, sources *source.Service, ld *loader.Service) *Service {
-	return &Service{root: root, files: files, sources: sources, loaders: ld}
+func NewService(root string, files filesystem.FileLoader, sources *source.Service, ld *loader.Service, logger *zap.SugaredLogger) *Service {
+	log := logger.With(zap.String("service", "project"))
+	return &Service{root: root, files: files, sources: sources, loaders: ld, logger: log}
 }
 
 func (s *Service) List() (Projects, error) {
@@ -35,7 +39,7 @@ func (s *Service) List() (Projects, error) {
 		for _, dir := range dirs {
 			src, err := s.Load(dir)
 			if err != nil {
-				return nil, errors.Wrap(err, fmt.Sprintf("unable to load source [%v]", dir))
+				return nil, errors.Wrapf(err, "unable to load source [%v]", dir)
 			}
 			ret = append(ret, src)
 		}
@@ -45,23 +49,25 @@ func (s *Service) List() (Projects, error) {
 }
 
 func (s *Service) Load(key string) (*Project, error) {
-	curr := s.cache.Get(key)
-	if curr != nil {
+	if curr := s.cache.Get(key); curr != nil {
 		return curr, nil
 	}
 
 	dir := filepath.Join(s.root, key)
 	pf := filepath.Join(dir, "project.json")
 
-	out, err := s.files.ReadFile(pf)
-	if err != nil {
-		return nil, errors.Wrap(err, "unable to read project ["+key+"]")
-	}
-
 	ret := &Project{}
-	err = util.FromJSON(out, ret)
-	if err != nil {
-		return nil, errors.Wrap(err, "unable to parse project")
+
+	if s.files.Exists(pf) {
+		out, err := s.files.ReadFile(pf)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to read project ["+key+"]")
+		}
+
+		err = util.FromJSON(out, ret)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to parse project")
+		}
 	}
 
 	ret.Key = key
@@ -99,7 +105,7 @@ func (s *Service) SaveProject(key string, prj *Project) error {
 	j := util.ToJSONBytes(prj, true)
 	err := s.files.WriteFile(p, j, true)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to save project [%v]", key))
+		return errors.Wrapf(err, "unable to save project [%v]", key)
 	}
 	return nil
 }
@@ -107,13 +113,13 @@ func (s *Service) SaveProject(key string, prj *Project) error {
 func (s *Service) SchemataFor(key string) (map[string]*schema.Schema, error) {
 	p, err := s.Load(key)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("can't load project [%v]", key))
+		return nil, errors.Wrapf(err, "can't load project [%v]", key)
 	}
 	ret := map[string]*schema.Schema{}
 	for _, sch := range p.Sources {
 		x, err := s.sources.SchemaFor(sch)
 		if err != nil {
-			return nil, errors.Wrap(err, fmt.Sprintf("can't load schema [%v] for project [%v]", sch, p.Key))
+			return nil, errors.Wrapf(err, "can't load schema [%v] for project [%v]", sch, p.Key)
 		}
 		ret[sch] = x
 	}
@@ -123,13 +129,13 @@ func (s *Service) SchemataFor(key string) (map[string]*schema.Schema, error) {
 func (s *Service) SourcesFor(key string) (map[string]*source.Source, error) {
 	p, err := s.Load(key)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("can't load project [%v]", key))
+		return nil, errors.Wrapf(err, "can't load project [%v]", key)
 	}
 	ret := map[string]*source.Source{}
 	for _, sch := range p.Sources {
 		x, err := s.sources.Load(sch)
 		if err != nil {
-			return nil, errors.Wrap(err, fmt.Sprintf("can't load source [%v] for project [%v]", sch, p.Key))
+			return nil, errors.Wrapf(err, "can't load source [%v] for project [%v]", sch, p.Key)
 		}
 		ret[sch] = x
 	}

@@ -1,8 +1,9 @@
 package model
 
 import (
-	"github.com/pkg/errors"
 	"sort"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/field"
 
@@ -62,7 +63,7 @@ func (m *Model) AddField(f *field.Field) error {
 	if f == nil {
 		return errors.New("nil field")
 	}
-	if m.Fields.Get(f.Key) != nil {
+	if _, v := m.Fields.Get(f.Key); v != nil {
 		return errors.New("field [" + f.Key + "] already exists")
 	}
 	m.Fields = append(m.Fields, f)

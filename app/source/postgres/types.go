@@ -3,25 +3,33 @@ package postgres
 import (
 	"strings"
 
+	"go.uber.org/zap"
+
 	"github.com/kyleu/admini/app/schema/schematypes"
-	"github.com/kyleu/admini/app/util"
 )
 
-func TypeForName(t string) *schematypes.Wrapped {
+func TypeForName(t string, logger *zap.SugaredLogger) *schematypes.Wrapped {
 	if strings.HasPrefix(t, "_") {
-		return schematypes.NewList(TypeForName(t[1:]))
+		return schematypes.NewList(TypeForName(t[1:], logger))
 	}
-	return typeFor(t, nil)
+	return typeFor(t, nil, logger)
 }
 
-func typeFor(t string, cr *columnResult) *schematypes.Wrapped {
+func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes.Wrapped {
+	if cr.Nullable == pgYes {
+		cr.Nullable = pgNo
+		return schematypes.NewOption(typeFor(t, cr, logger))
+	}
 	if strings.HasPrefix(t, "_") || t == "ARRAY" {
-		return schematypes.NewList(typeFor(t[1:], cr))
+		return schematypes.NewList(typeFor(t[1:], cr, logger))
 	}
 	switch strings.ToLower(t) {
 	case "aclitem":
 		// return schematypes.NewACL()
 	case "bit":
+		if cr.CharLength.Valid {
+			return schematypes.NewListSized(schematypes.NewBit(), int(cr.CharLength.Int32))
+		}
 		return schematypes.NewBit()
 	case "varbit", "bit varying":
 		return schematypes.NewList(schematypes.NewBit())
@@ -128,7 +136,7 @@ func typeFor(t string, cr *columnResult) *schematypes.Wrapped {
 	case "year":
 		// return schematypes.NewYear()
 	}
-	util.LogWarn("unhandled type: " + t)
+	logger.Warn("unhandled type: " + t)
 	return schematypes.NewUnknown(t)
 }
 

@@ -1,19 +1,19 @@
 package model
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app/field"
 	"github.com/kyleu/admini/app/util"
 )
 
-func (m *Model) GetPK() []string {
+func (m *Model) GetPK(logger *zap.SugaredLogger) []string {
 	if m.pk == nil {
 		for _, idx := range m.Indexes {
 			if idx.Primary {
 				if m.pk != nil {
-					util.LogError("multiple primary keys?!")
+					logger.Error("multiple primary keys?!")
 				}
 				m.pk = idx.Fields
 			}
@@ -22,8 +22,8 @@ func (m *Model) GetPK() []string {
 	return m.pk
 }
 
-func (m *Model) IsPK(key string) bool {
-	pk := m.GetPK()
+func (m *Model) IsPK(key string, logger *zap.SugaredLogger) bool {
+	pk := m.GetPK(logger)
 	for _, col := range pk {
 		if col == key {
 			return true
@@ -34,7 +34,7 @@ func (m *Model) IsPK(key string) bool {
 
 func GetValues(src field.Fields, tgt []string, vals []interface{}) ([]interface{}, error) {
 	if len(src) != len(vals) {
-		return nil, errors.New(fmt.Sprintf("[%d] fields provided, but [%d] values provided", len(src), len(vals)))
+		return nil, errors.Errorf("[%d] fields provided, but [%d] values provided", len(src), len(vals))
 	}
 	ret := make([]interface{}, 0, len(tgt))
 	for _, t := range tgt {
@@ -53,9 +53,6 @@ func GetStrings(src field.Fields, tgt []string, vals []interface{}) ([]string, e
 	if err != nil {
 		return nil, err
 	}
-	ret := make([]string, 0, len(is))
-	for _, x := range is {
-		ret = append(ret, fmt.Sprintf("%v", x))
-	}
+	ret := util.StringArrayFromInterfaces(is)
 	return ret, nil
 }

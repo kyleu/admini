@@ -1,0 +1,22 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project" %}
+
+{% func ProjectTable(projects project.Projects, as *app.State, ps *cutil.PageState) %}
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for _, p := range projects -%}
+        <tr>
+          <td><a href="{%s as.Route(`project.detail`, `key`, p.Key) %}">{%s p.Title %}</a></td>
+          <td class="shrink"><a href="{%s as.Route(`workspace`, `key`, p.Key) %}"><button type="button">workspace</button></a></td>
+        </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+{% endfunc %}

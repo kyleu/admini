@@ -2,6 +2,7 @@ package schematypes
 
 import (
 	"fmt"
+
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -10,7 +11,8 @@ const KeyList = "list"
 var _ Type = (*List)(nil)
 
 type List struct {
-	T *Wrapped `json:"t"`
+	T    *Wrapped `json:"t"`
+	Size int      `json:"size,omitempty"`
 }
 
 func (x *List) Key() string {
@@ -37,4 +39,8 @@ func (x *List) From(v interface{}) interface{} {
 
 func NewList(t *Wrapped) *Wrapped {
 	return Wrap(&List{T: t})
+}
+
+func NewListSized(t *Wrapped, size int) *Wrapped {
+	return Wrap(&List{T: t, Size: size})
 }

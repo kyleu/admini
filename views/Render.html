@@ -9,7 +9,7 @@
 	defer func() {
 		x := recover()
 		if x != nil {
-			util.LogError(fmt.Sprintf("Error processing template: %T: %+v", x, x))
+      ps.Logger.Error(fmt.Sprintf("Error processing template [%T]: %+v", x, x))
       panic(x)
 		}
 	}()

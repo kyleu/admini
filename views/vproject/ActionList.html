@@ -1,0 +1,24 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func ActionList(act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
+  {% if len(act.Children) == 0 %}
+    <li class="item">{%s act.Key %}</li>
+  {% else %}
+    <li class="item">
+      {%= vutil.Indent(true, indent + 1) %}
+      {%s act.Key %}
+      {%= vutil.Indent(true, indent + 1) %}
+      <ul class="grid">
+        {% for _, kid := range act.Children %}
+          {%= vutil.Indent(true, indent + 2) %}
+          {%= ActionList(kid, as, ps, indent + 2) %}
+        {% endfor %}
+      {%= vutil.Indent(true, indent + 1) %}
+      </ul>
+    {%= vutil.Indent(true, indent) %}
+    </li>
+  {% endif %}
+{% endstripspace %}{% endfunc %}

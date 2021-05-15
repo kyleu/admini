@@ -1,10 +1,9 @@
 package lmock
 
 import (
-	"fmt"
-	"github.com/pkg/errors"
-
 	"github.com/kyleu/admini/app/model"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app/util"
 
@@ -13,10 +12,12 @@ import (
 	"github.com/kyleu/admini/app/schema"
 )
 
-type Loader struct{}
+type Loader struct {
+	logger *zap.SugaredLogger
+}
 
-func NewLoader() *Loader {
-	return &Loader{}
+func NewLoader(logger *zap.SugaredLogger) *Loader {
+	return &Loader{logger: logger.With(zap.String("service", "loader.mock"))}
 }
 
 var _ loader.Loader = (*Loader)(nil)
@@ -28,7 +29,7 @@ func (l *Loader) Connection(source string, cfg []byte) (interface{}, error) {
 func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
 	o, ok := mockData[source]
 	if !ok {
-		return nil, errors.New(fmt.Sprintf("no mock data for [%v]", source))
+		return nil, errors.Errorf("no mock data for [%v]", source)
 	}
 
 	return o.Schema, nil
@@ -37,7 +38,7 @@ func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
 func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error) {
 	o, ok := mockData[source]
 	if !ok {
-		return nil, errors.New(fmt.Sprintf("no mock data for [%v]", source))
+		return nil, errors.Errorf("no mock data for [%v]", source)
 	}
 
 	return o.Data[m.Key], nil

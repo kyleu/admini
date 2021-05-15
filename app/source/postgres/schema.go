@@ -2,13 +2,16 @@ package postgres
 
 import (
 	"fmt"
+
+	"go.uber.org/zap"
+
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/schema"
 )
 
-func LoadDatabaseSchema(db *database.Service) (*schema.Schema, error) {
+func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {
 	var errs []string
 	addErr := func(err error) {
 		errs = append(errs, fmt.Sprintf("%+v", err))
@@ -24,12 +27,12 @@ func LoadDatabaseSchema(db *database.Service) (*schema.Schema, error) {
 		addErr(errors.Wrap(err, "can't load scalars"))
 	}
 
-	models, err := loadTables(db)
+	models, err := loadTables(db, logger)
 	if err != nil {
 		addErr(errors.Wrap(err, "can't load tables"))
 	}
 
-	err = loadColumns(models, db)
+	err = loadColumns(models, db, logger)
 	if err != nil {
 		addErr(errors.Wrap(err, "can't load columns"))
 	}

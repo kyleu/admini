@@ -8,13 +8,13 @@ import (
 )
 
 type Project struct {
-	Key     string         `json:"key"`
+	Key     string         `json:"-"`
 	Title   string         `json:"title,omitempty"`
-	Sources []string       `json:"sources"`
+	Sources []string       `json:"sources,omitempty"`
 	Actions action.Actions `json:"actions,omitempty"`
 }
 
-func (p Project) ModelsByPackage() *model.Package {
+func (p *Project) ModelsByPackage() *model.Package {
 	return nil
 }
 

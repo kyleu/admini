@@ -1,9 +1,9 @@
 package postgres
 
 import (
-	"fmt"
-	"github.com/pkg/errors"
 	"sort"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 
@@ -44,7 +44,7 @@ func loadForeignKeys(models model.Models, db *database.Service) error {
 	for _, k := range keys {
 		mod := models.Get(util.Pkg{k.Schema}, k.Table)
 		if mod == nil {
-			return errors.New(fmt.Sprintf("no table [%v] found among [%v] candidates", k.Table, len(models)))
+			return errors.Errorf("no table [%v] found among [%v] candidates", k.Table, len(models))
 		}
 
 		curr := mod.Relationships.Get(k.Name)

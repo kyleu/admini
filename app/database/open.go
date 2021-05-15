@@ -2,6 +2,9 @@ package database
 
 import (
 	"fmt"
+
+	"go.uber.org/zap"
+
 	"github.com/pkg/errors"
 
 	// load postgres driver
@@ -21,7 +24,7 @@ type DBParams struct {
 }
 
 // Opens a database connection pool
-func OpenDatabase(params *DBParams) (*Service, error) {
+func OpenDatabase(params *DBParams, logger *zap.SugaredLogger) (*Service, error) {
 	host := params.Host
 	if host == "" {
 		host = "localhost"
@@ -39,7 +42,12 @@ func OpenDatabase(params *DBParams) (*Service, error) {
 		return nil, errors.Wrap(err, "error opening database")
 	}
 
-	svc := NewService(params.Database, params.Schema, params.Debug, db)
+	var log *zap.SugaredLogger
+	if params.Debug {
+		log = logger
+	}
+
+	svc := NewService(params.Database, params.Schema, log, db)
 
 	return svc, nil
 }

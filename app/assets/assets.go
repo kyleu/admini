@@ -5,10 +5,11 @@ import (
 	"compress/gzip"
 	"crypto/md5"
 	"encoding/hex"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"mime"
 	"path/filepath"
+
+	"github.com/pkg/errors"
 )
 
 func Asset(base, path string) ([]byte, string, string, error) {

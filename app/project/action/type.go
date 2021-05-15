@@ -3,7 +3,7 @@ package action
 import (
 	"encoding/json"
 
-	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
 )
 
 type Type struct {
@@ -23,14 +23,13 @@ var AllActionTypes = []Type{
 	ActionTypeSource, ActionTypeStatic, ActionTypeTest,
 }
 
-func actionTypeFromString(s string) Type {
+func actionTypeFromString(s string) (Type, error) {
 	for _, t := range AllActionTypes {
 		if t.Key == s {
-			return t
+			return t, nil
 		}
 	}
-	util.LogWarn("unhandled action type [" + s + "]")
-	return ActionTypeUnknown
+	return ActionTypeUnknown, errors.New("unhandled action type [" + s + "]")
 }
 
 func (t *Type) String() string {
@@ -47,6 +46,10 @@ func (t *Type) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*t = actionTypeFromString(s)
+	x, err := actionTypeFromString(s)
+	if err != nil {
+		return err
+	}
+	*t = x
 	return nil
 }

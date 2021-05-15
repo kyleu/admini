@@ -18,6 +18,15 @@
     </p>
   </div>
 
+  <div class="card">
+    <h3>Actions</h3>
+    <ul id="action-list" class="grid">
+      {%- for _, act := range p.Project.Actions -%}
+      {%= ActionList(act, as, ps, 3) %}
+      {%- endfor -%}
+    </ul>
+  </div>
+
   <div id="modal-project" class="modal" style="display: none;">
     <a class="backdrop" href="#"></a>
     <div class="modal-content">
@@ -30,4 +39,14 @@
       </div>
     </div>
   </div>
+
+  <script type="text/javascript" src="/assets/dragdrop.js"></script>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+      lmdd.set(document.getElementById('action-list'), {
+        containerClass: 'grid',
+        draggableItemClass: 'item'
+      });
+    });
+  </script>
 {% endfunc %}

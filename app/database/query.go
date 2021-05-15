@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 
 	"github.com/jmoiron/sqlx"
@@ -9,9 +10,7 @@ import (
 
 // Runs a SQL query, returning a resultset or error
 func (s *Service) Query(q string, tx *sqlx.Tx, values ...interface{}) (*sqlx.Rows, error) {
-	if s.debug {
-		logQuery("running raw query", q, values)
-	}
+	s.logQuery("running raw query", q, values)
 	if tx == nil {
 		return s.db.Queryx(q, values...)
 	}
@@ -20,9 +19,7 @@ func (s *Service) Query(q string, tx *sqlx.Tx, values ...interface{}) (*sqlx.Row
 
 // Runs a SQL query and parses into the "dest" argument for all rows, returning an optional error
 func (s *Service) Select(dest interface{}, q string, tx *sqlx.Tx, values ...interface{}) error {
-	if s.debug {
-		logQuery(fmt.Sprintf("selecting rows of type [%T]", dest), q, values)
-	}
+	s.logQuery(fmt.Sprintf("selecting rows of type [%T]", dest), q, values)
 	if tx == nil {
 		return s.db.Select(dest, q, values...)
 	}
@@ -31,9 +28,7 @@ func (s *Service) Select(dest interface{}, q string, tx *sqlx.Tx, values ...inte
 
 // Runs a SQL query for a single row and parses into the "dest" argument, returning an optional error
 func (s *Service) Get(dto interface{}, q string, tx *sqlx.Tx, values ...interface{}) error {
-	if s.debug {
-		logQuery(fmt.Sprintf("getting single row of type [%T]", dto), q, values)
-	}
+	s.logQuery(fmt.Sprintf("getting single row of type [%T]", dto), q, values)
 	if tx == nil {
 		return s.db.Get(dto, q, values...)
 	}

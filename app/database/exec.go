@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+
 	"github.com/pkg/errors"
 
 	"github.com/jmoiron/sqlx"
@@ -10,15 +11,13 @@ import (
 
 // Runs a SQL insert statement, returning an optional error
 func (s *Service) Insert(q string, tx *sqlx.Tx, values ...interface{}) error {
-	if s.debug {
-		logQuery("inserting row", q, values)
-	}
+	s.logQuery("inserting row", q, values)
 	aff, err := s.execUnknown(q, tx, values...)
 	if err != nil {
 		return err
 	}
 	if aff == 0 {
-		return errors.New(fmt.Sprintf("no rows affected by insert using sql [%v] and %v values", q, len(values)))
+		return errors.Errorf("no rows affected by insert using sql [%v] and %v values", q, len(values))
 	}
 	return nil
 }
@@ -76,8 +75,8 @@ func (s *Service) execUnknown(q string, tx *sqlx.Tx, values ...interface{}) (int
 }
 
 func (s *Service) process(key string, past string, q string, tx *sqlx.Tx, expected int, values ...interface{}) (int, error) {
-	if s.debug {
-		logQuery(fmt.Sprintf("%v [%v] rows", key, expected), q, values)
+	if s.debug != nil {
+		s.logQuery(fmt.Sprintf("%v [%v] rows", key, expected), q, values)
 	}
 
 	aff, err := s.execUnknown(q, tx, values...)
@@ -86,7 +85,7 @@ func (s *Service) process(key string, past string, q string, tx *sqlx.Tx, expect
 	}
 	if expected > -1 && aff != expected {
 		const msg = "expected [%v] %v row(s), but [%v] records affected from sql [%v] with values [%s]"
-		return aff, errors.New(fmt.Sprintf(msg, expected, past, aff, q, valueStrings(values)))
+		return aff, errors.Errorf(msg, expected, past, aff, q, valueStrings(values))
 	}
 	return aff, nil
 }

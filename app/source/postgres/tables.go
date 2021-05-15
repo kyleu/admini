@@ -1,7 +1,8 @@
 package postgres
 
 import (
-	"fmt"
+	"go.uber.org/zap"
+
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
@@ -18,7 +19,7 @@ type tableResult struct {
 	Owner  string `db:"owner"`
 }
 
-func (t tableResult) ToModel() *model.Model {
+func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 	ret := &model.Model{
 		Key: t.Name,
 		Pkg: util.Pkg{t.Schema},
@@ -32,24 +33,24 @@ func (t tableResult) ToModel() *model.Model {
 	case "sequence":
 		ret.Type = model.ModelTypeSequence
 	default:
-		util.LogWarn("unknown model type [" + t.Type + "]")
+		logger.Warn("unknown model type [" + t.Type + "]")
 		ret.Type = model.ModelTypeUnknown
 	}
 	return ret
 }
 
-func loadTables(db *database.Service) (model.Models, error) {
+func loadTables(db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
 	tables := []*tableResult{}
 	err := db.Select(&tables, queries.ListTables(db.SchemaName), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list tables")
 	}
 
-	util.LogInfo(fmt.Sprintf("loading [%v] tables", len(tables)))
+	logger.Infof("loading [%v] tables", len(tables))
 
 	ret := make(model.Models, 0, len(tables))
 	for _, t := range tables {
-		ret = append(ret, t.ToModel())
+		ret = append(ret, t.ToModel(logger))
 	}
 	ret.Sort()
 	return ret, nil

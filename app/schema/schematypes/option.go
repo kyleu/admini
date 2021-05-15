@@ -27,6 +27,6 @@ func (x *Option) From(v interface{}) interface{} {
 	}
 }
 
-func NewOption() *Wrapped {
-	return Wrap(&Option{})
+func NewOption(t *Wrapped) *Wrapped {
+	return Wrap(&Option{T: t})
 }

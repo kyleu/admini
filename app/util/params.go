@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+
+	"go.uber.org/zap"
 )
 
 // AllowedColumns A map with arbitrary string keys associated to a string array containing all allowed columns
@@ -106,17 +108,17 @@ func (p *Params) OrderByString() string {
 }
 
 // Filters this Params, limiting columns to those matching the AllowedColumns
-func (p *Params) Filtered(available []string) *Params {
+func (p *Params) Filtered(available []string, logger *zap.SugaredLogger) *Params {
 	if available == nil {
 		available = AllowedColumns[p.Key]
 	}
 
 	if len(available) == 0 {
-		LogWarn("no columns available for [" + p.Key + "]")
+		logger.Warn("no columns available for [" + p.Key + "]")
 	}
 
 	if len(p.Orderings) > 0 {
-		allowed := make(Orderings, 0)
+		allowed := Orderings{}
 
 		for _, o := range p.Orderings {
 			containsCol := false
@@ -129,7 +131,7 @@ func (p *Params) Filtered(available []string) *Params {
 				allowed = append(allowed, o)
 			} else {
 				const msg = "no column [%v] for [%v] available in allowed columns [%v]"
-				LogWarn(fmt.Sprintf(msg, o.Column, p.Key, strings.Join(available, ", ")))
+				logger.Warnf(msg, o.Column, p.Key, strings.Join(available, ", "))
 			}
 		}
 

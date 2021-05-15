@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path"
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 var re = regexp.MustCompile(`\n[ \\t]*`)
@@ -49,9 +50,9 @@ func markup(key string, bytes []byte) string {
 func loadSVGs(src string) ([]*SVG, error) {
 	files, err := ioutil.ReadDir(src)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("cannot list path [%v]", src))
+		return nil, errors.Wrapf(err, "cannot list path [%v]", src)
 	}
-	svgs := make([]*SVG, 0)
+	var svgs []*SVG
 	for _, f := range files {
 		if strings.HasSuffix(f.Name(), ".svg") {
 			b, err := ioutil.ReadFile(path.Join(src, f.Name()))

@@ -2,14 +2,15 @@ package controller
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/views"
-	"strings"
 )
 
 func handleAction(req *workspaceRequest, act *action.Action) (string, error) {
 	if act == nil {
-		return whoops(req, "nil project action")
+		return whoops(req, "nil project action", req.Path...)
 	}
 	msg := "Action [" + act.Key + "] hit!"
 	p := append(act.Pkg, req.Path...)

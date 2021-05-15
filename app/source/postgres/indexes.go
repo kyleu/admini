@@ -1,7 +1,6 @@
 package postgres
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
@@ -40,7 +39,7 @@ func loadIndexes(models model.Models, db *database.Service) error {
 	for _, idx := range idxs {
 		mod := models.Get(util.Pkg{idx.Schema}, idx.Table)
 		if mod == nil {
-			return errors.New(fmt.Sprintf("no table [%v] found among [%v] candidates", idx.Table, len(models)))
+			return errors.Errorf("no table [%v] found among [%v] candidates", idx.Table, len(models))
 		}
 		err = mod.AddIndex(idx.AsIndex())
 		if err != nil {

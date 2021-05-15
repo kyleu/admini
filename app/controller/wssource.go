@@ -1,8 +1,9 @@
 package controller
 
 import (
-	"github.com/pkg/errors"
 	"net/http"
+
+	"github.com/pkg/errors"
 
 	"github.com/gorilla/mux"
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -29,7 +30,7 @@ func WorkspaceSource(w http.ResponseWriter, r *http.Request) {
 
 		src, sch, err := loadSource(sourceKey)
 		if err != nil {
-			return "", errors.Wrap(err, "error loading source and schema info [" + r.URL.Path + "]")
+			return "", errors.Wrap(err, "error loading source and schema info ["+r.URL.Path+"]")
 		}
 
 		paths = paths[2:]

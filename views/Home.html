@@ -5,6 +5,8 @@
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vproject" %}
+{% import "github.com/kyleu/admini/views/vsource" %}
 
 {% code type Home struct {
   layout.Basic
@@ -19,66 +21,28 @@
 
   <div class="card">
     <h3><a href="{%s as.Route(`project.list`) %}">Projects</a></h3>
-    {% if len(p.Sources) == 0 %}
+    {%- if len(p.Sources) == 0 -%}
     <p>no projects available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
-    {% else %}
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for _, p := range p.Projects %}
-        <tr>
-          <td><a href="{%s as.Route(`project.detail`, `key`, p.Key) %}">{%s p.Title %}</a></td>
-          <td class="shrink"><a href="{%s as.Route(`workspace`, `key`, p.Key) %}"><button type="button">workspace</button></a></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
+    {%- else -%}
+    {%= vproject.ProjectTable(p.Projects, as, ps) %}
+    {%- endif -%}
   </div>
 
   <div class="card">
     <h3><a href="{%s as.Route(`source.list`) %}">Sources</a></h3>
-    {% if len(p.Sources) == 0 %}
+    {%- if len(p.Sources) == 0 -%}
     <p>no sources available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
-    {% else %}
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Type</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for _, s := range p.Sources %}
-        <tr>
-          <td>
-            <a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Title %}</a>
-          </td>
-          <td>{%s s.Description %}</td>
-          <td>{%s s.Type.String() %}</td>
-          <td class="shrink">
-            <a href="{%s as.Route(`source.refresh`, `key`, s.Key) %}"><button type="button">refresh</button></a>
-            <a href="{%s as.Route(`workspace.source`, `key`, s.Key) %}"><button type="button">workspace</button></a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
+    {%- else -%}
+    {%= vsource.SourceTable(p.Sources, as, ps) %}
+    {%- endif -%}
   </div>
 
   <div class="card">
     <h3><a href="{%s as.Route(`sandbox.list`) %}">Sandboxes</a></h3>
     <ul>
-      {% for _, s := range sandbox.AllSandboxes %}<li><a href="{%s as.Route(`sandbox.run`, `key`, s.Key) %}">{%s s.Title %}</a></li>
-      {% endfor %}
+      {%- for _, s := range sandbox.AllSandboxes -%}
+      <li><a href="{%s as.Route(`sandbox.run`, `key`, s.Key) %}">{%s s.Title %}</a></li>
+      {%- endfor -%}
     </ul>
   </div>
 {% endfunc %}

@@ -10,7 +10,7 @@ import (
 
 func SitemapXML(w http.ResponseWriter, r *http.Request) {
 	act("sitemap", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		ret := make([]string, 0)
+		var ret []string
 		ret = append(ret, `<?xml version="1.0" encoding="UTF-8"?>`, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
 		for _, rt := range cutil.ExtractRoutes(as.Router) {
 			if routeMatches(rt) {

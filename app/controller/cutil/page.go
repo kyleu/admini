@@ -3,6 +3,8 @@ package cutil
 import (
 	"net/url"
 
+	"go.uber.org/zap"
+
 	"github.com/gorilla/sessions"
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/util"
@@ -23,6 +25,7 @@ type PageState struct {
 	SearchPath  string
 	ProfilePath string
 	Data        interface{}
+	Logger      *zap.SugaredLogger
 }
 
 func (p *PageState) AddIcon(n string) {

@@ -1,8 +1,9 @@
 package controller
 
 import (
-	"github.com/pkg/errors"
 	"net/http"
+
+	"github.com/pkg/errors"
 
 	"github.com/gorilla/mux"
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -27,7 +28,7 @@ func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
 
 		prj, err := currentApp.Projects.Load(projectKey)
 		if err != nil {
-			return "", errors.Wrap(err, "error loading project [" + projectKey + "]")
+			return "", errors.Wrap(err, "error loading project ["+projectKey+"]")
 		}
 
 		paths = paths[2:]
@@ -39,7 +40,7 @@ func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
 		ps.ProfilePath = currentApp.Route("profile")
 		m, err := workspace.ProjectMenu(currentApp, prj)
 		if err != nil {
-			return "", errors.Wrap(err, "error creating menu for project [" + projectKey + "]")
+			return "", errors.Wrap(err, "error creating menu for project ["+projectKey+"]")
 		}
 		ps.Menu = m
 

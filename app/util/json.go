@@ -3,7 +3,6 @@ package util
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 )
 
 // Converts the argument to a string containing pretty JSON, logging errors
@@ -18,17 +17,11 @@ func ToJSONCompact(x interface{}) string {
 
 // Converts the argument to an optionally indented byte array, logging errors
 func ToJSONBytes(x interface{}, indent bool) []byte {
-	var b []byte
-	var err error
 	if indent {
-		b, err = json.MarshalIndent(x, "", "  ")
-	} else {
-		b, err = json.Marshal(x)
+		b, _ := json.MarshalIndent(x, "", "  ")
+		return b
 	}
-	if err != nil {
-		msg := fmt.Sprintf("unable to serialize json from type [%T]: %+v", x, err)
-		LogWarn(msg)
-	}
+	b, _ := json.Marshal(x)
 	return b
 }
 

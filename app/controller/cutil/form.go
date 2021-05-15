@@ -1,10 +1,11 @@
 package cutil
 
 import (
-	"github.com/pkg/errors"
 	"net/http"
 	"sort"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 type FormValue struct {
@@ -32,5 +33,31 @@ func ParseForm(req *http.Request) (FormValues, error) {
 		return ret[i].Key < ret[j].Key
 	})
 
+	return ret, nil
+}
+
+const sfx = "--selected"
+
+func (c FormValues) AsChanges() (map[string]interface{}, error) {
+	keys := []string{}
+	vals := map[string]interface{}{}
+
+	for _, f := range c {
+		if strings.HasSuffix(f.Key, sfx) {
+			k := strings.TrimSuffix(f.Key, sfx)
+			keys = append(keys, k)
+		} else {
+			curr, ok := vals[f.Key]
+			if ok {
+				return nil, errors.Errorf("multiple values presented for [%v] (%v/%v)", f.Key, curr, f.Value)
+			}
+			vals[f.Key] = f.Value
+		}
+	}
+
+	ret := make(map[string]interface{}, len(keys))
+	for _, k := range keys {
+		ret[k] = vals[k]
+	}
 	return ret, nil
 }

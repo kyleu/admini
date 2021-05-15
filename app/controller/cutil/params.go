@@ -9,7 +9,7 @@ import (
 )
 
 func ParamSetFromRequest(r *http.Request) util.ParamSet {
-	ret := make(util.ParamSet)
+	ret := util.ParamSet{}
 	for qk, qs := range r.URL.Query() {
 		if strings.Contains(qk, ".") {
 			for _, qv := range qs {

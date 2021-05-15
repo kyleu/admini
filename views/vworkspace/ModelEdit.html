@@ -17,7 +17,7 @@
 {% func (p *ModelEdit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     {% code
-      rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(), p.Result)
+      rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(ps.Logger), p.Result)
       if err != nil {
         panic(err)
       }
@@ -33,7 +33,7 @@
           {% for idx, f := range p.Model.Fields %}
             <tr>
               <th class="shrink"><label><input type="checkbox" value="true" name="{%s f.Key %}--selected" /> {%s f.Key %}</label></th>
-              <td>{%= fieldedit.Any(p.Result[idx], f.Type, f.Nullable, f.Key) %}</td>
+              <td>{%= fieldedit.Any(p.Result[idx], f.Type, f.Nullable(), f.Key) %}</td>
             </tr>
           {% endfor %}
           <tr>

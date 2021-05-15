@@ -2,25 +2,27 @@ package filesystem
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
 	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/kyleu/admini/app/util"
+	"go.uber.org/zap"
+
+	"github.com/pkg/errors"
 )
 
 type FileSystem struct {
-	root string
+	root   string
+	logger *zap.SugaredLogger
 }
 
 var _ FileLoader = (*FileSystem)(nil)
 
 // Constructor
-func NewFileSystem(root string) *FileSystem {
-	return &FileSystem{root: root}
+func NewFileSystem(root string, logger *zap.SugaredLogger) *FileSystem {
+	return &FileSystem{root: root, logger: logger.With(zap.String("service", "filesystem"))}
 }
 
 func (f *FileSystem) getPath(ss ...string) string {
@@ -40,7 +42,7 @@ func (f *FileSystem) Root() string {
 func (f *FileSystem) ReadFile(path string) ([]byte, error) {
 	b, err := ioutil.ReadFile(f.getPath(path))
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("unable to read file [%v]", path))
+		return nil, errors.Wrapf(err, "unable to read file [%v]", path)
 	}
 	return b, nil
 }
@@ -49,7 +51,7 @@ func (f *FileSystem) ReadFile(path string) ([]byte, error) {
 func (f *FileSystem) CreateDirectory(path string) error {
 	p := f.getPath(path)
 	if err := os.MkdirAll(p, 0o755); err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to create data directory [%v]", p))
+		return errors.Wrapf(err, "unable to create data directory [%v]", p)
 	}
 	return nil
 }
@@ -64,16 +66,16 @@ func (f *FileSystem) WriteFile(path string, content []byte, overwrite bool) erro
 	dd := filepath.Dir(path)
 	err = f.CreateDirectory(dd)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to create data directory [%v]", dd))
+		return errors.Wrapf(err, "unable to create data directory [%v]", dd)
 	}
 	file, err := os.Create(p)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to create file [%v]", p))
+		return errors.Wrapf(err, "unable to create file [%v]", p)
 	}
 	defer func() { _ = file.Close() }()
 	_, err = file.Write(content)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to write content to file [%v]", p))
+		return errors.Wrapf(err, "unable to write content to file [%v]", p)
 	}
 	return nil
 }
@@ -106,7 +108,7 @@ func (f *FileSystem) ListExtension(path string, ext string) []string {
 	glob := "*." + ext
 	matches, err := filepath.Glob(f.getPath(path, glob))
 	if err != nil {
-		util.LogWarn("cannot list [%v] in path [%v]: %+v", ext, path, err)
+		f.logger.Warn(fmt.Sprintf("cannot list [%v] in path [%v]: %+v", ext, path, err))
 	}
 	ret := make([]string, 0, len(matches))
 	for _, j := range matches {
@@ -121,12 +123,15 @@ func (f *FileSystem) ListExtension(path string, ext string) []string {
 
 // Lists all directories in a directory
 func (f *FileSystem) ListDirectories(path string) []string {
+	if !f.Exists(path) {
+		return nil
+	}
 	p := f.getPath(path)
 	files, err := ioutil.ReadDir(p)
 	if err != nil {
-		util.LogWarn("cannot list path [%v]: %+v", path, err)
+		f.logger.Warn(fmt.Sprintf("cannot list path [%v]: %+v", path, err))
 	}
-	ret := make([]string, 0)
+	var ret []string
 	for _, f := range files {
 		if f.IsDir() {
 			ret = append(ret, f.Name())
@@ -155,9 +160,9 @@ func (f *FileSystem) IsDir(path string) bool {
 // Removes the file at the provided path
 func (f *FileSystem) Remove(path string) error {
 	p := f.getPath(path)
-	util.LogWarn("removing file at path [" + p + "]")
+	f.logger.Warn("removing file at path [" + p + "]")
 	if err := os.Remove(p); err != nil {
-		return errors.Wrap(err, fmt.Sprintf("error removing file [%v]", path))
+		return errors.Wrapf(err, "error removing file [%v]", path)
 	}
 	return nil
 }
@@ -167,13 +172,13 @@ func (f *FileSystem) RemoveRecursive(path string) error {
 	p := f.getPath(path)
 	s, err := os.Stat(p)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to stat file [%v]", path))
+		return errors.Wrapf(err, "unable to stat file [%v]", path)
 	}
 	if s.IsDir() {
 		var files []fs.FileInfo
 		files, err = ioutil.ReadDir(p)
 		if err != nil {
-			util.LogWarn("cannot list path ["+path+"]: %+v", err)
+			f.logger.Warn(fmt.Sprintf("cannot read path [%v] for removal: %+v", path, err))
 		}
 		for _, file := range files {
 			err = f.RemoveRecursive(filepath.Join(path, file.Name()))
@@ -184,7 +189,7 @@ func (f *FileSystem) RemoveRecursive(path string) error {
 	}
 	err = os.Remove(p)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to remove file [%v]", path))
+		return errors.Wrapf(err, "unable to remove file [%v]", path)
 	}
 	return nil
 }

@@ -1,8 +1,9 @@
 package action
 
 import (
-	"github.com/kyleu/admini/app/util"
 	"sort"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type Action struct {
@@ -12,12 +13,12 @@ type Action struct {
 	Description string            `json:"description,omitempty"`
 	Icon        string            `json:"icon,omitempty"`
 	Ordinal     int               `json:"ordinal,omitempty"`
-	Children    Actions           `json:"children,omitempty"`
+	Children    Actions           `json:"-"` // stored in subdirs
 	Pkg         util.Pkg          `json:"-"`
 	Config      map[string]string `json:"config,omitempty"`
 }
 
-func (a Action) TitleString() string {
+func (a *Action) TitleString() string {
 	if a.Title == "" {
 		return a.Key
 	}

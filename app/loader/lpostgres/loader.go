@@ -1,8 +1,11 @@
 package lpostgres
 
 import (
-	"github.com/pkg/errors"
 	"strings"
+
+	"go.uber.org/zap"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/model"
@@ -14,11 +17,12 @@ import (
 )
 
 type Loader struct {
-	cache map[string]*database.Service
+	cache  map[string]*database.Service
+	logger *zap.SugaredLogger
 }
 
-func NewLoader() *Loader {
-	return &Loader{cache: map[string]*database.Service{}}
+func NewLoader(logger *zap.SugaredLogger) *Loader {
+	return &Loader{cache: map[string]*database.Service{}, logger: logger.With(zap.String("service", "loader.postgres"))}
 }
 
 var _ loader.Loader = (*Loader)(nil)
@@ -38,7 +42,7 @@ func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
 		return nil, errors.Wrap(err, "error opening database")
 	}
 
-	return postgres.LoadDatabaseSchema(db)
+	return postgres.LoadDatabaseSchema(db, l.logger)
 }
 
 func (l *Loader) openDatabase(source string, cfg []byte) (*database.Service, error) {
@@ -51,7 +55,7 @@ func (l *Loader) openDatabase(source string, cfg []byte) (*database.Service, err
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing database config")
 	}
-	db, err := database.OpenDatabase(config)
+	db, err := database.OpenDatabase(config, l.logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error opening database")
 	}

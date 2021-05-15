@@ -2,9 +2,11 @@ package controller
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/util"
-	"github.com/pkg/errors"
 	"strings"
+
+	"github.com/kyleu/admini/app/schema"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
@@ -12,17 +14,15 @@ import (
 )
 
 func modelEdit(req *workspaceRequest, m *model.Model, idStrings []string) (string, error) {
-	return modelLink(req, m, idStrings, "x")
+	return modelDetail(req, m, idStrings, "x")
 }
-
-const sfx = "--selected"
 
 func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (string, error) {
 	form, err := cutil.ParseForm(req.R)
 	if err != nil {
 		return "", errors.Wrap(err, "unable to parse form")
 	}
-	changes, err := parseChanges(form)
+	changes, err := form.AsChanges()
 	if err != nil {
 		return "", errors.Wrap(err, "unable to parse changes")
 	}
@@ -30,31 +30,35 @@ func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 	msg := fmt.Sprintf("saved [%v] changes to %v [%v]", len(changes), m.Key, strings.Join(idStrings, "/"))
 	url := vutil.WorkspaceLink(req.AS, req.T, req.K, append(append(m.Path(), "v"), idStrings...)...)
 
-	println(fmt.Sprintf("EDIT:\n%v\n%v\n%v", msg, url, util.ToJSON(changes)))
+	ids := make([]interface{}, 0, len(idStrings)-1)
+	for _, x := range req.Path[1:] {
+		ids = append(ids, x)
+	}
 
-	return flashAndRedir(true, msg, url, req.W, req.R, req.PS)
-}
+	ld := req.AS.Loaders.Get(schema.OriginPostgres)
 
-func parseChanges(changes cutil.FormValues) (map[string]interface{}, error) {
-	keys := []string{}
-	vals := map[string]interface{}{}
+	curr, err := ld.Get(req.Src.Key, req.Src.Config, m, ids)
+	if err != nil {
+		return "", errors.Wrap(err, "unable to parse changes")
+	}
 
-	for _, f := range changes {
-		if strings.HasSuffix(f.Key, sfx) {
-			k := strings.TrimSuffix(f.Key, sfx)
-			keys = append(keys, k)
+	if curr.Size() == 0 {
+		return ersp("can't load original [%v] with id [%v]", m.Key, strings.Join(idStrings, " / "))
+	}
+	if curr.Size() > 1 {
+		return ersp("multiple [%v] matched key [%v]", m.Key, strings.Join(idStrings, " / "))
+	}
+	data := curr.Data[0]
+
+	for k, v := range changes {
+		idx, _ := curr.Fields.Get(k)
+		orig := data[idx]
+		if orig == v {
+			println(fmt.Sprintf("MATCH [%v]: %v == %v", k, orig, v))
 		} else {
-			curr, ok := vals[f.Key]
-			if ok {
-				return nil, errors.New(fmt.Sprintf("multiple values presented for [%v] (%v/%v)", f.Key, curr, f.Value))
-			}
-			vals[f.Key] = f.Value
+			println(fmt.Sprintf("NO MATCH [%v]: %v != %v", k, orig, v))
 		}
 	}
 
-	ret := make(map[string]interface{}, len(keys))
-	for _, k := range keys {
-		ret[k] = vals[k]
-	}
-	return ret, nil
+	return flashAndRedir(true, msg, url, req.W, req.R, req.PS)
 }

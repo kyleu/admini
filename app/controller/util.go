@@ -1,16 +1,14 @@
 package controller
 
 import (
-	"fmt"
-	"github.com/pkg/errors"
 	"net/http"
 	"os"
 	"runtime/debug"
 	"strings"
 
-	"github.com/gorilla/sessions"
-	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
 
+	"github.com/gorilla/sessions"
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/views"
@@ -37,7 +35,7 @@ func SetState(a *app.State) {
 }
 
 func render(r *http.Request, w http.ResponseWriter, appState *app.State, page layout.Page, pageState *cutil.PageState, bc ...string) (string, error) {
-	pageState.Breadcrumbs = bc
+	pageState.Breadcrumbs = append(pageState.Breadcrumbs, bc...)
 	ct := getContentType(r)
 	if pageState.Data != nil && isContentTypeJSON(ct) {
 		return respondJSON(w, "", pageState.Data)
@@ -47,7 +45,7 @@ func render(r *http.Request, w http.ResponseWriter, appState *app.State, page la
 }
 
 func ersp(msg string, args ...interface{}) (string, error) {
-	return "", errors.New(fmt.Sprintf(msg, args...))
+	return "", errors.Errorf(msg, args...)
 }
 
 func flashAndRedir(success bool, msg string, redir string, w http.ResponseWriter, r *http.Request, ps *cutil.PageState) (string, error) {
@@ -61,7 +59,7 @@ func flashAndRedir(success bool, msg string, redir string, w http.ResponseWriter
 		return redir, nil
 	}
 	if strings.HasPrefix(redir, "http") {
-		util.LogWarn("flash redirect attempted for non-local request")
+		ps.Logger.Warn("flash redirect attempted for non-local request")
 		return "/", nil
 	}
 	return redir, nil
@@ -77,7 +75,7 @@ func NotFound(w http.ResponseWriter, r *http.Request) {
 		writeCORS(w)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusNotFound)
-		util.LogInfo("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
+		ps.Logger.Warnf("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
 		ps.Data = "404 not found"
 		return render(r, w, as, &views.NotFound{}, ps, "Not Found")
 	})

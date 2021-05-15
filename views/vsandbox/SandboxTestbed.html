@@ -1,6 +1,8 @@
+{% import "sort" %}
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vresult" %}
 {% import "github.com/kyleu/admini/queries" %}
@@ -25,6 +27,26 @@
       </div>
     </div>
   </div>
+
+  <div class="card">
+    <h3>Icons!</h3>
+    <div style="display: flex;">
+      {%- code
+        keys := make([]string, 0, len(util.SVGLibrary))
+        for k, _ := range util.SVGLibrary {
+          keys = append(keys, k)
+        }
+        sort.Strings(keys)
+      -%}
+      {%- for _, k := range keys -%}
+      <div style="text-align: center; margin: 6px 12px 6px 0; padding: 6px; border: var(--border)">
+        <div style="width: 64px; height: 64px;">{%s= util.SVGLibrary[k] %}</div>
+        {%s k %}
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
   <div class="card">
     <h3>Tables</h3>
     <pre>{%s queries.ListTables("") %}</pre>

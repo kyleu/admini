@@ -2,10 +2,13 @@ package controller
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/project/action"
 	"net/http"
 	"strings"
+
+	"github.com/pkg/errors"
+
+	"github.com/kyleu/admini/app/project"
+	"github.com/kyleu/admini/app/project/action"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -41,15 +44,15 @@ func handle(req *workspaceRequest) (string, error) {
 	case *model.Package:
 		return handlePackage(req, t)
 	case error:
-		return ersp("provided path [%v] can't be loaded: %+v", req.R.URL.Path, t)
+		return "", errors.Wrap(t, fmt.Sprintf("provided path [%v] can't be loaded", req.R.URL.Path))
 	case nil:
-		return ersp("nil path [%v] can't be loaded: %+v", req.R.URL.Path, t)
+		return ersp("nil path [%v] can't be loaded", req.R.URL.Path)
 	default:
 		return ersp("unhandled type: %T", t)
 	}
 }
 
-func whoops(req *workspaceRequest, msg string) (string, error) {
+func whoops(req *workspaceRequest, msg string, path ...string) (string, error) {
 	page := &views.TODO{Message: fmt.Sprintf("%v [%v]", msg, strings.Join(req.Path, "/"))}
-	return render(req.R, req.W, req.AS, page, req.PS, req.Path...)
+	return render(req.R, req.W, req.AS, page, req.PS, path...)
 }

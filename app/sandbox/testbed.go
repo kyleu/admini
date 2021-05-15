@@ -1,8 +1,8 @@
 package sandbox
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/kyleu/admini/app/result"
@@ -16,7 +16,7 @@ import (
 
 var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: onTestbed}
 
-func onTestbed(st *app.State) (interface{}, error) {
+func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := map[string]interface{}{}
 	sourceKey := "admini_test"
 	source, err := st.Sources.Load(sourceKey)
@@ -31,19 +31,19 @@ func onTestbed(st *app.State) (interface{}, error) {
 
 	conn, ok := connInterface.(*database.Service)
 	if !ok {
-		return nil, errors.New(fmt.Sprintf("invalid config object [%T]", connInterface))
+		return nil, errors.Errorf("invalid config object [%T]", connInterface)
 	}
 
 	run := func(key string, q string) error {
 		var rows *sqlx.Rows
 		rows, err = conn.Query(q, nil)
 		if err != nil {
-			return errors.Wrap(err, fmt.Sprintf("can't query %v", key))
+			return errors.Wrapf(err, "can't query %v", key)
 		}
 		var res *result.Result
-		res, err = lpostgres.ParseResult(key, 0, q, nil, rows)
+		res, err = lpostgres.ParseResult(key, 0, q, nil, rows, logger)
 		if err != nil {
-			return errors.Wrap(err, fmt.Sprintf("can't parse result for %v", key))
+			return errors.Wrapf(err, "can't parse result for %v", key)
 		}
 		ret[key] = res
 		return nil

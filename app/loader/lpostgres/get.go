@@ -2,8 +2,11 @@ package lpostgres
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
 	"strings"
+
+	"go.uber.org/zap"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/model"
@@ -16,29 +19,29 @@ func (l *Loader) Get(source string, cfg []byte, m *model.Model, ids []interface{
 		return nil, errors.Wrap(err, "error opening database")
 	}
 
-	q, err := modelGetByPKQuery(m)
+	q, err := modelGetByPKQuery(m, l.logger)
 	if err != nil {
 		return nil, err
 	}
 	rows, err := db.Query(q, nil, ids...)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("error listing models for [%v]", m.Key))
+		return nil, errors.Wrapf(err, "error listing models for [%v]", m.Key)
 	}
 
 	var timing *result.Timing
 	ret, err := ParseResultFields(m.Key, 0, q, timing, m.Fields, rows)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("error constructing result for [%v]", m.Key))
+		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
 	}
 
 	return ret, nil
 }
 
-func modelGetByPKQuery(m *model.Model) (string, error) {
+func modelGetByPKQuery(m *model.Model, logger *zap.SugaredLogger) (string, error) {
 	cols, tbl := forTable(m)
-	pk := m.GetPK()
+	pk := m.GetPK(logger)
 	if len(pk) == 0 {
-		return "", errors.New(fmt.Sprintf("no PK for model [%v]", m.Key))
+		return "", errors.Errorf("no PK for model [%v]", m.Key)
 	}
 	where := []string{}
 	for idx, pkf := range pk {

@@ -13,7 +13,7 @@ func ArrayToString(a []string) string {
 // Formats a SQL array string into a string array
 func StringToArray(s string) []string {
 	split := strings.Split(strings.TrimPrefix(strings.TrimSuffix(s, "}"), "{"), ",")
-	ret := make([]string, 0)
+	ret := []string{}
 
 	for _, x := range split {
 		y := strings.TrimSpace(x)

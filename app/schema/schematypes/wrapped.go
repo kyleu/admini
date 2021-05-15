@@ -2,7 +2,7 @@ package schematypes
 
 import (
 	"encoding/json"
-	"fmt"
+
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/util"
@@ -36,7 +36,7 @@ func (x *Wrapped) String() string {
 }
 
 func (x *Wrapped) From(v interface{}) interface{} {
-		return x.T.From(v)
+	return x.T.From(v)
 }
 
 type wrappedUnmarshal struct {
@@ -170,7 +170,7 @@ func (x *Wrapped) UnmarshalJSON(data []byte) error {
 		t = &Unknown{X: "unmarshal:" + wu.K}
 	}
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to unmarshal wrapped field of type [%v]", wu.K))
+		return errors.Wrapf(err, "unable to unmarshal wrapped field of type [%v]", wu.K)
 	}
 	if t == nil {
 		return errors.New("nil type returned from unmarshal")
@@ -178,4 +178,9 @@ func (x *Wrapped) UnmarshalJSON(data []byte) error {
 	x.K = wu.K
 	x.T = t
 	return nil
+}
+
+func (x *Wrapped) IsOption() bool {
+	_, ok := x.T.(*Option)
+	return ok
 }

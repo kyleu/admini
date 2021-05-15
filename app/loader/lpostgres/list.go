@@ -1,7 +1,6 @@
 package lpostgres
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
@@ -19,21 +18,21 @@ func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.Par
 		return nil, errors.Wrap(err, "error opening database")
 	}
 
-	q := modelListQuery(m, params.Get(m.Key, m.Fields.Names()))
+	q := modelListQuery(m, params.Get(m.Key, m.Fields.Names(), l.logger))
 	rows, err := db.Query(q, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("error listing models for [%v]", m.Key))
+		return nil, errors.Wrapf(err, "error listing models for [%v]", m.Key)
 	}
 
 	count, err := l.Count(source, cfg, m)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("error constructing result for [%v]", m.Key))
+		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
 	}
 
 	var timing *result.Timing
 	ret, err := ParseResultFields(m.Key, count, q, timing, m.Fields, rows)
 	if err != nil {
-		return nil, errors.Wrap(err, fmt.Sprintf("error constructing result for [%v]", m.Key))
+		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
 	}
 
 	return ret, nil
@@ -51,7 +50,7 @@ func (l *Loader) Count(source string, cfg []byte, m *model.Model) (int, error) {
 	}{}
 	err = db.Get(&c, q, nil)
 	if err != nil {
-		return 0, errors.Wrap(err, fmt.Sprintf("error listing models for [%v]", m.Key))
+		return 0, errors.Wrapf(err, "error listing models for [%v]", m.Key)
 	}
 	return c.C, nil
 }

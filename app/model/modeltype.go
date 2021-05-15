@@ -3,7 +3,7 @@ package model
 import (
 	"encoding/json"
 
-	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
 )
 
 type Type struct {
@@ -27,14 +27,13 @@ var AllModelTypes = []Type{
 	ModelTypeInterface, ModelTypeUnion, ModelTypeIntersection,
 }
 
-func modelTypeFromString(s string) Type {
+func modelTypeFromString(s string) (Type, error) {
 	for _, t := range AllModelTypes {
 		if t.Key == s {
-			return t
+			return t, nil
 		}
 	}
-	util.LogWarn("unhandled model type [" + s + "]")
-	return ModelTypeUnknown
+	return ModelTypeUnknown, errors.New("\"unhandled model type [\" + s + \"]\"")
 }
 
 func (t *Type) String() string {
@@ -51,6 +50,10 @@ func (t *Type) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	*t = modelTypeFromString(s)
+	x, err := modelTypeFromString(s)
+	if err != nil {
+		return err
+	}
+	*t = x
 	return nil
 }

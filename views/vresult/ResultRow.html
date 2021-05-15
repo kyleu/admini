@@ -18,9 +18,9 @@
       {%code col := row[fIdx] %}
       {%= vutil.Indent(true, indent + 1) %}
       <td>
-        {% if m != nil && m.IsPK(f.Key) %}
+        {% if m != nil && m.IsPK(f.Key, ps.Logger) %}
           {% code
-            rowPK, err := model.GetStrings(fields, m.GetPK(), row)
+            rowPK, err := model.GetStrings(fields, m.GetPK(ps.Logger), row)
             if err != nil {
               panic(err)
             }

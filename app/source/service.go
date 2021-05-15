@@ -1,10 +1,12 @@
 package source
 
 import (
-	"fmt"
-	"github.com/pkg/errors"
 	"path/filepath"
 	"time"
+
+	"go.uber.org/zap"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/loader"
 
@@ -19,10 +21,12 @@ type Service struct {
 	schemaCache map[string]*schema.Schema
 	files       filesystem.FileLoader
 	loaders     *loader.Service
+	logger      *zap.SugaredLogger
 }
 
-func NewService(root string, files filesystem.FileLoader, ld *loader.Service) *Service {
-	return &Service{root: root, schemaCache: map[string]*schema.Schema{}, files: files, loaders: ld}
+func NewService(root string, files filesystem.FileLoader, ld *loader.Service, logger *zap.SugaredLogger) *Service {
+	log := logger.With(zap.String("service", "source"))
+	return &Service{root: root, schemaCache: map[string]*schema.Schema{}, files: files, loaders: ld, logger: log}
 }
 
 func (s *Service) List() (Sources, error) {
@@ -33,7 +37,7 @@ func (s *Service) List() (Sources, error) {
 		for _, dir := range dirs {
 			src, err := s.Load(dir)
 			if err != nil {
-				return nil, errors.Wrap(err, fmt.Sprintf("unable to load source [%v]", dir))
+				return nil, errors.Wrapf(err, "unable to load source [%v]", dir)
 			}
 			ret = append(ret, src)
 		}
@@ -43,8 +47,7 @@ func (s *Service) List() (Sources, error) {
 }
 
 func (s *Service) Load(key string) (*Source, error) {
-	curr := s.cache.Get(key)
-	if curr != nil {
+	if curr := s.cache.Get(key); curr != nil {
 		return curr, nil
 	}
 
@@ -96,21 +99,21 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 	startNanos := time.Now().UnixNano()
 	source, err := s.Load(key)
 	if err != nil {
-		return nil, 0, errors.Wrap(err, fmt.Sprintf("can't load source with key [%s]", key))
+		return nil, 0, errors.Wrapf(err, "can't load source with key [%s]", key)
 	}
 	ld := s.loaders.Get(source.Type)
 	if ld == nil {
-		return nil, 0, errors.New(fmt.Sprintf("no loader defined for type [" + source.Type.String() + "]"))
+		return nil, 0, errors.Errorf("no loader defined for type [" + source.Type.String() + "]")
 	}
 	sch, err := ld.Schema(source.Key, source.Config)
 	if err != nil {
-		return nil, 0, errors.Wrap(err, fmt.Sprintf("can't load schema with key [%s]", key))
+		return nil, 0, errors.Wrapf(err, "can't load schema with key [%s]", key)
 	}
 	elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 
 	err = s.SaveSchema(key, sch)
 	if err != nil {
-		return nil, 0, errors.Wrap(err, fmt.Sprintf("can't save source with key [%s]", key))
+		return nil, 0, errors.Wrapf(err, "can't save source with key [%s]", key)
 	}
 
 	return sch, elapsedMillis, err
@@ -121,7 +124,7 @@ func (s *Service) SaveSchema(key string, sch *schema.Schema) error {
 	j := util.ToJSONBytes(sch, true)
 	err := s.files.WriteFile(p, j, true)
 	if err != nil {
-		return errors.Wrap(err, fmt.Sprintf("unable to save schema [%v]", key))
+		return errors.Wrapf(err, "unable to save schema [%v]", key)
 	}
 	s.schemaCache[key] = sch
 	return nil

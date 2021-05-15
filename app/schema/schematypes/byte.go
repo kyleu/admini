@@ -25,7 +25,6 @@ func (x *Byte) From(v interface{}) interface{} {
 	}
 }
 
-
 func NewByte() *Wrapped {
 	return Wrap(&Byte{})
 }

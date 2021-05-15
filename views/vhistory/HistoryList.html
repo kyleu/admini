@@ -1,0 +1,19 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type HistoryList struct {
+  layout.Basic
+  Histories []string
+} %}
+
+{% func (p *HistoryList) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>Histories</h3>
+    <ul>
+      {% for _, s := range p.Histories %}
+        <li>{%s s %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endfunc %}

@@ -1,12 +1,13 @@
 package workspace
 
 import (
+	"path/filepath"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/pkg/errors"
-	"path/filepath"
 )
 
 func ProjectMenu(as *app.State, prj *project.Project) (menu.Items, error) {
@@ -84,4 +85,3 @@ func ToMenu(as *app.State, path string, prj string, a action.Actions, sources []
 
 	return ret, nil
 }
-

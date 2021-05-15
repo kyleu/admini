@@ -2,7 +2,9 @@ package postgres
 
 import (
 	"database/sql"
-	"fmt"
+
+	"go.uber.org/zap"
+
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/field"
@@ -41,22 +43,21 @@ func (cr *columnResult) IsNullable() bool {
 	return cr.Nullable == pgYes
 }
 
-func (cr *columnResult) AsField(readOnlyOverride bool) *field.Field {
+func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger) *field.Field {
 	var d interface{}
 	if cr.Default.Valid {
 		d = cr.Default.String
 	}
 	return &field.Field{
 		Key:      cr.Name,
-		Type:     typeFor(cr.UDTName, cr),
+		Type:     typeFor(cr.UDTName, cr, logger),
 		Default:  d,
-		Nullable: cr.Nullable == pgYes,
 		ReadOnly: readOnlyOverride || (cr.Updatable == pgNo),
 		Metadata: nil,
 	}
 }
 
-func loadColumns(models model.Models, db *database.Service) error {
+func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	cols := []*columnResult{}
 	err := db.Select(&cols, queries.ListColumns(db.SchemaName), nil)
 	if err != nil {
@@ -66,9 +67,9 @@ func loadColumns(models model.Models, db *database.Service) error {
 	for _, col := range cols {
 		mod := models.Get(util.Pkg{col.Schema}, col.Table)
 		if mod == nil {
-			return errors.New(fmt.Sprintf("no table [%v] found among [%v] candidates", col.Table, len(models)))
+			return errors.Errorf("no table [%v] found among [%v] candidates", col.Table, len(models))
 		}
-		err = mod.AddField(col.AsField(mod.Type == model.ModelTypeInterface))
+		err = mod.AddField(col.AsField(mod.Type == model.ModelTypeInterface, logger))
 		if err != nil {
 			return errors.Wrap(err, "can't add field")
 		}

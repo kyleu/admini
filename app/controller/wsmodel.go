@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"github.com/pkg/errors"
 	"net/http"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
@@ -26,10 +27,12 @@ func handleModel(req *workspaceRequest, m *model.Model) (string, error) {
 		case http.MethodPost:
 			return modelSave(req, m, req.Path[1:])
 		default:
-			return whoops(req, "unhandled method ["+req.R.Method+"]")
+			return whoops(req, "unhandled method ["+req.R.Method+"]", m.Path()...)
 		}
+	case "export":
+		return modelExport(req, m)
 	default:
-		return whoops(req, "unhandled model action")
+		return whoops(req, "unhandled model action", append(m.Path(), req.Path...)...)
 	}
 }
 
@@ -51,7 +54,7 @@ func modelList(req *workspaceRequest, m *model.Model) (string, error) {
 	return render(req.R, req.W, req.AS, page, req.PS, m.Path()...)
 }
 
-func modelLink(req *workspaceRequest, m *model.Model, idStrings []string, act string) (string, error) {
+func modelDetail(req *workspaceRequest, m *model.Model, idStrings []string, act string) (string, error) {
 	l := req.AS.Loaders.Get(req.Src.Type)
 	if l == nil {
 		return ersp("no loader [" + req.Src.Type.String() + "] available")
@@ -64,7 +67,7 @@ func modelLink(req *workspaceRequest, m *model.Model, idStrings []string, act st
 
 	rs, err := l.Get(req.Src.Key, req.Src.Config, m, ids)
 	if err != nil {
-		return "", errors.Wrap(err, "unable to list model ["+m.Key+"]")
+		return "", errors.Wrap(err, "unable to retrieve model ["+m.Key+"]")
 	}
 
 	req.PS.Data = rs
@@ -74,7 +77,7 @@ func modelLink(req *workspaceRequest, m *model.Model, idStrings []string, act st
 
 	switch rs.Size() {
 	case 0:
-		return whoops(req, "no model found with id ["+strings.Join(idStrings, "/")+"]")
+		return whoops(req, "no model found with id ["+strings.Join(idStrings, "/")+"]", append(m.Path(), req.Path[1:]...)...)
 	case 1:
 		switch act {
 		case "v":
@@ -85,7 +88,7 @@ func modelLink(req *workspaceRequest, m *model.Model, idStrings []string, act st
 			page = &vworkspace.ModelEdit{Model: m, CtxT: req.T, CtxK: req.K, Result: rs.Data[0]}
 			return render(req.R, req.W, req.AS, page, req.PS, bc...)
 		default:
-			return whoops(req, "unhandled action ["+act+"]")
+			return whoops(req, "unhandled action ["+act+"]", append(m.Path(), idStrings...)...)
 		}
 	default:
 		return whoops(req, "multiple models found with id ["+strings.Join(idStrings, "/")+"]")
