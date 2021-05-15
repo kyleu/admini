@@ -21,17 +21,17 @@ var menuItemBack = &menu.Item{
 
 func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	path := as.Route("workspace.source", "key", source)
+	desc := "Overview of the data source, displaying details about the configuration"
 	ret := menu.Items{
-		{
-			Key:         "overview",
-			Title:       "Project overview",
-			Description: "Overview of the data source, displaying details about the configuration",
-			Route:       path,
-		},
+		{Key: "overview", Title: "Project overview", Description: desc, Route: path},
 		menu.Separator,
 	}
 
 	ret = append(ret, sourceMenuDetails(sch, path)...)
+
+	var menuItemSQLEditor = &menu.Item{Key: "sql", Title: "SQL playground", Description: "a barebones SQL editor", Route: filepath.Join(path, "_", "sql")}
+	ret = append(ret, menu.Separator, menuItemSQLEditor)
+
 	ret = append(ret, menu.Separator, menuItemBack)
 
 	return ret

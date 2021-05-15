@@ -14,4 +14,5 @@ type Loader interface {
 	List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error)
 	Count(source string, cfg []byte, m *model.Model) (int, error)
 	Get(key string, cfg []byte, m *model.Model, ids []interface{}) (*result.Result, error)
+	Query(key string, config []byte, sql string) (*result.Result, error)
 }

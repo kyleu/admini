@@ -36,6 +36,15 @@ func ParseForm(req *http.Request) (FormValues, error) {
 	return ret, nil
 }
 
+func (c FormValues) Get(k string) *FormValue {
+	for _, x := range c {
+		if x.Key == k {
+			return x
+		}
+	}
+	return nil
+}
+
 const sfx = "--selected"
 
 func (c FormValues) AsChanges() (map[string]interface{}, error) {

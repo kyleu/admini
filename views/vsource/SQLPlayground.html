@@ -1,0 +1,24 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vresult" %}
+
+{% code type SQLPlayground struct {
+  layout.Basic
+  SQL string
+  Res *result.Result
+} %}
+
+{% func (p *SQLPlayground) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>SQL playground</h3>
+    <form class="sql editor" action="" method="post">
+      <textarea name="sql" placeholder="SQL">{%s p.SQL %}</textarea>
+      <button type="submit">Run</button>
+    </form>
+  </div>
+  {%- if p.Res != nil -%}
+  {%= vresult.ResultView("", "", p.Res, nil, 2, nil, as, ps) %}
+  {%- endif -%}
+{% endfunc %}

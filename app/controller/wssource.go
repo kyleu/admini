@@ -1,6 +1,9 @@
 package controller
 
 import (
+	"github.com/kyleu/admini/app/result"
+	"github.com/kyleu/admini/views"
+	"github.com/kyleu/admini/views/vsource"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -46,10 +49,44 @@ func WorkspaceSource(w http.ResponseWriter, r *http.Request) {
 			return render(r, w, as, &vworkspace.WorkspaceOverview{}, ps)
 		}
 
+		if paths[0] == "_" {
+			return sourceAction(r, w, as, ps, src, paths[1:])
+		}
+
 		i, remaining := sch.ModelsByPackage().Get(paths)
 		wr := &workspaceRequest{T: workspaceSourceRoute, K: src.Key, W: w, R: r, AS: as, PS: ps, I: i, Path: remaining, Src: src}
 		return handle(wr)
 	})
+}
+
+func sourceAction(r *http.Request, w http.ResponseWriter, as *app.State, ps *cutil.PageState, src *source.Source, paths []string) (string, error) {
+	if len(paths) == 0 {
+		return render(r, w, as, &vworkspace.WorkspaceOverview{}, ps)
+	}
+
+	switch paths[0] {
+	case "sql":
+		sql := r.URL.Query().Get("sql")
+		if r.Method == http.MethodPost {
+			f, _ := cutil.ParseForm(r)
+			x := f.Get("sql")
+			if x != nil && x.Value != "" {
+				sql = x.Value
+			}
+		}
+		var res *result.Result
+		if sql != "" {
+			r, err := as.Loaders.Get(src.Type).Query(src.Key, src.Config, sql)
+			if err != nil {
+				return "", errors.Wrap(err, "unable to execute query")
+			}
+			res = r
+		}
+
+		return render(r, w, as, &vsource.SQLPlayground{SQL: sql, Res: res}, ps, "sql")
+	default:
+		return render(r, w, as, &views.TODO{Message: "Unhandled source action [" + paths[0] + "]"}, ps, "Not found")
+	}
 }
 
 func loadSource(sourceKey string) (*source.Source, *schema.Schema, error) {

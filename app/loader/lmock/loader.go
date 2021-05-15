@@ -51,3 +51,7 @@ func (l *Loader) Count(source string, cfg []byte, m *model.Model) (int, error) {
 func (l *Loader) Get(key string, config []byte, m *model.Model, ids []interface{}) (*result.Result, error) {
 	panic("implement me")
 }
+
+func (l *Loader) Query(key string, config []byte, sql string) (*result.Result, error) {
+	panic("implement me")
+}

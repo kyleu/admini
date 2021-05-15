@@ -26,3 +26,9 @@
   padding: 6px 12px;
   width: 100%;
 }
+
+.sql.editor textarea {
+  height: 240px;
+  margin-top: var(--padding);
+  margin-bottom: var(--padding);
+}
