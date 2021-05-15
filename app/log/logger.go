@@ -27,9 +27,9 @@ func initDevLogging() (*zap.Logger, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "error registering encoder")
 	}
-
 	config := zap.NewDevelopmentConfig()
-	config.EncoderConfig.FunctionKey = "func"
+	config.EncoderConfig = zapcore.EncoderConfig{}
+
 	config.Encoding = "custom"
 	config.Development = true
 	return config.Build(zap.AddStacktrace(zap.WarnLevel), zap.AddCaller())

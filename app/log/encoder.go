@@ -39,20 +39,14 @@ func (e *customEncoder) EncodeEntry(entry zapcore.Entry, fields []zapcore.Field)
 		return nil, errors.Wrap(err, "can't parse logging JSON")
 	}
 
-	delete(data, "C")
-	delete(data, "L")
-	delete(data, "M")
-	delete(data, "T")
-	delete(data, "func")
-	delete(data, "stacktrace")
-
 	ret := e.pool.Get()
 	addLine := func(l string) {
 		ret.AppendString(l)
 		ret.AppendByte('\n')
 	}
 
-	lvl := levelToColor[entry.Level].Add(entry.Level.CapitalString())
+	lvl := fmt.Sprintf("%-5v", entry.Level.CapitalString())
+	lvl = levelToColor[entry.Level].Add(lvl)
 	tm := entry.Time.Format(timeFormat)
 	addLine(fmt.Sprintf("[%v] %v - %v", lvl, tm, Cyan.Add(entry.Message)))
 	if len(data) > 0 {
