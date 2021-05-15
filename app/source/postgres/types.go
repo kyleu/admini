@@ -16,7 +16,7 @@ func TypeForName(t string, logger *zap.SugaredLogger) *schematypes.Wrapped {
 }
 
 func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes.Wrapped {
-	if cr.Nullable == pgYes {
+	if cr != nil && cr.Nullable == pgYes {
 		cr.Nullable = pgNo
 		return schematypes.NewOption(typeFor(t, cr, logger))
 	}
@@ -27,7 +27,7 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 	case "aclitem":
 		// return schematypes.NewACL()
 	case "bit":
-		if cr.CharLength.Valid {
+		if cr != nil && cr.CharLength.Valid {
 			return schematypes.NewListSized(schematypes.NewBit(), int(cr.CharLength.Int32))
 		}
 		return schematypes.NewBit()
