@@ -5,7 +5,8 @@ import "fmt"
 const KeyInt = "int"
 
 type Int struct {
-	Bits int `json:"bits,omitempty"`
+	Bits     int  `json:"bits,omitempty"`
+	Unsigned bool `json:"unsigned,omitempty"`
 }
 
 var _ Type = (*Int)(nil)
@@ -40,4 +41,8 @@ func (x *Int) From(v interface{}) interface{} {
 
 func NewInt(bits int) *Wrapped {
 	return Wrap(&Int{Bits: bits})
+}
+
+func NewUnsignedInt(bits int) *Wrapped {
+	return Wrap(&Int{Bits: bits, Unsigned: true})
 }

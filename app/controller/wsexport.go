@@ -12,7 +12,7 @@ func modelExport(req *workspaceRequest, m *model.Model, keys []string) (string, 
 	if len(keys) == 0 {
 		req.PS.Data = export.AllFormats
 		page := &vexport.ExportList{CtxT: req.T, CtxK: req.K, Model: m}
-		return render(req.R, req.W, req.AS, page, req.PS, m.Path()...)
+		return render(req.R, req.W, req.AS, page, req.PS,append(m.Path(), "export")...)
 	}
 	if len(keys) != 2 {
 		return ersp("must provide language and flavor")
@@ -27,5 +27,5 @@ func modelExport(req *workspaceRequest, m *model.Model, keys []string) (string, 
 	}
 	req.PS.Data = out
 	page := &vexport.Export{Format: f, Results: out}
-	return render(req.R, req.W, req.AS, page, req.PS, m.Path()...)
+	return render(req.R, req.W, req.AS, page, req.PS, append(m.Path(), "export")...)
 }

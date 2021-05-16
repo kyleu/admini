@@ -46,6 +46,8 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result 
 		f.W(fmt.Sprintf(msg, util.ToCamel(fld.Key), typ, "`json:\""+util.ToLowerCamel(fld.Key)+omit+"\"`", suffix))
 	}
 	f.W("}", -1)
+	f.W("")
+	f.W(fmt.Sprintf("type %vs []*%v", util.ToCamel(m.Key), util.ToCamel(m.Key)))
 
 	ret := &Result{Key: "model", Out: f}
 	return ret
@@ -54,10 +56,12 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result 
 func goServiceFile(m *model.Model, t *Format) *Result {
 	f := NewGoFile(m.Pkg, m.Key+"Service")
 
-	f.W("type Service struct {}")
+	f.W("type Service struct {", 1)
+	f.W("logger " + t.Get("logger"))
+	f.W("}", -1)
 	f.W("")
-	f.W("func NewService() *Service {", 1)
-	f.W("return &Service()")
+	f.W("func NewService(logger " + t.Get("logger") + ") *Service {", 1)
+	f.W("return &Service{logger: logger}")
 	f.W("}", -1)
 	f.W("")
 	f.W("func (s *Service) Test() bool {", 1)
