@@ -17,7 +17,7 @@ import (
 )
 
 type Loader struct {
-	key string
+	key    string
 	db     *database.Service
 	logger *zap.SugaredLogger
 }

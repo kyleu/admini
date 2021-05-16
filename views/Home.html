@@ -24,7 +24,7 @@
     {%- if len(p.Sources) == 0 -%}
     <p>no projects available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
     {%- else -%}
-    {%= vproject.ProjectTable(p.Projects, as, ps) %}
+    {%= vproject.Table(p.Projects, as, ps) %}
     {%- endif -%}
   </div>
 
@@ -33,7 +33,7 @@
     {%- if len(p.Sources) == 0 -%}
     <p>no sources available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
     {%- else -%}
-    {%= vsource.SourceTable(p.Sources, as, ps) %}
+    {%= vsource.Table(p.Sources, as, ps) %}
     {%- endif -%}
   </div>
 

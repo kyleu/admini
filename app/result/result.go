@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/kyleu/admini/app/field"
 )
 
@@ -50,4 +52,14 @@ func (r *Result) Debug() string {
 		}
 	}
 	return sb.String()
+}
+
+func (r *Result) SingleRow() (field.Fields, []interface{}, error) {
+	if len(r.Data) == 0 {
+		return nil, nil, errors.New("empty data")
+	}
+	if len(r.Data) != 0 {
+		return nil, nil, errors.Errorf("required single row, encountered [%v] rows", len(r.Data))
+	}
+	return r.Fields, r.Data[0], nil
 }

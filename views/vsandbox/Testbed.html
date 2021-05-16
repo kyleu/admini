@@ -2,14 +2,15 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vresult" %}
 {% import "github.com/kyleu/admini/queries" %}
 
-{% code type SandboxTestbed struct { layout.Basic } %}
+{% code type Testbed struct { layout.Basic } %}
 
-{% func (p *SandboxTestbed) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Testbed) Body(as *app.State, ps *cutil.PageState) %}
   {% code data := ps.Data.(map[string]interface{}) %}
   <div class="card">
     <h3>Testbed!</h3>
@@ -48,23 +49,34 @@
   </div>
 
   <div class="card">
+    <h3>Tabs</h3>
+    <div class="tabs">
+      {%- for _, o := range schema.AllOrigins -%}
+      <input name="type" type="radio" id="sandbox-{%s o.Key %}" class="input"/>
+      <label for="sandbox-{%s o.Key %}" class="label">{%s o.Title %}</label>
+      <div class="panel"><p>{%s o.Description %}</p></div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="card">
     <h3>Tables</h3>
     <pre>{%s queries.ListTables("") %}</pre>
-    {%= vresult.ResultView("", "", data["tables"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.View("", "", data["tables"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
   <div class="card">
     <h3>Columns</h3>
     <pre>{%s queries.ListColumns("") %}</pre>
-    {%= vresult.ResultView("", "", data["columns"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.View("", "", data["columns"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
   <div class="card">
     <h3>Indexes</h3>
     <pre>{%s queries.ListIndexes("") %}</pre>
-    {%= vresult.ResultView("", "", data["indexes"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.View("", "", data["indexes"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
   <div class="card">
     <h3>Foreign Keys</h3>
     <pre>{%s queries.ListForeignKeys("") %}</pre>
-    {%= vresult.ResultView("", "", data["fks"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.View("", "", data["fks"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
 {% endfunc %}

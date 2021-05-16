@@ -2,13 +2,13 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type SearchResults struct {
+{% code type Results struct {
   layout.Basic
   Q string
   Results []string
 } %}
 
-{% func (p *SearchResults) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Results) Body(as *app.State, ps *cutil.PageState) %}
 <div class="card">
   <h3>{% if p.Q == "" %}Search{% else %}[{%s p.Q %}] search results{% endif %}</h3>
   <form action="{%s as.Route(`search`) %}">

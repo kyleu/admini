@@ -3,15 +3,15 @@
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type SourceList struct {
+{% code type List struct {
   layout.Basic
   Sources source.Sources
 } %}
 
-{% func (p *SourceList) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="{%s as.Route(`source.new.form`) %}">add new</a></div>
     <h3>Sources</h3>
-    {%= SourceTable(p.Sources, as, ps) %}
+    {%= Table(p.Sources, as, ps) %}
   </div>
 {% endfunc %}

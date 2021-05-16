@@ -20,7 +20,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to load project list")
 		}
 		ps.Data = p
-		return render(r, w, as, &vproject.ProjectList{Projects: p}, ps, "projects")
+		return render(r, w, as, &vproject.List{Projects: p}, ps, "projects")
 	})
 }
 
@@ -32,6 +32,6 @@ func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
 		ps.Data = prj
-		return render(r, w, as, &vproject.ProjectDetail{Project: prj}, ps, "projects", prj.Key)
+		return render(r, w, as, &vproject.Detail{Project: prj}, ps, "projects", prj.Key)
 	})
 }

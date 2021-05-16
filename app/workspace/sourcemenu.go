@@ -29,7 +29,7 @@ func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 
 	ret = append(ret, sourceMenuDetails(sch, path)...)
 
-	var menuItemSQLEditor = &menu.Item{Key: "sql", Title: "SQL playground", Description: "a barebones SQL editor", Route: filepath.Join(path, "_", "sql")}
+	menuItemSQLEditor := &menu.Item{Key: "sql", Title: "SQL playground", Description: "a barebones SQL editor", Route: filepath.Join(path, "_", "sql")}
 	ret = append(ret, menu.Separator, menuItemSQLEditor)
 
 	ret = append(ret, menu.Separator, menuItemBack)

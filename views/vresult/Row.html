@@ -6,7 +6,7 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ResultRow(ctxT string, ctxK string, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func Row(ctxT string, ctxK string, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <tr>
     {% if showNum %}

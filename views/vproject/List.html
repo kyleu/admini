@@ -3,14 +3,14 @@
 {% import "github.com/kyleu/admini/app/project" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ProjectList struct {
+{% code type List struct {
   layout.Basic
   Projects project.Projects
 } %}
 
-{% func (p *ProjectList) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
 <div class="card">
   <h3>Projects</h3>
-  {%= ProjectTable(p.Projects, as, ps) %}
+  {%= Table(p.Projects, as, ps) %}
 </div>
 {% endfunc %}

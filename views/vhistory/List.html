@@ -2,12 +2,12 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type HistoryList struct {
+{% code type List struct {
   layout.Basic
   Histories []string
 } %}
 
-{% func (p *HistoryList) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>Histories</h3>
     <ul>

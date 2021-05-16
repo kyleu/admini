@@ -2,9 +2,10 @@ package controller
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/menu"
 	"net/http"
 	"time"
+
+	"github.com/kyleu/admini/app/menu"
 
 	"go.uber.org/zap"
 

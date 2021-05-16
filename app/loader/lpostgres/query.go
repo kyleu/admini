@@ -19,5 +19,3 @@ func (l *Loader) Query(sql string) (*result.Result, error) {
 
 	return ret, nil
 }
-
-

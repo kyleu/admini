@@ -4,12 +4,12 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ProjectDetail struct {
+{% code type Detail struct {
   layout.Basic
   Project *project.Project
 } %}
 
-{% func (p *ProjectDetail) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%s p.Project.Title %}</h3>
     <p>

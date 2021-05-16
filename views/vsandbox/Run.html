@@ -3,14 +3,14 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type SandboxRun struct {
+{% code type Run struct {
   layout.Basic
   Key string
   Title string
   Result interface{}
 } %}
 
-{% func (p *SandboxRun) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Run) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%s p.Title %}</h3>
     {%= fieldview.JSON(p.Result) %}

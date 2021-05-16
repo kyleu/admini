@@ -7,13 +7,13 @@ import (
 
 type Service struct {
 	loaders map[schema.Origin]func(key string, cfg []byte) (Loader, error)
-	cache map[string]Loader
+	cache   map[string]Loader
 }
 
 func NewService() *Service {
 	return &Service{
 		loaders: map[schema.Origin]func(key string, cfg []byte) (Loader, error){},
-		cache: map[string]Loader{},
+		cache:   map[string]Loader{},
 	}
 }
 

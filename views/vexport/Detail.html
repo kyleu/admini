@@ -4,13 +4,13 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type Export struct {
+{% code type Detail struct {
   layout.Basic
   Format *export.Format
   Results []*export.Result
 } %}
 
-{% func (p *Export) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%s ps.Title %}</h3>
     <em>{%s p.Format.Language %} - {%s p.Format.Flavor %}</em>

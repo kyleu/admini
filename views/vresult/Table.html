@@ -7,7 +7,7 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ResultTable(ctxT string, ctxK string, r *result.Result, model *model.Model, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func Table(ctxT string, ctxK string, r *result.Result, model *model.Model, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <div class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
@@ -33,7 +33,7 @@
       {%= vutil.Indent(true, indent + 2) %}
       <tbody>
         {% for rIdx, row := range r.Data %}
-          {%= ResultRow(ctxT, ctxK, rIdx, row, r.Fields, model, indent + 3, showNum, params, as, ps) %}
+          {%= Row(ctxT, ctxK, rIdx, row, r.Fields, model, indent + 3, showNum, params, as, ps) %}
         {% endfor %}
 
         {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}

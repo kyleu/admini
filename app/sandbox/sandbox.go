@@ -2,6 +2,7 @@ package sandbox
 
 import (
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/result"
 	"go.uber.org/zap"
 )
@@ -30,8 +31,8 @@ var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func(st *a
 }}
 
 var reflection = &Sandbox{Key: "reflection", Title: "Reflection", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
-	test := &struct{Key string; Val int; OK bool}{Key: "k", Val: 1, OK:  true}
-	ret, err := result.ResultFromReflection("sandbox", test)
+	test := &database.DBParams{Host: "localhost", Port: 5432, Username: "user", Password: "pass", Database: "db", Schema: "schema", Debug: true}
+	ret, err := result.FromReflection("sandbox", test)
 	return ret, err
 }}
 

@@ -1,0 +1,63 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/database" %}
+{% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type EditPostgres struct {
+  layout.Basic
+  Source *source.Source
+  Cfg *database.DBParams
+  GraphQLConfig interface{}
+} %}
+
+{% func (p *EditPostgres) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>Edit [{%s p.Source.Key %}]</h3>
+    <div class="spacer"></div>
+    <form class="editor" action="" method="post" enctype="application/x-www-form-urlencoded">
+      <table>
+        <tbody>
+          <tr>
+            <th class="shrink"><label for="input-title">Title</label></th>
+            <td><input value="{%v p.Source.Title %}" name="title" id="input-title" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-host">Host</label></th>
+            <td><input value="{%v p.Cfg.Host %}" name="host" id="input-host" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-port">Port</label></th>
+            <td><input value="{%v p.Cfg.Port %}" name="port" id="input-port" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-username">Username</label></th>
+            <td><input value="{%v p.Cfg.Username %}" name="username" id="input-username" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-password">Password</label></th>
+            <td><input value="{%v p.Cfg.Password %}" name="password" id="input-password" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-database">Database</label></th>
+            <td><input value="{%v p.Cfg.Database %}" name="database" id="input-database" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-schema">Schema</label></th>
+            <td><input value="{%v p.Cfg.Schema %}" name="schema" id="input-schema" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-debug">Debug</label></th>
+            <td><input value="{%v p.Cfg.Debug %}" name="debug" id="input-debug" /></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <button type="submit">Save Changes</button>
+              <button type="reset">Reset</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+{% endfunc %}

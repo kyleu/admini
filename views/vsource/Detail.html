@@ -6,13 +6,13 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type SourceDetail struct {
+{% code type Detail struct {
   layout.Basic
   Source *source.Source
   Schema *schema.Schema
 } %}
 
-{% func (p *SourceDetail) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%= components.SVGRef(p.Source.Type.Icon, 0, 0, ``, ``, ps) %} {%s p.Source.Title %}</h3>
     <p>

@@ -13,14 +13,14 @@ import (
 )
 
 type Loader struct {
-	key string
+	key    string
 	logger *zap.SugaredLogger
 }
 
 func NewLoader(logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
 		ret := &Loader{
-			key: key,
+			key:    key,
 			logger: logger.With(zap.String("service", "loader.mock"), zap.String("source", key)),
 		}
 		return ret, nil

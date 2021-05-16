@@ -102,6 +102,9 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 		return nil, 0, errors.Wrapf(err, "can't load source with key [%s]", key)
 	}
 	ld, err := s.loaders.Get(source.Type, source.Key, source.Config)
+	if err != nil {
+		return nil, 0, errors.Wrapf(err, "can't create loader for source [%s]", key)
+	}
 	if ld == nil {
 		return nil, 0, errors.Errorf("no loader defined for type [" + source.Type.String() + "]")
 	}

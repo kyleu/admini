@@ -6,24 +6,24 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ResultView(ctxT string, ctxK string, r *result.Result, model *model.Model, indent int, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func View(ctxT string, ctxK string, r *result.Result, model *model.Model, indent int, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   <div class="card">
     {%= vutil.Indent(true, indent) %}
     <div class="right">{%= components.Plural(len(r.Data), `row`, `rows`) %}</div>
     {%= vutil.Indent(true, indent) %}
     <h3>{%s r.Title %}</h3>
-    {%= ResultTable(ctxT, ctxK, r, model, indent, false, params, as, ps) %}
+    {%= Table(ctxT, ctxK, r, model, indent, false, params, as, ps) %}
   {%= vutil.Indent(true, indent - 1) %}
   </div>
 {% endstripspace %}{% endfunc %}
 
-{% func ResultViewSimple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func ViewSimple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   <div class="card">
     {%= vutil.Indent(true, indent) %}
     <div class="right">{%= components.Plural(len(r.Data), `row`, `rows`) %}</div>
     {%= vutil.Indent(true, indent) %}
     <h3>{%s r.Title %}</h3>
-    {%= ResultTable("", "", r, nil, indent, false, nil, as, ps) %}
+    {%= Table("", "", r, nil, indent, false, nil, as, ps) %}
   {%= vutil.Indent(true, indent - 1) %}
   </div>
 {% endstripspace %}{% endfunc %}

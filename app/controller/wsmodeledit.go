@@ -2,9 +2,10 @@ package controller
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/views/vworkspace"
-	"strings"
 
 	"github.com/pkg/errors"
 
@@ -25,7 +26,7 @@ func modelNew(req *workspaceRequest, m *model.Model) (string, error) {
 
 	x, err := l.Default(m)
 	if err != nil {
-		return "", errors.Wrap(err, "can't load [" + m.Key + "] defaults")
+		return "", errors.Wrap(err, "can't load ["+m.Key+"] defaults")
 	}
 
 	page := &vworkspace.ModelNew{CtxT: req.T, CtxK: req.K, Model: m, Defaults: x}
@@ -49,9 +50,8 @@ func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 
 	if len(idStrings) == 0 {
 		return wsinsert(req, m, changes, ld)
-	} else {
-		return wsupdate(req, m, changes, ld, idStrings)
 	}
+	return wsupdate(req, m, changes, ld, idStrings)
 }
 
 func wsinsert(req *workspaceRequest, m *model.Model, changes map[string]interface{}, ld loader.Loader) (string, error) {
@@ -84,10 +84,13 @@ func wsupdate(req *workspaceRequest, m *model.Model, changes map[string]interfac
 	if curr.Size() > 1 {
 		return ersp("multiple [%v] matched key [%v]", m.Key, strings.Join(idStrings, " / "))
 	}
-	data := curr.Data[0]
+	fields, data, err := curr.SingleRow()
+	if err != nil {
+		return "", errors.Wrap(err, "return didn't have single row")
+	}
 
 	for k, v := range changes {
-		idx, _ := curr.Fields.Get(k)
+		idx, _ := fields.Get(k)
 		orig := data[idx]
 		if orig == v {
 			println(fmt.Sprintf("MATCH [%v]: %v == %v", k, orig, v))

@@ -2,8 +2,9 @@ package field
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/schema/schematypes"
 	"reflect"
+
+	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
 func NewFieldByType(key string, t reflect.Type, ro bool, md *Metadata) *Field {
@@ -67,6 +68,6 @@ func fromReflect(t reflect.Type) *schematypes.Wrapped {
 	case reflect.UnsafePointer:
 		return schematypes.NewError("can't reflect unsafe pointers")
 	default:
-	  return schematypes.NewUnknown(fmt.Sprintf("%v", t.Kind()))
+		return schematypes.NewUnknown(fmt.Sprintf("%v", t.Kind()))
 	}
 }

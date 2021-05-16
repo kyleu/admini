@@ -17,7 +17,7 @@ import (
 func SandboxList(w http.ResponseWriter, r *http.Request) {
 	act("sandbox.list", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Data = sandbox.AllSandboxes
-		return render(r, w, as, &vsandbox.SandboxList{}, ps, "sandbox")
+		return render(r, w, as, &vsandbox.List{}, ps, "sandbox")
 	})
 }
 
@@ -34,8 +34,8 @@ func SandboxRun(w http.ResponseWriter, r *http.Request) {
 		}
 		ps.Data = ret
 		if sb.Key == "testbed" {
-			return render(r, w, as, &vsandbox.SandboxTestbed{}, ps, "sandbox", sb.Key)
+			return render(r, w, as, &vsandbox.Testbed{}, ps, "sandbox", sb.Key)
 		}
-		return render(r, w, as, &vsandbox.SandboxRun{Key: key, Title: sb.Title, Result: ret}, ps, "sandbox", sb.Key)
+		return render(r, w, as, &vsandbox.Run{Key: key, Title: sb.Title, Result: ret}, ps, "sandbox", sb.Key)
 	})
 }

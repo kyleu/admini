@@ -2,12 +2,13 @@ package result
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/kyleu/admini/app/field"
 	"github.com/pkg/errors"
-	"reflect"
 )
 
-func ResultFromReflection(title string, t ...interface{}) (*Result, error) {
+func FromReflection(title string, t ...interface{}) (*Result, error) {
 	if len(t) == 0 {
 		return nil, errors.New("empty input when building result")
 	}
