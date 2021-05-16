@@ -15,4 +15,5 @@ type Loader interface {
 	Count(m *model.Model) (int, error)
 	Get(m *model.Model, ids []interface{}) (*result.Result, error)
 	Query(sql string) (*result.Result, error)
+	Default(m *model.Model) ([]interface{}, error)
 }

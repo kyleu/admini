@@ -43,6 +43,14 @@ func (l *Loader) Schema() (*schema.Schema, error) {
 	return postgres.LoadDatabaseSchema(l.db, l.logger)
 }
 
+func (l *Loader) Default(m *model.Model) ([]interface{}, error) {
+	ret := make([]interface{}, 0, len(m.Fields))
+	for _, f := range m.Fields {
+		ret = append(ret, f.Default)
+	}
+	return ret, nil
+}
+
 func openDatabase(cfg []byte, logger *zap.SugaredLogger) (*database.Service, error) {
 	config := &database.DBParams{}
 	err := util.FromJSON(cfg, config)

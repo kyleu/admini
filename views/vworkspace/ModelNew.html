@@ -1,0 +1,41 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/views/components/fieldedit" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% code type ModelNew struct {
+  layout.Basic
+  CtxT string
+  CtxK string
+  Model *model.Model
+  Defaults []interface{}
+} %}
+
+{% func (p *ModelNew) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    {% code saveLink := append(p.Model.Path(), `x`) %}
+    <h3>New <a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, p.Model.Path()...) %}">{%s p.Model.Key %}</a></h3>
+    <div class="spacer"></div>
+    <form class="editor" action="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, saveLink...) %}" method="post" enctype="application/x-www-form-urlencoded">
+      <table>
+        <tbody>
+          {% for idx, f := range p.Model.Fields %}
+            <tr>
+              <th class="shrink"><label><input type="checkbox" value="true" name="{%s f.Key %}--selected" /> {%s f.Key %}</label></th>
+              <td>{%= fieldedit.Any(p.Defaults[idx], f.Type, f.Nullable(), f.Key) %}</td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="3">
+              <button type="submit">Save Changes</button>
+              <button type="reset">Reset</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+{% endfunc %}
+

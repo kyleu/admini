@@ -62,7 +62,7 @@ func modelDetail(req *workspaceRequest, m *model.Model, idStrings []string, act 
 		return "", errors.Wrap(err, "no loader available")
 	}
 
-	ids := make([]interface{}, 0, len(idStrings)-1)
+	ids := make([]interface{}, 0, len(idStrings))
 	for _, x := range req.Path[1:] {
 		ids = append(ids, x)
 	}

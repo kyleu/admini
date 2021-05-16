@@ -2,7 +2,8 @@ package controller
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/views"
+	"github.com/kyleu/admini/app/loader"
+	"github.com/kyleu/admini/views/vworkspace"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -17,7 +18,17 @@ func modelEdit(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 }
 
 func modelNew(req *workspaceRequest, m *model.Model) (string, error) {
-	page := &views.TODO{Message: fmt.Sprintf("TODO: New [%v]", strings.Join(m.Path(), "/"))}
+	l, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	if err != nil {
+		return "", errors.Wrap(err, "no loader available")
+	}
+
+	x, err := l.Default(m)
+	if err != nil {
+		return "", errors.Wrap(err, "can't load [" + m.Key + "] defaults")
+	}
+
+	page := &vworkspace.ModelNew{CtxT: req.T, CtxK: req.K, Model: m, Defaults: x}
 	return render(req.R, req.W, req.AS, page, req.PS, append(m.Path(), "new")...)
 }
 
@@ -31,17 +42,35 @@ func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 		return "", errors.Wrap(err, "unable to parse changes")
 	}
 
-	msg := fmt.Sprintf("saved [%v] changes to %v [%v]", len(changes), m.Key, strings.Join(idStrings, "/"))
-	url := vutil.WorkspaceLink(req.AS, req.T, req.K, append(append(m.Path(), "v"), idStrings...)...)
-
-	ids := make([]interface{}, 0, len(idStrings)-1)
-	for _, x := range req.Path[1:] {
-		ids = append(ids, x)
-	}
-
 	ld, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
 	if err != nil {
 		return "", errors.Wrap(err, "unable to create loader")
+	}
+
+	if len(idStrings) == 0 {
+		return wsinsert(req, m, changes, ld)
+	} else {
+		return wsupdate(req, m, changes, ld, idStrings)
+	}
+}
+
+func wsinsert(req *workspaceRequest, m *model.Model, changes map[string]interface{}, ld loader.Loader) (string, error) {
+	pkDef := m.GetPK(req.PS.Logger)
+	idStrings := make([]string, 0, len(pkDef))
+	for _, x := range pkDef {
+		idStrings = append(idStrings, fmt.Sprintf("%v", changes[x]))
+	}
+
+	msg := fmt.Sprintf("added new %v [%v] with [%v] fields", m.Key, strings.Join(idStrings, "/"), len(changes))
+	url := vutil.WorkspaceLink(req.AS, req.T, req.K, append(append(m.Path(), "v"), idStrings...)...)
+
+	return flashAndRedir(true, msg, url, req.W, req.R, req.PS)
+}
+
+func wsupdate(req *workspaceRequest, m *model.Model, changes map[string]interface{}, ld loader.Loader, idStrings []string) (string, error) {
+	ids := make([]interface{}, 0, len(idStrings))
+	for _, x := range req.Path[1:] {
+		ids = append(ids, x)
 	}
 
 	curr, err := ld.Get(m, ids)
@@ -66,6 +95,9 @@ func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 			println(fmt.Sprintf("NO MATCH [%v]: %v != %v", k, orig, v))
 		}
 	}
+
+	msg := fmt.Sprintf("saved [%v] changes to %v [%v]", len(changes), m.Key, strings.Join(idStrings, "/"))
+	url := vutil.WorkspaceLink(req.AS, req.T, req.K, append(append(m.Path(), "v"), idStrings...)...)
 
 	return flashAndRedir(true, msg, url, req.W, req.R, req.PS)
 }

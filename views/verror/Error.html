@@ -5,22 +5,22 @@
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% func errorStack(ed *util.ErrorDetail) %}
-  <table>
-    <tbody>
-    {% for _, f := range util.TraceDetail(ed.StackTrace) %}
-      <tr>
-        <td>
-          {% if strings.Contains(f.Key, util.AppKey) %}
-          <div class="error-key error-owned">{%s f.Key %}</div>
-          {% else %}
-          <div class="error-key">{%s f.Key %}</div>
-          {% endif %}
-          <div class="error-location">{%s f.Loc %}</div>
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+    <table>
+      <tbody>
+      {%- for _, f := range util.TraceDetail(ed.StackTrace) -%}
+        <tr>
+          <td>
+            {%- if strings.Contains(f.Key, util.AppKey) -%}
+            <div class="error-key error-owned">{%s f.Key %}</div>
+            {%- else -%}
+            <div class="error-key">{%s f.Key %}</div>
+            {%- endif -%}
+            <div class="error-location">{%s f.Loc %}</div>
+          </td>
+        </tr>
+      {%- endfor -%}
+      </tbody>
+    </table>
 {% endfunc %}
 
 {% code type Error struct {
@@ -32,13 +32,10 @@
   <div class="card">
     <h3>{%s p.Err.Message %}</h3>
     <em>Internal Server Error</em>
-    {%= errorStack(p.Err) %}
-    {% code cause := p.Err.Cause %}
-    {% for cause != nil %}
-      <h3>Caused by</h3>
-      <div>{%s cause.Message %}</div>
-      {%= errorStack(cause) %}
-      {% code cause = cause.Cause %}
-    {% endfor %}
+    {%= errorStack(p.Err) %} {% code cause := p.Err.Cause %}
+    {%- for cause != nil -%}
+    <h3>Caused by</h3>
+    <div>{%s cause.Message %}</div>{%= errorStack(cause) %}{% code cause = cause.Cause %}
+    {%- endfor -%}
   </div>
 {% endfunc %}

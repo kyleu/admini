@@ -56,9 +56,13 @@ func (l *Loader) Count(m *model.Model) (int, error) {
 }
 
 func (l *Loader) Get(m *model.Model, ids []interface{}) (*result.Result, error) {
-	panic("implement me")
+	return nil, errors.New("implement me")
 }
 
 func (l *Loader) Query(sql string) (*result.Result, error) {
-	panic("implement me")
+	return nil, errors.New("implement me")
+}
+
+func (l *Loader) Default(m *model.Model) ([]interface{}, error) {
+	return nil, errors.New("implement me")
 }
