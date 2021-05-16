@@ -19,6 +19,6 @@
     </form>
   </div>
   {%- if p.Res != nil -%}
-  {%= vresult.ResultView("", "", p.Res, nil, 2, nil, as, ps) %}
+  {%= vresult.ResultViewSimple(p.Res, 2, as, ps) %}
   {%- endif -%}
 {% endfunc %}

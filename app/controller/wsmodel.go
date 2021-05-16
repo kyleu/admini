@@ -31,6 +31,8 @@ func handleModel(req *workspaceRequest, m *model.Model) (string, error) {
 		}
 	case "export":
 		return modelExport(req, m)
+	case "new":
+		return modelNew(req, m)
 	default:
 		return whoops(req, "unhandled model action", append(m.Path(), req.Path...)...)
 	}
@@ -38,12 +40,12 @@ func handleModel(req *workspaceRequest, m *model.Model) (string, error) {
 
 func modelList(req *workspaceRequest, m *model.Model) (string, error) {
 	params := cutil.ParamSetFromRequest(req.R)
-	l := req.AS.Loaders.Get(req.Src.Type)
-	if l == nil {
-		return ersp("no loader [" + req.Src.Type.String() + "] available")
+	l, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	if err != nil {
+		return "", errors.Wrap(err, "no loader available")
 	}
 
-	rs, err := l.List(req.Src.Key, req.Src.Config, m, params)
+	rs, err := l.List(m, params)
 	if err != nil {
 		return "", errors.Wrap(err, "unable to list model ["+m.Key+"]")
 	}
@@ -55,9 +57,9 @@ func modelList(req *workspaceRequest, m *model.Model) (string, error) {
 }
 
 func modelDetail(req *workspaceRequest, m *model.Model, idStrings []string, act string) (string, error) {
-	l := req.AS.Loaders.Get(req.Src.Type)
-	if l == nil {
-		return ersp("no loader [" + req.Src.Type.String() + "] available")
+	l, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	if err != nil {
+		return "", errors.Wrap(err, "no loader available")
 	}
 
 	ids := make([]interface{}, 0, len(idStrings)-1)
@@ -65,7 +67,7 @@ func modelDetail(req *workspaceRequest, m *model.Model, idStrings []string, act 
 		ids = append(ids, x)
 	}
 
-	rs, err := l.Get(req.Src.Key, req.Src.Config, m, ids)
+	rs, err := l.Get(m, ids)
 	if err != nil {
 		return "", errors.Wrap(err, "unable to retrieve model ["+m.Key+"]")
 	}

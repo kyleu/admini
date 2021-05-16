@@ -13,17 +13,12 @@ import (
 	"github.com/kyleu/admini/app/result"
 )
 
-func (l *Loader) Get(source string, cfg []byte, m *model.Model, ids []interface{}) (*result.Result, error) {
-	db, err := l.openDatabase(source, cfg)
-	if err != nil {
-		return nil, errors.Wrap(err, "error opening database")
-	}
-
+func (l *Loader) Get(m *model.Model, ids []interface{}) (*result.Result, error) {
 	q, err := modelGetByPKQuery(m, l.logger)
 	if err != nil {
 		return nil, err
 	}
-	rows, err := db.Query(q, nil, ids...)
+	rows, err := l.db.Query(q, nil, ids...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%v]", m.Key)
 	}

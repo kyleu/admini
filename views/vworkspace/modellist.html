@@ -24,6 +24,7 @@
     <em>{%s p.Model.Type.String() %}</em>
     <a href="#modal-model"><button type="button">Model</button></a>
     <a href="#modal-json"><button type="button">Result</button></a>
+    <a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, append(p.Model.Path(), `new`)...) %}"><button type="button">Create New</button></a>
   </div>
 
   {%= vresult.ResultView(p.CtxT, p.CtxK, p.Result, p.Model, 2, p.ParamSet.Get(p.Model.Key, p.Model.Fields.Names(), ps.Logger), as, ps) %}

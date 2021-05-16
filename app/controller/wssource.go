@@ -76,7 +76,12 @@ func sourceAction(r *http.Request, w http.ResponseWriter, as *app.State, ps *cut
 		}
 		var res *result.Result
 		if sql != "" {
-			r, err := as.Loaders.Get(src.Type).Query(src.Key, src.Config, sql)
+			ld, err := as.Loaders.Get(src.Type, src.Key, src.Config)
+			if err != nil {
+				return "", errors.Wrap(err, "unable to create loader")
+			}
+
+			r, err := ld.Query(sql)
 			if err != nil {
 				return "", errors.Wrap(err, "unable to execute query")
 			}

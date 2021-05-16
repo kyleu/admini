@@ -2,9 +2,8 @@ package controller
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/views"
 	"strings"
-
-	"github.com/kyleu/admini/app/schema"
 
 	"github.com/pkg/errors"
 
@@ -15,6 +14,11 @@ import (
 
 func modelEdit(req *workspaceRequest, m *model.Model, idStrings []string) (string, error) {
 	return modelDetail(req, m, idStrings, "x")
+}
+
+func modelNew(req *workspaceRequest, m *model.Model) (string, error) {
+	page := &views.TODO{Message: fmt.Sprintf("TODO: New [%v]", strings.Join(m.Path(), "/"))}
+	return render(req.R, req.W, req.AS, page, req.PS, append(m.Path(), "new")...)
 }
 
 func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (string, error) {
@@ -35,9 +39,12 @@ func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 		ids = append(ids, x)
 	}
 
-	ld := req.AS.Loaders.Get(schema.OriginPostgres)
+	ld, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	if err != nil {
+		return "", errors.Wrap(err, "unable to create loader")
+	}
 
-	curr, err := ld.Get(req.Src.Key, req.Src.Config, m, ids)
+	curr, err := ld.Get(m, ids)
 	if err != nil {
 		return "", errors.Wrap(err, "unable to parse changes")
 	}

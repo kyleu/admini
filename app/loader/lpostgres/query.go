@@ -5,13 +5,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (l *Loader) Query(source string, cfg []byte, sql string) (*result.Result, error) {
-	db, err := l.openDatabase(source, cfg)
-	if err != nil {
-		return nil, errors.Wrap(err, "error opening database")
-	}
-
-	rows, err := db.Query(sql, nil)
+func (l *Loader) Query(sql string) (*result.Result, error) {
+	rows, err := l.db.Query(sql, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error running SQL")
 	}

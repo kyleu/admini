@@ -10,7 +10,6 @@ import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/loader/lpostgres"
-	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/queries"
 )
 
@@ -24,7 +23,12 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 		return nil, errors.Wrap(err, "can't load source")
 	}
 
-	connInterface, err := st.Loaders.Get(schema.OriginPostgres).Connection(source.Key, source.Config)
+	load, err := st.Loaders.Get(source.Type, source.Key, source.Config)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't get loader")
+	}
+
+	connInterface, err := load.Connection()
 	if err != nil {
 		return nil, errors.Wrap(err, "can't get connection")
 	}

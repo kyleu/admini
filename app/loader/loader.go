@@ -8,11 +8,11 @@ import (
 )
 
 type Loader interface {
-	Schema(source string, cfg []byte) (*schema.Schema, error)
+	Schema() (*schema.Schema, error)
 
-	Connection(source string, cfg []byte) (interface{}, error)
-	List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error)
-	Count(source string, cfg []byte, m *model.Model) (int, error)
-	Get(key string, cfg []byte, m *model.Model, ids []interface{}) (*result.Result, error)
-	Query(key string, config []byte, sql string) (*result.Result, error)
+	Connection() (interface{}, error)
+	List(m *model.Model, params util.ParamSet) (*result.Result, error)
+	Count(m *model.Model) (int, error)
+	Get(m *model.Model, ids []interface{}) (*result.Result, error)
+	Query(sql string) (*result.Result, error)
 }

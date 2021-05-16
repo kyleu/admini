@@ -13,45 +13,52 @@ import (
 )
 
 type Loader struct {
+	key string
 	logger *zap.SugaredLogger
 }
 
-func NewLoader(logger *zap.SugaredLogger) *Loader {
-	return &Loader{logger: logger.With(zap.String("service", "loader.mock"))}
+func NewLoader(logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
+	return func(key string, cfg []byte) (loader.Loader, error) {
+		ret := &Loader{
+			key: key,
+			logger: logger.With(zap.String("service", "loader.mock"), zap.String("source", key)),
+		}
+		return ret, nil
+	}
 }
 
 var _ loader.Loader = (*Loader)(nil)
 
-func (l *Loader) Connection(source string, cfg []byte) (interface{}, error) {
+func (l *Loader) Connection() (interface{}, error) {
 	return nil, nil
 }
 
-func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
-	o, ok := mockData[source]
+func (l *Loader) Schema() (*schema.Schema, error) {
+	o, ok := mockData[l.key]
 	if !ok {
-		return nil, errors.Errorf("no mock data for [%v]", source)
+		return nil, errors.Errorf("no mock data for [%v]", l.key)
 	}
 
 	return o.Schema, nil
 }
 
-func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error) {
-	o, ok := mockData[source]
+func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, error) {
+	o, ok := mockData[l.key]
 	if !ok {
-		return nil, errors.Errorf("no mock data for [%v]", source)
+		return nil, errors.Errorf("no mock data for [%v]", l.key)
 	}
 
 	return o.Data[m.Key], nil
 }
 
-func (l *Loader) Count(source string, cfg []byte, m *model.Model) (int, error) {
+func (l *Loader) Count(m *model.Model) (int, error) {
 	return 1000, nil
 }
 
-func (l *Loader) Get(key string, config []byte, m *model.Model, ids []interface{}) (*result.Result, error) {
+func (l *Loader) Get(m *model.Model, ids []interface{}) (*result.Result, error) {
 	panic("implement me")
 }
 
-func (l *Loader) Query(key string, config []byte, sql string) (*result.Result, error) {
+func (l *Loader) Query(sql string) (*result.Result, error) {
 	panic("implement me")
 }

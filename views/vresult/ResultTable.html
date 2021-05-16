@@ -23,7 +23,8 @@
           {% for fIdx, field := range r.Fields %}
             {%= vutil.Indent(true, indent + 4) %}
             {% code tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, field.Key, fIdx, field.Type) %}
-            {%= components.TableHeader("x", field.Key, field.Key, params, ps.URL, tooltip, field.Type.Sortable(), ps) %}
+            {% code srt := model != nil && field.Type.Sortable() %}
+            {%= components.TableHeader("x", field.Key, field.Key, params, ps.URL, tooltip, srt, ps) %}
           {% endfor %}
         {%= vutil.Indent(true, indent + 3) %}
         </tr>

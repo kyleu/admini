@@ -12,19 +12,14 @@ import (
 
 var publicSchema = "public"
 
-func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.ParamSet) (*result.Result, error) {
-	db, err := l.openDatabase(source, cfg)
-	if err != nil {
-		return nil, errors.Wrap(err, "error opening database")
-	}
-
+func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, error) {
 	q := modelListQuery(m, params.Get(m.Key, m.Fields.Names(), l.logger))
-	rows, err := db.Query(q, nil)
+	rows, err := l.db.Query(q, nil)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%v]", m.Key)
 	}
 
-	count, err := l.Count(source, cfg, m)
+	count, err := l.Count(m)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
 	}
@@ -38,17 +33,12 @@ func (l *Loader) List(source string, cfg []byte, m *model.Model, params util.Par
 	return ret, nil
 }
 
-func (l *Loader) Count(source string, cfg []byte, m *model.Model) (int, error) {
-	db, err := l.openDatabase(source, cfg)
-	if err != nil {
-		return 0, errors.Wrap(err, "error opening database")
-	}
-
+func (l *Loader) Count(m *model.Model) (int, error) {
 	q := modelCountQuery(m)
 	c := struct {
 		C int `db:"c"`
 	}{}
-	err = db.Get(&c, q, nil)
+	err := l.db.Get(&c, q, nil)
 	if err != nil {
 		return 0, errors.Wrapf(err, "error listing models for [%v]", m.Key)
 	}

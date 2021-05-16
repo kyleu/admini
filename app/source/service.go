@@ -101,11 +101,11 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 	if err != nil {
 		return nil, 0, errors.Wrapf(err, "can't load source with key [%s]", key)
 	}
-	ld := s.loaders.Get(source.Type)
+	ld, err := s.loaders.Get(source.Type, source.Key, source.Config)
 	if ld == nil {
 		return nil, 0, errors.Errorf("no loader defined for type [" + source.Type.String() + "]")
 	}
-	sch, err := ld.Schema(source.Key, source.Config)
+	sch, err := ld.Schema()
 	if err != nil {
 		return nil, 0, errors.Wrapf(err, "can't load schema with key [%s]", key)
 	}

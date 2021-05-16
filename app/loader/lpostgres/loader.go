@@ -17,45 +17,39 @@ import (
 )
 
 type Loader struct {
-	cache  map[string]*database.Service
+	key string
+	db     *database.Service
 	logger *zap.SugaredLogger
 }
 
-func NewLoader(logger *zap.SugaredLogger) *Loader {
-	return &Loader{cache: map[string]*database.Service{}, logger: logger.With(zap.String("service", "loader.postgres"))}
+func NewLoader(logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
+	return func(key string, cfg []byte) (loader.Loader, error) {
+		log := logger.With(zap.String("service", "loader.postgres"), zap.String("source", key))
+		db, err := openDatabase(cfg, log)
+		if err != nil {
+			return nil, errors.Wrap(err, "error opening database")
+		}
+		return &Loader{key: key, db: db, logger: log}, nil
+	}
 }
 
 var _ loader.Loader = (*Loader)(nil)
 
-func (l *Loader) Connection(source string, cfg []byte) (interface{}, error) {
-	db, err := l.openDatabase(source, cfg)
-	if err != nil {
-		return nil, errors.Wrap(err, "error opening database")
-	}
-
-	return db, nil
+func (l *Loader) Connection() (interface{}, error) {
+	return l.db, nil
 }
 
-func (l *Loader) Schema(source string, cfg []byte) (*schema.Schema, error) {
-	db, err := l.openDatabase(source, cfg)
-	if err != nil {
-		return nil, errors.Wrap(err, "error opening database")
-	}
-
-	return postgres.LoadDatabaseSchema(db, l.logger)
+func (l *Loader) Schema() (*schema.Schema, error) {
+	return postgres.LoadDatabaseSchema(l.db, l.logger)
 }
 
-func (l *Loader) openDatabase(source string, cfg []byte) (*database.Service, error) {
-	x, ok := l.cache[source]
-	if ok {
-		return x, nil
-	}
+func openDatabase(cfg []byte, logger *zap.SugaredLogger) (*database.Service, error) {
 	config := &database.DBParams{}
 	err := util.FromJSON(cfg, config)
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing database config")
 	}
-	db, err := database.OpenDatabase(config, l.logger)
+	db, err := database.OpenDatabase(config, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error opening database")
 	}
@@ -64,8 +58,6 @@ func (l *Loader) openDatabase(source string, cfg []byte) (*database.Service, err
 	if err != nil {
 		return nil, errors.Wrap(err, "error connecting to database")
 	}
-
-	l.cache[source] = db
 	return db, nil
 }
 
