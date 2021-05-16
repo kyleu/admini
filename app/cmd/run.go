@@ -11,9 +11,7 @@ import (
 	"github.com/kyleu/admini/app/loader/lmock"
 	"github.com/kyleu/admini/app/loader/lpostgres"
 	"github.com/kyleu/admini/app/log"
-	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/schema"
-	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
 	"go.uber.org/zap"
 )
@@ -37,10 +35,11 @@ func Run() error {
 	ls := loader.NewService()
 	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(logger))
 	ls.Set(schema.OriginMock, lmock.NewLoader(logger))
-	ss := source.NewService("source", f, ls, logger)
-	ps := project.NewService("project", f, ss, ls, logger)
 
-	st := app.NewState(r, f, ss, ps, ls, logger)
+	st, err := app.NewState(r, f, ls, logger)
+	if err != nil {
+		return err
+	}
 	controller.SetState(st)
 
 	return http.ListenAndServe(fmt.Sprintf("%s:%v", address, util.AppPort), r)

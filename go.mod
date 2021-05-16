@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/alecthomas/chroma v0.8.2
+	github.com/fsnotify/fsnotify v1.4.7
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/sessions v1.2.1
