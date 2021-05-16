@@ -1,25 +1,24 @@
 {% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/sandbox/export" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/app/export" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Export struct {
   layout.Basic
-  Title string
+  Format *export.Format
   Results []*export.Result
 } %}
 
 {% func (p *Export) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>Export of [{%s p.Title %}]</h3>
-    <em>{%= components.Plural(len(p.Results), "result", "results") %}</em>
+    <h3>{%s ps.Title %}</h3>
+    <em>{%s p.Format.Language %} - {%s p.Format.Flavor %}</em>
   </div>
   {%- for _, r := range p.Results -%}
   <div class="card">
     <h3>{%s r.Key %}</h3>
-    {%= fieldview.Code(r.Out.RenderString(), `go`) %}
+    {%= fieldview.Code(r.Out.RenderString(), p.Format.Language) %}
   </div>
   {%- endfor -%}
 {% endfunc %}

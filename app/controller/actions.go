@@ -85,7 +85,7 @@ func actComplete(key string, ps *cutil.PageState, r *http.Request, w http.Respon
 	}
 	elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 	l := ps.Logger.With(zap.String("method", ps.Method), zap.Int("status", status), zap.Float64("elapsed", elapsedMillis))
-	l.Debugf("processed request in [%.3fms]", elapsedMillis)
+	l.Debugf("processed request in [%.3fms] (render: %.3fms)", elapsedMillis, ps.RenderElapsed)
 }
 
 func clean(ps *cutil.PageState) {

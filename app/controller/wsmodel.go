@@ -30,7 +30,7 @@ func handleModel(req *workspaceRequest, m *model.Model) (string, error) {
 			return whoops(req, "unhandled method ["+req.R.Method+"]", m.Path()...)
 		}
 	case "export":
-		return modelExport(req, m)
+		return modelExport(req, m, req.Path[1:])
 	case "new":
 		return modelNew(req, m)
 	default:

@@ -11,21 +11,22 @@ import (
 )
 
 type PageState struct {
-	Title       string             `json:"title"`
-	Description string             `json:"description"`
-	Method      string             `json:"method"`
-	URL         *url.URL           `json:"-"`
-	Menu        menu.Items         `json:"menu"`
-	Breadcrumbs []string           `json:"breadcrumbs"`
-	Flashes     []string           `json:"flashes"`
-	Session     *sessions.Session  `json:"-"`
-	Icons       []string           `json:"icons"`
-	RootPath    string             `json:"rootPath"`
-	RootTitle   string             `json:"rootTitle"`
-	SearchPath  string             `json:"searchPath"`
-	ProfilePath string             `json:"profilePath"`
-	Data        interface{}        `json:"data"`
-	Logger      *zap.SugaredLogger `json:"-"`
+	Title         string             `json:"title"`
+	Description   string             `json:"description"`
+	Method        string             `json:"method"`
+	URL           *url.URL           `json:"-"`
+	Menu          menu.Items         `json:"menu"`
+	Breadcrumbs   []string           `json:"breadcrumbs"`
+	Flashes       []string           `json:"flashes"`
+	Session       *sessions.Session  `json:"-"`
+	Icons         []string           `json:"icons"`
+	RootPath      string             `json:"rootPath"`
+	RootTitle     string             `json:"rootTitle"`
+	SearchPath    string             `json:"searchPath"`
+	ProfilePath   string             `json:"profilePath"`
+	Data          interface{}        `json:"data"`
+	Logger        *zap.SugaredLogger `json:"-"`
+	RenderElapsed float64            `json:"renderElapsed"`
 }
 
 func (p *PageState) AddIcon(n string) {

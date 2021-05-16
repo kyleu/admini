@@ -5,6 +5,7 @@ import (
 	"os"
 	"runtime/debug"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 
@@ -40,7 +41,9 @@ func render(r *http.Request, w http.ResponseWriter, appState *app.State, page la
 	if pageState.Data != nil && isContentTypeJSON(ct) {
 		return respondJSON(w, "", pageState.Data)
 	}
+	startNanos := time.Now().UnixNano()
 	views.WriteRender(w, page, appState, pageState)
+	pageState.RenderElapsed = float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 	return "", nil
 }
 

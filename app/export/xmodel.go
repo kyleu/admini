@@ -8,16 +8,11 @@ import (
 	"go.uber.org/zap"
 )
 
-type Result struct {
-	Key string `json:"key"`
-	Out *File  `json:"out"`
+func Model(m *model.Model, t *Format, logger *zap.SugaredLogger) ([]*Result, error) {
+	return []*Result{goModelFile(m, t, logger), goServiceFile(m, t)}, nil
 }
 
-func Model(m *model.Model, logger *zap.SugaredLogger) ([]*Result, error) {
-	return []*Result{goModelFile(m, logger), goServiceFile(m)}, nil
-}
-
-func goModelFile(m *model.Model, logger *zap.SugaredLogger) *Result {
+func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result {
 	f := NewGoFile(m.Pkg, m.Key)
 
 	pk := m.GetPK(logger)
@@ -27,7 +22,7 @@ func goModelFile(m *model.Model, logger *zap.SugaredLogger) *Result {
 		if len(fld.Key) > maxKeyLength {
 			maxKeyLength = len(fld.Key)
 		}
-		x, _ := typeString(fld.Type)
+		x, _ := typeString(fld.Type, fm)
 		if len(x) > maxTypeLength {
 			maxTypeLength = len(x)
 		}
@@ -36,7 +31,7 @@ func goModelFile(m *model.Model, logger *zap.SugaredLogger) *Result {
 	f.W("type "+util.ToCamel(m.Key)+" struct {", 1)
 	msg := "%-" + fmt.Sprintf("%v", maxKeyLength) + "v %-" + fmt.Sprintf("%v", maxTypeLength) + "v %v%v"
 	for _, fld := range m.Fields {
-		typ, imp := typeString(fld.Type)
+		typ, imp := typeString(fld.Type, fm)
 		if len(imp) > 0 {
 			logger.Warn("TODO: imports!")
 		}
@@ -56,7 +51,7 @@ func goModelFile(m *model.Model, logger *zap.SugaredLogger) *Result {
 	return ret
 }
 
-func goServiceFile(m *model.Model) *Result {
+func goServiceFile(m *model.Model, t *Format) *Result {
 	f := NewGoFile(m.Pkg, m.Key+"Service")
 
 	f.W("type Service struct {}")
