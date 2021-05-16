@@ -1,7 +1,6 @@
 @import "./style/reset.css";
 
-@import "./style/theme-light.css";
-@import "./style/theme-dark.css";
+@import "./style/vars.css";
 
 @import "./style/core.css";
 @import "./style/dragdrop.css";
@@ -12,6 +11,7 @@
 
 @import "./style/accordion.css";
 @import "./style/modal.css";
+@import "./style/tabs.css";
 
 @import "./style/nav.css";
 @import "./style/search.css";
