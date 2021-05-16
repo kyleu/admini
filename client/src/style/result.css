@@ -29,7 +29,7 @@
   background-color: var(--color-background);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1;
 }
 
 .result-table tbody th {

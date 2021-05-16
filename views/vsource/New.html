@@ -1,5 +1,6 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type New struct {
@@ -10,16 +11,24 @@
   <div class="card">
     <h3>New Source</h3>
     <div class="spacer"></div>
-    <form class="editor" action="" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor" action="{%s as.Route(`source.insert`) %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
+          <tr>
+            <th class="shrink"><label for="input-key">Key</label></th>
+            <td><input value="" name="title" id="input-key" /></td>
+          </tr>
           <tr>
             <th class="shrink"><label for="input-title">Title</label></th>
             <td><input value="" name="title" id="input-title" /></td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-type">Type</label></th>
-            <td><input value="TODO" name="type" id="input-type" /></td>
+            <td>
+              {%- for _, o := range schema.AllOrigins -%}
+              <label><input name="type" type="radio" class="input" value="{%s o.Key %}"/> {%s o.Title %}</label>
+              {%- endfor -%}
+            </td>
           </tr>
           <tr>
             <td colspan="2">
