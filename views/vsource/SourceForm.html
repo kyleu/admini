@@ -1,0 +1,88 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/database" %}
+{% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type SourceForm struct {
+  layout.Basic
+  OrigKey string
+  Source *source.Source
+  PostgresConfig *database.DBParams
+  GraphQLConfig interface{}
+} %}
+
+{% func (p *SourceForm) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right"><a href="#modal-source"><button type="button">Source</button></a></div>
+    <h3>Edit [{%s p.OrigKey %}]</h3>
+    <div class="spacer"></div>
+    <form class="editor" action="" method="post" enctype="application/x-www-form-urlencoded">
+      <label for="form-title">Title</label>
+      <input value="{%v p.Source.Title %}" name="title" id="form-title" />
+      <div class="tabs">
+        <input name="type" type="radio" id="postgres" class="input"/>
+        <label for="postgres" class="label">PostgreSQL</label>
+        <div class="panel">
+          <table>
+            <tbody>
+              <tr>
+                <th class="shrink"><label for="form-postgres-host">Host</label></th>
+                <td><input value="{%v p.PostgresConfig.Host %}" name="postgres-host" id="form-postgres-host" /></td>
+              </tr>
+              <tr>
+                <th class="shrink"><label for="form-postgres-port">Port</label></th>
+                <td><input value="{%v p.PostgresConfig.Port %}" name="postgres-port" id="form-postgres-port" /></td>
+              </tr>
+              <tr>
+                <th class="shrink"><label for="form-postgres-username">Username</label></th>
+                <td><input value="{%v p.PostgresConfig.Username %}" name="postgres-username" id="form-postgres-username" /></td>
+              </tr>
+              <tr>
+                <th class="shrink"><label for="form-postgres-password">Password</label></th>
+                <td><input value="{%v p.PostgresConfig.Password %}" name="postgres-password" id="form-postgres-password" /></td>
+              </tr>
+              <tr>
+                <th class="shrink"><label for="form-postgres-database">Database</label></th>
+                <td><input value="{%v p.PostgresConfig.Database %}" name="postgres-database" id="form-postgres-database" /></td>
+              </tr>
+              <tr>
+                <th class="shrink"><label for="form-postgres-schema">Schema</label></th>
+                <td><input value="{%v p.PostgresConfig.Schema %}" name="postgres-schema" id="form-postgres-schema" /></td>
+              </tr>
+              <tr>
+                <th class="shrink"><label for="form-postgres-debug">Debug</label></th>
+                <td><input value="{%v p.PostgresConfig.Debug %}" name="postgres-debug" id="form-postgres-debug" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <input name="type" type="radio" id="graphql" class="input"/>
+        <label for="graphql" class="label">GraphQL</label>
+        <div class="panel">
+          <div>GraphQL: TODO</div>
+          {%= fieldview.JSON(p.GraphQLConfig) %}
+        </div>
+      </div>
+      <div>
+        <button type="submit">Save Changes</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="modal-source" class="modal" style="display: none;">
+    <a class="backdrop" href="#"></a>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="modal-close">&times;</a>
+        <h2>Source JSON</h2>
+      </div>
+      <div class="modal-body">
+        {%= fieldview.JSON(p.Source) %}
+      </div>
+    </div>
+  </div>
+{% endfunc %}

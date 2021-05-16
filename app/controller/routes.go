@@ -29,7 +29,11 @@ func BuildRouter() (*mux.Router, error) {
 	// Source
 	source := r.Path("/source").Subrouter()
 	source.Methods(http.MethodGet).Handler(wrap(SourceList)).Name("source.list")
+	source.Methods(http.MethodPost).Handler(wrap(SourceInsert)).Name("source.insert")
+	r.Path("/source/_new").Methods(http.MethodGet).Handler(wrap(SourceNew)).Name("source.new.form")
 	r.Path("/source/{key}").Methods(http.MethodGet).Handler(wrap(SourceDetail)).Name("source.detail")
+	r.Path("/source/{key}/edit").Methods(http.MethodGet).Handler(wrap(SourceEdit)).Name("source.edit")
+	r.Path("/source/{key}/edit").Methods(http.MethodPost).Handler(wrap(SourceUpdate)).Name("source.update")
 	r.Path("/source/{key}/refresh").Methods(http.MethodGet).Handler(wrap(SourceRefresh)).Name("source.refresh")
 
 	// Project

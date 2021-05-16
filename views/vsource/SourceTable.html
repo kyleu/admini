@@ -21,6 +21,7 @@
           <td>{%s s.Description %}</td>
           <td>{%s s.Type.String() %}</td>
           <td class="shrink">
+            <a href="{%s as.Route(`source.edit`, `key`, s.Key) %}"><button type="button">edit</button></a>
             <a href="{%s as.Route(`source.refresh`, `key`, s.Key) %}"><button type="button">refresh</button></a>
             <a href="{%s as.Route(`workspace.source`, `key`, s.Key) %}"><button type="button">workspace</button></a>
           </td>
