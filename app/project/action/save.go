@@ -13,11 +13,13 @@ func Save(prj string, acts Actions, files filesystem.FileLoader) error {
 		return errors.New("project directory [" + prjPath + "] does not exist")
 	}
 	actPath := filepath.Join(prjPath, "actions~")
-	if !files.Exists(actPath) {
-		err := files.CreateDirectory(actPath)
-		if err != nil {
-			return errors.Wrap(err, "can't create actions directory at [" + actPath + "]")
-		}
+	if files.Exists(actPath) {
+		_ = files.RemoveRecursive(actPath)
+	}
+
+	err := files.CreateDirectory(actPath)
+	if err != nil {
+		return errors.Wrap(err, "can't create actions directory at [" + actPath + "]")
 	}
 
 	for _, act := range acts {
@@ -27,7 +29,7 @@ func Save(prj string, acts Actions, files filesystem.FileLoader) error {
 		}
 	}
 
-	err := replace(prjPath, "actions~", "actions", files)
+	err = replace(prjPath, "actions~", "actions", files)
 	if err != nil {
 		return errors.Wrap(err, "can't replace actions directory")
 	}
