@@ -79,6 +79,9 @@ func NotFound(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusNotFound)
 		ps.Logger.Warnf("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
+		if ps.Title == "" {
+			ps.Title = "404"
+		}
 		ps.Data = "404 not found"
 		return render(r, w, as, &views.NotFound{}, ps, "Not Found")
 	})
@@ -90,6 +93,7 @@ func Modules(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			return "", errors.New("unable to gather modules")
 		}
+		ps.Title = "Modules"
 		ps.Data = mods.Deps
 		return render(r, w, as, &vhelp.Modules{Mods: mods.Deps}, ps, "modules")
 	})
@@ -98,6 +102,7 @@ func Modules(w http.ResponseWriter, r *http.Request) {
 func Routes(w http.ResponseWriter, r *http.Request) {
 	act("routes", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		routes := cutil.ExtractRoutes(as.Router)
+		ps.Title = "Routes"
 		ps.Data = routes
 		return render(r, w, as, &vhelp.Routes{Routes: routes}, ps, "routes")
 	})

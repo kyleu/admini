@@ -61,7 +61,7 @@ func wsinsert(req *workspaceRequest, m *model.Model, changes map[string]interfac
 		idStrings = append(idStrings, fmt.Sprintf("%v", changes[x]))
 	}
 
-	msg := fmt.Sprintf("added new %v [%v] with [%v] fields", m.Key, strings.Join(idStrings, "/"), len(changes))
+	msg := fmt.Sprintf("added new %v [%v] with [%v] fields", m.Name(), strings.Join(idStrings, "/"), len(changes))
 	url := vutil.WorkspaceLink(req.AS, req.T, req.K, append(append(m.Path(), "v"), idStrings...)...)
 
 	return flashAndRedir(true, msg, url, req.W, req.R, req.PS)
@@ -99,7 +99,7 @@ func wsupdate(req *workspaceRequest, m *model.Model, changes map[string]interfac
 		}
 	}
 
-	msg := fmt.Sprintf("saved [%v] changes to %v [%v]", len(changes), m.Key, strings.Join(idStrings, "/"))
+	msg := fmt.Sprintf("saved [%v] changes to %v [%v]", len(changes), m.Name(), strings.Join(idStrings, "/"))
 	url := vutil.WorkspaceLink(req.AS, req.T, req.K, append(append(m.Path(), "v"), idStrings...)...)
 
 	return flashAndRedir(true, msg, url, req.W, req.R, req.PS)

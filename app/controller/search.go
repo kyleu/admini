@@ -15,6 +15,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query().Get("q")
 		q = strings.TrimSpace(q)
 		results := []string{"a", "b", "c"}
+		ps.Title = "Search Results"
 		ps.Data = results
 		return render(r, w, as, &vsearch.Results{Q: q, Results: results}, ps, "Search")
 	})

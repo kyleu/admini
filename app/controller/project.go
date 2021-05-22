@@ -19,6 +19,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project list")
 		}
+		ps.Title = "Projects"
 		ps.Data = p
 		return render(r, w, as, &vproject.List{Projects: p}, ps, "projects")
 	})

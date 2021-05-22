@@ -26,6 +26,7 @@ func SourceList(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source list")
 		}
+		ps.Title = "Sources"
 		ps.Data = s
 		return render(r, w, as, &vsource.List{Sources: s}, ps, "sources")
 	})
@@ -42,6 +43,7 @@ func SourceDetail(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load schema for source ["+key+"]")
 		}
+		ps.Title = src.Name()
 		ps.Data = map[string]interface{}{"source": src, "schema": sch}
 		return render(r, w, as, &vsource.Detail{Source: src, Schema: sch}, ps, "sources", src.Key)
 	})
@@ -49,6 +51,7 @@ func SourceDetail(w http.ResponseWriter, r *http.Request) {
 
 func SourceNew(w http.ResponseWriter, r *http.Request) {
 	act("source.new", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		ps.Title = "New Source"
 		ps.Data = &source.Source{}
 		return render(r, w, as, &vsource.New{}, ps, "sources", "New")
 	})
@@ -68,6 +71,7 @@ func SourceEdit(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source ["+key+"]")
 		}
+		ps.Title = "Edit [" + src.Name() + "]"
 		ps.Data = src
 
 		switch src.Type {
@@ -77,9 +81,9 @@ func SourceEdit(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				return "", errors.Wrap(err, "can't parse postgres config")
 			}
-			return render(r, w, as, &vsource.EditPostgres{Source: src, Cfg: pcfg}, ps, "sources", src.Title, "Edit")
+			return render(r, w, as, &vsource.EditPostgres{Source: src, Cfg: pcfg}, ps, "sources", src.Key, "Edit")
 		default:
-			return render(r, w, as, &views.TODO{Message: "unhandled source type [" + src.Type.String() + "]"}, ps, "sources", src.Title, "Edit")
+			return render(r, w, as, &views.TODO{Message: "unhandled source type [" + src.Type.String() + "]"}, ps, "sources", src.Key, "Edit")
 		}
 	})
 }

@@ -11,6 +11,7 @@ import (
 )
 
 func handlePackage(req *workspaceRequest, mp *model.Package) (string, error) {
+	req.PS.Title = mp.PathString()
 	req.PS.Data = mp
 	if len(req.Path) == 0 {
 		page := &vworkspace.PackageDetail{Pkg: mp, CtxT: req.T, CtxK: req.K}

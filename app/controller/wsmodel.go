@@ -50,6 +50,7 @@ func modelList(req *workspaceRequest, m *model.Model) (string, error) {
 		return "", errors.Wrap(err, "unable to list model ["+m.Key+"]")
 	}
 
+	req.PS.Title = m.Name()
 	req.PS.Data = rs
 
 	page := &vworkspace.ModelList{Model: m, ParamSet: params, CtxT: req.T, CtxK: req.K, Result: rs}
@@ -72,6 +73,7 @@ func modelDetail(req *workspaceRequest, m *model.Model, idStrings []string, act 
 		return "", errors.Wrap(err, "unable to retrieve model ["+m.Key+"]")
 	}
 
+	req.PS.Title = rs.Title
 	req.PS.Data = rs
 	var page layout.Page
 

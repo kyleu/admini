@@ -6,8 +6,6 @@ import (
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/app/watcher"
-	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
 
@@ -17,7 +15,6 @@ type State struct {
 	Sources      *source.Service
 	Projects     *project.Service
 	Loaders      *loader.Service
-	Watcher      *watcher.Service
 	RootLogger   *zap.SugaredLogger
 	routerLogger *zap.SugaredLogger
 }
@@ -26,12 +23,8 @@ func NewState(r *mux.Router, f *filesystem.FileSystem, ls *loader.Service, log *
 	rl := log.With(zap.String("service", "router"))
 	ss := source.NewService("source", f, ls, log)
 	ps := project.NewService("project", f, ss, ls, log)
-	ws, err := watcher.NewService(f.Root(), log)
-	if err != nil {
-		return nil, errors.Wrap(err, "error initializing file watcher")
-	}
 
-	ret := &State{Router: r, Files: f, Sources: ss, Projects: ps, Loaders: ls, Watcher: ws, RootLogger: log, routerLogger: rl}
+	ret := &State{Router: r, Files: f, Sources: ss, Projects: ps, Loaders: ls, RootLogger: log, routerLogger: rl}
 	return ret, nil
 }
 
