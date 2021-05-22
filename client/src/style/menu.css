@@ -6,6 +6,13 @@
   background-color: var(--color-menu-background);
 }
 
+@media (max-width: 800px) {
+  .menu-container {
+    width: 0;
+    min-width: 0;
+  }
+}
+
 .menu-container .menu {
   padding: var(--padding) 0 calc(var(--padding) * 2) 0;
 }

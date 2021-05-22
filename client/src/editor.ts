@@ -3,8 +3,7 @@ const selected = "--selected";
 export function editorInit() {
   let editorCache: { [key: string]: string; } = {};
   let selectedCache: { [key: string]: HTMLInputElement; } = {};
-  const x = document.querySelectorAll(".editor");
-  for (const n of x) {
+  for (const n of Array.from(document.querySelectorAll(".editor"))) {
     const frm = n as HTMLFormElement;
     const buildCache = () => {
       editorCache = {};

@@ -52,7 +52,3 @@
 .result-table .null {
   color: var(--color-foreground-muted);
 }
-
-.result-table .pre {
-  white-space: pre;
-}

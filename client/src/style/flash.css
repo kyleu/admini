@@ -8,6 +8,12 @@
   cursor: pointer;
 }
 
+#flash-container .flash {
+  opacity: 1;
+  -webkit-transition: opacity 500ms linear;
+  transition: opacity 500ms linear;
+}
+
 #flash-container .flash-success {
   color: var(--color-success);
 }

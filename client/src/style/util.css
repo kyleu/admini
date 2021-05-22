@@ -14,6 +14,15 @@
   height: 24px;
 }
 
+.no-padding {
+  margin: 0;
+}
+
+.pre {
+  font-family: monospace, monospace;
+  white-space: pre;
+}
+
 .expand, .collapse {
   float: left;
   margin-top: 2px;

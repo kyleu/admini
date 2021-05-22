@@ -1,18 +1,16 @@
 import "./client.css"
 import {appName} from "./util";
+import {menuInit} from "./menu";
+import {flashInit} from "./flash";
 import {editorInit} from "./editor";
-
-function menuInit() {
-  const x = document.querySelectorAll(".menu-container .final")
-  for (const n of x) {
-    n.scrollIntoView({block: "nearest"});
-  }
-}
+import {dragDropInit} from "./dragdrop";
 
 export function init(): void {
-  console.log(appName + "!!!");
+  console.log("[" + appName + "]");
   menuInit();
+  flashInit();
   editorInit();
+  dragDropInit();
 }
 
 document.addEventListener("DOMContentLoaded", init);

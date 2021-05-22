@@ -1,0 +1,40 @@
+.action-workbench {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 800px) {
+  .action-workbench {
+    flex-direction: column-reverse;
+  }
+}
+
+
+.action-workbench .title {
+  flex-grow: 1;
+}
+
+.action-workbench .remove {
+  color: var(--color-foreground-muted);
+  margin-top: -4px;
+  cursor: pointer;
+}
+
+.action-workbench .l {
+  padding: 12px;
+  flex-grow: 2;
+}
+
+.action-workbench .r {
+  padding: 12px;
+  flex-grow: 1;
+}
+
+.action-workbench .r .remove {
+  cursor: default;
+  opacity: 0;
+}
+
+.action-workbench .r .lmdd-clonner .container {
+  padding: 0;
+}

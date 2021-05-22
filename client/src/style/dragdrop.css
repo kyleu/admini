@@ -1,3 +1,24 @@
+.drag-container .item {
+  border: var(--border);
+  /*box-shadow: var(--box-shadow);*/
+  margin-top: 12px;
+  padding: 12px;
+}
+
+.drag-container .content {
+  display: flex;
+  flex-direction: row;
+}
+
+.drag-container .container {
+  padding: 12px 0;
+}
+
+.drag-container .handle {
+  margin-right: 8px;
+  cursor: move;
+}
+
 .no-display {
   display: none !important;
 }
