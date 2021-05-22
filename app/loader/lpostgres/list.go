@@ -25,7 +25,7 @@ func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, err
 	}
 
 	var timing *result.Timing
-	ret, err := ParseResultFields(m.Key, count, q, timing, m.Fields, rows)
+	ret, err := ParseResultFields(m.Name(), count, q, timing, m.Fields, rows)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
 	}

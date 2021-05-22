@@ -40,6 +40,10 @@ func BuildRouter() (*mux.Router, error) {
 	project := r.Path("/project").Subrouter()
 	project.Methods(http.MethodGet).Handler(wrap(ProjectList)).Name("project.list")
 	r.Path("/project/{key}").Methods(http.MethodGet).Handler(wrap(ProjectDetail)).Name("project.detail")
+	r.Path("/project/{key}/actions").Methods(http.MethodGet).Handler(wrap(ActionWorkbench)).Name("action.workbench")
+	r.Path("/project/{key}/actions").Methods(http.MethodPost).Handler(wrap(ActionOrdering)).Name("action.ordering")
+	r.PathPrefix("/project/{key}/action").Methods(http.MethodGet).Handler(wrap(ActionEdit)).Name("action.edit")
+	r.Path("/project/{key}/test").Methods(http.MethodGet).Handler(wrap(ProjectTest)).Name("project.test")
 
 	// Workspace
 	_ = r.PathPrefix("/x/{key}").Handler(wrap(WorkspaceProject)).Name("workspace")

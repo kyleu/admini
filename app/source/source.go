@@ -2,6 +2,8 @@ package source
 
 import (
 	"encoding/json"
+	"github.com/pkg/errors"
+	"strings"
 
 	"github.com/kyleu/admini/app/schema"
 )
@@ -15,6 +17,13 @@ type Source struct {
 	Config      json.RawMessage `json:"config,omitempty"`
 }
 
+func (s *Source) Name() string {
+	if s.Title == "" {
+		return s.Key
+	}
+	return s.Title
+}
+
 type Sources []*Source
 
 func (s Sources) Get(key string) *Source {
@@ -24,4 +33,17 @@ func (s Sources) Get(key string) *Source {
 		}
 	}
 	return nil
+}
+
+func (s Sources) GetWithError(key string) (*Source, error) {
+	ret := s.Get(key)
+	if ret != nil {
+		return ret, nil
+	}
+
+	keys := make([]string, 0, len(s))
+	for _, x := range s {
+		keys = append(keys, x.Key)
+	}
+	return nil, errors.Errorf("no source [%v] available among candidates [%v]", key, strings.Join(keys, ", "))
 }

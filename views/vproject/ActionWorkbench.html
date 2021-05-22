@@ -1,0 +1,41 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type ActionWorkbench struct {
+  layout.Basic
+  Project *project.Project
+} %}
+
+{% func (p *ActionWorkbench) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>{%s p.Project.Name() %} Workbench</h3>
+    <div class="drag-container">
+      <input style="width: 100%;" class="drag-state" value="" />
+      <div class="action-workbench">
+        <div class="l">
+          <h4 class="no-padding">Actions</h4>
+          <div class="container tracked">
+            {%- for _, act := range p.Project.Actions -%}
+            {%= ActionList(p.Project.Key, act, as, ps, 4) %}
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="r">
+          <h4 class="no-padding">Available</h4>
+          <div class="container lmdd-dispatcher">
+            <div class="item lmdd-clonner" data-key="_new" data-original-path="all">
+              <div class="content">
+                <div class="handle">[=]</div>
+                <div class="title">All Sources</div>
+                <div class="remove">&times;</div>
+              </div>
+              <div class="container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="/assets/dragdrop.js"></script>
+{% endfunc %}

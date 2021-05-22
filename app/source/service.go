@@ -65,9 +65,6 @@ func (s *Service) Load(key string) (*Source, error) {
 	}
 
 	ret.Key = key
-	if ret.Title == "" {
-		ret.Title = key
-	}
 	return ret, nil
 }
 

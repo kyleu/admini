@@ -2,6 +2,7 @@ package action
 
 import (
 	"path/filepath"
+	"strings"
 
 	"github.com/kyleu/admini/app/filesystem"
 	"github.com/kyleu/admini/app/util"
@@ -16,8 +17,10 @@ func loadChildren(dir string, files filesystem.FileLoader, pkg util.Pkg) (Action
 	kids := files.ListDirectories(dir)
 	ret := make(Actions, 0, len(kids))
 	for _, kid := range kids {
-		p := append(pkg, kid)
-		x, err := loadAction(dir, kid, files, p)
+		if strings.HasPrefix(kid, ".") {
+			continue
+		}
+		x, err := loadAction(dir, kid, files, pkg)
 		if err != nil {
 			return nil, errors.Wrapf(err, "error loading [%v]", kid)
 		}
@@ -32,7 +35,7 @@ func loadChildren(dir string, files filesystem.FileLoader, pkg util.Pkg) (Action
 func loadAction(dir string, key string, files filesystem.FileLoader, pkg util.Pkg) (*Action, error) {
 	kp := filepath.Join(dir, key)
 	js := filepath.Join(kp, "action.json")
-	ret := &Action{}
+	d := &dto{}
 
 	if files.Exists(js) {
 		out, err := files.ReadFile(js)
@@ -40,20 +43,18 @@ func loadAction(dir string, key string, files filesystem.FileLoader, pkg util.Pk
 			return nil, errors.Wrap(err, "unable to read action ["+kp+"]")
 		}
 
-		err = util.FromJSON(out, ret)
+		err = util.FromJSON(out, d)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to parse action")
 		}
-		ret.Key = key
-		ret.Pkg = pkg
 	}
 
-	x, err := loadChildren(kp, files, pkg)
+	d.Pkg = pkg
+	ret := d.ToAction(key)
+	x, err := loadChildren(kp, files, append(pkg, key))
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to load action children")
 	}
-
 	ret.Children = x
-
 	return ret, nil
 }

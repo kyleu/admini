@@ -17,7 +17,7 @@ var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: onTestbed}
 
 func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := map[string]interface{}{}
-	sourceKey := "admini_test"
+	sourceKey := "rituals.dev"
 	source, err := st.Sources.Load(sourceKey)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load source")
@@ -58,6 +58,7 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 		Key string
 		SQL string
 	}{
+		{Key: "types", SQL: queries.ListTypes(sch)},
 		{Key: "tables", SQL: queries.ListTables(sch)},
 		{Key: "columns", SQL: queries.ListColumns(sch)},
 		{Key: "indexes", SQL: queries.ListIndexes(sch)},

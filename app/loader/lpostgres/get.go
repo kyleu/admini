@@ -24,7 +24,7 @@ func (l *Loader) Get(m *model.Model, ids []interface{}) (*result.Result, error) 
 	}
 
 	var timing *result.Timing
-	ret, err := ParseResultFields(m.Key, 0, q, timing, m.Fields, rows)
+	ret, err := ParseResultFields(m.Name(), 0, q, timing, m.Fields, rows)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
 	}

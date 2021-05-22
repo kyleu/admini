@@ -19,7 +19,12 @@ func modelEdit(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 }
 
 func modelNew(req *workspaceRequest, m *model.Model) (string, error) {
-	l, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	source, err := req.Sources.GetWithError(req.Source)
+	if err != nil {
+		return "", err
+	}
+
+	l, err := req.AS.Loaders.Get(source.Type, source.Key, source.Config)
 	if err != nil {
 		return "", errors.Wrap(err, "no loader available")
 	}
@@ -43,7 +48,11 @@ func modelSave(req *workspaceRequest, m *model.Model, idStrings []string) (strin
 		return "", errors.Wrap(err, "unable to parse changes")
 	}
 
-	ld, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	source, err := req.Sources.GetWithError(req.Source)
+	if err != nil {
+		return "", err
+	}
+	ld, err := req.AS.Loaders.Get(source.Type, source.Key, source.Config)
 	if err != nil {
 		return "", errors.Wrap(err, "unable to create loader")
 	}

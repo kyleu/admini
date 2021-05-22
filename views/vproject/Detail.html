@@ -11,20 +11,13 @@
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>{%s p.Project.Title %}</h3>
+    <h3>{%s p.Project.Name() %}</h3>
     <p>
-      <a href="{%s as.Route(`workspace`, `key`, p.Project.Key) %}"><button type="button">Workspace</button></a>
       <a href="#modal-project"><button type="button">Project</button></a>
+      <a href="{%s as.Route(`workspace`, `key`, p.Project.Key) %}"><button type="button">Workspace</button></a>
+      <a href="{%s as.Route(`action.workbench`, `key`, p.Project.Key) %}"><button type="button">Actions</button></a>
+      <a href="{%s as.Route(`project.test`, `key`, p.Project.Key) %}"><button type="button">Test</button></a>
     </p>
-  </div>
-
-  <div class="card">
-    <h3>Actions</h3>
-    <ul id="action-list" class="grid">
-      {%- for _, act := range p.Project.Actions -%}
-      {%= ActionList(act, as, ps, 3) %}
-      {%- endfor -%}
-    </ul>
   </div>
 
   <div id="modal-project" class="modal" style="display: none;">
@@ -39,14 +32,4 @@
       </div>
     </div>
   </div>
-
-  <script type="text/javascript" src="/assets/dragdrop.js"></script>
-  <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-      lmdd.set(document.getElementById('action-list'), {
-        containerClass: 'grid',
-        draggableItemClass: 'item'
-      });
-    });
-  </script>
 {% endfunc %}

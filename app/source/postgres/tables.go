@@ -39,19 +39,18 @@ func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 	return ret
 }
 
-func loadTables(db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
+func loadTables(enums model.Models, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
 	tables := []*tableResult{}
 	err := db.Select(&tables, queries.ListTables(db.SchemaName), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list tables")
 	}
 
-	logger.Infof("loading [%v] tables", len(tables))
+	logger.Infof("loading [%v] tables and [%v] enums", len(tables), len(enums))
 
 	ret := make(model.Models, 0, len(tables))
 	for _, t := range tables {
 		ret = append(ret, t.ToModel(logger))
 	}
-	ret.Sort()
 	return ret, nil
 }

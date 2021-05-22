@@ -3,22 +3,30 @@
 {% import "github.com/kyleu/admini/app/project/action" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ActionList(act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
-  {% if len(act.Children) == 0 %}
-    <li class="item">{%s act.Key %}</li>
-  {% else %}
-    <li class="item">
+{% func ActionList(prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
+  <div class="item" data-key="{%s act.Key %}" data-original-path="{%s act.Pkg.ToPath() %}">
+    {%= vutil.Indent(true, indent + 1) %}
+    <div class="content">
+      {%= vutil.Indent(true, indent + 2) %}
+      <div class="handle">[=]</div>
+      {%= vutil.Indent(true, indent + 2) %}
+      <div class="title"><a href="{%s as.Route(`action.edit`, `key`, prj) %}/{%s act.Pkg.ToPath(act.Key) %}">{%s act.Key %}</a></div>
+      {%= vutil.Indent(true, indent + 2) %}
+      <div class="remove">&times;</div>
       {%= vutil.Indent(true, indent + 1) %}
-      {%s act.Key %}
-      {%= vutil.Indent(true, indent + 1) %}
-      <ul class="grid">
+    </div>
+    {%= vutil.Indent(true, indent + 1) %}
+    {% if len(act.Children) == 0 %}
+      <div class="container"></div>
+    {% else %}
+      <div class="container">
         {% for _, kid := range act.Children %}
           {%= vutil.Indent(true, indent + 2) %}
-          {%= ActionList(kid, as, ps, indent + 2) %}
+          {%= ActionList(prj, kid, as, ps, indent + 2) %}
         {% endfor %}
       {%= vutil.Indent(true, indent + 1) %}
-      </ul>
-    {%= vutil.Indent(true, indent) %}
-    </li>
-  {% endif %}
+      </div>
+    {% endif %}
+  {%= vutil.Indent(true, indent) %}
+  </div>
 {% endstripspace %}{% endfunc %}

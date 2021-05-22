@@ -1,8 +1,7 @@
 package postgres
 
 import (
-	"fmt"
-
+	"github.com/kyleu/admini/app/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
@@ -12,46 +11,55 @@ import (
 )
 
 func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {
-	var errs []string
-	addErr := func(err error) {
-		errs = append(errs, fmt.Sprintf("%+v", err))
-	}
-
 	metadata, err := loadMetadata(db)
 	if err != nil {
-		addErr(errors.Wrap(err, "can't load metadata"))
+		return nil, errors.Wrap(err, "can't load metadata")
 	}
 
 	scalars, err := loadScalars(db)
 	if err != nil {
-		addErr(errors.Wrap(err, "can't load scalars"))
+		return nil, errors.Wrap(err, "can't load scalars")
 	}
 
-	models, err := loadTables(db, logger)
+	enums, err := loadEnums(db, logger)
 	if err != nil {
-		addErr(errors.Wrap(err, "can't load tables"))
+		return nil, errors.Wrap(err, "can't load enums")
+	}
+	println(len(enums))
+
+	tables, err := loadTables(enums, db, logger)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't load tables")
 	}
 
-	err = loadColumns(models, db, logger)
+	err = loadColumns(tables, db, logger)
 	if err != nil {
-		addErr(errors.Wrap(err, "can't load columns"))
+		return nil, errors.Wrap(err, "can't load columns")
 	}
 
-	err = loadIndexes(models, db)
+	err = loadIndexes(tables, db)
 	if err != nil {
-		addErr(errors.Wrap(err, "can't load indexes"))
+		return nil, errors.Wrap(err, "can't load indexes")
 	}
 
-	err = loadForeignKeys(models, db)
+	err = loadForeignKeys(tables, db)
 	if err != nil {
-		addErr(errors.Wrap(err, "can't load foreign keys"))
+		return nil, errors.Wrap(err, "can't load foreign keys")
 	}
+
+	models := make(model.Models, 0, len(tables)+len(enums))
+	for _, e := range enums {
+		models = append(models, e)
+	}
+	for _, t := range tables {
+		models = append(models, t)
+	}
+	models.Sort()
 
 	ret := &schema.Schema{
 		Paths:    []string{"postgres:" + db.DatabaseName},
 		Scalars:  scalars,
 		Models:   models,
-		Errors:   errs,
 		Metadata: metadata,
 	}
 

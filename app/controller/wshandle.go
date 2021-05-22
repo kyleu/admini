@@ -18,25 +18,26 @@ import (
 )
 
 const (
-	workspaceProjectRoute = "workspace"
-	workspaceSourceRoute  = "workspace.source"
+	pRoute = "workspace"
+	sRoute = "workspace.source"
 )
 
 type workspaceRequest struct {
-	T    string
-	K    string
-	W    http.ResponseWriter
-	R    *http.Request
-	AS   *app.State
-	PS   *cutil.PageState
-	I    interface{}
-	Path []string
-	Src  *source.Source
-	Prj  *project.Project
+	T       string
+	K       string
+	W       http.ResponseWriter
+	R       *http.Request
+	AS      *app.State
+	PS      *cutil.PageState
+	Source  string
+	Item    interface{}
+	Path    []string
+	Project *project.Project
+	Sources source.Sources
 }
 
 func handle(req *workspaceRequest) (string, error) {
-	switch t := req.I.(type) {
+	switch t := req.Item.(type) {
 	case *action.Action:
 		return handleAction(req, t)
 	case *model.Model:

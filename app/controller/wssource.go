@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/kyleu/admini/app/project"
 	"net/http"
 
 	"github.com/kyleu/admini/app/result"
@@ -37,11 +38,13 @@ func WorkspaceSource(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "error loading source and schema info ["+r.URL.Path+"]")
 		}
 
+		sources := source.Sources{src}
+
 		paths = paths[2:]
 
-		ps.Title = src.Title + " - source"
-		ps.RootTitle = src.Title
-		ps.RootPath = currentApp.Route(workspaceSourceRoute, "key", src.Key)
+		ps.Title = src.Name()
+		ps.RootTitle = src.Name()
+		ps.RootPath = currentApp.Route(sRoute, "key", src.Key)
 		ps.SearchPath = currentApp.Route("search")
 		ps.ProfilePath = currentApp.Route("profile")
 		ps.Menu = workspace.SourceMenu(currentApp, src.Key, sch)
@@ -54,8 +57,10 @@ func WorkspaceSource(w http.ResponseWriter, r *http.Request) {
 			return sourceAction(r, w, as, ps, src, paths[1:])
 		}
 
+		prj := &project.Project{}
+
 		i, remaining := sch.ModelsByPackage().Get(paths)
-		wr := &workspaceRequest{T: workspaceSourceRoute, K: src.Key, W: w, R: r, AS: as, PS: ps, I: i, Path: remaining, Src: src}
+		wr := &workspaceRequest{T: sRoute, K: src.Key, W: w, R: r, AS: as, PS: ps, Source: src.Key, Item: i, Path: remaining, Sources: sources, Project: prj}
 		return handle(wr)
 	})
 }
@@ -67,32 +72,40 @@ func sourceAction(r *http.Request, w http.ResponseWriter, as *app.State, ps *cut
 
 	switch paths[0] {
 	case "sql":
-		sql := r.URL.Query().Get("sql")
-		if r.Method == http.MethodPost {
-			f, _ := cutil.ParseForm(r)
-			x := f.Get("sql")
-			if x != nil && x.Value != "" {
-				sql = x.Value
-			}
-		}
-		var res *result.Result
-		if sql != "" {
-			ld, err := as.Loaders.Get(src.Type, src.Key, src.Config)
-			if err != nil {
-				return "", errors.Wrap(err, "unable to create loader")
-			}
-
-			r, err := ld.Query(sql)
-			if err != nil {
-				return "", errors.Wrap(err, "unable to execute query")
-			}
-			res = r
-		}
-
-		return render(r, w, as, &vsource.SQLPlayground{SQL: sql, Res: res}, ps, "sql")
+		return actionSQL(r, w, as, ps, src)
 	default:
 		return render(r, w, as, &views.TODO{Message: "Unhandled source action [" + paths[0] + "]"}, ps, "Not found")
 	}
+}
+
+func actionSQL(r *http.Request, w http.ResponseWriter, as *app.State, ps *cutil.PageState, src *source.Source) (string, error) {
+	sql := r.URL.Query().Get("sql")
+	if r.Method == http.MethodPost {
+		f, _ := cutil.ParseForm(r)
+		x := f.Get("sql")
+		if x != nil && x.Value != "" {
+			sql = x.Value
+		}
+	}
+	var res *result.Result
+	if sql == "" {
+		ps.Title = "SQL Playground"
+	} else {
+		ld, err := as.Loaders.Get(src.Type, src.Key, src.Config)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to create loader")
+		}
+
+		r, err := ld.Query(sql)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to execute query")
+		}
+		res = r
+		ps.Title = "SQL Result"
+		ps.Data = res
+	}
+
+	return render(r, w, as, &vsource.SQLPlayground{SQL: sql, Res: res}, ps, "sql")
 }
 
 func loadSource(sourceKey string) (*source.Source, *schema.Schema, error) {

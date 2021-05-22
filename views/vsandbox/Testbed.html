@@ -12,33 +12,35 @@
 {% code type Testbed struct { layout.Basic } %}
 
 {% func (p *Testbed) Body(as *app.State, ps *cutil.PageState) %}
-  {%= icons(as, ps) %}
-  {%= tabs(as, ps) %}
-  {%= accordion(as, ps) %}
-  {%= modal(as, ps) %}
-  {%= db(as, ps) %}
+{%= icons(as, ps) %}
+{%= tabs(as, ps) %}
+{%= accordion(as, ps) %}
+{%= modal(as, ps) %}
+{%= db(as, ps) %}
 {% endfunc %}
 
-{% func modal(as *app.State, ps *cutil.PageState) %}
+{%- func icons(as *app.State, ps *cutil.PageState) -%}
   <div class="card">
-    <h3>Modal</h3>
-    <div><a href="#modal-x">Open modal</a></div>
-  </div>
-  <div id="modal-x" class="modal" style="display: none;">
-    <a class="backdrop" href="#"></a>
-    <div class="modal-content">
-      <div class="modal-header">
-        <a href="#" class="modal-close">&times;</a>
-        <h2>Modal</h2>
+    <h3>Icons!</h3>
+    <div style="display: flex;">
+      {%- code
+      keys := make([]string, 0, len(util.SVGLibrary))
+      for k, _ := range util.SVGLibrary {
+      keys = append(keys, k)
+      }
+      sort.Strings(keys)
+      -%}
+      {%- for _, k := range keys -%}
+      <div style="text-align: center; margin: 6px 12px 6px 0; padding: 6px; border: var(--border)">
+        <div style="width: 64px; height: 64px;">{%s= util.SVGLibrary[k] %}</div>
+        {%s k %}
       </div>
-      <div class="modal-body">
-        Here's a modal body!
-      </div>
+      {%- endfor -%}
     </div>
   </div>
-{% endfunc %}
+{%- endfunc -%}
 
-{% func tabs(as *app.State, ps *cutil.PageState) %}
+{%- func tabs(as *app.State, ps *cutil.PageState) -%}
   <div class="card">
     <h3>Tabs</h3>
     <div class="tabs">
@@ -49,9 +51,9 @@
       {%- endfor -%}
     </div>
   </div>
-{% endfunc %}
+{%- endfunc -%}
 
-{% func accordion(as *app.State, ps *cutil.PageState) %}
+{%- func accordion(as *app.State, ps *cutil.PageState) -%}
   <div class="card">
     <h3>Accordion</h3>
     <ul class="accordion">
@@ -72,31 +74,34 @@
       </li>
     </ul>
   </div>
-{% endfunc %}
+{%- endfunc -%}
 
-{% func icons(as *app.State, ps *cutil.PageState) %}
+{%- func modal(as *app.State, ps *cutil.PageState) -%}
   <div class="card">
-    <h3>Icons!</h3>
-    <div style="display: flex;">
-      {%- code
-        keys := make([]string, 0, len(util.SVGLibrary))
-        for k, _ := range util.SVGLibrary {
-          keys = append(keys, k)
-        }
-        sort.Strings(keys)
-      -%}
-      {%- for _, k := range keys -%}
-      <div style="text-align: center; margin: 6px 12px 6px 0; padding: 6px; border: var(--border)">
-        <div style="width: 64px; height: 64px;">{%s= util.SVGLibrary[k] %}</div>
-        {%s k %}
+    <h3>Modal</h3>
+    <div><a href="#modal-x">Open modal</a></div>
+  </div>
+  <div id="modal-x" class="modal" style="display: none;">
+    <a class="backdrop" href="#"></a>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="modal-close">&times;</a>
+        <h2>Modal</h2>
       </div>
-      {%- endfor -%}
+      <div class="modal-body">
+        Here's a modal body!
+      </div>
     </div>
   </div>
-{% endfunc %}
+{%- endfunc -%}
 
-{% func db(as *app.State, ps *cutil.PageState) %}
-  {% code data := ps.Data.(map[string]interface{}) %}
+{%- func db(as *app.State, ps *cutil.PageState) -%}
+  {%- code data := ps.Data.(map[string]interface{}) -%}
+  <div class="card">
+    <h3>Types</h3>
+    <pre>{%s queries.ListTypes("") %}</pre>
+    {%= vresult.View("", "", data["types"].(*result.Result), nil, 3, nil, as, ps) %}
+  </div>
   <div class="card">
     <h3>Tables</h3>
     <pre>{%s queries.ListTables("") %}</pre>
@@ -117,4 +122,4 @@
     <pre>{%s queries.ListForeignKeys("") %}</pre>
     {%= vresult.View("", "", data["fks"].(*result.Result), nil, 3, nil, as, ps) %}
   </div>
-{% endfunc %}
+{%- endfunc -%}

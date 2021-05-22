@@ -45,7 +45,7 @@ func projectItems(as *app.State) Items {
 	for _, s := range ss {
 		ret = append(ret, &Item{
 			Key:   s.Key,
-			Title: s.Title,
+			Title: s.Name(),
 			Route: as.Route("project.detail", "key", s.Key),
 		})
 	}
@@ -63,7 +63,7 @@ func sourceItems(as *app.State) Items {
 	for _, s := range ss {
 		ret = append(ret, &Item{
 			Key:         s.Key,
-			Title:       s.Title,
+			Title:       s.Name(),
 			Description: s.Description,
 			Route:       as.Route("source.detail", "key", s.Key),
 		})

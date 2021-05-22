@@ -58,7 +58,7 @@ func (r *Result) SingleRow() (field.Fields, []interface{}, error) {
 	if len(r.Data) == 0 {
 		return nil, nil, errors.New("empty data")
 	}
-	if len(r.Data) != 0 {
+	if len(r.Data) != 1 {
 		return nil, nil, errors.Errorf("required single row, encountered [%v] rows", len(r.Data))
 	}
 	return r.Fields, r.Data[0], nil

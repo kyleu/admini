@@ -27,7 +27,7 @@ func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 		menu.Separator,
 	}
 
-	ret = append(ret, sourceMenuDetails(sch, path)...)
+	ret = append(ret, SourceMenuPackage(sch.ModelsByPackage(), path)...)
 
 	menuItemSQLEditor := &menu.Item{Key: "sql", Title: "SQL playground", Description: "a barebones SQL editor", Route: filepath.Join(path, "_", "sql")}
 	ret = append(ret, menu.Separator, menuItemSQLEditor)
@@ -37,10 +37,9 @@ func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
 	return ret
 }
 
-func sourceMenuDetails(sch *schema.Schema, path string) menu.Items {
+func SourceMenuPackage(mp *model.Package, path string) menu.Items {
 	ret := menu.Items{}
 
-	mp := sch.ModelsByPackage()
 	for _, m := range mp.ChildModels {
 		ret = sourceMenuAddModel(ret, m, path)
 	}
@@ -54,8 +53,8 @@ func sourceMenuDetails(sch *schema.Schema, path string) menu.Items {
 func sourceMenuAddModel(ret menu.Items, m *model.Model, path string) menu.Items {
 	return append(ret, &menu.Item{
 		Key:         m.Key,
-		Title:       m.Key,
-		Description: m.Type.String() + " model [" + m.Key + "]",
+		Title:       m.Name(),
+		Description: m.Description(),
 		Route:       filepath.Join(path, m.Key),
 	})
 }

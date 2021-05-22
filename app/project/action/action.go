@@ -1,24 +1,26 @@
 package action
 
 import (
+	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/kyleu/admini/app/util"
 )
 
 type Action struct {
 	Key         string            `json:"key"`
-	Type        Type              `json:"type"`
+	Type        string            `json:"type,omitempty"`
 	Title       string            `json:"title,omitempty"`
 	Description string            `json:"description,omitempty"`
 	Icon        string            `json:"icon,omitempty"`
 	Ordinal     int               `json:"ordinal,omitempty"`
-	Children    Actions           `json:"-"` // stored in subdirs
+	Children    Actions           `json:"children,omitempty"` // stored in subdirs
 	Pkg         util.Pkg          `json:"-"`
 	Config      map[string]string `json:"config,omitempty"`
 }
 
-func (a *Action) TitleString() string {
+func (a *Action) Name() string {
 	if a.Title == "" {
 		return a.Key
 	}
@@ -37,22 +39,28 @@ func (a Actions) Sort() {
 }
 
 func (a Actions) Get(paths []string) (*Action, []string) {
+	println("Get")
+	println(" - " + strings.Join(paths, "/"))
 	if len(paths) == 0 {
 		return nil, nil
 	}
 	curr := a.Find(paths[0])
+	println(fmt.Sprintf("   find %v = %v", paths[0], curr != nil))
 	if curr == nil {
 		return nil, paths
 	}
 	if len(curr.Children) > 0 {
 		x, remaining := curr.Children.Get(paths[1:])
 		if x == nil {
+			println(fmt.Sprintf("    ret1: %v", strings.Join(paths[1:], "/")))
 			return curr, paths[1:]
 		}
+		println(fmt.Sprintf("    ret2: %v", strings.Join(paths[1:], "/")))
 		return x, remaining
 	}
 
-	return curr, paths[1:]
+	println(fmt.Sprintf("    ret3: %v", strings.Join(paths[1:], "/")))
+	return curr, paths
 }
 
 func (a Actions) Find(key string) *Action {
@@ -62,4 +70,29 @@ func (a Actions) Find(key string) *Action {
 		}
 	}
 	return nil
+}
+
+type dto struct {
+	Type        string            `json:"type,omitempty"`
+	Title       string            `json:"title,omitempty"`
+	Description string            `json:"description,omitempty"`
+	Icon        string            `json:"icon,omitempty"`
+	Ordinal     int               `json:"ordinal,omitempty"`
+	Children    Actions           `json:"-"` // excluded for saving
+	Pkg         util.Pkg          `json:"-"`
+	Config      map[string]string `json:"config,omitempty"`
+}
+
+func newDTO(a *Action) *dto {
+	return &dto{
+		Type: a.Type, Title: a.Title, Description: a.Description, Icon: a.Icon,
+		Ordinal: a.Ordinal, Children: a.Children, Pkg: a.Pkg, Config: a.Config,
+	}
+}
+
+func (d *dto) ToAction(key string) *Action {
+	return &Action{
+		Key: key, Type: d.Type, Title: d.Title, Description: d.Description, Icon: d.Icon,
+		Ordinal: d.Ordinal, Children: d.Children, Pkg: d.Pkg, Config: d.Config,
+	}
 }

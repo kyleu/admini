@@ -12,6 +12,7 @@ import (
 
 type Model struct {
 	Key           string        `json:"key"`
+	Title         string        `json:"title,omitempty"`
 	Pkg           util.Pkg      `json:"pkg,omitempty"`
 	Type          Type          `json:"type"`
 	Interfaces    []string      `json:"interfaces,omitempty"`
@@ -26,7 +27,18 @@ func (m *Model) String() string {
 	if len(m.Pkg) == 0 {
 		return m.Key
 	}
-	return m.Pkg.StringWith(m.Key)
+	return m.Pkg.ToPath(m.Key)
+}
+
+func (m *Model) Name() string {
+	if len(m.Title) == 0 {
+		return m.Key
+	}
+	return m.Title
+}
+
+func (m *Model) Description() string {
+	return m.Type.String() + " model [" + m.Name() + "]"
 }
 
 func (m *Model) Path() []string {

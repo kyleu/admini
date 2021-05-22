@@ -14,6 +14,13 @@ type Project struct {
 	Actions action.Actions `json:"actions,omitempty"`
 }
 
+func (p *Project) Name() string {
+	if p.Title == "" {
+		return p.Key
+	}
+	return p.Title
+}
+
 func (p *Project) ModelsByPackage() *model.Package {
 	return nil
 }
@@ -30,7 +37,7 @@ func (p Projects) Get(key string) *Project {
 }
 
 type View struct {
-	Project  *Project                  `json:"project"`
-	Schemata map[string]*schema.Schema `json:"schemata,omitempty"`
-	Sources  map[string]*source.Source `json:"sources,omitempty"`
+	Project   *Project        `json:"project"`
+	Schemata  schema.Schemata `json:"schemata,omitempty"`
+	Sources   source.Sources  `json:"sources,omitempty"`
 }

@@ -37,7 +37,7 @@ func (s *Service) List() (Projects, error) {
 		ret := make(Projects, 0, len(dirs))
 
 		for _, dir := range dirs {
-			src, err := s.Load(dir)
+			src, err := s.Load(dir, false)
 			if err != nil {
 				return nil, errors.Wrapf(err, "unable to load source [%v]", dir)
 			}
@@ -48,9 +48,11 @@ func (s *Service) List() (Projects, error) {
 	return s.cache, nil
 }
 
-func (s *Service) Load(key string) (*Project, error) {
-	if curr := s.cache.Get(key); curr != nil {
-		return curr, nil
+func (s *Service) Load(key string, force bool) (*Project, error) {
+	if !force {
+		if curr := s.cache.Get(key); curr != nil {
+			return curr, nil
+		}
 	}
 
 	dir := filepath.Join(s.root, key)
@@ -71,9 +73,6 @@ func (s *Service) Load(key string) (*Project, error) {
 	}
 
 	ret.Key = key
-	if ret.Title == "" {
-		ret.Title = key
-	}
 
 	actions, err := action.Load(filepath.Join(dir, "actions"), s.files)
 	if err != nil {
@@ -85,7 +84,7 @@ func (s *Service) Load(key string) (*Project, error) {
 }
 
 func (s *Service) LoadView(key string) (*View, error) {
-	p, err := s.Load(key)
+	p, err := s.Load(key, false)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +92,7 @@ func (s *Service) LoadView(key string) (*View, error) {
 	if err != nil {
 		return nil, err
 	}
-	src, err := s.SourcesFor(key)
+	src, err := s.SourcesFor(p)
 	if err != nil {
 		return nil, err
 	}
@@ -110,8 +109,8 @@ func (s *Service) SaveProject(key string, prj *Project) error {
 	return nil
 }
 
-func (s *Service) SchemataFor(key string) (map[string]*schema.Schema, error) {
-	p, err := s.Load(key)
+func (s *Service) SchemataFor(key string) (schema.Schemata, error) {
+	p, err := s.Load(key, false)
 	if err != nil {
 		return nil, errors.Wrapf(err, "can't load project [%v]", key)
 	}
@@ -126,18 +125,14 @@ func (s *Service) SchemataFor(key string) (map[string]*schema.Schema, error) {
 	return ret, nil
 }
 
-func (s *Service) SourcesFor(key string) (map[string]*source.Source, error) {
-	p, err := s.Load(key)
-	if err != nil {
-		return nil, errors.Wrapf(err, "can't load project [%v]", key)
-	}
-	ret := map[string]*source.Source{}
+func (s *Service) SourcesFor(p *Project) (source.Sources, error) {
+	ret := make(source.Sources, 0, len(p.Sources))
 	for _, sch := range p.Sources {
 		x, err := s.sources.Load(sch)
 		if err != nil {
 			return nil, errors.Wrapf(err, "can't load source [%v] for project [%v]", sch, p.Key)
 		}
-		ret[sch] = x
+		ret = append(ret, x)
 	}
 	return ret, nil
 }

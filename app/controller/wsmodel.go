@@ -39,11 +39,16 @@ func handleModel(req *workspaceRequest, m *model.Model) (string, error) {
 }
 
 func modelList(req *workspaceRequest, m *model.Model) (string, error) {
-	params := cutil.ParamSetFromRequest(req.R)
-	l, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	source, err := req.Sources.GetWithError(req.Source)
+	if err != nil {
+		return "", err
+	}
+
+	l, err := req.AS.Loaders.Get(source.Type, source.Key, source.Config)
 	if err != nil {
 		return "", errors.Wrap(err, "no loader available")
 	}
+	params := cutil.ParamSetFromRequest(req.R)
 
 	rs, err := l.List(m, params)
 	if err != nil {
@@ -58,7 +63,12 @@ func modelList(req *workspaceRequest, m *model.Model) (string, error) {
 }
 
 func modelDetail(req *workspaceRequest, m *model.Model, idStrings []string, act string) (string, error) {
-	l, err := req.AS.Loaders.Get(req.Src.Type, req.Src.Key, req.Src.Config)
+	source, err := req.Sources.GetWithError(req.Source)
+	if err != nil {
+		return "", err
+	}
+
+	l, err := req.AS.Loaders.Get(source.Type, source.Key, source.Config)
 	if err != nil {
 		return "", errors.Wrap(err, "no loader available")
 	}

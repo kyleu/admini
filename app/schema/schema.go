@@ -2,6 +2,7 @@ package schema
 
 import (
 	"github.com/pkg/errors"
+	"strings"
 
 	"github.com/kyleu/admini/app/model"
 )
@@ -10,12 +11,28 @@ type Schema struct {
 	Paths           Paths        `json:"paths,omitempty"`
 	Scalars         Scalars      `json:"scalars,omitempty"`
 	Models          model.Models `json:"models,omitempty"`
-	Errors          []string     `json:"errors,omitempty"`
 	Metadata        *Metadata    `json:"metadata,omitempty"`
 	modelsByPackage *model.Package
 }
 
-type Schemata []*Schema
+type Schemata map[string]*Schema
+
+func (s Schemata) Get(key string) *Schema {
+	return s[key]
+}
+
+func (s Schemata) GetWithError(key string) (*Schema, error) {
+	ret := s.Get(key)
+	if ret != nil {
+		return ret, nil
+	}
+
+	keys := make([]string, 0, len(s))
+	for k := range s {
+		keys = append(keys, k)
+	}
+	return nil, errors.Errorf("no schema [%v] available among candidates [%v]", key, strings.Join(keys, ", "))
+}
 
 func NewSchema(paths []string, md *Metadata) *Schema {
 	return &Schema{Paths: paths, Metadata: md}
