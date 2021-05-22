@@ -8,6 +8,7 @@ type FileLoader interface {
 	CreateDirectory(path string) error
 	WriteFile(path string, content []byte, overwrite bool) error
 	CopyFile(src string, tgt string) error
+	Move(src string, tgt string) error
 	ListJSON(path string) []string
 	ListExtension(path string, ext string) []string
 	ListDirectories(path string) []string

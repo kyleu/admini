@@ -98,6 +98,25 @@ func (f *FileSystem) CopyFile(src string, tgt string) error {
 	return err
 }
 
+func (f *FileSystem) Move(src string, tgt string) error {
+	sp := f.getPath(src)
+	if sourceExists := f.Exists(sp); !sourceExists {
+		return errors.New("source file [" + sp + "] does not exist, can't move")
+	}
+
+	tp := f.getPath(tgt)
+	if targetExists := f.Exists(tp); targetExists {
+		return errors.New("target file [" + tp + "] exists, will not overwrite")
+	}
+
+	err := os.Rename(sp, tp)
+	if err != nil {
+		return errors.Wrapf(err, "error renaming [%v] to [%v]", sp, tp)
+	}
+
+	return nil
+}
+
 // Lists all files in a directory with a `.json` extension
 func (f *FileSystem) ListJSON(path string) []string {
 	return f.ListExtension(path, "json")
