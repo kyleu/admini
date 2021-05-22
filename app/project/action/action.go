@@ -1,11 +1,8 @@
 package action
 
 import (
-	"fmt"
-	"sort"
-	"strings"
-
 	"github.com/kyleu/admini/app/util"
+	"sort"
 )
 
 type Action struct {
@@ -27,6 +24,13 @@ func (a *Action) Name() string {
 	return a.Title
 }
 
+func (a *Action) Clone(pkg util.Pkg, kids Actions) *Action {
+	return &Action{
+		Key: a.Key, Type: a.Type, Title: a.Title, Description: a.Description,
+		Icon: a.Icon, Ordinal: a.Ordinal, Children: kids, Pkg: pkg, Config: a.Config,
+	}
+}
+
 type Actions []*Action
 
 func (a Actions) Sort() {
@@ -39,27 +43,21 @@ func (a Actions) Sort() {
 }
 
 func (a Actions) Get(paths []string) (*Action, []string) {
-	println("Get")
-	println(" - " + strings.Join(paths, "/"))
 	if len(paths) == 0 {
 		return nil, nil
 	}
 	curr := a.Find(paths[0])
-	println(fmt.Sprintf("   find %v = %v", paths[0], curr != nil))
 	if curr == nil {
 		return nil, paths
 	}
 	if len(curr.Children) > 0 {
 		x, remaining := curr.Children.Get(paths[1:])
 		if x == nil {
-			println(fmt.Sprintf("    ret1: %v", strings.Join(paths[1:], "/")))
 			return curr, paths[1:]
 		}
-		println(fmt.Sprintf("    ret2: %v", strings.Join(paths[1:], "/")))
 		return x, remaining
 	}
 
-	println(fmt.Sprintf("    ret3: %v", strings.Join(paths[1:], "/")))
 	return curr, paths
 }
 

@@ -32,6 +32,21 @@ func SourceList(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func SourceNew(w http.ResponseWriter, r *http.Request) {
+	act("source.new", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		ps.Title = "New Source"
+		ps.Data = &source.Source{}
+		return render(r, w, as, &vsource.New{}, ps, "sources", "New")
+	})
+}
+
+func SourceInsert(w http.ResponseWriter, r *http.Request) {
+	act("source.insert", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key := "TODO"
+		return flashAndRedir(true, "saved new source", as.Route("source.detail", "key", key), w, r, ps)
+	})
+}
+
 func SourceDetail(w http.ResponseWriter, r *http.Request) {
 	act("source.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
@@ -46,21 +61,6 @@ func SourceDetail(w http.ResponseWriter, r *http.Request) {
 		ps.Title = src.Name()
 		ps.Data = map[string]interface{}{"source": src, "schema": sch}
 		return render(r, w, as, &vsource.Detail{Source: src, Schema: sch}, ps, "sources", src.Key)
-	})
-}
-
-func SourceNew(w http.ResponseWriter, r *http.Request) {
-	act("source.new", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		ps.Title = "New Source"
-		ps.Data = &source.Source{}
-		return render(r, w, as, &vsource.New{}, ps, "sources", "New")
-	})
-}
-
-func SourceInsert(w http.ResponseWriter, r *http.Request) {
-	act("source.insert", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key := "TODO"
-		return flashAndRedir(true, "saved new source", as.Route("source.detail", "key", key), w, r, ps)
 	})
 }
 

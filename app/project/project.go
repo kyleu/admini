@@ -5,6 +5,7 @@ import (
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
+	"sort"
 )
 
 type Project struct {
@@ -34,6 +35,22 @@ func (p Projects) Get(key string) *Project {
 		}
 	}
 	return nil
+}
+
+func (p Projects) Replace(n *Project) {
+	for idx, x := range p {
+		if x.Key == n.Key {
+			p[idx] = n
+			return
+		}
+	}
+	p = append(p, n)
+}
+
+func (p Projects) Sort() {
+	sort.Slice(p, func(l int, r int) bool {
+		return p[l].Key < p[r].Key
+	})
 }
 
 type View struct {

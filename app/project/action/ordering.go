@@ -1,5 +1,10 @@
 package action
 
+import (
+	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
+)
+
 type Ordering struct {
 	Key          string    `json:"k"`
 	OriginalPath string    `json:"p"`
@@ -34,4 +39,55 @@ func (a Orderings) Find(key string) *Ordering {
 		}
 	}
 	return nil
+}
+
+
+func ReorderActions(acts Actions, orderings Orderings) (Actions, error) {
+	ret := Actions{}
+
+	for idx, o := range orderings {
+		act, err := forOrdering(acts, o, util.Pkg{}, idx)
+		if err != nil {
+			return nil, err
+		}
+		ret = append(ret, act)
+	}
+
+	return ret, nil
+}
+
+func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, error) {
+	var act *Action
+	p := util.SplitAndTrim(o.OriginalPath, "/")
+	if o.Key == "_new" {
+		var err error
+		c := util.SplitAndTrim(o.OriginalPath, "/")
+		if len(c) < 1 {
+			return nil, errors.New("attempted to create new action with no arguments")
+		}
+		t, err := actionTypeFromString(c[0])
+		if err != nil {
+			return nil, err
+		}
+		act, err = NewAction(c[1:], t, pkg)
+		if err != nil {
+			return nil, errors.Wrap(err, "can't parse new action from [" + o.OriginalPath + "]")
+		}
+	} else {
+		act, _ = acts.Get(p)
+		if act == nil {
+			return nil, errors.Errorf("no original action available at path [%v]", o.OriginalPath)
+		}
+	}
+	act.Ordinal = idx
+	kids := make(Actions, 0, len(o.Children))
+	for idx, x := range o.Children {
+		kid, err := forOrdering(acts, x, pkg.Push(o.Key), idx)
+		if err != nil {
+			return nil, err
+		}
+		kids = append(kids, kid)
+	}
+	cl := act.Clone(pkg, kids)
+	return cl, nil
 }

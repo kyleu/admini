@@ -60,7 +60,5 @@ func loadEnums(db *database.Service, logger *zap.SugaredLogger) (model.Models, e
 	for _, t := range enums {
 		ret = append(ret, t.ToModel(logger))
 	}
-	println("#############")
-	println(len(ret))
 	return ret, nil
 }

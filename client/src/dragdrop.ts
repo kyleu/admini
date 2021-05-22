@@ -36,16 +36,30 @@ function update(dd: Element, ev: Event | null) {
     }
   }
   const stateEls = dd.getElementsByClassName("drag-state");
-  if (stateEls.length != 1) {
+  if (stateEls.length !== 1) {
     return;
   }
+  const sEl = (stateEls.item(0) as HTMLInputElement);
+  const origEls = dd.getElementsByClassName("drag-state-original");
   const tracked = dd.getElementsByClassName("tracked");
   if (tracked.length > 1) {
     throw "too many tracked drag/drops";
   }
-  if (tracked.length == 1) {
+  if (tracked.length === 1) {
     const el = tracked.item(0) as HTMLElement;
-    (stateEls[0] as HTMLInputElement).value = JSON.stringify(readContainer(el));
+    const js = JSON.stringify(readContainer(el));
+    if (origEls.length === 1) {
+      const oEl = (origEls.item(0) as HTMLInputElement);
+      if (oEl.value.length === 0) {
+        oEl.value = js;
+      }
+      const buttonContainers = dd.getElementsByClassName("action-buttons");
+      if (buttonContainers.length === 1) {
+        (buttonContainers.item(0) as HTMLElement).style.display = oEl.value === js ? "none" : "block";
+      }
+    }
+
+    sEl.value = js;
   }
 }
 

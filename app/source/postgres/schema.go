@@ -25,7 +25,6 @@ func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schem
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load enums")
 	}
-	println(len(enums))
 
 	tables, err := loadTables(enums, db, logger)
 	if err != nil {

@@ -43,6 +43,7 @@ func (s *Service) List() (Projects, error) {
 			}
 			ret = append(ret, src)
 		}
+		ret.Sort()
 		s.cache = ret
 	}
 	return s.cache, nil
@@ -79,6 +80,7 @@ func (s *Service) Load(key string, force bool) (*Project, error) {
 		return nil, errors.Wrap(err, "unable to load actions")
 	}
 	ret.Actions = actions
+	s.cache.Replace(ret)
 
 	return ret, nil
 }

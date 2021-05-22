@@ -14,11 +14,11 @@ export function editorInit() {
           if (input.name.endsWith(selected)) {
             selectedCache[input.name] = input;
           } else {
-            if ((input.type != "radio") || input.checked) {
+            if ((input.type !== "radio") || input.checked) {
               editorCache[input.name] = input.value;
             }
             const evt = () => {
-              selectedCache[input.name + selected].checked = editorCache[input.name] != input.value;
+              selectedCache[input.name + selected].checked = editorCache[input.name] !== input.value;
             };
             input.onchange = evt;
             input.onkeyup = evt;

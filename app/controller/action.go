@@ -44,9 +44,22 @@ func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", err
 		}
-		println(util.ToJSON(actOrders))
+		newActs, err := action.ReorderActions(prj.Actions, actOrders)
+		if err != nil {
+			return "", err
+		}
 
-		return render(r, w, as, &vproject.ActionWorkbench{Project: prj}, ps, "projects", prj.Key, "Actions")
+		err = action.Save(prj.Key, newActs, currentApp.Files)
+		if err != nil {
+			return "", err
+		}
+
+		_, err = as.Projects.Load(prj.Key, true)
+		if err != nil {
+			return "", err
+		}
+
+		return flashAndRedir(true, "updated actions", as.Route("action.workbench", "key", key), w, r, ps)
 	})
 }
 

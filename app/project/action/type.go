@@ -13,15 +13,17 @@ type Type struct {
 }
 
 var (
+	ActionTypeAll     = Type{Key: "all", Title: "All Sources", Description: "provides actions for each source in the system"}
 	ActionTypeSource  = Type{Key: "source", Title: "Source", Description: "provides actions for each model in the source"}
-	ActionTypePackage = Type{Key: "package", Title: "Package", Description: "provides actions for each model in the package"}
+	ActionTypePackage = Type{Key: "package", Title: "Package", Description: "provides actions for a package contained in a source"}
+	ActionTypeModel   = Type{Key: "model", Title: "Model", Description: "provides actions for a model contained in a source"}
 	ActionTypeStatic  = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
 	ActionTypeTest    = Type{Key: "test", Title: "Test", Description: "a test action, who knows what it'll do"}
 	ActionTypeUnknown = Type{Key: "unknown", Title: "Unknown", Description: "an unknown action type"}
 )
 
 var AllActionTypes = []Type{
-	ActionTypeSource, ActionTypePackage, ActionTypeStatic, ActionTypeTest,
+	ActionTypeAll, ActionTypeSource, ActionTypePackage, ActionTypeModel, ActionTypeStatic, ActionTypeTest,
 }
 
 func actionTypeFromString(s string) (Type, error) {
