@@ -50,7 +50,7 @@ func SourceInsert(w http.ResponseWriter, r *http.Request) {
 func SourceDetail(w http.ResponseWriter, r *http.Request) {
 	act("source.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		src, err := as.Sources.Load(key)
+		src, err := as.Sources.Load(key, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source ["+key+"]")
 		}
@@ -67,7 +67,7 @@ func SourceDetail(w http.ResponseWriter, r *http.Request) {
 func SourceEdit(w http.ResponseWriter, r *http.Request) {
 	act("source.edit", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		src, err := as.Sources.Load(key)
+		src, err := as.Sources.Load(key, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source ["+key+"]")
 		}

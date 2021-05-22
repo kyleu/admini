@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/kyleu/admini/views/verror"
 	"net/http"
 	"os"
 	"runtime/debug"
@@ -83,7 +84,7 @@ func NotFound(w http.ResponseWriter, r *http.Request) {
 			ps.Title = "404"
 		}
 		ps.Data = "404 not found"
-		return render(r, w, as, &views.NotFound{}, ps, "Not Found")
+		return render(r, w, as, &verror.NotFound{}, ps, "Not Found")
 	})
 }
 

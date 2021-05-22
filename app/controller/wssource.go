@@ -109,7 +109,7 @@ func actionSQL(r *http.Request, w http.ResponseWriter, as *app.State, ps *cutil.
 }
 
 func loadSource(sourceKey string) (*source.Source, *schema.Schema, error) {
-	src, err := currentApp.Sources.Load(sourceKey)
+	src, err := currentApp.Sources.Load(sourceKey, false)
 	if err != nil {
 		return nil, nil, err
 	}

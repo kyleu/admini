@@ -53,6 +53,7 @@ func ReorderActions(acts Actions, orderings Orderings) (Actions, error) {
 		ret = append(ret, act)
 	}
 
+	ret.CleanKeys()
 	return ret, nil
 }
 
@@ -65,7 +66,7 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, err
 		if len(c) < 1 {
 			return nil, errors.New("attempted to create new action with no arguments")
 		}
-		t, err := actionTypeFromString(c[0])
+		t, err := TypeFromString(c[0])
 		if err != nil {
 			return nil, err
 		}
@@ -88,6 +89,7 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, err
 		}
 		kids = append(kids, kid)
 	}
+	kids.CleanKeys()
 	cl := act.Clone(pkg, kids)
 	return cl, nil
 }

@@ -1,10 +1,7 @@
 package project
 
 import (
-	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/project/action"
-	"github.com/kyleu/admini/app/schema"
-	"github.com/kyleu/admini/app/source"
 	"sort"
 )
 
@@ -20,10 +17,6 @@ func (p *Project) Name() string {
 		return p.Key
 	}
 	return p.Title
-}
-
-func (p *Project) ModelsByPackage() *model.Package {
-	return nil
 }
 
 type Projects []*Project
@@ -51,10 +44,4 @@ func (p Projects) Sort() {
 	sort.Slice(p, func(l int, r int) bool {
 		return p[l].Key < p[r].Key
 	})
-}
-
-type View struct {
-	Project   *Project        `json:"project"`
-	Schemata  schema.Schemata `json:"schemata,omitempty"`
-	Sources   source.Sources  `json:"sources,omitempty"`
 }

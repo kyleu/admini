@@ -38,3 +38,12 @@
 .action-workbench .r .lmdd-clonner .container {
   padding: 0;
 }
+
+.action-workbench .r .source {
+  margin-left: 12px;
+}
+
+.action-workbench .r .model {
+  margin-left: 24px;
+}
+

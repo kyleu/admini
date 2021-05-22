@@ -18,7 +18,7 @@ var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: onTestbed}
 func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := map[string]interface{}{}
 	sourceKey := "rituals.dev"
-	source, err := st.Sources.Load(sourceKey)
+	source, err := st.Sources.Load(sourceKey, true)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load source")
 	}

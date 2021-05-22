@@ -26,7 +26,6 @@ function update(dd: Element, ev: Event | null) {
   if(ev) {
     const to = (ev as any).detail.to;
     if (to) {
-      console.log(to.index, to.container.children.item(to.index));
       const el = to.container.children.item(to.index) as HTMLElement
       for (const rem of Array.from(el.getElementsByClassName("remove"))) {
         if ((rem as HTMLElement).onclick === null) {
@@ -53,9 +52,10 @@ function update(dd: Element, ev: Event | null) {
       if (oEl.value.length === 0) {
         oEl.value = js;
       }
-      const buttonContainers = dd.getElementsByClassName("action-buttons");
-      if (buttonContainers.length === 1) {
-        (buttonContainers.item(0) as HTMLElement).style.display = oEl.value === js ? "none" : "block";
+      const actions = dd.parentElement!.getElementsByClassName("actions");
+      if (actions.length === 1) {
+        const aEl = (actions.item(0) as HTMLElement);
+        aEl.style.opacity = oEl.value === js ? "0" : "1";
       }
     }
 

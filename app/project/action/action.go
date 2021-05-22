@@ -1,8 +1,10 @@
 package action
 
 import (
+	"fmt"
 	"github.com/kyleu/admini/app/util"
 	"sort"
+	"strings"
 )
 
 type Action struct {
@@ -68,6 +70,25 @@ func (a Actions) Find(key string) *Action {
 		}
 	}
 	return nil
+}
+
+func (a Actions) CleanKeys() {
+	for _, act := range a {
+		if strings.HasPrefix(act.Key, "__") {
+			proposed := strings.TrimPrefix(act.Key, "__")
+			match := a.Find(proposed)
+			idx := 1
+			for match != nil {
+				idx += 1
+				match = a.Find(fmt.Sprintf("%v-%v", proposed, idx))
+			}
+			if idx == 1 {
+				act.Key = proposed
+			} else {
+				act.Key = fmt.Sprintf("%v-%v", proposed, idx)
+			}
+		}
+	}
 }
 
 type dto struct {

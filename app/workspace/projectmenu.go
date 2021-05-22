@@ -49,11 +49,15 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 		switch act.Type {
 		case "":
 			// noop
-		case action.ActionTypeSource.Key:
+		case action.TypeAll.Key:
+			err = itemsForAll(x, act, view)
+		case action.TypeSource.Key:
 			err = itemsForSource(x, act, view)
-		case action.ActionTypePackage.Key:
+		case action.TypePackage.Key:
 			err = itemsForPackage(x, act, view)
-		case action.ActionTypeStatic.Key:
+		case action.TypeModel.Key:
+			err = itemsForModel(x, act, view)
+		case action.TypeStatic.Key:
 			// noop
 		default:
 			err = errors.New("unhandled action type [" + act.Type + "]")
@@ -73,6 +77,18 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 	}
 
 	return ret, nil
+}
+
+func itemsForAll(x *menu.Item, act *action.Action, view *project.View) error {
+	for _, src := range view.Sources {
+		x.Children = append(x.Children, &menu.Item{
+			Key:         src.Key,
+			Title:       src.Name(),
+			Description: src.Description,
+			Route:       "TODO",
+		})
+	}
+	return nil
 }
 
 func itemsForSource(x *menu.Item, act *action.Action, view *project.View) error {
@@ -109,6 +125,33 @@ func itemsForPackage(x *menu.Item, act *action.Action, view *project.View) error
 	}
 }
 
+func itemsForModel(x *menu.Item, act *action.Action, view *project.View) error {
+	sch, err := schemaFor(act, view)
+	if err != nil {
+		return err
+	}
+	pkgStr, ok := act.Config["model"]
+	if !ok {
+		return errors.New("no [model] in config")
+	}
+	mPath := util.SplitAndTrim(pkgStr, "/")
+	if len(mPath) == 0 {
+		return errors.New("config [model] is empty")
+	}
+	i, _ := sch.ModelsByPackage().Get(mPath)
+	switch t := i.(type) {
+	case nil:
+		return errors.New("config [model] must refer to an existing model")
+	case *model.Model:
+		x.Children = menu.Items{
+			{Key: "test", Title: "Test " + t.Name(), Route: act.Pkg.ToPath(act.Key)},
+		}
+		return nil
+	default:
+		return errors.New("config [package] must refer to a package")
+	}
+}
+
 func schemaFor(act *action.Action, view *project.View) (*schema.Schema, error) {
 	sourceKey, ok := act.Config["source"]
 	if !ok {
@@ -117,7 +160,7 @@ func schemaFor(act *action.Action, view *project.View) (*schema.Schema, error) {
 
 	sch, err := view.Schemata.GetWithError(sourceKey)
 	if err != nil {
-		return nil, errors.Wrap(err, "source [" + sourceKey + "] is not included in this project")
+		return nil, errors.Wrap(err, "source ["+sourceKey+"] is not included in this project")
 	}
 	return sch, nil
 }

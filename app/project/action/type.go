@@ -13,26 +13,29 @@ type Type struct {
 }
 
 var (
-	ActionTypeAll     = Type{Key: "all", Title: "All Sources", Description: "provides actions for each source in the system"}
-	ActionTypeSource  = Type{Key: "source", Title: "Source", Description: "provides actions for each model in the source"}
-	ActionTypePackage = Type{Key: "package", Title: "Package", Description: "provides actions for a package contained in a source"}
-	ActionTypeModel   = Type{Key: "model", Title: "Model", Description: "provides actions for a model contained in a source"}
-	ActionTypeStatic  = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
-	ActionTypeTest    = Type{Key: "test", Title: "Test", Description: "a test action, who knows what it'll do"}
-	ActionTypeUnknown = Type{Key: "unknown", Title: "Unknown", Description: "an unknown action type"}
+	TypeStatic  = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
+	TypeFolder  = Type{Key: "folder", Title: "Folder", Description: "holds other actions, like a folder"}
+
+	TypeAll     = Type{Key: "all", Title: "All Sources", Description: "provides actions for each source in the system"}
+	TypeSource  = Type{Key: "source", Title: "Source", Description: "provides actions for each model in the source"}
+	TypePackage = Type{Key: "package", Title: "Package", Description: "provides actions for a package contained in a source"}
+	TypeModel   = Type{Key: "model", Title: "Model", Description: "provides actions for a model contained in a source"}
+
+	TypeTest    = Type{Key: "test", Title: "Test", Description: "a test action, who knows what it'll do"}
+	TypeUnknown = Type{Key: "unknown", Title: "Unknown", Description: "an unknown action type"}
 )
 
-var AllActionTypes = []Type{
-	ActionTypeAll, ActionTypeSource, ActionTypePackage, ActionTypeModel, ActionTypeStatic, ActionTypeTest,
+var AllTypes = []Type{
+	TypeStatic, TypeFolder, TypeAll, TypeSource, TypePackage, TypeModel, TypeTest,
 }
 
-func actionTypeFromString(s string) (Type, error) {
-	for _, t := range AllActionTypes {
+func TypeFromString(s string) (Type, error) {
+	for _, t := range AllTypes {
 		if t.Key == s {
 			return t, nil
 		}
 	}
-	return ActionTypeUnknown, errors.New("unhandled action type [" + s + "]")
+	return TypeUnknown, errors.New("unhandled action type [" + s + "]")
 }
 
 func (t *Type) String() string {
@@ -49,7 +52,7 @@ func (t *Type) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	x, err := actionTypeFromString(s)
+	x, err := TypeFromString(s)
 	if err != nil {
 		return err
 	}

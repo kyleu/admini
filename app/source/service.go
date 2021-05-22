@@ -35,7 +35,7 @@ func (s *Service) List() (Sources, error) {
 		ret := make(Sources, 0, len(dirs))
 
 		for _, dir := range dirs {
-			src, err := s.Load(dir)
+			src, err := s.Load(dir, false)
 			if err != nil {
 				return nil, errors.Wrapf(err, "unable to load source [%v]", dir)
 			}
@@ -46,9 +46,11 @@ func (s *Service) List() (Sources, error) {
 	return s.cache, nil
 }
 
-func (s *Service) Load(key string) (*Source, error) {
-	if curr := s.cache.Get(key); curr != nil {
-		return curr, nil
+func (s *Service) Load(key string, force bool) (*Source, error) {
+	if !force {
+		if curr := s.cache.Get(key); curr != nil {
+			return curr, nil
+		}
 	}
 
 	p := filepath.Join(s.root, key, "source.json")
@@ -94,7 +96,7 @@ func (s *Service) SchemaFor(key string) (*schema.Schema, error) {
 
 func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 	startNanos := time.Now().UnixNano()
-	source, err := s.Load(key)
+	source, err := s.Load(key, false)
 	if err != nil {
 		return nil, 0, errors.Wrapf(err, "can't load source with key [%s]", key)
 	}

@@ -130,7 +130,7 @@ func (s *Service) SchemataFor(key string) (schema.Schemata, error) {
 func (s *Service) SourcesFor(p *Project) (source.Sources, error) {
 	ret := make(source.Sources, 0, len(p.Sources))
 	for _, sch := range p.Sources {
-		x, err := s.sources.Load(sch)
+		x, err := s.sources.Load(sch, false)
 		if err != nil {
 			return nil, errors.Wrapf(err, "can't load source [%v] for project [%v]", sch, p.Key)
 		}

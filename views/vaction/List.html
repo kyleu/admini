@@ -3,14 +3,14 @@
 {% import "github.com/kyleu/admini/app/project/action" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ActionList(prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
+{% func List(prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
   <div class="item" data-key="{%s act.Key %}" data-original-path="{%s act.Pkg.ToPath(act.Key) %}">
     {%= vutil.Indent(true, indent + 1) %}
     <div class="content">
       {%= vutil.Indent(true, indent + 2) %}
-      <div class="handle">[=]</div>
+      <div class="handle">≡</div>
       {%= vutil.Indent(true, indent + 2) %}
-      <div class="title"><a href="{%s as.Route(`action.edit`, `key`, prj) %}/{%s act.Pkg.ToPath(act.Key) %}">{%s act.Key %}</a></div>
+      <div class="title"><a href="{%s as.Route(`action.edit`, `key`, prj) %}/{%s act.Pkg.ToPath(act.Key) %}">{%s act.Name() %}</a></div>
       {%= vutil.Indent(true, indent + 2) %}
       <div class="remove">&times;</div>
       {%= vutil.Indent(true, indent + 1) %}
@@ -22,7 +22,7 @@
       <div class="container">
         {% for _, kid := range act.Children %}
           {%= vutil.Indent(true, indent + 2) %}
-          {%= ActionList(prj, kid, as, ps, indent + 2) %}
+          {%= List(prj, kid, as, ps, indent + 2) %}
         {% endfor %}
       {%= vutil.Indent(true, indent + 1) %}
       </div>

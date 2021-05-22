@@ -19,13 +19,13 @@ import (
 func ActionWorkbench(w http.ResponseWriter, r *http.Request) {
 	act("action.workbench", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		prj, err := as.Projects.Load(key, false)
+		view, err := as.Projects.LoadView(key)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
-		ps.Title = prj.Name() + " Actions"
-		ps.Data = prj.Actions
-		return render(r, w, as, &vproject.ActionWorkbench{Project: prj}, ps, "projects", prj.Key, "Actions")
+		ps.Title = view.Project.Name() + " Actions"
+		ps.Data = view.Project.Actions
+		return render(r, w, as, &vproject.ActionWorkbench{View: view}, ps, "projects", view.Project.Key, "Actions")
 	})
 }
 

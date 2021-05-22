@@ -50,13 +50,17 @@ func SourceMenuPackage(mp *model.Package, path string) menu.Items {
 	return ret
 }
 
-func sourceMenuAddModel(ret menu.Items, m *model.Model, path string) menu.Items {
-	return append(ret, &menu.Item{
+func SourceMenuModel(m *model.Model, path string) *menu.Item {
+	return &menu.Item{
 		Key:         m.Key,
 		Title:       m.Name(),
 		Description: m.Description(),
-		Route:       filepath.Join(path, m.Key),
-	})
+		Route:       path,
+	}
+}
+
+func sourceMenuAddModel(ret menu.Items, m *model.Model, path string) menu.Items {
+	return append(ret, SourceMenuModel(m, filepath.Join(path, m.Key)))
 }
 
 func sourceMenuAddPackage(ret menu.Items, mp *model.Package, path string) menu.Items {
