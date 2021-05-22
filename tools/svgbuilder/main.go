@@ -80,12 +80,21 @@ func template(src string, svgs []*SVG) string {
 		out.WriteString(s)
 		out.WriteString("\n")
 	}
+
+	maxKeyLength := 0
+	for _, svg := range svgs {
+		if len(svg.Key) > maxKeyLength {
+			maxKeyLength = len(svg.Key)
+		}
+	}
+
 	w("// Code generated from files in [" + src + "]. DO NOT EDIT.")
 	w("package util")
 	w("")
 	w("var SVGLibrary = map[string]string{")
+	msg := "\t%-" + fmt.Sprintf("%v", maxKeyLength+3) + "v `%v`,"
 	for _, fn := range svgs {
-		w(fmt.Sprintf("\t\"%v\": `%v`,", fn.Key, fn.Markup))
+		w(fmt.Sprintf(msg, `"`+fn.Key+`":`, fn.Markup))
 	}
 	w("}")
 
