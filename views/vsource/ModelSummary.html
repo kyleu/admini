@@ -1,17 +1,18 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ModelSummary(schemaKey string, idx int, model *model.Model, as *app.State, ps *cutil.PageState) %}
+{%- func ModelSummary(schemaKey string, idx int, model *model.Model, as *app.State, ps *cutil.PageState) -%}
   <li>
     <input id="model-list-{%d idx %}" type="checkbox" hidden />
     <label for="model-list-{%d idx %}">
       <em class="right">{%s model.Pkg.ToPath() %}</em>
       {%= components.ExpandCollapse(3, ps) %}
-      {%s model.Key %}
+      {%s model.Name() %}
     </label>
     <div class="bd">
       <div>
@@ -39,7 +40,7 @@
             <td>{%= fieldview.Type(f.Type) %}</td>
             <td>{%= fieldview.Boolean(f.Nullable()) %}</td>
             <td>{%= fieldview.Boolean(f.ReadOnly) %}</td>
-            <td>{%= fieldview.String(f.Key) %}</td>
+            <td><div class="pre">{%s util.ToJSON(f.Metadata) %}</div></td>
           </tr>
         {% endfor %}
         </tbody>
@@ -102,4 +103,4 @@
       <div class="spacer"></div>
     </div>
   </li>
-{% endfunc %}
+{%- endfunc -%}

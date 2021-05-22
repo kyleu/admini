@@ -4,7 +4,7 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 
-{% func ModelAttributes(m *model.Model, as *app.State, ps *cutil.PageState) %}
+{%- func ModelAttributes(m *model.Model, as *app.State, ps *cutil.PageState) -%}
   <ul class="accordion">
     <li>
       <input id="model-accordion-fields" type="checkbox" hidden />
@@ -89,5 +89,4 @@
       </div>
     </li>
   </ul>
-{% endfunc %}
-
+{%- endfunc -%}

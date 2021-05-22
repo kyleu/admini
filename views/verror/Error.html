@@ -4,7 +4,7 @@
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% func errorStack(ed *util.ErrorDetail) %}
+{%- func errorStack(ed *util.ErrorDetail) -%}
     <table>
       <tbody>
       {%- for _, f := range util.TraceDetail(ed.StackTrace) -%}
@@ -21,7 +21,7 @@
       {%- endfor -%}
       </tbody>
     </table>
-{% endfunc %}
+{%- endfunc -%}
 
 {% code type Error struct {
   layout.Basic

@@ -26,7 +26,7 @@
     {% if len(p.Pkg.ChildModels) > 0 %}
     <h4>Models</h4>
     <ul>
-      {% for _, cm := range p.Pkg.ChildModels %}<li><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, cm.Path()...) %}">{%s cm.Key %}</a></li>
+      {% for _, cm := range p.Pkg.ChildModels %}<li><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, cm.Path()...) %}">{%s cm.Name() %}</a></li>
       {% endfor %}
     </ul>
     {% endif %}

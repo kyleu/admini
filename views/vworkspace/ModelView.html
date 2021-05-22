@@ -25,7 +25,7 @@
     %}
     <div class="right"><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, link...) %}">Edit</a></div>
     <h3>{%s strings.Join(rowPK, "/") %}</h3>
-    <em><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, p.Model.Path()...) %}">{%s p.Model.Key %}</a></em>
+    <em><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, p.Model.Path()...) %}">{%s p.Model.Name() %}</a></em>
     <div class="spacer"></div>
     <table>
       <tbody>

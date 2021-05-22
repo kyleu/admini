@@ -33,7 +33,7 @@
     <div id="flash-container">
       {% for idx, f := range flashes %}
         {% code level, msg := util.SplitString(f, ':', true) %}
-        <div>
+        <div class="flash">
           <input type="radio" style="display:none;" id="hide-flash-{%d idx %}">
           <label for="hide-flash-{%d idx %}"><span>&times;</span></label>
           <div class="card flash-{%s level %}">

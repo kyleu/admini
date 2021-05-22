@@ -1,4 +1,5 @@
 {% import "reflect" %}
+{% import "strings" %}
 {% import "github.com/kyleu/admini/app/menu" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/components" %}
@@ -32,16 +33,17 @@
       {%= vutil.Indent(true, indent + 1) %}
       <li class="separator"></li>
     {% elseif len(i.Children) > 0 %}
+      {% code itemID := strings.Join(path, "--")%}
       {%= vutil.Indent(true, indent + 1) %}
       {% if active %}<li class="active">{% else %}<li>{% endif %}
       {%= vutil.Indent(true, indent + 2) %}
       {% if active %}
-        <input id="{%s i.Key %}-input" type="checkbox" checked="checked" hidden />
+        <input id="{%s itemID %}-input" type="checkbox" checked="checked" hidden />
       {% else %}
-        <input id="{%s i.Key %}-input" type="checkbox" hidden />
+        <input id="{%s itemID %}-input" type="checkbox" hidden />
       {% endif %}
       {%= vutil.Indent(true, indent + 2) %}
-      {% if final %}<label class="final" for="{%s i.Key %}-input" title="{%s i.Description %}">{% else %}<label for="{%s i.Key %}-input" title="{%s i.Description %}">{% endif %}
+      {% if final %}<label class="final" for="{%s itemID %}-input" title="{%s i.Description %}">{% else %}<label for="{%s itemID %}-input" title="{%s i.Description %}">{% endif %}
         {% if i.Route != "" %}
           {%= vutil.Indent(true, indent + 3) %}
           <a class="label-link" href="{%s i.Route %}">{%= components.SVGRef(`link`, 15, 15, ``, ``, ps) %}</a>

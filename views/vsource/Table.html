@@ -2,7 +2,7 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/source" %}
 
-{% func Table(sources source.Sources, as *app.State, ps *cutil.PageState) %}
+{%- func Table(sources source.Sources, as *app.State, ps *cutil.PageState) -%}
     <table>
       <thead>
         <tr>
@@ -16,7 +16,7 @@
       {%- for _, s := range sources -%}
         <tr>
           <td>
-            <a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Title %}</a>
+            <a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Name() %}</a>
           </td>
           <td>{%s s.Description %}</td>
           <td>{%s s.Type.String() %}</td>
@@ -29,4 +29,4 @@
       {%- endfor -%}
       </tbody>
     </table>
-{% endfunc %}
+{%- endfunc -%}
