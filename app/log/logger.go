@@ -32,11 +32,11 @@ func initDevLogging() (*zap.Logger, error) {
 
 	config.Encoding = "custom"
 	config.Development = true
-	return config.Build(zap.AddStacktrace(zap.WarnLevel), zap.AddCaller())
+	return config.Build(zap.AddStacktrace(zap.PanicLevel), zap.AddCaller())
 }
 
 func initProdLogging() (*zap.Logger, error) {
 	config := zap.NewProductionConfig()
 	config.EncoderConfig.FunctionKey = "func"
-	return config.Build(zap.AddStacktrace(zap.WarnLevel), zap.AddCaller())
+	return config.Build(zap.AddStacktrace(zap.PanicLevel), zap.AddCaller())
 }

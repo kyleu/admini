@@ -40,6 +40,7 @@ func (e *customEncoder) EncodeEntry(entry zapcore.Entry, fields []zapcore.Field)
 	}
 
 	ret := e.pool.Get()
+	ret.AppendByte('\n')
 	addLine := func(l string) {
 		ret.AppendString(l)
 		ret.AppendByte('\n')
@@ -48,19 +49,37 @@ func (e *customEncoder) EncodeEntry(entry zapcore.Entry, fields []zapcore.Field)
 	lvl := fmt.Sprintf("%-5v", entry.Level.CapitalString())
 	lvl = levelToColor[entry.Level].Add(lvl)
 	tm := entry.Time.Format(timeFormat)
-	addLine(fmt.Sprintf("[%v] %v - %v", lvl, tm, Cyan.Add(entry.Message)))
+
+	msg := entry.Message
+	msgLines := []string{}
+	if strings.Contains(msg, "\n") {
+		msgLines = strings.Split(msg, "\n")
+		msg = msgLines[0]
+		msgLines = msgLines[1:]
+	}
+
+	addLine(fmt.Sprintf("[%v] %v %v", lvl, tm, Cyan.Add(msg)))
+	for _, ml := range msgLines {
+		if strings.Contains(ml, util.AppKey) {
+			ml = Green.Add(ml)
+		}
+		addLine("  " + ml)
+	}
 	if len(data) > 0 {
-		addLine(util.ToJSONCompact(data))
+		addLine("  " + util.ToJSONCompact(data))
 	}
 	caller := entry.Caller.String()
 	if entry.Caller.Function != "" {
 		caller += " (" + entry.Caller.Function + ")"
 	}
-	addLine(caller)
+	addLine("  " + caller)
 
 	if entry.Stack != "" {
 		st := strings.Split(entry.Stack, "\n")
 		for _, stl := range st {
+			if strings.Contains(stl, util.AppKey) {
+				stl = Green.Add(stl)
+			}
 			addLine("  " + stl)
 		}
 	}
