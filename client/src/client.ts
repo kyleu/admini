@@ -3,14 +3,14 @@ import {appName} from "./util";
 import {menuInit} from "./menu";
 import {flashInit} from "./flash";
 import {editorInit} from "./editor";
-import {dragDropInit} from "./dragdrop";
+import {sortableInit} from "./sortable";
 
 export function init(): void {
   console.log("[" + appName + "]");
   menuInit();
   flashInit();
   editorInit();
-  dragDropInit();
+  sortableInit();
 }
 
 document.addEventListener("DOMContentLoaded", init);

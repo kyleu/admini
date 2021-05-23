@@ -1,41 +1,43 @@
-export function dragDropInit() {
-  const lmdd = (window as any).lmdd;
-  if (lmdd) {
+export function sortableInit() {
+  const Sortable = (window as any).Sortable;
+  if (Sortable) {
     for (const dd of Array.from(document.getElementsByClassName("drag-container"))) {
-      var opts = { containerClass: "container", draggableItemClass: "item", handleClass: "", nativeScroll: true };
-      if (dd.getElementsByClassName("handle").length > 0) {
-        opts.handleClass = "handle";
+      let l = dd.querySelector(".l");
+      if (!l) {
+        l = dd;
       }
-      lmdd.set(dd, opts);
-      dd.addEventListener("lmddend", function (ev) { update(dd, ev); }, false);
-      for (const rem of Array.from(dd.getElementsByClassName("remove"))) {
-        const el = rem.parentElement?.parentElement!;
-        if (!el.classList.contains("lmdd-clonner")) {
-          (rem as HTMLElement).onclick = function() { remove(dd, el); };
+      const lOpts = {group: {name: 'nested'}, onAdd: onAdd, animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
+      function onAdd(ev: Event) {
+        const i = (ev as any).item as HTMLElement;
+        new Sortable(i.querySelector(".container"), lOpts);
+        (i.querySelector(".remove") as HTMLElement).onclick = function() { remove(dd, i); };
+        update(dd);
+      }
+      for (const c of Array.from(l.getElementsByClassName('container'))) {
+        new Sortable(c, lOpts);
+      }
+      for (const rem of Array.from(l.getElementsByClassName("remove"))) {
+        (rem as HTMLElement).onclick = function() { remove(dd, rem.parentElement?.parentElement!); };
+      }
+
+      const r = dd.querySelector(".r");
+      if (r) {
+        const rOpts = {group: {name: 'nested', pull: "clone", put: false}, animation: 150, fallbackOnBody: true, swapThreshold: 0.65, sort: false};
+        for (const c of Array.from(r.getElementsByClassName('container'))) {
+          new Sortable(c, rOpts);
         }
       }
-      update(dd, null);
+      update(dd)
     }
   }
 }
 
 function remove(dd: Element, rem: Element) {
   rem.remove();
-  update(dd, null);
+  update(dd);
 }
 
-function update(dd: Element, ev: Event | null) {
-  if(ev) {
-    const to = (ev as any).detail.to;
-    if (to && to.container && to.container.children) {
-      const el = to.container.children.item(to.index) as HTMLElement
-      for (const rem of Array.from(el.getElementsByClassName("remove"))) {
-        if ((rem as HTMLElement).onclick === null) {
-          (rem as HTMLElement).onclick = function() { remove(dd, el); };
-        }
-      }
-    }
-  }
+function update(dd: Element) {
   const sEl = document.querySelector(".drag-state") as HTMLInputElement;
   if (!sEl) {
     return;

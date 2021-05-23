@@ -41,7 +41,7 @@
       </div>
       <div class="r">
         <h4 class="no-padding">Available</h4>
-        <div class="container lmdd-dispatcher">
+        <div class="container">
           {%= itemTemplate(action.TypeFolder, `folder`, `New Folder`, 5) %}
           {%= itemTemplate(action.TypeAll, `all`, `All Sources`, 5) %}
           {%- for _, src := range p.View.Sources -%}
@@ -52,7 +52,7 @@
     </div>
   </div>
 </div>
-<script type="text/javascript" src="/assets/dragdrop.js"></script>
+<script type="text/javascript" src="/assets/sortable.js"></script>
 {% endfunc %}
 
 {% func itemSchema(src *source.Source, sch *schema.Schema, indent int) %}{% stripspace %}
@@ -73,7 +73,7 @@
 {% endstripspace %}{% endfunc %}
 
 {% func itemTemplate(t action.Type, path string, title string, indent int) %}{% stripspace %}
-<div class="item{% space %}{%s t.Key %}{% space %}lmdd-clonner" data-key="_new" data-original-path="{%s path %}">
+<div class="item{% space %}{%s t.Key %}" data-key="_new" data-original-path="{%s path %}">
   {%= vutil.Indent(true, indent + 1) %}
   <div class="content">
     {%= vutil.Indent(true, indent + 2) %}
