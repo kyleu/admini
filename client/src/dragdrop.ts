@@ -2,16 +2,18 @@ export function dragDropInit() {
   const lmdd = (window as any).lmdd;
   if (lmdd) {
     for (const dd of Array.from(document.getElementsByClassName("drag-container"))) {
-      var opts = { containerClass: "container", draggableItemClass: "item", handleClass: "" };
+      var opts = { containerClass: "container", draggableItemClass: "item", handleClass: "", nativeScroll: true };
       if (dd.getElementsByClassName("handle").length > 0) {
         opts.handleClass = "handle";
       }
       lmdd.set(dd, opts);
       dd.addEventListener("lmddend", function (ev) { update(dd, ev); }, false);
       for (const rem of Array.from(dd.getElementsByClassName("remove"))) {
-        (rem as HTMLElement).onclick = function() { remove(dd, rem.parentElement?.parentElement!); };
+        const el = rem.parentElement?.parentElement!;
+        if (!el.classList.contains("lmdd-clonner")) {
+          (rem as HTMLElement).onclick = function() { remove(dd, el); };
+        }
       }
-
       update(dd, null);
     }
   }
@@ -25,7 +27,7 @@ function remove(dd: Element, rem: Element) {
 function update(dd: Element, ev: Event | null) {
   if(ev) {
     const to = (ev as any).detail.to;
-    if (to) {
+    if (to && to.container && to.container.children) {
       const el = to.container.children.item(to.index) as HTMLElement
       for (const rem of Array.from(el.getElementsByClassName("remove"))) {
         if ((rem as HTMLElement).onclick === null) {
@@ -34,33 +36,26 @@ function update(dd: Element, ev: Event | null) {
       }
     }
   }
-  const stateEls = dd.getElementsByClassName("drag-state");
-  if (stateEls.length !== 1) {
+  const sEl = document.querySelector(".drag-state") as HTMLInputElement;
+  if (!sEl) {
     return;
   }
-  const sEl = (stateEls.item(0) as HTMLInputElement);
-  const origEls = dd.getElementsByClassName("drag-state-original");
-  const tracked = dd.getElementsByClassName("tracked");
-  if (tracked.length > 1) {
-    throw "too many tracked drag/drops";
-  }
-  if (tracked.length === 1) {
-    const el = tracked.item(0) as HTMLElement;
-    const js = JSON.stringify(readContainer(el));
-    if (origEls.length === 1) {
-      const oEl = (origEls.item(0) as HTMLInputElement);
-      if (oEl.value.length === 0) {
-        oEl.value = js;
-      }
-      const actions = dd.parentElement!.getElementsByClassName("actions");
-      if (actions.length === 1) {
-        const aEl = (actions.item(0) as HTMLElement);
-        aEl.style.opacity = oEl.value === js ? "0" : "1";
-      }
+  const origEl = document.querySelector(".drag-state-original") as HTMLInputElement;
+  const trackedEl = dd.querySelector(".tracked") as HTMLElement;
+  const js = JSON.stringify(readContainer(trackedEl));
+  if (origEl) {
+    if (origEl.value.length === 0) {
+      origEl.value = js;
     }
-
-    sEl.value = js;
+    const aEl = document.querySelector(".drag-actions") as HTMLElement;
+    if (origEl.value === js) {
+      aEl.classList.add('no-changes');
+    } else {
+      aEl.classList.remove('no-changes');
+    }
   }
+
+  sEl.value = js;
 }
 
 interface Item {

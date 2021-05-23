@@ -3,6 +3,7 @@ package source
 import (
 	"encoding/json"
 	"github.com/pkg/errors"
+	"sort"
 	"strings"
 
 	"github.com/kyleu/admini/app/schema"
@@ -35,6 +36,18 @@ func (s Sources) Get(key string) *Source {
 	return nil
 }
 
+func (s Sources) Add(src *Source) {
+	for idx, x := range s {
+		if x.Key == src.Key {
+			s[idx] = src
+			return
+		}
+	}
+	s = append(s, src)
+	s.Sort()
+	return
+}
+
 func (s Sources) GetWithError(key string) (*Source, error) {
 	ret := s.Get(key)
 	if ret != nil {
@@ -46,4 +59,10 @@ func (s Sources) GetWithError(key string) (*Source, error) {
 		keys = append(keys, x.Key)
 	}
 	return nil, errors.Errorf("no source [%v] available among candidates [%v]", key, strings.Join(keys, ", "))
+}
+
+func (s Sources) Sort() {
+	sort.Slice(s, func(l int, r int) bool {
+		return s[l].Key < s[r].Key
+	})
 }

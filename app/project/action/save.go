@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 )
 
-func Save(prj string, acts Actions, files filesystem.FileLoader) error {
+func Save(prj string, acts Actions, files filesystem.FileLoader) (int, error) {
 	prjPath := filepath.Join("project", prj)
 	if !files.Exists(prjPath) {
-		return errors.New("project directory [" + prjPath + "] does not exist")
+		return 0, errors.New("project directory [" + prjPath + "] does not exist")
 	}
 	actPath := filepath.Join(prjPath, "actions~")
 	if files.Exists(actPath) {
@@ -19,22 +19,24 @@ func Save(prj string, acts Actions, files filesystem.FileLoader) error {
 
 	err := files.CreateDirectory(actPath)
 	if err != nil {
-		return errors.Wrap(err, "can't create actions directory at [" + actPath + "]")
+		return 0, errors.Wrap(err, "can't create actions directory at [" + actPath + "]")
 	}
 
+	count := 0
 	for _, act := range acts {
-		err := saveAction(actPath, act, files)
+		c, err := saveAction(actPath, act, files)
 		if err != nil {
-			return err
+			return 0, err
 		}
+		count += c
 	}
 
 	err = replace(prjPath, "actions~", "actions", files)
 	if err != nil {
-		return errors.Wrap(err, "can't replace actions directory")
+		return 0, errors.Wrap(err, "can't replace actions directory")
 	}
 
-	return nil
+	return count, nil
 }
 
 func replace(root string, src string, tgt string, files filesystem.FileLoader) error {
@@ -60,12 +62,13 @@ func replace(root string, src string, tgt string, files filesystem.FileLoader) e
 	return nil
 }
 
-func saveAction(path string, act *Action, files filesystem.FileLoader) error {
+func saveAction(path string, act *Action, files filesystem.FileLoader) (int, error) {
+	count := 1
 	dest := filepath.Join(path, act.Key)
 	if !files.Exists(dest) {
 		err := files.CreateDirectory(dest)
 		if err != nil {
-			return errors.Wrap(err, "unable to create directory for action [" + act.Key + "]")
+			return 0, errors.Wrap(err, "unable to create directory for action [" + act.Key + "]")
 		}
 	}
 	actFile := filepath.Join(dest, "action.json")
@@ -74,16 +77,17 @@ func saveAction(path string, act *Action, files filesystem.FileLoader) error {
 	if len(js) != 2 {
 		err := files.WriteFile(actFile, js, true)
 		if err != nil {
-			return errors.Wrap(err, "unable to write file for action ["+act.Key+"]")
+			return 0, errors.Wrap(err, "unable to write file for action ["+act.Key+"]")
 		}
 	}
 
 	for _, kid := range act.Children {
-		err := saveAction(dest, kid, files)
+		c, err := saveAction(dest, kid, files)
 		if err != nil {
-			return err
+			return 0, err
 		}
+		count += c
 	}
 
-	return nil
+	return count, nil
 }

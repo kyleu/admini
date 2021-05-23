@@ -1,0 +1,73 @@
+package source
+
+import (
+	"path/filepath"
+	"time"
+
+	"github.com/pkg/errors"
+
+	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/util"
+)
+
+func (s *Service) LoadSchema(key string) (*schema.Schema, error) {
+	curr, ok := s.schemaCache[key]
+	if ok {
+		return curr, nil
+	}
+	var ret *schema.Schema
+	p := filepath.Join(s.root, key, "schema.json")
+
+	if s.files.Exists(p) {
+		out, err := s.files.ReadFile(p)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to read schema")
+		}
+
+		ret = &schema.Schema{}
+		err = util.FromJSON(out, ret)
+		if err != nil {
+			return nil, err
+		}
+	}
+	s.schemaCache[key] = ret
+	return ret, nil
+}
+
+func (s *Service) SaveSchema(key string, sch *schema.Schema) error {
+	p := filepath.Join(s.root, key, "schema.json")
+	j := util.ToJSONBytes(sch, true)
+	err := s.files.WriteFile(p, j, true)
+	if err != nil {
+		return errors.Wrapf(err, "unable to save schema [%v]", key)
+	}
+	s.schemaCache[key] = sch
+	return nil
+}
+
+func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
+	startNanos := time.Now().UnixNano()
+	source, err := s.Load(key, false)
+	if err != nil {
+		return nil, 0, errors.Wrapf(err, "can't load source with key [%s]", key)
+	}
+	ld, err := s.loaders.Get(source.Type, source.Key, source.Config)
+	if err != nil {
+		return nil, 0, errors.Wrapf(err, "can't create loader for source [%s]", key)
+	}
+	if ld == nil {
+		return nil, 0, errors.Errorf("no loader defined for type [" + source.Type.String() + "]")
+	}
+	sch, err := ld.Schema()
+	if err != nil {
+		return nil, 0, errors.Wrapf(err, "can't load schema with key [%s]", key)
+	}
+	elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
+
+	err = s.SaveSchema(key, sch)
+	if err != nil {
+		return nil, 0, errors.Wrapf(err, "can't save source with key [%s]", key)
+	}
+
+	return sch, elapsedMillis, err
+}

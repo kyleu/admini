@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views"
 	"github.com/pkg/errors"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 
@@ -44,22 +46,24 @@ func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", err
 		}
+		startNanos := time.Now().UnixNano()
 		newActs, err := action.ReorderActions(prj.Actions, actOrders)
 		if err != nil {
 			return "", err
 		}
 
-		err = action.Save(prj.Key, newActs, currentApp.Files)
+		count, err := action.Save(prj.Key, newActs, currentApp.Files)
 		if err != nil {
 			return "", err
 		}
+		elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 
 		_, err = as.Projects.Load(prj.Key, true)
 		if err != nil {
 			return "", err
 		}
-
-		return flashAndRedir(true, "updated actions", as.Route("action.workbench", "key", key), w, r, ps)
+		msg := fmt.Sprintf("saved [%v] actions in [%.3fms]", count, elapsedMillis)
+		return flashAndRedir(true, msg, as.Route("action.workbench", "key", key), w, r, ps)
 	})
 }
 

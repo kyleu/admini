@@ -1,10 +1,8 @@
 package source
 
 import (
-	"path/filepath"
-	"time"
-
 	"go.uber.org/zap"
+	"path/filepath"
 
 	"github.com/pkg/errors"
 
@@ -70,64 +68,17 @@ func (s *Service) Load(key string, force bool) (*Source, error) {
 	return ret, nil
 }
 
-func (s *Service) SchemaFor(key string) (*schema.Schema, error) {
-	curr, ok := s.schemaCache[key]
-	if ok {
-		return curr, nil
+func (s *Service) Save(src *Source, overwrite bool) error {
+	p := filepath.Join(s.root, src.Key)
+	if !overwrite && s.files.Exists(p) {
+		return errors.Errorf("source [%v] already exists", src.Key)
 	}
-	var ret *schema.Schema
-	p := filepath.Join(s.root, key, "schema.json")
-
-	if s.files.Exists(p) {
-		out, err := s.files.ReadFile(p)
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to read schema")
-		}
-
-		ret = &schema.Schema{}
-		err = util.FromJSON(out, ret)
-		if err != nil {
-			return nil, err
-		}
-	}
-	s.schemaCache[key] = ret
-	return ret, nil
-}
-
-func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
-	startNanos := time.Now().UnixNano()
-	source, err := s.Load(key, false)
+	f := filepath.Join(p, "source.json")
+	j := util.ToJSONBytes(src, true)
+	err := s.files.WriteFile(f, j, true)
 	if err != nil {
-		return nil, 0, errors.Wrapf(err, "can't load source with key [%s]", key)
+		return errors.Wrapf(err, "unable to save schema [%v]", src.Key)
 	}
-	ld, err := s.loaders.Get(source.Type, source.Key, source.Config)
-	if err != nil {
-		return nil, 0, errors.Wrapf(err, "can't create loader for source [%s]", key)
-	}
-	if ld == nil {
-		return nil, 0, errors.Errorf("no loader defined for type [" + source.Type.String() + "]")
-	}
-	sch, err := ld.Schema()
-	if err != nil {
-		return nil, 0, errors.Wrapf(err, "can't load schema with key [%s]", key)
-	}
-	elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
-
-	err = s.SaveSchema(key, sch)
-	if err != nil {
-		return nil, 0, errors.Wrapf(err, "can't save source with key [%s]", key)
-	}
-
-	return sch, elapsedMillis, err
-}
-
-func (s *Service) SaveSchema(key string, sch *schema.Schema) error {
-	p := filepath.Join(s.root, key, "schema.json")
-	j := util.ToJSONBytes(sch, true)
-	err := s.files.WriteFile(p, j, true)
-	if err != nil {
-		return errors.Wrapf(err, "unable to save schema [%v]", key)
-	}
-	s.schemaCache[key] = sch
+	s.cache.Add(src)
 	return nil
 }

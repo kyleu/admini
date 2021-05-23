@@ -46,7 +46,7 @@ func ProjectTest(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
 
-		err = action.Save(prj.Key, prj.Actions, as.Files)
+		_, err = action.Save(prj.Key, prj.Actions, as.Files)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save actions for project ["+key+"]")
 		}

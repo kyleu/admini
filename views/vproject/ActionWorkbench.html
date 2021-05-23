@@ -1,8 +1,11 @@
 {% import "fmt" %}
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/project" %}
 {% import "github.com/kyleu/admini/app/project/action" %}
+{% import "github.com/kyleu/admini/app/schema" %}
+{% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vaction" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
@@ -14,7 +17,18 @@
 
 {% func (p *ActionWorkbench) Body(as *app.State, ps *cutil.PageState) %}
 <div class="card">
+  <div class="drag-actions right no-changes">
+    <div class="message"><em>no changes</em></div>
+    <div class="form">
+      <form action="" method="post">
+        <input type="hidden" class="drag-state-original" value=""/>
+        <input type="hidden" class="drag-state" value="" name="ordering"/>
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  </div>
   <h3>{%s p.View.Project.Name() %} Workbench</h3>
+  <div class="clear"></div>
   <div class="drag-container">
     <div class="action-workbench">
       <div class="l">
@@ -31,26 +45,32 @@
           {%= itemTemplate(action.TypeFolder, `folder`, `New Folder`, 5) %}
           {%= itemTemplate(action.TypeAll, `all`, `All Sources`, 5) %}
           {%- for _, src := range p.View.Sources -%}
-          {%= itemTemplate(action.TypeSource, `source/` + src.Key, src.Name(), 5) %}
-          {%- code sch := p.View.Schemata.Get(src.Key) -%}
-          {%- for _, m := range sch.Models -%}
-          {%= itemTemplate(action.TypeModel, fmt.Sprintf("model/%v/%v", src.Key, m.PathString()), m.Name(), 5) %}
-          {%- endfor -%}
+          {%= itemSchema(src, p.View.Schemata.Get(src.Key), 5) %}
           {%- endfor -%}
         </div>
       </div>
-    </div>
-    <div class="actions hidden">
-      <form action="" method="post">
-        <input type="hidden" class="drag-state-original" value=""/>
-        <input type="hidden" class="drag-state" value="" name="ordering"/>
-        <button type="submit">Save</button>
-      </form>
     </div>
   </div>
 </div>
 <script type="text/javascript" src="/assets/dragdrop.js"></script>
 {% endfunc %}
+
+{% func itemSchema(src *source.Source, sch *schema.Schema, indent int) %}{% stripspace %}
+  {%= itemTemplate(action.TypeSource, `source/` + src.Key, src.Name(), 5) %}
+  {%= itemModelPackage(src, sch.ModelsByPackage(), false, 5) %}
+{% endstripspace %}{% endfunc %}
+
+{% func itemModelPackage(src *source.Source, pkg *model.Package, showRoot bool, indent int) %}{% stripspace %}
+  {% if showRoot %}
+    {%= itemTemplate(action.TypePackage, fmt.Sprintf("package/%v/%v", src.Key, pkg.PathString()), pkg.Key, indent) %}
+  {% endif %}
+  {% for _, p := range pkg.ChildPackages %}
+    {%= itemModelPackage(src, p, true, indent) %}
+  {% endfor %}
+  {% for _, m := range pkg.ChildModels %}
+    {%= itemTemplate(action.TypeModel, fmt.Sprintf("model/%v/%v", src.Key, m.PathString()), m.Name(), indent) %}
+  {% endfor %}
+{% endstripspace %}{% endfunc %}
 
 {% func itemTemplate(t action.Type, path string, title string, indent int) %}{% stripspace %}
 <div class="item{% space %}{%s t.Key %}{% space %}lmdd-clonner" data-key="_new" data-original-path="{%s path %}">
@@ -61,7 +81,7 @@
     {%= vutil.Indent(true, indent + 2) %}
     <div class="title">{%s title %}</div>
     {%= vutil.Indent(true, indent + 2) %}
-    <div class="remove">&times;</div>
+    <div class="remove">×</div>
   {%= vutil.Indent(true, indent + 1) %}
   </div>
   {%= vutil.Indent(true, indent + 1) %}

@@ -5,6 +5,7 @@
 
 {% code type New struct {
   layout.Basic
+  Origin schema.Origin
 } %}
 
 {% func (p *New) Body(as *app.State, ps *cutil.PageState) %}
@@ -16,17 +17,25 @@
         <tbody>
           <tr>
             <th class="shrink"><label for="input-key">Key</label></th>
-            <td><input value="" name="title" id="input-key" /></td>
+            <td><input value="" name="key" id="input-key" /></td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-title">Title</label></th>
             <td><input value="" name="title" id="input-title" /></td>
           </tr>
           <tr>
+            <th class="shrink"><label for="input-description">Description</label></th>
+            <td><input value="" name="description" id="input-description" /></td>
+          </tr>
+          <tr>
             <th class="shrink"><label for="input-type">Type</label></th>
             <td>
               {%- for _, o := range schema.AllOrigins -%}
-              <label><input name="type" type="radio" class="input" value="{%s o.Key %}"/> {%s o.Title %}</label>
+              {%- if o == p.Origin  -%}
+              <label><input name="type" type="radio" class="input" value="{%s o.Key %}" checked="checked" /> {%s o.Title %}</label>
+              {%- else -%}
+              <label><input name="type" type="radio" class="input" value="{%s o.Key %}" /> {%s o.Title %}</label>
+              {%- endif -%}
               {%- endfor -%}
             </td>
           </tr>

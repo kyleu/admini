@@ -8,7 +8,6 @@
   layout.Basic
   Source *source.Source
   Cfg *database.DBParams
-  GraphQLConfig interface{}
 } %}
 
 {% func (p *EditPostgres) Body(as *app.State, ps *cutil.PageState) %}
@@ -21,6 +20,10 @@
           <tr>
             <th class="shrink"><label for="input-title">Title</label></th>
             <td><input value="{%v p.Source.Title %}" name="title" id="input-title" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-description">Description</label></th>
+            <td><input value="{%v p.Source.Description %}" name="description" id="input-description" /></td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-host">Host</label></th>

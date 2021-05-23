@@ -19,6 +19,26 @@
   cursor: move;
 }
 
+.drag-actions {
+  height: 24px;
+}
+
+.drag-actions .message {
+  display: none;
+}
+
+.drag-actions .form {
+  display: block;
+}
+
+.drag-actions.no-changes .message {
+  display: block;
+}
+
+.drag-actions.no-changes .form {
+  display: none;
+}
+
 .no-display {
   display: none !important;
 }

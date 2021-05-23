@@ -113,7 +113,7 @@ func loadSource(sourceKey string) (*source.Source, *schema.Schema, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	sch, err := currentApp.Sources.SchemaFor(src.Key)
+	sch, err := currentApp.Sources.LoadSchema(src.Key)
 	if err != nil {
 		return nil, nil, err
 	}

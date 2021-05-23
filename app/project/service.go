@@ -118,7 +118,7 @@ func (s *Service) SchemataFor(key string) (schema.Schemata, error) {
 	}
 	ret := map[string]*schema.Schema{}
 	for _, sch := range p.Sources {
-		x, err := s.sources.SchemaFor(sch)
+		x, err := s.sources.LoadSchema(sch)
 		if err != nil {
 			return nil, errors.Wrapf(err, "can't load schema [%v] for project [%v]", sch, p.Key)
 		}
