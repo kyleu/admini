@@ -6,7 +6,7 @@ export function sortableInit() {
       if (!l) {
         l = dd;
       }
-      const lOpts = {group: {name: 'nested'}, onAdd: onAdd, animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
+      const lOpts = {group: {name: 'nested'}, handle: '.handle', onAdd: onAdd, animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
       function onAdd(ev: Event) {
         const i = (ev as any).item as HTMLElement;
         new Sortable(i.querySelector(".container"), lOpts);
@@ -22,7 +22,7 @@ export function sortableInit() {
 
       const r = dd.querySelector(".r");
       if (r) {
-        const rOpts = {group: {name: 'nested', pull: "clone", put: false}, animation: 150, fallbackOnBody: true, swapThreshold: 0.65, sort: false};
+        const rOpts = {group: {name: 'nested', pull: "clone", put: false}, handle: '.handle', animation: 150, fallbackOnBody: true, swapThreshold: 0.65, sort: false};
         for (const c of Array.from(r.getElementsByClassName('container'))) {
           new Sortable(c, rOpts);
         }
