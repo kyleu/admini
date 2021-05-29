@@ -96,12 +96,20 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 
 func itemsForAll(x *menu.Item, act *action.Action, view *project.View) error {
 	for _, src := range view.Sources {
-		x.Children = append(x.Children, &menu.Item{
+		sch, err := view.Schemata.GetWithError(src.Key)
+		if err != nil {
+			return err
+		}
+
+		path := filepath.Join(x.Route, src.Key)
+		kid := &menu.Item{
 			Key:         src.Key,
 			Title:       src.Name(),
 			Description: src.Description,
-			Route:       "TODO",
-		})
+			Route:       path,
+			Children:    SourceMenuPackage(sch.ModelsByPackage(), path),
+		}
+		x.Children = append(x.Children, kid)
 	}
 	return nil
 }

@@ -5,7 +5,7 @@
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vresult" %}
 
-{% code type ResultActivitySQL struct {
+{% code type ActivitySQL struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
@@ -13,7 +13,7 @@
   Res *result.Result
 } %}
 
-{% func (p *ResultActivitySQL) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *ActivitySQL) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
     <h3>{%s p.Act.Name() %}</h3>

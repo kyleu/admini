@@ -7,7 +7,7 @@ import (
 	"github.com/kyleu/admini/views/vaction"
 )
 
-func processPackage(req *cutil.WorkspaceRequest, act *action.Action, root *model.Package, path []string, t *model.Package, remaining []string) (*Result, error) {
-	page := &vaction.ResultPackage{Req: req, Act: act, Pkg: t}
+func processPackage(req *cutil.WorkspaceRequest, act *action.Action, t *model.Package) (*Result, error) {
+	page := &vaction.Package{Req: req, Act: act, Pkg: t}
 	return NewResult("", nil, req, act, t, page), nil
 }

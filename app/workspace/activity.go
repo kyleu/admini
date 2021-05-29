@@ -35,7 +35,7 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 	}
 
 	if sql == "" {
-		page := &vaction.ResultActivitySQL{Req: req, Act: act, SQL: sql, Res: nil}
+		page := &vaction.ActivitySQL{Req: req, Act: act, SQL: sql, Res: nil}
 		return NewResult("", nil, req, act, act, page), nil
 	}
 	src := req.Sources.Get(srcKey)
@@ -51,6 +51,6 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 	if err != nil {
 		return ErrResult(req, act, errors.New("unable to execute query"))
 	}
-	page := &vaction.ResultActivitySQL{Req: req, Act: act, SQL: sql, Res: r}
+	page := &vaction.ActivitySQL{Req: req, Act: act, SQL: sql, Res: r}
 	return NewResult(act.Name()+" result", nil, req, act, r, page), nil
 }

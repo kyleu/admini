@@ -8,7 +8,7 @@
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vresult" %}
 
-{% code type ResultModelList struct {
+{% code type ModelList struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
@@ -17,7 +17,7 @@
   Result *result.Result
 } %}
 
-{% func (p *ResultModelList) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *ModelList) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
     <h3>{%s p.Act.Name() %}</h3>

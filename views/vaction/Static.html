@@ -3,13 +3,13 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ResultStatic struct {
+{% code type Static struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
 } %}
 
-{% func (p *ResultStatic) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Static) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
     <h3>{%s p.Act.Name() %}</h3>

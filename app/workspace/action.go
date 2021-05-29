@@ -10,7 +10,6 @@ import (
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/kyleu/admini/views/vworkspace"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 type Result struct {
@@ -26,9 +25,6 @@ func NewResult(title string, bc []string, req *cutil.WorkspaceRequest, act *acti
 	}
 	if bc == nil && act != nil {
 		bc = append(act.Path(), req.Path...)
-		println("@@@ " + strings.Join(act.Path(), "//"))
-		println("### " + strings.Join(req.Path, "//"))
-		println("::: " + strings.Join(bc, "//"))
 	}
 	return &Result{Title: title, Breadcrumbs: bc, Data: data, Page: page}
 }
@@ -47,11 +43,13 @@ func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, er
 	}
 	switch act.Type {
 	case "", "folder":
-		return NewResult("", nil, req, act, act, &vaction.ResultFolder{Req: req, Act: act}), nil
+		return NewResult("", nil, req, act, act, &vaction.Folder{Req: req, Act: act}), nil
+	case "all":
+		return sourceAll(req, act)
 	case "source", "package", "model":
 		return sourceItem(req, act)
 	case "static":
-		return NewResult("", nil, req, act, act, &vaction.ResultStatic{Req: req, Act: act}), nil
+		return NewResult("", nil, req, act, act, &vaction.Static{Req: req, Act: act}), nil
 	case "activity":
 		return sourceActivity(req, act)
 	default:
@@ -60,8 +58,25 @@ func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, er
 	}
 }
 
+func sourceAll(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
+	switch len(req.Path) {
+	case 0:
+		return NewResult("", nil, req, act, act, &vaction.Sources{Req: req, Act: act}), nil
+	case 1:
+		src := req.Sources.Get(req.Path[0])
+		sch := req.Schemata[req.Path[0]]
+		return NewResult("", nil, req, act, act, &vaction.Source{Req: req, Act: act, Source: src, Pkg: sch.ModelsByPackage()}), nil
+	default:
+		p, err := rootItemFor(req, req.Path[0])
+		if err != nil {
+			return ErrResult(req, act, err)
+		}
+		return process(req, act, p, req.Path[0], req.Path[1:])
+	}
+}
+
 func sourceItem(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
-	p, err := itemFor(req, act)
+	p, err := rootItemFor(req, act.Config["source"])
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -73,16 +88,16 @@ func sourceItem(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error
 		}
 		x = util.SplitAndTrim(t, "/")
 	}
-	return process(req, act, p, append(x, req.Path...))
+	return process(req, act, p, act.Config["source"], append(x, req.Path...))
 }
 
-func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package, path []string) (*Result, error) {
+func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package, srcKey string, path []string) (*Result, error) {
 	i, remaining := pkg.Get(path)
 	switch t := i.(type) {
 	case *model.Model:
-		return processModel(req, act, pkg, path, t, remaining)
+		return processModel(req, act, srcKey, t, remaining)
 	case *model.Package:
-		return processPackage(req, act, pkg, path, t, remaining)
+		return processPackage(req, act, t)
 	case error:
 		return ErrResult(req, act, errors.Wrapf(t, "provided path [%v] can't be loaded", req.R.URL.Path))
 	case nil:
@@ -92,8 +107,7 @@ func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package
 	}
 }
 
-func itemFor(req *cutil.WorkspaceRequest, act *action.Action) (*model.Package, error) {
-	srcKey := act.Config["source"]
+func rootItemFor(req *cutil.WorkspaceRequest, srcKey string) (*model.Package, error) {
 	if srcKey == "" {
 		return nil, errors.New("must provide source key")
 	}

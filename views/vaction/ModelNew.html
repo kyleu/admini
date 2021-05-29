@@ -5,16 +5,15 @@
 {% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ResultModelNew struct {
+{% code type ModelNew struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
-  Path []string
   Model *model.Model
   Defaults []interface{}
 } %}
 
-{% func (p *ResultModelNew) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *ModelNew) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>New {%s p.Model.Name() %}</h3>
     <div class="spacer"></div>

@@ -7,17 +7,16 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ResultModelView struct {
+{% code type ModelView struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
-  Path []string
   Model *model.Model
   ParamSet util.ParamSet
   Result []interface{}
 } %}
 
-{% func (p *ResultModelView) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *ModelView) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     {% code
       rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(ps.Logger), p.Result)

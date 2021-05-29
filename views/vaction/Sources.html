@@ -3,17 +3,22 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type Folder struct {
+{% code type Sources struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
 } %}
 
-{% func (p *Folder) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Sources) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
     <h3>{%s p.Act.Name() %}</h3>
-    <em>Folder</em>
+    <em>Sources</em>
+    <ul>
+      {%- for _, src := range p.Req.Sources -%}
+      <li><a href="{%s p.Req.Route(append(p.Act.Path(), src.Key)...) %}">{%s src.Name() %}</a></li>
+      {%- endfor -%}
+    </ul>
   </div>
   {%-= resultChildren(p.Req, p.Act, 1) -%}
   {%-= resultDebug(p.Req, p.Act) -%}

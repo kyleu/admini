@@ -14,17 +14,17 @@ import (
 	"github.com/pkg/errors"
 )
 
-func processModel(req *cutil.WorkspaceRequest, act *action.Action, root *model.Package, path []string, m *model.Model, additional []string) (*Result, error) {
+func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string) (*Result, error) {
 	if len(additional) == 0 {
-		return processModelList(req, act, root, path, m, additional)
+		return processModelList(req, act, srcKey, m)
 	}
 	switch additional[0] {
 	case "new":
-		return processModelNew(req, act, root, path, m)
+		return processModelNew(req, act, srcKey, m)
 	case "v":
-		return processModelView(req, act, root, path, m, additional[1:])
+		return processModelView(req, act, srcKey, m, additional[1:])
 	case "x":
-		return processModelEdit(req, act, root, path, m, additional[1:])
+		return processModelEdit(req, act, srcKey, m, additional[1:])
 	default:
 		msg := "unhandled model parameters [" + strings.Join(additional, "/") + "]"
 		page := &views.TODO{Message: msg}
@@ -32,8 +32,8 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, root *model.P
 	}
 }
 
-func processModelList(req *cutil.WorkspaceRequest, act *action.Action, root *model.Package, path []string, t *model.Model, additional []string) (*Result, error) {
-	_, ld, params, err := loaderFor(req, act)
+func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, t *model.Model) (*Result, error) {
+	_, ld, params, err := loaderFor(req, act, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -42,12 +42,12 @@ func processModelList(req *cutil.WorkspaceRequest, act *action.Action, root *mod
 	if err != nil {
 		return ErrResult(req, act, errors.Wrap(err, "unable to list model ["+t.Key+"]"))
 	}
-	page := &vaction.ResultModelList{Req: req, Act: act, Model: t, ParamSet: params, Result: rs}
+	page := &vaction.ModelList{Req: req, Act: act, Model: t, ParamSet: params, Result: rs}
 	return NewResult("", nil, req, act, rs, page), nil
 }
 
-func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, root *model.Package, path []string, m *model.Model) (*Result, error) {
-	_, ld, _, err := loaderFor(req, act)
+func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
+	_, ld, _, err := loaderFor(req, act, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -57,12 +57,12 @@ func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, root *mode
 		return ErrResult(req, act, errors.Wrap(err, "can't load ["+m.Key+"] defaults"))
 	}
 
-	page := &vaction.ResultModelNew{Req: req, Act: act, Path: path, Model: m, Defaults: x}
+	page := &vaction.ModelNew{Req: req, Act: act, Model: m, Defaults: x}
 	return NewResult("", nil, req, act, x, page), nil
 }
 
-func processModelView(req *cutil.WorkspaceRequest, act *action.Action, root *model.Package, path []string, m *model.Model, idStrings []string) (*Result, error) {
-	_, ld, params, err := loaderFor(req, act)
+func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
+	_, ld, params, err := loaderFor(req, act, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -72,7 +72,7 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, root *mod
 		return ErrResult(req, act, err)
 	}
 
-	page := &vaction.ResultModelView{Req: req, Act: act, Path: idStrings, Model: m, ParamSet: params, Result: data}
+	page := &vaction.ModelView{Req: req, Act: act, Model: m, ParamSet: params, Result: data}
 	idx := len(req.Path) - len(idStrings) - 1
 	if idx < 0 {
 		idx = 0
@@ -81,8 +81,8 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, root *mod
 	return NewResult("", bc, req, act, data, page), nil
 }
 
-func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, root *model.Package, path []string, m *model.Model, idStrings []string) (*Result, error) {
-	_, ld, params, err := loaderFor(req, act)
+func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
+	_, ld, params, err := loaderFor(req, act, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -92,7 +92,7 @@ func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, root *mod
 		return ErrResult(req, act, err)
 	}
 
-	page := &vaction.ResultModelEdit{Req: req, Act: act, Path: idStrings, Model: m, ParamSet: params, Result: data}
+	page := &vaction.ModelEdit{Req: req, Act: act, Model: m, ParamSet: params, Result: data}
 	idx := len(req.Path) - len(idStrings) - 1
 	if idx < 0 {
 		idx = 0
@@ -127,8 +127,8 @@ func getModel(m *model.Model, idStrings []string, ld loader.Loader) ([]interface
 	}
 }
 
-func loaderFor(req *cutil.WorkspaceRequest, act *action.Action) (*source.Source, loader.Loader, util.ParamSet, error) {
-	s, err := req.Sources.GetWithError(act.Config["source"])
+func loaderFor(req *cutil.WorkspaceRequest, act *action.Action, srcKey string) (*source.Source, loader.Loader, util.ParamSet, error) {
+	s, err := req.Sources.GetWithError(srcKey)
 	if err != nil {
 		return nil, nil, nil, err
 	}
