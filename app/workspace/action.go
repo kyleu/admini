@@ -10,6 +10,7 @@ import (
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/kyleu/admini/views/vworkspace"
 	"github.com/pkg/errors"
+	"strings"
 )
 
 type Result struct {
@@ -25,6 +26,9 @@ func NewResult(title string, bc []string, req *cutil.WorkspaceRequest, act *acti
 	}
 	if bc == nil && act != nil {
 		bc = append(act.Path(), req.Path...)
+		println("@@@ " + strings.Join(act.Path(), "//"))
+		println("### " + strings.Join(req.Path, "//"))
+		println("::: " + strings.Join(bc, "//"))
 	}
 	return &Result{Title: title, Breadcrumbs: bc, Data: data, Page: page}
 }

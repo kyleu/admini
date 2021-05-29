@@ -79,7 +79,7 @@ func (a Actions) Get(paths []string) (*Action, []string) {
 	if len(curr.Children) > 0 {
 		x, remaining := curr.Children.Get(paths[1:])
 		if x == nil {
-			return curr, paths
+			return curr, paths[1:]
 		}
 		return x, remaining
 	}
