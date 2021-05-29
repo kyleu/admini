@@ -1,16 +1,19 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Settings struct {
   layout.Basic
-  Settings interface{}
+  Settings *project.Settings
 } %}
 
 {% func (p *Settings) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
+    <div class="right"><a href="#modal-settings"><button type="button">JSON</button></a></div>
     <h3>Settings</h3>
-    {%= fieldview.JSON(p.Settings) %}
+    <p>Test: {%s p.Settings.Test %}</p>
   </div>
+  {%= components.JSONModal("settings", "Settings JSON", p.Settings, 1) %}
 {% endfunc %}

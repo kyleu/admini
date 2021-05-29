@@ -6,9 +6,7 @@ import (
 
 	"github.com/kyleu/admini/app/model"
 
-	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/menu"
-	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -17,24 +15,6 @@ var menuItemBack = &menu.Item{
 	Title:       "Back to " + util.AppName,
 	Description: "Return to " + util.AppName,
 	Route:       "/",
-}
-
-func SourceMenu(as *app.State, source string, sch *schema.Schema) menu.Items {
-	path := as.Route("workspace.source", "key", source)
-	desc := "Overview of the data source, displaying details about the configuration"
-	ret := menu.Items{
-		{Key: "overview", Title: "Project overview", Description: desc, Route: path},
-		menu.Separator,
-	}
-
-	ret = append(ret, SourceMenuPackage(sch.ModelsByPackage(), path)...)
-
-	menuItemSQLEditor := &menu.Item{Key: "sql", Title: "SQL playground", Description: "a barebones SQL editor", Route: filepath.Join(path, "_", "sql")}
-	ret = append(ret, menu.Separator, menuItemSQLEditor)
-
-	ret = append(ret, menu.Separator, menuItemBack)
-
-	return ret
 }
 
 func SourceMenuPackage(mp *model.Package, path string) menu.Items {

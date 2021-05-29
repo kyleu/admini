@@ -34,7 +34,7 @@ func (m *Model) IsPK(key string, logger *zap.SugaredLogger) bool {
 
 func GetValues(src field.Fields, tgt []string, vals []interface{}) ([]interface{}, error) {
 	if len(src) != len(vals) {
-		return nil, errors.Errorf("[%d] fields provided, but [%d] values provided", len(src), len(vals))
+		return nil, errors.Errorf("[%d] fields provided, but [%d] values expected", len(vals), len(src))
 	}
 	ret := make([]interface{}, 0, len(tgt))
 	for _, t := range tgt {

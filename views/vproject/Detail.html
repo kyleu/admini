@@ -1,7 +1,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/project" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Detail struct {
@@ -11,25 +11,16 @@
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
+    <div class="right"><a href="#modal-project"><button type="button">JSON</button></a></div>
     <h3>{%s p.Project.Name() %}</h3>
+    {% if p.Project.Description != "" %}<em>{%s p.Project.Description %}</em>{% endif %}
     <p>
-      <a href="#modal-project"><button type="button">Project</button></a>
       <a href="{%s as.Route(`workspace`, `key`, p.Project.Key) %}"><button type="button">Workspace</button></a>
+      <a href="{%s as.Route(`project.edit`, `key`, p.Project.Key) %}"><button type="button">Edit</button></a>
       <a href="{%s as.Route(`action.workbench`, `key`, p.Project.Key) %}"><button type="button">Actions</button></a>
       <a href="{%s as.Route(`project.test`, `key`, p.Project.Key) %}"><button type="button">Test</button></a>
     </p>
   </div>
 
-  <div id="modal-project" class="modal" style="display: none;">
-    <a class="backdrop" href="#"></a>
-    <div class="modal-content">
-      <div class="modal-header">
-        <a href="#" class="modal-close">×</a>
-        <h2>Project JSON</h2>
-      </div>
-      <div class="modal-body">
-        {%= fieldview.JSON(p.Project) %}
-      </div>
-    </div>
-  </div>
+  {%= components.JSONModal("project", "Project JSON", p.Project, 1) %}
 {% endfunc %}

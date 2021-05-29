@@ -38,22 +38,30 @@ function remove(dd: Element, rem: Element) {
 }
 
 function update(dd: Element) {
+  let size = 0;
   const sEl = document.querySelector(".drag-state") as HTMLInputElement;
   if (!sEl) {
     return;
   }
   const origEl = document.querySelector(".drag-state-original") as HTMLInputElement;
   const trackedEl = dd.querySelector(".tracked") as HTMLElement;
-  const js = JSON.stringify(readContainer(trackedEl));
+  const [i, count] = readContainer(trackedEl);
+  const js = JSON.stringify(i);
   if (origEl) {
     if (origEl.value.length === 0) {
       origEl.value = js;
     }
     const aEl = document.querySelector(".drag-actions") as HTMLElement;
-    if (origEl.value === js) {
-      aEl.classList.add('no-changes');
-    } else {
-      aEl.classList.remove('no-changes');
+    if (aEl) {
+      if (origEl.value === js) {
+        aEl.classList.add('no-changes');
+      } else {
+        aEl.classList.remove('no-changes');
+      }
+    }
+    const sEl = document.querySelector(".drag-tracked-size") as HTMLElement;
+    if (sEl) {
+      sEl.innerText = count.toString(10);
     }
   }
 
@@ -66,31 +74,35 @@ interface Item {
   c?: Item[]
 }
 
-function readContainer(c: Element): Item[] {
+function readContainer(c: Element): [Item[], number] {
+  let count = 0;
   const ret: Item[] = [];
   for (const i of Array.from(c.children)) {
     if (i.classList.contains("item")) {
-      const item = readItem(i as HTMLElement);
+      const [item, c] = readItem(i as HTMLElement);
       if (item) {
         ret.push(item);
       }
+      count += c;
     }
   }
-  return ret;
+  return [ret, count];
 }
 
-function readItem(i: HTMLElement): Item | undefined {
-  var ret: Item = {
+function readItem(i: HTMLElement): [Item | undefined, number] {
+  let count = 1;
+  let ret: Item = {
     k: i.dataset.key as string,
     p: i.dataset.originalPath as string
   };
   for (const x of Array.from(i.children)) {
     if (x.classList.contains("container")) {
-      const kids = readContainer(x);
+      const [kids, c] = readContainer(x);
       if (kids.length > 0) {
         ret.c = kids;
       }
+      count += c;
     }
   }
-  return ret;
+  return [ret, count];
 }

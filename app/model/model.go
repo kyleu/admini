@@ -31,7 +31,7 @@ func (m *Model) String() string {
 }
 
 func (m *Model) Name() string {
-	if len(m.Title) == 0 {
+	if m.Title == "" {
 		return m.Key
 	}
 	return m.Title

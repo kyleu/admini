@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/kyleu/admini/views"
 
@@ -40,7 +41,7 @@ func SourceInsert(w http.ResponseWriter, r *http.Request) {
 		title := r.Form.Get("title")
 		description := r.Form.Get("description")
 		typ := r.Form.Get("type")
-		ret := &source.Source{Key: key, Title: title, Description: description, Type: schema.OriginFromString(typ)}
+		ret := currentApp.Sources.NewSource(key, title, description, schema.OriginFromString(typ))
 		err := currentApp.Sources.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
@@ -75,10 +76,59 @@ func SourceEdit(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func SourceUpdate(w http.ResponseWriter, r *http.Request) {
-	act("source.update", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func SourceSave(w http.ResponseWriter, r *http.Request) {
+	act("source.save", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		_ = r.ParseForm()
 		key := mux.Vars(r)["key"]
-		msg := fmt.Sprintf("saved source \"%v\"", key)
+
+		src, err := as.Sources.Load(key, false)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to load source ["+key+"]")
+		}
+
+		src.Title = r.Form.Get("title")
+		src.Description = r.Form.Get("description")
+
+		switch src.Type {
+		case schema.OriginPostgres:
+			p := 0
+			ps := r.Form.Get("port")
+			if ps != "" {
+				p, _ = strconv.Atoi(ps)
+			}
+			src.Config = util.ToJSONBytes(&database.DBParams{
+				Host:     r.Form.Get("host"),
+				Port:     p,
+				Username: r.Form.Get("username"),
+				Password: r.Form.Get("password"),
+				Database: r.Form.Get("database"),
+				Schema:   r.Form.Get("schema"),
+			}, true)
+		default:
+			return "", errors.New("unable to parse config for source type [" + src.Type.String() + "]")
+		}
+
+		err = currentApp.Sources.Save(src, true)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to save source ["+key+"]")
+		}
+
+		msg := fmt.Sprintf(`saved source "%v"`, key)
 		return flashAndRedir(true, msg, as.Route("source.detail", "key", key), w, r, ps)
+	})
+}
+
+func SourceDelete(w http.ResponseWriter, r *http.Request) {
+	act("source.delete", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		_ = r.ParseForm()
+		key := mux.Vars(r)["key"]
+
+		err := as.Sources.Delete(key)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to delete source ["+key+"]")
+		}
+
+		msg := fmt.Sprintf(`deleted source "%v"`, key)
+		return flashAndRedir(true, msg, as.Route("source.list"), w, r, ps)
 	})
 }

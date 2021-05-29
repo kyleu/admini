@@ -1,17 +1,20 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/app/user" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Profile struct {
   layout.Basic
-  Profile interface{}
+  Profile *user.Profile
 } %}
 
 {% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
+    <div class="right"><a href="#modal-profile"><button type="button">JSON</button></a></div>
     <h3>Profile</h3>
-    {%= fieldview.JSON(p.Profile) %}
+    <p>Name: {%s p.Profile.Name %}</p>
   </div>
+  {%= components.JSONModal("profile", "Profile JSON", p.Profile, 1) %}
 {% endfunc %}
 

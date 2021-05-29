@@ -20,8 +20,11 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		cr.Nullable = pgNo
 		return schematypes.NewOption(typeFor(t, cr, logger))
 	}
-	if strings.HasPrefix(t, "_") || t == "ARRAY" {
+	if strings.HasPrefix(t, "_") {
 		return schematypes.NewList(typeFor(t[1:], cr, logger))
+	}
+	if t == "ARRAY" && cr != nil && cr.ArrayType.Valid {
+		return schematypes.NewList(typeFor(cr.ArrayType.String, cr, logger))
 	}
 	switch strings.ToLower(t) {
 	case "aclitem":

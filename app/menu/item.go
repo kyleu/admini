@@ -39,3 +39,11 @@ func (i Items) GetByPath(path []string) *Item {
 	}
 	return ret
 }
+
+func (i Items) Keys() []string {
+	ret := make([]string, 0, len(i))
+	for _, x := range i {
+		ret = append(ret, x.Key)
+	}
+	return ret
+}

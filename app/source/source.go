@@ -2,9 +2,10 @@ package source
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"sort"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/schema"
 )
@@ -36,21 +37,8 @@ func (s Sources) Get(key string) *Source {
 	return nil
 }
 
-func (s Sources) Add(src *Source) {
-	for idx, x := range s {
-		if x.Key == src.Key {
-			s[idx] = src
-			return
-		}
-	}
-	s = append(s, src)
-	s.Sort()
-	return
-}
-
 func (s Sources) GetWithError(key string) (*Source, error) {
-	ret := s.Get(key)
-	if ret != nil {
+	if ret := s.Get(key); ret != nil {
 		return ret, nil
 	}
 

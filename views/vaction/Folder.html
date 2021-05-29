@@ -1,0 +1,21 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type ResultFolder struct {
+  layout.Basic
+  Req *cutil.WorkspaceRequest
+  Act *action.Action
+  Path []string
+} %}
+
+{% func (p *ResultFolder) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
+    <h3>{%s p.Act.Name() %}</h3>
+    <em>Folder</em>
+  </div>
+  {%-= resultChildren(p.Req, p.Act, 1) -%}
+  {%-= resultDebug(p.Req, p.Act) -%}
+{% endfunc %}

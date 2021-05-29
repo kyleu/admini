@@ -2,9 +2,10 @@ package action
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/util"
 	"sort"
 	"strings"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type Action struct {
@@ -26,6 +27,21 @@ func (a *Action) Name() string {
 	return a.Title
 }
 
+func (a *Action) Path() []string {
+	if a.Key == "" {
+		return a.Pkg
+	}
+	return append(a.Pkg, a.Key)
+}
+
+func (a *Action) Size() int {
+	ret := 1
+	for _, x := range a.Children {
+		ret += x.Size()
+	}
+	return ret
+}
+
 func (a *Action) Clone(pkg util.Pkg, kids Actions) *Action {
 	return &Action{
 		Key: a.Key, Type: a.Type, Title: a.Title, Description: a.Description,
@@ -34,6 +50,14 @@ func (a *Action) Clone(pkg util.Pkg, kids Actions) *Action {
 }
 
 type Actions []*Action
+
+func (a Actions) Size() int {
+	ret := 0
+	for _, x := range a {
+		ret += x.Size()
+	}
+	return ret
+}
 
 func (a Actions) Sort() {
 	sort.Slice(a, func(i, j int) bool {
@@ -55,12 +79,12 @@ func (a Actions) Get(paths []string) (*Action, []string) {
 	if len(curr.Children) > 0 {
 		x, remaining := curr.Children.Get(paths[1:])
 		if x == nil {
-			return curr, paths[1:]
+			return curr, paths
 		}
 		return x, remaining
 	}
 
-	return curr, paths
+	return curr, paths[1:]
 }
 
 func (a Actions) Find(key string) *Action {
@@ -74,19 +98,20 @@ func (a Actions) Find(key string) *Action {
 
 func (a Actions) CleanKeys() {
 	for _, act := range a {
-		if strings.HasPrefix(act.Key, "__") {
-			proposed := strings.TrimPrefix(act.Key, "__")
-			match := a.Find(proposed)
-			idx := 1
-			for match != nil {
-				idx += 1
-				match = a.Find(fmt.Sprintf("%v-%v", proposed, idx))
-			}
-			if idx == 1 {
-				act.Key = proposed
-			} else {
-				act.Key = fmt.Sprintf("%v-%v", proposed, idx)
-			}
+		if !strings.HasPrefix(act.Key, "__") {
+			continue
+		}
+		proposed := strings.TrimPrefix(act.Key, "__")
+		match := a.Find(proposed)
+		idx := 1
+		for match != nil {
+			idx++
+			match = a.Find(fmt.Sprintf("%v-%v", proposed, idx))
+		}
+		if idx == 1 {
+			act.Key = proposed
+		} else {
+			act.Key = fmt.Sprintf("%v-%v", proposed, idx)
 		}
 	}
 }

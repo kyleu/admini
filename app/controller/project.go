@@ -1,11 +1,12 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/views"
 	"github.com/pkg/errors"
-	"net/http"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/views/vproject"
@@ -28,7 +29,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request) {
 func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 	act("project.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		prj, err := as.Projects.Load(key, false)
+		prj, err := as.Projects.LoadRequired(key, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
@@ -41,7 +42,7 @@ func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 func ProjectTest(w http.ResponseWriter, r *http.Request) {
 	act("project.test", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		prj, err := as.Projects.Load(key, false)
+		prj, err := as.Projects.LoadRequired(key, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
@@ -51,7 +52,10 @@ func ProjectTest(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to save actions for project ["+key+"]")
 		}
 
-		_, _ = currentApp.Projects.Load(key, true)
+		_, err = currentApp.Projects.LoadRequired(key, true)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to reload project ["+key+"]")
+		}
 
 		ps.Title = "Test " + prj.Name()
 		ps.Data = prj

@@ -1,15 +1,17 @@
 package project
 
 import (
-	"github.com/kyleu/admini/app/project/action"
 	"sort"
+
+	"github.com/kyleu/admini/app/project/action"
 )
 
 type Project struct {
-	Key     string         `json:"-"`
-	Title   string         `json:"title,omitempty"`
-	Sources []string       `json:"sources,omitempty"`
-	Actions action.Actions `json:"actions,omitempty"`
+	Key         string         `json:"-"`
+	Title       string         `json:"title,omitempty"`
+	Description string         `json:"description,omitempty"`
+	Sources     []string       `json:"sources,omitempty"`
+	Actions     action.Actions `json:"actions,omitempty"`
 }
 
 func (p *Project) Name() string {
@@ -30,14 +32,15 @@ func (p Projects) Get(key string) *Project {
 	return nil
 }
 
-func (p Projects) Replace(n *Project) {
+func (p Projects) Replace(n *Project) Projects {
 	for idx, x := range p {
 		if x.Key == n.Key {
 			p[idx] = n
-			return
+			return nil
 		}
 	}
 	p = append(p, n)
+	return p
 }
 
 func (p Projects) Sort() {

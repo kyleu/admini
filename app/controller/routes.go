@@ -33,17 +33,23 @@ func BuildRouter() (*mux.Router, error) {
 	r.Path("/source/_new").Methods(http.MethodGet).Handler(wrap(SourceNew)).Name("source.new.form")
 	r.Path("/source/{key}").Methods(http.MethodGet).Handler(wrap(SourceDetail)).Name("source.detail")
 	r.Path("/source/{key}/edit").Methods(http.MethodGet).Handler(wrap(SourceEdit)).Name("source.edit")
-	r.Path("/source/{key}/edit").Methods(http.MethodPost).Handler(wrap(SourceUpdate)).Name("source.update")
+	r.Path("/source/{key}/edit").Methods(http.MethodPost).Handler(wrap(SourceSave)).Name("source.save")
 	r.Path("/source/{key}/refresh").Methods(http.MethodGet).Handler(wrap(SourceRefresh)).Name("source.refresh")
+	r.Path("/source/{key}/delete").Methods(http.MethodGet).Handler(wrap(SourceDelete)).Name("source.delete")
 
 	// Project
 	project := r.Path("/project").Subrouter()
 	project.Methods(http.MethodGet).Handler(wrap(ProjectList)).Name("project.list")
+	project.Methods(http.MethodPost).Handler(wrap(ProjectInsert)).Name("project.insert")
+	r.Path("/project/_new").Methods(http.MethodGet).Handler(wrap(ProjectNew)).Name("project.new.form")
 	r.Path("/project/{key}").Methods(http.MethodGet).Handler(wrap(ProjectDetail)).Name("project.detail")
+	r.Path("/project/{key}/edit").Methods(http.MethodGet).Handler(wrap(ProjectEdit)).Name("project.edit")
+	r.Path("/project/{key}/edit").Methods(http.MethodPost).Handler(wrap(ProjectSave)).Name("project.save")
 	r.Path("/project/{key}/actions").Methods(http.MethodGet).Handler(wrap(ActionWorkbench)).Name("action.workbench")
 	r.Path("/project/{key}/actions").Methods(http.MethodPost).Handler(wrap(ActionOrdering)).Name("action.ordering")
 	r.PathPrefix("/project/{key}/action").Methods(http.MethodGet).Handler(wrap(ActionEdit)).Name("action.edit")
 	r.Path("/project/{key}/test").Methods(http.MethodGet).Handler(wrap(ProjectTest)).Name("project.test")
+	r.Path("/project/{key}/delete").Methods(http.MethodGet).Handler(wrap(ProjectDelete)).Name("project.delete")
 
 	// Workspace
 	_ = r.PathPrefix("/x/{key}").Handler(wrap(WorkspaceProject)).Name("workspace")

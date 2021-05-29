@@ -16,7 +16,8 @@
 {%= tabs(as, ps) %}
 {%= accordion(as, ps) %}
 {%= modal(as, ps) %}
-{%= db(as, ps) %}
+{%- code data := ps.Data.(map[string]interface{}) -%}
+{% if len(data) > 0 %}{%= db(as, ps) %}{% endif %}
 {% endfunc %}
 
 {%- func icons(as *app.State, ps *cutil.PageState) -%}

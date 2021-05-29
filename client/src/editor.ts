@@ -18,7 +18,10 @@ export function editorInit() {
               editorCache[input.name] = input.value;
             }
             const evt = () => {
-              selectedCache[input.name + selected].checked = editorCache[input.name] !== input.value;
+              const cv = selectedCache[input.name + selected];
+              if (cv) {
+                cv.checked = editorCache[input.name] !== input.value;
+              }
             };
             input.onchange = evt;
             input.onkeyup = evt;

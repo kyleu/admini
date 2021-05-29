@@ -1,8 +1,9 @@
 package schema
 
 import (
-	"github.com/pkg/errors"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 )
@@ -22,8 +23,7 @@ func (s Schemata) Get(key string) *Schema {
 }
 
 func (s Schemata) GetWithError(key string) (*Schema, error) {
-	ret := s.Get(key)
-	if ret != nil {
+	if ret := s.Get(key); ret != nil {
 		return ret, nil
 	}
 

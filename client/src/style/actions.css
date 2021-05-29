@@ -18,6 +18,10 @@
   width: 60%;
 }
 
+.action-workbench .l .tracked {
+  min-height: 128px;
+}
+
 .action-workbench .r {
   padding: 12px;
   width: 40%;
@@ -41,6 +45,10 @@
 
 .action-workbench .r .model {
   margin-left: 24px;
+}
+
+.action-workbench .r .activity {
+  margin-left: 12px;
 }
 
 @media (max-width: 800px) {

@@ -17,18 +17,18 @@
         <tbody>
           <tr>
             <th class="shrink"><label for="input-key">Key</label></th>
-            <td><input value="" name="key" id="input-key" /></td>
+            <td><input name="key" id="input-key" value="" /></td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-title">Title</label></th>
-            <td><input value="" name="title" id="input-title" /></td>
+            <td><input name="title" id="input-title" value="" /></td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-description">Description</label></th>
-            <td><input value="" name="description" id="input-description" /></td>
+            <td><input name="description" id="input-description" value="" /></td>
           </tr>
           <tr>
-            <th class="shrink"><label for="input-type">Type</label></th>
+            <th class="shrink"><label>Type</label></th>
             <td>
               {%- for _, o := range schema.AllOrigins -%}
               {%- if o == p.Origin  -%}

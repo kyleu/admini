@@ -63,6 +63,10 @@ func (p Pkg) Push(name string) Pkg {
 	return append(p, name)
 }
 
+func (p Pkg) With(key string) Pkg {
+	return append(append(Pkg{}, p...), key)
+}
+
 func SplitPackage(s string) (Pkg, string) {
 	sp := strings.Split(s, "::")
 	pkg := sp[0 : len(sp)-1]

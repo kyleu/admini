@@ -1,9 +1,10 @@
 package action
 
 import (
+	"strings"
+
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 func NewAction(args []string, typ Type, pkg util.Pkg) (*Action, error) {
@@ -38,9 +39,15 @@ func NewAction(args []string, typ Type, pkg util.Pkg) (*Action, error) {
 		key := args[len(args)-1]
 		cfg["package"] = strings.Join(args[1:], "/")
 		return base(typ, key, key, pkg, cfg), nil
-	case TypeSource:
-		key := args[len(args)-1]
-		return base(typ, key, key, pkg, cfg), nil
+	case TypeActivity:
+		if len(args) != 2 {
+			return nil, errors.Errorf("require exactly two arguments, observed [%v]", len(args))
+		}
+		srcKey := args[0]
+		activity := args[1]
+		cfg["source"] = srcKey
+		cfg["activity"] = activity
+		return base(typ, srcKey+"-"+activity, srcKey+" SQL", pkg, cfg), nil
 	default:
 		return nil, errors.New("can't create unhandled action [" + typ.Key + "]")
 	}

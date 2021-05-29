@@ -1,3 +1,4 @@
+{% import "strings" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/menu" %}
 {% import "github.com/kyleu/admini/views/components" %}
@@ -13,16 +14,29 @@
     <div class="search-image" style="display: none;"><svg><use xlink:href="#svg-search" /></svg></div>
   </form>
   <a class="profile" title="profile" href="{%s ps.ProfilePath %}">{%= components.SVGRef(`profile`, 24, 24, ``, ``, ps) %}</a>
+  <input type="checkbox" id="menu-toggle-input" style="display: none;" />
+  <label class="menu-toggle" for="menu-toggle-input"><div class="spinner diagonal part-1"></div><div class="spinner horizontal"></div><div class="spinner diagonal part-2"></div></label>
+  {%= Menu(ps) %}
 </nav>{% endfunc %}
 
-{% func NavItems(m menu.Items, breadcrumbs []string) %}{% stripspace %}
+{% func NavItems(m menu.Items, breadcrumbs cutil.Breadcrumbs) %}{% stripspace %}
   {% for idx, bc := range breadcrumbs %}
-    {% code i := m.GetByPath(breadcrumbs[:idx + 1]) %}
+    {% code
+      i := m.GetByPath(breadcrumbs[:idx + 1])
+    %}
     {%= vutil.Indent(true, 2) %}
     <span class="separator">/</span>
     {%= vutil.Indent(true, 2) %}
     {% if i == nil %}
-      <a class="link" href="">{%s bc %}</a>
+      {% code
+        bcLink := ""
+        if strings.Contains(bc, "||") {
+          bci := strings.Index(bc, "||")
+          bcLink = bc[bci + 2:]
+          bc = bc[:bci]
+        }
+      %}
+      <a class="link" href="{%s bcLink %}">{%s bc %}</a>
     {% else %}
       <a class="link" href="{%s i.Route %}">{%s i.Title %}</a>
     {% endif %}

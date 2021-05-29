@@ -2,32 +2,33 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
 
-{% code type ModelEdit struct {
+{% code type ResultModelEdit struct {
   layout.Basic
-  CtxT string
-  CtxK string
+  Req *cutil.WorkspaceRequest
+  Act *action.Action
+  Path []string
   Model *model.Model
+  ParamSet util.ParamSet
   Result []interface{}
 } %}
 
-{% func (p *ModelEdit) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *ResultModelEdit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     {% code
       rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(ps.Logger), p.Result)
       if err != nil {
         panic(err)
       }
-      link := append(append(p.Model.Path(), `v`), rowPK...)
-      saveLink := append(append(p.Model.Path(), `x`), rowPK...)
     %}
-    <h3>Edit <a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, link...) %}">{%s strings.Join(rowPK, "/") %}</a></h3>
-    <em><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, p.Model.Path()...) %}">{%s p.Model.Key %}</a></em>
+    <h3>Edit <a href="TODO">{%s strings.Join(rowPK, "/") %}</a></h3>
+    <em><a href="TODO">{%s p.Model.Name() %}</a></em>
     <div class="spacer"></div>
-    <form class="editor" action="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, saveLink...) %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor" action="TODO" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%- for idx, f := range p.Model.Fields -%}

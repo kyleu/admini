@@ -1,5 +1,3 @@
-import "./client.css"
-
 export function flashInit() {
   const container = document.getElementById("flash-container")
   if (container === null) {

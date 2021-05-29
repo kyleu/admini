@@ -47,12 +47,8 @@ func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schem
 	}
 
 	models := make(model.Models, 0, len(tables)+len(enums))
-	for _, e := range enums {
-		models = append(models, e)
-	}
-	for _, t := range tables {
-		models = append(models, t)
-	}
+	models = append(models, enums...)
+	models = append(models, tables...)
 	models.Sort()
 
 	ret := &schema.Schema{

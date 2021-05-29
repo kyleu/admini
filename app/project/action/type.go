@@ -13,20 +13,22 @@ type Type struct {
 }
 
 var (
-	TypeStatic  = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
-	TypeFolder  = Type{Key: "folder", Title: "Folder", Description: "holds other actions, like a folder"}
+	TypeStatic    = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
+	TypeFolder    = Type{Key: "folder", Title: "Folder", Description: "holds other actions, like a folder"}
+	TypeSeparator = Type{Key: "separator", Title: "Separator", Description: "a separator, used between other items"}
 
-	TypeAll     = Type{Key: "all", Title: "All Sources", Description: "provides actions for each source in the system"}
-	TypeSource  = Type{Key: "source", Title: "Source", Description: "provides actions for each model in the source"}
-	TypePackage = Type{Key: "package", Title: "Package", Description: "provides actions for a package contained in a source"}
-	TypeModel   = Type{Key: "model", Title: "Model", Description: "provides actions for a model contained in a source"}
+	TypeAll      = Type{Key: "all", Title: "All Sources", Description: "provides actions for each source in the system"}
+	TypeSource   = Type{Key: "source", Title: "Source", Description: "provides actions for each model in the source"}
+	TypePackage  = Type{Key: "package", Title: "Package", Description: "provides actions for a package contained in a source"}
+	TypeModel    = Type{Key: "model", Title: "Model", Description: "provides actions for a model contained in a source"}
+	TypeActivity = Type{Key: "activity", Title: "Activity", Description: "provides actions for a specific activity"}
 
 	TypeTest    = Type{Key: "test", Title: "Test", Description: "a test action, who knows what it'll do"}
 	TypeUnknown = Type{Key: "unknown", Title: "Unknown", Description: "an unknown action type"}
 )
 
 var AllTypes = []Type{
-	TypeStatic, TypeFolder, TypeAll, TypeSource, TypePackage, TypeModel, TypeTest,
+	TypeStatic, TypeFolder, TypeSeparator, TypeAll, TypeSource, TypePackage, TypeModel, TypeActivity, TypeTest,
 }
 
 func TypeFromString(s string) (Type, error) {
@@ -35,7 +37,7 @@ func TypeFromString(s string) (Type, error) {
 			return t, nil
 		}
 	}
-	return TypeUnknown, errors.New("unhandled action type [" + s + "]")
+	return TypeUnknown, errors.New("unhandled action type from string [" + s + "]")
 }
 
 func (t *Type) String() string {

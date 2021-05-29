@@ -1,6 +1,9 @@
 package workspace
 
 import (
+	"path/filepath"
+	"strings"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/model"
@@ -9,21 +12,25 @@ import (
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
-	"path/filepath"
 )
 
 func ProjectMenu(as *app.State, prj *project.View) (menu.Items, error) {
-	ret := menu.Items{
-		{
-			Key:         "overview",
-			Title:       "Project overview",
-			Description: "Overview of the project, displaying details about the configuration",
-			Route:       as.Route("workspace", "key", prj.Project.Key),
-		},
-		menu.Separator,
+	overviewDesc := "Overview of the project, displaying details about the configuration"
+	overviewRoute := as.Route("workspace", "key", prj.Project.Key)
+	if strings.HasPrefix(prj.Project.Key, project.SourceProjectPrefix) {
+		overviewRoute = as.Route("workspace.source", "key", strings.TrimPrefix(prj.Project.Key, project.SourceProjectPrefix))
+	}
+	overview := &menu.Item{Key: "overview", Title: "Project overview", Description: overviewDesc, Route: overviewRoute}
+	ret := menu.Items{overview, menu.Separator}
+
+	pKey := prj.Project.Key
+	rt := "workspace"
+	if strings.HasPrefix(pKey, project.SourceProjectPrefix) {
+		pKey = strings.TrimPrefix(pKey, project.SourceProjectPrefix)
+		rt = "workspace.source"
 	}
 
-	m, err := ToMenu(as, as.Route("workspace", "key", prj.Project.Key), prj.Project.Actions, prj)
+	m, err := ToMenu(as, as.Route(rt, "key", pKey), prj.Project.Actions, prj)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +56,14 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 		switch act.Type {
 		case "":
 			// noop
+
+		case action.TypeFolder.Key:
+			// noop
+		case action.TypeSeparator.Key:
+			x = &menu.Item{}
+		case action.TypeStatic.Key:
+			// noop
+
 		case action.TypeAll.Key:
 			err = itemsForAll(x, act, view)
 		case action.TypeSource.Key:
@@ -56,11 +71,11 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 		case action.TypePackage.Key:
 			err = itemsForPackage(x, act, view)
 		case action.TypeModel.Key:
-			err = itemsForModel(x, act, view)
-		case action.TypeStatic.Key:
+			// err = itemsForModel(x, act, view)
+		case action.TypeActivity.Key:
 			// noop
 		default:
-			err = errors.New("unhandled action type [" + act.Type + "]")
+			err = errors.New("unhandled menu action type [" + act.Type + "]")
 		}
 		if err != nil {
 			return nil, err
@@ -119,33 +134,6 @@ func itemsForPackage(x *menu.Item, act *action.Action, view *project.View) error
 		return errors.New("config [package] must refer to an existing package")
 	case *model.Package:
 		x.Children = SourceMenuPackage(t, x.Route)
-		return nil
-	default:
-		return errors.New("config [package] must refer to a package")
-	}
-}
-
-func itemsForModel(x *menu.Item, act *action.Action, view *project.View) error {
-	sch, err := schemaFor(act, view)
-	if err != nil {
-		return err
-	}
-	pkgStr, ok := act.Config["model"]
-	if !ok {
-		return errors.New("no [model] in config")
-	}
-	mPath := util.SplitAndTrim(pkgStr, "/")
-	if len(mPath) == 0 {
-		return errors.New("config [model] is empty")
-	}
-	i, _ := sch.ModelsByPackage().Get(mPath)
-	switch t := i.(type) {
-	case nil:
-		return errors.New("config [model] must refer to an existing model")
-	case *model.Model:
-		x.Children = menu.Items{
-			{Key: "test", Title: "Test " + t.Name(), Route: act.Pkg.ToPath(act.Key)},
-		}
 		return nil
 	default:
 		return errors.New("config [package] must refer to a package")

@@ -3,7 +3,6 @@
 {% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Detail struct {
@@ -14,12 +13,13 @@
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
+    <div class="right"><a href="#modal-source"><button type="button">JSON</button></a></div>
     <h3>{%= components.SVGRef(p.Source.Type.Icon, 0, 0, ``, ``, ps) %} {%s p.Source.Name() %}</h3>
+    {% if p.Source.Description != "" %}<em>{%s p.Source.Description %}</em>{% endif %}
     <p>
+      <a href="{%s as.Route(`workspace.source`, `key`, p.Source.Key) %}"><button type="button">Workspace</button></a>
       <a href="{%s as.Route(`source.edit`, `key`, p.Source.Key) %}"><button type="button">Edit</button></a>
       <a href="{%s as.Route(`source.refresh`, `key`, p.Source.Key) %}"><button type="button">Refresh</button></a>
-      <a href="{%s as.Route(`workspace.source`, `key`, p.Source.Key) %}"><button type="button">Workspace</button></a>
-      <a href="#modal-source"><button type="button">Source</button></a>
       <a href="#modal-schema"><button type="button">Schema</button></a>
     </p>
   </div>
@@ -36,29 +36,6 @@
     </ul>
   </div>
 
-  <div id="modal-source" class="modal" style="display: none;">
-    <a class="backdrop" href="#"></a>
-    <div class="modal-content">
-      <div class="modal-header">
-        <a href="#" class="modal-close">×</a>
-        <h2>Source JSON</h2>
-      </div>
-      <div class="modal-body">
-        {%= fieldview.JSON(p.Source) %}
-      </div>
-    </div>
-  </div>
-
-  <div id="modal-schema" class="modal" style="display: none;">
-    <a class="backdrop" href="#"></a>
-    <div class="modal-content">
-      <div class="modal-header">
-        <a href="#" class="modal-close">×</a>
-        <h2>Schema JSON</h2>
-      </div>
-      <div class="modal-body">
-        {%= fieldview.JSON(p.Schema) %}
-      </div>
-    </div>
-  </div>
+  {%= components.JSONModal("source", "Source JSON", p.Source, 1) %}
+  {%= components.JSONModal("schema", "Schema JSON", p.Schema, 1) %}
 {% endfunc %}

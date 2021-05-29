@@ -1,14 +1,19 @@
 .menu-container {
+  position:absolute;
+  top: 48px;
+  left: 0;
   width: 256px;
   min-width: 256px;
+  height: calc(100% - 48px);
   overflow: auto;
   color: var(--color-menu-foreground);
   background-color: var(--color-menu-background);
+  transition: transform 250ms ease-in-out;
 }
 
 @media (max-width: 800px) {
   .menu-container {
-    width: 0;
+    transform: translateX(-256px);
     min-width: 0;
   }
 }

@@ -1,33 +1,31 @@
-{% import "reflect" %}
 {% import "strings" %}
 {% import "github.com/kyleu/admini/app/menu" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func Menu(ps *cutil.PageState) %}
-<nav class="menu-container">
-  <div class="menu">
-    {% stripspace %}
-    <ul class="level-0">
-      {% for _, i := range ps.Menu %}
-        {%= MenuItem(i, []string{}, ps.Breadcrumbs, 2, ps) %}
-      {% endfor %}
-      {%= vutil.Indent(true, 2) %}
-    </ul>
-    {% endstripspace %}
+{% func Menu(ps *cutil.PageState) %}{% stripspace %}
+  {%= vutil.Indent(true, 1) %}
+  <div class="menu-container">
+    {%= vutil.Indent(true, 2) %}
+    <div class="menu">
+      {%= vutil.Indent(true, 3) %}
+      <ul class="level-0">
+        {% for _, i := range ps.Menu %}
+          {%= MenuItem(i, []string{}, ps.Breadcrumbs, 3, ps) %}
+        {% endfor %}
+      {%= vutil.Indent(true, 3) %}
+      </ul>
+    {%= vutil.Indent(true, 2) %}
+    </div>
+  {%= vutil.Indent(true, 1) %}
   </div>
-</nav>
-{% endfunc %}
+{% endstripspace %}{% endfunc %}
 
-{% func MenuItem(i *menu.Item, path []string, breadcrumbs []string, indent int, ps *cutil.PageState) %}{% stripspace %}
+{% func MenuItem(i *menu.Item, path []string, breadcrumbs cutil.Breadcrumbs, indent int, ps *cutil.PageState) %}{% stripspace %}
   {% code
     path = append(path, i.Key)
-    active := false
-    if len(path) <= len(breadcrumbs) {
-      active = reflect.DeepEqual(breadcrumbs[0:len(path)], path)
-    }
-    final := reflect.DeepEqual(breadcrumbs, path)
+    active, final := breadcrumbs.Active(i, path)
   %}
     {% if i.Key == "" %}
       {%= vutil.Indent(true, indent + 1) %}
@@ -63,11 +61,11 @@
     {% else %}
       {% code
         finalClass := "item"
-        if final {
-          finalClass += " final"
-        }
         if active {
           finalClass += " active"
+        }
+        if final {
+          finalClass += " final"
         }
       %}
       {%= vutil.Indent(true, indent + 1) %}

@@ -28,7 +28,7 @@ type enumResult struct {
 	Description sql.NullString `db:"description"`
 }
 
-func (t enumResult) ToModel(logger *zap.SugaredLogger) *model.Model {
+func (t *enumResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 	els := strings.Split(t.Elements, "\n")
 	fields := make(field.Fields, 0, len(els))
 	for _, el := range els {

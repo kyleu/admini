@@ -1,7 +1,6 @@
 package filesystem
 
 import (
-	"fmt"
 	"io/fs"
 	"io/ioutil"
 	"os"
@@ -109,8 +108,7 @@ func (f *FileSystem) Move(src string, tgt string) error {
 		return errors.New("target file [" + tp + "] exists, will not overwrite")
 	}
 
-	err := os.Rename(sp, tp)
-	if err != nil {
+	if err := os.Rename(sp, tp); err != nil {
 		return errors.Wrapf(err, "error renaming [%v] to [%v]", sp, tp)
 	}
 
@@ -127,7 +125,7 @@ func (f *FileSystem) ListExtension(path string, ext string) []string {
 	glob := "*." + ext
 	matches, err := filepath.Glob(f.getPath(path, glob))
 	if err != nil {
-		f.logger.Warn(fmt.Sprintf("cannot list [%v] in path [%v]: %+v", ext, path, err))
+		f.logger.Warnf("cannot list [%v] in path [%v]: %+v", ext, path, err)
 	}
 	ret := make([]string, 0, len(matches))
 	for _, j := range matches {
@@ -148,7 +146,7 @@ func (f *FileSystem) ListDirectories(path string) []string {
 	p := f.getPath(path)
 	files, err := ioutil.ReadDir(p)
 	if err != nil {
-		f.logger.Warn(fmt.Sprintf("cannot list path [%v]: %+v", path, err))
+		f.logger.Warnf("cannot list path [%v]: %+v", path, err)
 	}
 	var ret []string
 	for _, f := range files {
@@ -197,7 +195,7 @@ func (f *FileSystem) RemoveRecursive(path string) error {
 		var files []fs.FileInfo
 		files, err = ioutil.ReadDir(p)
 		if err != nil {
-			f.logger.Warn(fmt.Sprintf("cannot read path [%v] for removal: %+v", path, err))
+			f.logger.Warnf("cannot read path [%v] for removal: %+v", path, err)
 		}
 		for _, file := range files {
 			err = f.RemoveRecursive(filepath.Join(path, file.Name()))

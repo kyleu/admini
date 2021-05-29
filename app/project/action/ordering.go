@@ -41,7 +41,6 @@ func (a Orderings) Find(key string) *Ordering {
 	return nil
 }
 
-
 func ReorderActions(acts Actions, orderings Orderings) (Actions, error) {
 	ret := Actions{}
 
@@ -72,7 +71,7 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, err
 		}
 		act, err = NewAction(c[1:], t, pkg)
 		if err != nil {
-			return nil, errors.Wrap(err, "can't parse new action from [" + o.OriginalPath + "]")
+			return nil, errors.Wrap(err, "can't parse new action from ["+o.OriginalPath+"]")
 		}
 	} else {
 		act, _ = acts.Get(p)

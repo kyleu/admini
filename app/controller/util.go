@@ -1,12 +1,13 @@
 package controller
 
 import (
-	"github.com/kyleu/admini/views/verror"
 	"net/http"
 	"os"
 	"runtime/debug"
 	"strings"
 	"time"
+
+	"github.com/kyleu/admini/views/verror"
 
 	"github.com/pkg/errors"
 
@@ -18,9 +19,10 @@ import (
 	"github.com/kyleu/admini/views/vhelp"
 )
 
-var currentApp *app.State
-
-var initialIcons = []string{"app", "search", "profile"}
+var (
+	currentApp   *app.State
+	initialIcons = []string{"search"}
+)
 
 var sessionKey = func() string {
 	x := os.Getenv("SESSION_KEY")
@@ -36,8 +38,10 @@ func SetState(a *app.State) {
 	currentApp = a
 }
 
-func render(r *http.Request, w http.ResponseWriter, appState *app.State, page layout.Page, pageState *cutil.PageState, bc ...string) (string, error) {
-	pageState.Breadcrumbs = append(pageState.Breadcrumbs, bc...)
+func render(r *http.Request, w http.ResponseWriter, appState *app.State, page layout.Page, pageState *cutil.PageState, breadcrumbs ...string) (string, error) {
+	println(len(breadcrumbs), strings.Join(breadcrumbs, "/"))
+
+	pageState.Breadcrumbs = append(pageState.Breadcrumbs, breadcrumbs...)
 	ct := getContentType(r)
 	if pageState.Data != nil && isContentTypeJSON(ct) {
 		return respondJSON(w, "", pageState.Data)
@@ -46,6 +50,10 @@ func render(r *http.Request, w http.ResponseWriter, appState *app.State, page la
 	views.WriteRender(w, page, appState, pageState)
 	pageState.RenderElapsed = float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 	return "", nil
+}
+
+func renderWS(req *cutil.WorkspaceRequest, page layout.Page, bc ...string) (string, error) {
+	return render(req.R, req.W, req.AS, page, req.PS, bc...)
 }
 
 func ersp(msg string, args ...interface{}) (string, error) {

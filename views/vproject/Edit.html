@@ -1,0 +1,51 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type Edit struct {
+  layout.Basic
+  Project *project.Project
+  AvailableSources source.Sources
+} %}
+
+{% func (p *Edit) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right">
+      <a class="link-confirm" data-message="Are you sure you want to delete project [{%s p.Project.Key %}]?" href="{%s as.Route(`project.delete`, `key`, p.Project.Key) %}">Delete Project</a>
+    </div>
+    <h3>Edit [{%s p.Project.Key %}]</h3>
+    <div class="spacer"></div>
+    <form class="editor" action="{%s as.Route(`project.save`, `key`, p.Project.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
+      <table>
+        <tbody>
+          <tr>
+            <th class="shrink"><label for="input-title">Title</label></th>
+            <td><input value="{%v p.Project.Title %}" name="title" id="input-title" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-description">Description</label></th>
+            <td><input value="{%v p.Project.Description %}" name="description" id="input-description" /></td>
+          </tr>
+          <tr>
+            <th class="shrink"><label>Sources</label></th>
+            <td>
+            {%- for _, src := range p.AvailableSources -%}
+            {%- if util.StringArrayContains(p.Project.Sources, src.Key) -%}
+              <div><label><input value="{%s src.Key %}" name="sources" type="checkbox" checked="checked" /> {%s src.Name() %}</label></div>
+            {%- else -%}
+              <div><label><input value="{%s src.Key %}" name="sources" type="checkbox" /> {%s src.Name() %}</label></div>
+            {%- endif -%}
+            {%- endfor -%}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="spacer"></div>
+      <button type="submit">Save Changes</button>
+      <button type="reset">Reset</button>
+    </form>
+  </div>
+{% endfunc %}

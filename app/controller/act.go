@@ -55,12 +55,10 @@ func actPrepare(r *http.Request, w http.ResponseWriter) *cutil.PageState {
 }
 
 func actComplete(key string, ps *cutil.PageState, r *http.Request, w http.ResponseWriter, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	startNanos := time.Now().UnixNano()
-	writeCORS(w)
-	redir, err := f(currentApp, ps)
-
 	status := http.StatusOK
-
+	writeCORS(w)
+	startNanos := time.Now().UnixNano()
+	redir, err := f(currentApp, ps)
 	if err != nil {
 		status = http.StatusInternalServerError
 		w.WriteHeader(status)

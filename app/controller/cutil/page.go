@@ -16,7 +16,7 @@ type PageState struct {
 	Method        string             `json:"method"`
 	URL           *url.URL           `json:"-"`
 	Menu          menu.Items         `json:"menu"`
-	Breadcrumbs   []string           `json:"breadcrumbs"`
+	Breadcrumbs   Breadcrumbs        `json:"breadcrumbs"`
 	Flashes       []string           `json:"flashes"`
 	Session       *sessions.Session  `json:"-"`
 	Icons         []string           `json:"icons"`

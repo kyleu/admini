@@ -1,8 +1,10 @@
 package source
 
 import (
-	"go.uber.org/zap"
 	"path/filepath"
+
+	"github.com/kyleu/admini/app/database"
+	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
@@ -29,19 +31,23 @@ func NewService(root string, files filesystem.FileLoader, ld *loader.Service, lo
 
 func (s *Service) List() (Sources, error) {
 	if s.cache == nil {
-		dirs := s.files.ListDirectories(s.root)
-		ret := make(Sources, 0, len(dirs))
-
-		for _, dir := range dirs {
-			src, err := s.Load(dir, false)
-			if err != nil {
-				return nil, errors.Wrapf(err, "unable to load source [%v]", dir)
-			}
-			ret = append(ret, src)
+		err := s.reloadSourceCache()
+		if err != nil {
+			return nil, err
 		}
-		s.cache = ret
 	}
 	return s.cache, nil
+}
+
+func (s *Service) NewSource(key string, title string, description string, t schema.Origin) *Source {
+	ret := &Source{Key: key, Title: title, Description: description, Type: t}
+	switch t {
+	case schema.OriginPostgres:
+		ret.Config = util.ToJSONBytes(&database.DBParams{Host: "localhost", Port: 5432, Database: key}, true)
+	default:
+		ret.Config = []byte("{}")
+	}
+	return ret
 }
 
 func (s *Service) Load(key string, force bool) (*Source, error) {
@@ -75,10 +81,45 @@ func (s *Service) Save(src *Source, overwrite bool) error {
 	}
 	f := filepath.Join(p, "source.json")
 	j := util.ToJSONBytes(src, true)
-	err := s.files.WriteFile(f, j, true)
+	err := s.files.WriteFile(f, j, overwrite)
 	if err != nil {
 		return errors.Wrapf(err, "unable to save schema [%v]", src.Key)
 	}
-	s.cache.Add(src)
+	err = s.reloadSourceCache()
+	if err != nil {
+		return errors.Wrap(err, "unable to load schemata")
+	}
+	return nil
+}
+
+func (s *Service) Delete(key string) error {
+	p := filepath.Join(s.root, key)
+	if !s.files.Exists(p) {
+		return errors.Errorf("source [%v] doesn't exist", key)
+	}
+	err := s.files.RemoveRecursive(p)
+	if err != nil {
+		return errors.Wrap(err, "unable to remove source files")
+	}
+	delete(s.schemaCache, key)
+	err = s.reloadSourceCache()
+	if err != nil {
+		return errors.Wrap(err, "unable to load sources")
+	}
+	return nil
+}
+
+func (s *Service) reloadSourceCache() error {
+	dirs := s.files.ListDirectories(s.root)
+	ret := make(Sources, 0, len(dirs))
+
+	for _, dir := range dirs {
+		src, err := s.Load(dir, false)
+		if err != nil {
+			return errors.Wrapf(err, "unable to load source [%v]", dir)
+		}
+		ret = append(ret, src)
+	}
+	s.cache = ret
 	return nil
 }

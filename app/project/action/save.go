@@ -1,10 +1,11 @@
 package action
 
 import (
+	"path/filepath"
+
 	"github.com/kyleu/admini/app/filesystem"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
-	"path/filepath"
 )
 
 func Save(prj string, acts Actions, files filesystem.FileLoader) (int, error) {
@@ -19,14 +20,14 @@ func Save(prj string, acts Actions, files filesystem.FileLoader) (int, error) {
 
 	err := files.CreateDirectory(actPath)
 	if err != nil {
-		return 0, errors.Wrap(err, "can't create actions directory at [" + actPath + "]")
+		return 0, errors.Wrap(err, "can't create actions directory at ["+actPath+"]")
 	}
 
 	count := 0
 	for _, act := range acts {
-		c, err := saveAction(actPath, act, files)
-		if err != nil {
-			return 0, err
+		c, e := saveAction(actPath, act, files)
+		if e != nil {
+			return 0, e
 		}
 		count += c
 	}
@@ -43,20 +44,25 @@ func replace(root string, src string, tgt string, files filesystem.FileLoader) e
 	srcPath := filepath.Join(root, src)
 	tgtPath := filepath.Join(root, tgt)
 	tmpPath := filepath.Join(root, "~tmp")
+	tgtPathExists := files.Exists(tgtPath)
 
-	err := files.Move(tgtPath, tmpPath)
+	if tgtPathExists {
+		err := files.Move(tgtPath, tmpPath)
+		if err != nil {
+			return err
+		}
+	}
+
+	err := files.Move(srcPath, tgtPath)
 	if err != nil {
 		return err
 	}
 
-	err = files.Move(srcPath, tgtPath)
-	if err != nil {
-		return err
-	}
-
-	err = files.RemoveRecursive(tmpPath)
-	if err != nil {
-		return err
+	if tgtPathExists {
+		err = files.RemoveRecursive(tmpPath)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -68,7 +74,7 @@ func saveAction(path string, act *Action, files filesystem.FileLoader) (int, err
 	if !files.Exists(dest) {
 		err := files.CreateDirectory(dest)
 		if err != nil {
-			return 0, errors.Wrap(err, "unable to create directory for action [" + act.Key + "]")
+			return 0, errors.Wrap(err, "unable to create directory for action ["+act.Key+"]")
 		}
 	}
 	actFile := filepath.Join(dest, "action.json")

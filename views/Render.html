@@ -19,8 +19,7 @@
 <head>{%= page.Head(ps) %}</head>
 <body>
 {%= page.Nav(ps) %}
-<div id="container-body">{%= page.Menu(ps) %}<main id="content">{% if len(ps.Flashes) > 0 %}{%= renderFlashes(ps.Flashes) %}{% endif %}{%= page.Body(as, ps) %}</main>
-</div>
+<main id="content">{% if len(ps.Flashes) > 0 %}{%= renderFlashes(ps.Flashes) %}{% endif %}{%= page.Body(as, ps) %}</main>
 {% if len(ps.Icons) > 0 %}<div class="icon-list" style="display: none;">{% for _, icon := range ps.Icons %}
   {%= components.SVG(icon) %}{% endfor %}
 </div>

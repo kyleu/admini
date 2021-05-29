@@ -2,13 +2,14 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views"
 	"github.com/pkg/errors"
-	"net/http"
-	"strings"
-	"time"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 
@@ -34,7 +35,7 @@ func ActionWorkbench(w http.ResponseWriter, r *http.Request) {
 func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 	act("action.ordering", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		prj, err := as.Projects.Load(key, false)
+		prj, err := as.Projects.LoadRequired(key, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
@@ -58,7 +59,7 @@ func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 		}
 		elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 
-		_, err = as.Projects.Load(prj.Key, true)
+		_, err = as.Projects.LoadRequired(prj.Key, true)
 		if err != nil {
 			return "", err
 		}
@@ -70,14 +71,14 @@ func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 func ActionEdit(w http.ResponseWriter, r *http.Request) {
 	act("action.edit", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		prj, err := as.Projects.Load(key, false)
+		prj, err := as.Projects.LoadRequired(key, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
 
 		pkgString := r.URL.Path
 		pkgIdx := strings.Index(pkgString, "/action")
-		pkgString = pkgString[pkgIdx + 7:]
+		pkgString = pkgString[pkgIdx+7:]
 		pkg := util.SplitAndTrim(pkgString, "/")
 
 		a, _ := prj.Actions.Get(pkg)

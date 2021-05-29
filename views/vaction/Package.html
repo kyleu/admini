@@ -1,0 +1,42 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type ResultPackage struct {
+  layout.Basic
+  Req *cutil.WorkspaceRequest
+  Act *action.Action
+  Pkg *model.Package
+} %}
+
+{% func (p *ResultPackage) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
+    <h3>{%s p.Act.Name() %}</h3>
+    <em>Package [{%s p.Pkg.Key %}]</em>
+
+    {%- if len(p.Pkg.ChildPackages) > 0 -%}
+    <ul>
+    {%- for _, pkg := range p.Pkg.ChildPackages -%}
+      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), pkg.Key)...) %}">{%s pkg.Key %}</a></li>
+    {%- endfor -%}
+    </ul>
+    {%- endif -%}
+
+    {%- if len(p.Pkg.ChildModels) > 0 -%}
+    <ul>
+    {%- for _, m := range p.Pkg.ChildModels -%}
+      {%- if p.Act.Type != "package" -%}
+      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), p.Pkg.Key, m.Key)...) %}">{%s m.Name() %}</a></li>
+      {%- else -%}
+      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), m.Key)...) %}">{%s m.Name() %}</a></li>
+      {%- endif -%}
+    {%- endfor -%}
+    </ul>
+    {%- endif -%}
+  </div>
+  {%-= resultChildren(p.Req, p.Act, 1) -%}
+  {%-= resultDebug(p.Req, p.Act) -%}
+{% endfunc %}

@@ -24,7 +24,7 @@ func (s Sandboxes) Get(key string) *Sandbox {
 	return nil
 }
 
-var AllSandboxes = Sandboxes{codegen, reflection, sources, testbed}
+var AllSandboxes = Sandboxes{codegen, reflection, testbed}
 
 var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	return "TODO", nil
@@ -34,8 +34,4 @@ var reflection = &Sandbox{Key: "reflection", Title: "Reflection", Run: func(st *
 	test := &database.DBParams{Host: "localhost", Port: 5432, Username: "user", Password: "pass", Database: "db", Schema: "schema", Debug: true}
 	ret, err := result.FromReflection("sandbox", test)
 	return ret, err
-}}
-
-var sources = &Sandbox{Key: "sources", Title: "Data Sources", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
-	return st.Sources.List()
 }}
