@@ -12,7 +12,7 @@
     <ul>
     {%- for _, kid := range act.Children -%}
       {%= vutil.Indent(true, indent + 2) %}
-      <li><a href="{%s req.Route(append(act.Path(), kid.Key)...) %}">{%s kid.Name() %}</a></li>
+      <li><a href="{%s req.Route(kid.Path()...) %}">{%s kid.Name() %}</a></li>
     {%- endfor -%}
     {%= vutil.Indent(true, indent + 1) %}
     </ul>

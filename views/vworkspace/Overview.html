@@ -1,7 +1,8 @@
 {% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
 
 {% code type WorkspaceOverview struct {
   layout.Basic
@@ -9,8 +10,31 @@
 } %}
 
 {% func (p *WorkspaceOverview) Body(as *app.State, ps *cutil.PageState) %}
-<div class="card">
-  <h3>Workspace!</h3>
-  {%= fieldview.JSON(p.Req) %}
-</div>
+  <div class="card">
+    <h3>{%s p.Req.Project.Name() %}</h3>
+    {%= actionList(p.Req, p.Req.Project.Actions, 2) %}
+  </div>
 {% endfunc %}
+
+{% func actionList(req *cutil.WorkspaceRequest, acts action.Actions, indent int) %}{% stripspace %}
+  <ul>
+  {% for _, act := range acts %}
+    {% if act.Type != "separator" %}
+      {% if len(act.Children) == 0 %}
+        {%= vutil.Indent(true, indent + 1) %}
+        <li><a href="{%s req.Route(act.Path()...) %}">{%s act.Name() %}</a></li>
+      {% else %}
+        {%= vutil.Indent(true, indent + 1) %}
+        <li>
+          {%= vutil.Indent(true, indent + 2) %}
+          <a href="{%s req.Route(act.Path()...) %}">{%s act.Name() %}</a>
+          {%= vutil.Indent(true, indent + 2) %}
+          {%= actionList(req, act.Children, indent + 2) %}
+        {%= vutil.Indent(true, indent + 1) %}
+        </li>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {%= vutil.Indent(true, indent) %}
+  </ul>
+{% endstripspace %}{% endfunc %}
