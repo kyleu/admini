@@ -1,34 +1,49 @@
 export function sortableInit() {
+  if ((window as any).Sortable) {
+    for (const dd of Array.from(document.getElementsByClassName("sortable"))) {
+      sortableCreate(dd);
+    }
+  }
+}
+
+export function sortableEdit(el: Element) {
+  while (el.parentElement && !el.classList.contains("drag-container")) {
+    el = el.parentElement;
+  }
+  el.classList.remove("readonly");
+  sortableCreate(el);
+}
+
+function sortableCreate(dd: Element) {
   const Sortable = (window as any).Sortable;
   if (Sortable) {
-    for (const dd of Array.from(document.getElementsByClassName("drag-container"))) {
-      let l = dd.querySelector(".l");
-      if (!l) {
-        l = dd;
-      }
-      const lOpts = {group: {name: 'nested'}, handle: '.handle', onAdd: onAdd, animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
-      function onAdd(ev: Event) {
-        const i = (ev as any).item as HTMLElement;
-        new Sortable(i.querySelector(".container"), lOpts);
-        (i.querySelector(".remove") as HTMLElement).onclick = function() { remove(dd, i); };
-        update(dd);
-      }
-      for (const c of Array.from(l.getElementsByClassName('container'))) {
-        new Sortable(c, lOpts);
-      }
-      for (const rem of Array.from(l.getElementsByClassName("remove"))) {
-        (rem as HTMLElement).onclick = function() { remove(dd, rem.parentElement?.parentElement!); };
-      }
-
-      const r = dd.querySelector(".r");
-      if (r) {
-        const rOpts = {group: {name: 'nested', pull: "clone", put: false}, handle: '.handle', animation: 150, fallbackOnBody: true, swapThreshold: 0.65, sort: false};
-        for (const c of Array.from(r.getElementsByClassName('container'))) {
-          new Sortable(c, rOpts);
-        }
-      }
-      update(dd)
+    let l = dd.querySelector(".l");
+    if (!l) {
+      l = dd;
     }
+    const lOpts = {group: {name: 'nested'}, handle: '.handle', onAdd: onAdd, animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
+    function onAdd(ev: Event) {
+      const i = (ev as any).item as HTMLElement;
+      new Sortable(i.querySelector(".container"), lOpts);
+      (i.querySelector(".remove") as HTMLElement).onclick = function() { remove(dd, i); };
+      update(dd);
+    }
+    for (const c of Array.from(l.getElementsByClassName('container'))) {
+      console.log(c);
+      new Sortable(c, lOpts);
+    }
+    for (const rem of Array.from(l.getElementsByClassName("remove"))) {
+      (rem as HTMLElement).onclick = function() { remove(dd, rem.parentElement?.parentElement!); };
+    }
+
+    const r = dd.querySelector(".r");
+    if (r) {
+      const rOpts = {group: {name: 'nested', pull: "clone", put: false}, handle: '.handle', animation: 150, fallbackOnBody: true, swapThreshold: 0.65, sort: false};
+      for (const c of Array.from(r.getElementsByClassName('container'))) {
+        new Sortable(c, rOpts);
+      }
+    }
+    update(dd);
   }
 }
 
@@ -38,7 +53,6 @@ function remove(dd: Element, rem: Element) {
 }
 
 function update(dd: Element) {
-  let size = 0;
   const sEl = document.querySelector(".drag-state") as HTMLInputElement;
   if (!sEl) {
     return;
@@ -66,6 +80,8 @@ function update(dd: Element) {
   }
 
   sEl.value = js;
+  console.log("O: " + origEl.value);
+  console.log("N: " +  sEl.value);
 }
 
 interface Item {

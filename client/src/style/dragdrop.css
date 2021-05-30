@@ -19,22 +19,51 @@
   cursor: move;
 }
 
-.drag-actions {
+.drag-container .drag-actions {
   height: 24px;
 }
 
-.drag-actions .message {
+.drag-container .drag-actions .message {
   display: none;
 }
 
-.drag-actions .form {
+.drag-container .drag-actions .form {
   display: block;
 }
 
-.drag-actions.no-changes .message {
+.drag-container .drag-actions.no-changes .message {
   display: block;
 }
 
-.drag-actions.no-changes .form {
+.drag-container .drag-actions.no-changes .form {
+  display: none;
+}
+
+.drag-container .drag-edit {
+  display: none;
+}
+
+/* readonly */
+.drag-container.readonly .drag-edit {
+  display: block;
+}
+
+.drag-container.readonly .drag-actions {
+  display: none;
+}
+
+.drag-container.readonly .handle {
+  display: none;
+}
+
+.drag-container.readonly .remove {
+  display: none;
+}
+
+.drag-container.readonly .l {
+  width: 100%;
+}
+
+.drag-container.readonly .r {
   display: none;
 }

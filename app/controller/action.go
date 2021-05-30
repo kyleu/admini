@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/views"
+	"github.com/kyleu/admini/views/vaction"
 	"net/http"
 	"strings"
 	"time"
@@ -14,24 +15,9 @@ import (
 
 	"github.com/kyleu/admini/app/controller/cutil"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/views/vproject"
-
 	"github.com/gorilla/mux"
+	"github.com/kyleu/admini/app"
 )
-
-func ActionWorkbench(w http.ResponseWriter, r *http.Request) {
-	act("action.workbench", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key := mux.Vars(r)["key"]
-		view, err := as.Projects.LoadView(key)
-		if err != nil {
-			return "", errors.Wrap(err, "unable to load project ["+key+"]")
-		}
-		ps.Title = view.Project.Name() + " Actions"
-		ps.Data = view.Project.Actions
-		return render(r, w, as, &vproject.ActionWorkbench{View: view}, ps, "projects", view.Project.Key, "Actions")
-	})
-}
 
 func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 	act("action.ordering", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
@@ -72,7 +58,7 @@ func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 			return "", err
 		}
 		msg := fmt.Sprintf("saved [%v] actions in [%.3fms]", count, elapsedMillis)
-		return flashAndRedir(true, msg, as.Route("action.workbench", "key", key), w, r, ps)
+		return flashAndRedir(true, msg, as.Route("project.detail", "key", key), w, r, ps)
 	})
 }
 
@@ -84,7 +70,7 @@ func ActionEdit(w http.ResponseWriter, r *http.Request) {
 		}
 		ps.Title = a.Name()
 		ps.Data = a
-		page := &vproject.ActionEdit{View: v, Act: a}
+		page := &vaction.Edit{View: v, Act: a}
 		return render(r, w, as, page, ps, append([]string{"projects", v.Project.Key}, a.Path()...)...)
 	})
 }

@@ -3,6 +3,7 @@
 {% import "github.com/kyleu/admini/app/project" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vaction" %}
 
 {% code type Detail struct {
   layout.Basic
@@ -11,13 +12,11 @@
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="#modal-project"><button type="button">JSON</button></a></div>
+    <div class="right"><a href="{%s as.Route(`project.edit`, `key`, p.View.Project.Key) %}"><button type="button">Edit</button></a></div>
     <h3>{%s p.View.Project.Name() %}</h3>
     {% if p.View.Project.Description != "" %}<em>{%s p.View.Project.Description %}</em>{% endif %}
     <p>
       <a href="{%s as.Route(`workspace`, `key`, p.View.Project.Key) %}"><button type="button">Workspace</button></a>
-      <a href="{%s as.Route(`project.edit`, `key`, p.View.Project.Key) %}"><button type="button">Edit</button></a>
-      <a href="{%s as.Route(`action.workbench`, `key`, p.View.Project.Key) %}"><button type="button">Actions</button></a>
       <a href="{%s as.Route(`project.test`, `key`, p.View.Project.Key) %}"><button type="button">Test</button></a>
     </p>
   </div>
@@ -35,5 +34,37 @@
     {%- endif -%}
   </div>
 
-  {%= components.JSONModal("project", "Project JSON", p.View.Project, 1) %}
+  <div class="drag-container readonly card">
+    <div class="action-workbench">
+      <div class="l">
+        <div class="drag-edit right">
+          <button type="button" onclick="admini.sortableEdit(this);">Edit</button>
+        </div>
+        <div class="drag-actions right no-changes">
+          <div class="message"><em>no changes</em></div>
+          <div class="form">
+            <form action="{%s as.Route(`action.ordering`, `key`, p.View.Project.Key) %}" method="post">
+              <input type="hidden" class="drag-state-original" value=""/>
+              <input type="hidden" class="drag-state" value="" name="ordering"/>
+              <button type="submit">Save</button>
+            </form>
+          </div>
+        </div>
+        <h3 class="no-padding"><span class="drag-tracked-size">{%d p.View.Project.Actions.Size() %}</span> Actions</h3>
+        <div class="clear"></div>
+        <div class="container tracked">
+          {%- for _, act := range p.View.Project.Actions -%}
+          {%= vaction.List(p.View.Project.Key, act, as, ps, 5) %}
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="r">
+        <h3 class="no-padding">Available</h3>
+        <div class="container">
+          {%= vaction.Available(p.View, as, ps, 5) %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="/assets/sortable.js"></script>
 {% endfunc %}

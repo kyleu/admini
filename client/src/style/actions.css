@@ -16,6 +16,7 @@
 .action-workbench .l {
   padding: 12px;
   width: 60%;
+  /*transition: width 200ms linear;*/
 }
 
 .action-workbench .l .tracked {
@@ -25,6 +26,7 @@
 .action-workbench .r {
   padding: 12px;
   width: 40%;
+  /*transition: width 200ms linear;*/
 }
 
 .action-workbench .r .remove {
@@ -34,9 +36,6 @@
 
 .action-workbench .r .container .container {
   padding: 0;
-}
-
-.action-workbench .r .source {
 }
 
 .action-workbench .r .package {
@@ -51,9 +50,10 @@
   margin-left: 12px;
 }
 
+/* small screens */
 @media (max-width: 800px) {
   .action-workbench {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 
   .action-workbench .l {

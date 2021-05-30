@@ -1,0 +1,57 @@
+{% import "fmt" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
+{% import "github.com/kyleu/admini/app/schema" %}
+{% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func Available(v *project.View, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
+  <div class="container">
+  {%= itemTemplate(action.TypeFolder, `folder`, `New Folder`, indent) %}
+  {%= itemTemplate(action.TypeAll, `all`, `All Sources`, indent) %}
+  {%- for _, src := range v.Sources -%}
+  {%= itemSchema(src, v.Schemata.Get(src.Key), indent) %}
+  {% endfor %}
+  </div>
+{% endstripspace %}{% endfunc %}
+
+{% func itemSchema(src *source.Source, sch *schema.Schema, indent int) %}{% stripspace %}
+  {%= itemTemplate(action.TypeSource, `source/` + src.Key, src.Name(), 5) %}
+  {%= itemTemplate(action.TypeActivity, `activity/` + src.Key + "/sql", "SQL Playground", 5) %}
+  {%= itemModelPackage(src, sch.ModelsByPackage(), false, 5) %}
+{% endstripspace %}{% endfunc %}
+
+{% func itemModelPackage(src *source.Source, pkg *model.Package, showRoot bool, indent int) %}{% stripspace %}
+  {% if showRoot %}
+    {%= itemTemplate(action.TypePackage, fmt.Sprintf("package/%v/%v", src.Key, pkg.PathString()), pkg.Key, indent) %}
+  {% endif %}
+  {% for _, p := range pkg.ChildPackages %}
+    {%= vutil.Indent(true, indent) %}
+    {%= itemModelPackage(src, p, true, indent) %}
+  {% endfor %}
+  {% for _, m := range pkg.ChildModels %}
+    {%= vutil.Indent(true, indent) %}
+    {%= itemTemplate(action.TypeModel, fmt.Sprintf("model/%v/%v", src.Key, m.PathString()), m.Name(), indent) %}
+  {% endfor %}
+{% endstripspace %}{% endfunc %}
+
+{% func itemTemplate(t action.Type, path string, title string, indent int) %}{% stripspace %}
+<div class="item{% space %}{%s t.Key %}" data-key="_new" data-original-path="{%s path %}">
+  {%= vutil.Indent(true, indent + 1) %}
+  <div class="content">
+    {%= vutil.Indent(true, indent + 2) %}
+    <div class="handle">≡</div>
+    {%= vutil.Indent(true, indent + 2) %}
+    <div class="title">{%s title %}</div>
+    {%= vutil.Indent(true, indent + 2) %}
+    <div class="remove">×</div>
+  {%= vutil.Indent(true, indent + 1) %}
+  </div>
+  {%= vutil.Indent(true, indent + 1) %}
+  <div class="container"></div>
+{%= vutil.Indent(true, indent) %}
+</div>
+{% endstripspace %}{% endfunc %}

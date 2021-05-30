@@ -4,13 +4,13 @@
 {% import "github.com/kyleu/admini/app/project/action" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ActionEdit struct {
+{% code type Edit struct {
   layout.Basic
   View *project.View
   Act *action.Action
 } %}
 
-{% func (p *ActionEdit) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Edit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%s p.Act.Name() %}</h3>
     <form class="editor" action="{%s as.Route(`action.save`, `key`, p.View.Project.Key) %}/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
@@ -31,7 +31,7 @@
           <tr>
             <td colspan="2">
               <button type="submit">Save Changes</button>
-              <a href="{%s as.Route(`action.workbench`, `key`, p.View.Project.Key) %}"><button type="button">Cancel</button></a>
+              <a href="{%s as.Route(`project.detail`, `key`, p.View.Project.Key) %}"><button type="button">Cancel</button></a>
             </td>
           </tr>
         </tbody>
