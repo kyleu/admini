@@ -19,7 +19,7 @@
 {% func actionList(req *cutil.WorkspaceRequest, acts action.Actions, indent int) %}{% stripspace %}
   <ul>
   {% for _, act := range acts %}
-    {% if act.Type != "separator" %}
+    {% if act.Type != action.TypeSeparator %}
       {% if len(act.Children) == 0 %}
         {%= vutil.Indent(true, indent + 1) %}
         <li><a href="{%s req.Route(act.Path()...) %}">{%s act.Name() %}</a></li>

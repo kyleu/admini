@@ -1,3 +1,10 @@
+#flash-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
 #flash-container input:checked ~ * {
   display: none;
 }
@@ -9,9 +16,15 @@
 }
 
 #flash-container .flash {
+  background-color: var(--color-background-muted);
   opacity: 1;
   -webkit-transition: opacity 500ms linear;
   transition: opacity 500ms linear;
+}
+
+#flash-container .flash .card {
+  min-width: 480px;
+  min-height: 48px;
 }
 
 #flash-container .flash-success {

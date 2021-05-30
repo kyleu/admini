@@ -30,23 +30,23 @@ func (s *Service) LoadSourceProject(sourceKey string) (*View, error) {
 
 	if len(mp.ChildPackages) > 0 {
 		for _, p := range mp.ChildPackages {
-			pCfg := util.ValueMapFor("source", src.Key, "package", p.Key)
-			acts = append(acts, &action.Action{Key: p.Key, Type: "package", Title: p.Key, Config: pCfg})
+			pCfg := util.ValueMapFor(action.TypeSource.Key, src.Key, action.TypePackage.Key, p.Key)
+			acts = append(acts, &action.Action{Key: p.Key, Type: action.TypePackage, Title: p.Key, Config: pCfg})
 		}
-		acts = append(acts, &action.Action{Key: "separator", Type: "separator"})
+		acts = append(acts, &action.Action{Key: action.TypeSeparator.Key, Type: action.TypeSeparator})
 	}
 
 	if len(mp.ChildModels) > 0 {
 		for _, m := range mp.ChildModels {
-			mCfg := util.ValueMapFor("source", src.Key, "model", strings.Join(append(m.Pkg, m.Key), "/"))
-			acts = append(acts, &action.Action{Key: m.Key, Type: "model", Title: m.Name(), Config: mCfg})
+			mCfg := util.ValueMapFor(action.TypeSource.Key, src.Key, action.TypeModel.Key, strings.Join(append(m.Pkg, m.Key), "/"))
+			acts = append(acts, &action.Action{Key: m.Key, Type: action.TypeModel, Title: m.Name(), Config: mCfg})
 		}
-		acts = append(acts, &action.Action{Key: "separator", Type: "separator"})
+		acts = append(acts, &action.Action{Key: action.TypeSeparator.Key, Type: action.TypeSeparator})
 	}
 
-	sCfg := util.ValueMapFor("source", src.Key, "activity", "sql")
+	sCfg := util.ValueMapFor(action.TypeSource.Key, src.Key, action.TypeActivity.Key, "sql")
 	sd := "Run ad-hoc SQL queries and DDL"
-	acts = append(acts, &action.Action{Key: "sql", Type: "activity", Title: "SQL Playground", Description: sd, Ordinal: 0, Config: sCfg})
+	acts = append(acts, &action.Action{Key: "sql", Type: action.TypeActivity, Title: "SQL Playground", Description: sd, Ordinal: 0, Config: sCfg})
 
 	prj := &Project{Key: SourceProjectPrefix + src.Key, Title: src.Title, Description: src.Description, Sources: []string{sourceKey}, Actions: acts}
 

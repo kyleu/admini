@@ -10,7 +10,7 @@ import (
 )
 
 func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
-	a := act.Config.GetStringOpt("activity")
+	a := act.Config.GetStringOpt(action.TypeActivity.Key)
 	switch a {
 	case "sql":
 		return sourceActivitySQL(req, act)
@@ -22,7 +22,7 @@ func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action) (*Result, e
 }
 
 func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
-	srcKey := act.Config.GetStringOpt("source")
+	srcKey := act.Config.GetStringOpt(action.TypeSource.Key)
 	if srcKey == "" {
 		return ErrResult(req, act, errors.New("must provide source in action config"))
 	}

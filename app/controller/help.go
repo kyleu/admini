@@ -11,7 +11,7 @@ import (
 	"github.com/kyleu/admini/views/vhelp"
 )
 
-var helpContent = map[string]interface{}{
+var helpContent = util.ValueMap{
 	"_": "help",
 	"urls": map[string]string{
 		"TODO": "http://TODO",

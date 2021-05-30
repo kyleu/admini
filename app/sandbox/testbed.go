@@ -1,6 +1,7 @@
 package sandbox
 
 import (
+	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -16,7 +17,7 @@ import (
 var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: onTestbed}
 
 func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
-	ret := map[string]interface{}{}
+	ret := util.ValueMap{}
 	sourceKey := "rituals.dev"
 	source, _ := st.Sources.Load(sourceKey, true)
 

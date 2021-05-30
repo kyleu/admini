@@ -13,8 +13,8 @@ type Type struct {
 }
 
 var (
+	TypeFolder    = Type{Key: "", Title: "Folder", Description: "holds other actions, like a folder"}
 	TypeStatic    = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
-	TypeFolder    = Type{Key: "folder", Title: "Folder", Description: "holds other actions, like a folder"}
 	TypeSeparator = Type{Key: "separator", Title: "Separator", Description: "a separator, used between other items"}
 
 	TypeAll      = Type{Key: "all", Title: "All Sources", Description: "provides actions for each source in the system"}
@@ -28,7 +28,7 @@ var (
 )
 
 var AllTypes = []Type{
-	TypeStatic, TypeFolder, TypeSeparator, TypeAll, TypeSource, TypePackage, TypeModel, TypeActivity, TypeTest,
+	TypeFolder, TypeStatic, TypeSeparator, TypeAll, TypeSource, TypePackage, TypeModel, TypeActivity, TypeTest,
 }
 
 func TypeFromString(s string) (Type, error) {
@@ -36,6 +36,9 @@ func TypeFromString(s string) (Type, error) {
 		if t.Key == s {
 			return t, nil
 		}
+	}
+	if s == "folder" {
+		return TypeFolder, nil
 	}
 	return TypeUnknown, errors.New("unhandled action type from string [" + s + "]")
 }

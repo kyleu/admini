@@ -54,28 +54,25 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 		}
 		var err error
 		switch act.Type {
-		case "":
+		case action.TypeFolder:
 			// noop
-
-		case action.TypeFolder.Key:
-			// noop
-		case action.TypeSeparator.Key:
+		case action.TypeSeparator:
 			x = &menu.Item{}
-		case action.TypeStatic.Key:
+		case action.TypeStatic:
 			// noop
 
-		case action.TypeAll.Key:
+		case action.TypeAll:
 			err = itemsForAll(x, act, view)
-		case action.TypeSource.Key:
+		case action.TypeSource:
 			err = itemsForSource(x, act, view)
-		case action.TypePackage.Key:
+		case action.TypePackage:
 			err = itemsForPackage(x, act, view)
-		case action.TypeModel.Key:
+		case action.TypeModel:
 			// err = itemsForModel(x, act, view)
-		case action.TypeActivity.Key:
+		case action.TypeActivity:
 			// noop
 		default:
-			err = errors.New("unhandled menu action type [" + act.Type + "]")
+			err = errors.New("unhandled menu action type [" + act.Type.Key + "]")
 		}
 		if err != nil {
 			return nil, err
@@ -128,7 +125,7 @@ func itemsForPackage(x *menu.Item, act *action.Action, view *project.View) error
 	if err != nil {
 		return err
 	}
-	pkgStr, err := act.Config.GetString("package", false)
+	pkgStr, err := act.Config.GetString(action.TypePackage.Key, false)
 	if err != nil {
 		return errors.Wrap(err, "no [package] in config")
 	}
@@ -149,7 +146,7 @@ func itemsForPackage(x *menu.Item, act *action.Action, view *project.View) error
 }
 
 func schemaFor(act *action.Action, view *project.View) (*schema.Schema, error) {
-	sourceKey, err := act.Config.GetString("source", false)
+	sourceKey, err := act.Config.GetString(action.TypeSource.Key, false)
 	if err != nil {
 		return nil, errors.Wrap(err, "key [source] was not provided")
 	}

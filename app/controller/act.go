@@ -36,7 +36,7 @@ func actPrepare(r *http.Request, w http.ResponseWriter) *cutil.PageState {
 		logger.Warnf("error retrieving session: %+v", err)
 	}
 	if session.IsNew {
-		session.Options = &sessions.Options{Path: "/", HttpOnly: true, SameSite: http.SameSiteDefaultMode}
+		session.Options = &sessions.Options{Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode}
 		err = session.Save(r, w)
 		if err != nil {
 			logger.Warnf("can't save session: %+v", err)

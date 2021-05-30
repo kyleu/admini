@@ -11,7 +11,7 @@ import (
 	"github.com/kyleu/admini/views"
 )
 
-var homeContent = map[string]interface{}{
+var homeContent = util.ValueMap{
 	"_": util.AppName,
 	"urls": map[string]string{
 		"projects":  "/project",

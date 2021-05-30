@@ -11,6 +11,8 @@
 {% func Available(v *project.View, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
   <div class="container">
   {%= itemTemplate(action.TypeFolder, `folder`, `New Folder`, indent) %}
+  {%= itemTemplate(action.TypeStatic, `static`, `Static Content`, indent) %}
+  {%= itemTemplate(action.TypeSeparator, `sep`, `Separator`, indent) %}
   {%= itemTemplate(action.TypeAll, `all`, `All Sources`, indent) %}
   {%- for _, src := range v.Sources -%}
   {%= itemSchema(src, v.Schemata.Get(src.Key), indent) %}

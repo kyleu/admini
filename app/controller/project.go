@@ -1,10 +1,11 @@
 package controller
 
 import (
+	"github.com/kyleu/admini/app/project/action"
+	"github.com/kyleu/admini/app/util"
 	"net/http"
 
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/views"
 	"github.com/pkg/errors"
 
@@ -42,23 +43,26 @@ func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 func ProjectTest(w http.ResponseWriter, r *http.Request) {
 	act("project.test", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		prj, err := as.Projects.LoadRequired(key, false)
+		v, err := as.Projects.LoadView(key)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
 
-		_, err = action.Save(prj.Key, prj.Actions, as.Files)
+		req := action.NewRequest(action.TypeModel.Key, "list", action.TypeSource.Key, "admini_test", action.TypeModel.Key, "public/simple")
+
+		q, err := action.Qualify(req, v.Project.Actions)
 		if err != nil {
-			return "", errors.Wrap(err, "unable to save actions for project ["+key+"]")
+			return "", errors.Wrap(err, "unable to qualify project ["+key+"]")
 		}
 
-		_, err = currentApp.Projects.LoadRequired(key, true)
-		if err != nil {
-			return "", errors.Wrap(err, "unable to reload project ["+key+"]")
+		ps.Title = v.Project.Name() + " - Test"
+		ps.Data = util.ValueMap{
+			//"project": v.Project,
+			"request": req,
+			"qualify": q,
 		}
 
-		ps.Title = "Test " + prj.Name()
-		ps.Data = prj
-		return render(r, w, as, &views.TODO{Message: "OK!"}, ps, "projects", prj.Key, "test")
+		view := &views.TODO{Message: "Project [" + v.Project.Key + "]: OK"}
+		return render(r, w, as, view, ps, "projects", v.Project.Key, "test")
 	})
 }

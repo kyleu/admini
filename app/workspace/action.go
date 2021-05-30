@@ -42,18 +42,18 @@ func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, er
 		return NewResult(req.Project.Name(), nil, req, act, req.Project, &vworkspace.WorkspaceOverview{Req: req}), nil
 	}
 	switch act.Type {
-	case "", "folder":
+	case action.TypeFolder:
 		return NewResult("", nil, req, act, act, &vaction.Folder{Req: req, Act: act}), nil
-	case "all":
+	case action.TypeAll:
 		return sourceAll(req, act)
-	case "source", "package", "model":
+	case action.TypeSource, action.TypePackage, action.TypeModel:
 		return sourceItem(req, act)
-	case "static":
+	case action.TypeStatic:
 		return NewResult("", nil, req, act, act, &vaction.Static{Req: req, Act: act}), nil
-	case "activity":
+	case action.TypeActivity:
 		return sourceActivity(req, act)
 	default:
-		page := &views.TODO{Message: "unhandled action type [" + act.Type + "]"}
+		page := &views.TODO{Message: "unhandled action type [" + act.Type.Key + "]"}
 		return NewResult("", nil, req, act, act, page), nil
 	}
 }
@@ -76,16 +76,16 @@ func sourceAll(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error)
 }
 
 func sourceItem(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
-	src := act.Config.GetStringOpt("source")
+	src := act.Config.GetStringOpt(action.TypeSource.Key)
 	p, err := rootItemFor(req, src)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
 	var x []string
-	if act.Type == "package" || act.Type == "model" {
-		t := act.Config.GetStringOpt(act.Type)
+	if act.Type == action.TypePackage || act.Type == action.TypeModel {
+		t := act.Config.GetStringOpt(act.Type.Key)
 		if t == "" {
-			return ErrResult(req, act, errors.New("must provide ["+act.Type+"] in config"))
+			return ErrResult(req, act, errors.New("must provide ["+act.Type.Key+"] in config"))
 		}
 		x = util.SplitAndTrim(t, "/")
 	}

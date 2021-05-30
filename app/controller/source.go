@@ -2,6 +2,8 @@ package controller
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/project/action"
+	"github.com/kyleu/admini/app/util"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -38,7 +40,7 @@ func SourceDetail(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to load schema for source ["+key+"]")
 		}
 		ps.Title = src.Name()
-		ps.Data = map[string]interface{}{"source": src, "schema": sch}
+		ps.Data = util.ValueMap{action.TypeSource.Key: src, "schema": sch}
 		return render(r, w, as, &vsource.Detail{Source: src, Schema: sch}, ps, "sources", src.Key)
 	})
 }

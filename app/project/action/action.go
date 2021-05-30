@@ -10,7 +10,7 @@ import (
 
 type Action struct {
 	Key         string        `json:"key"`
-	Type        string        `json:"type,omitempty"`
+	Type        Type          `json:"type,omitempty"`
 	Title       string        `json:"title,omitempty"`
 	Description string        `json:"description,omitempty"`
 	Icon        string        `json:"icon,omitempty"`
@@ -117,26 +117,27 @@ func (a Actions) CleanKeys() {
 }
 
 type dto struct {
-	Type        string                 `json:"type,omitempty"`
-	Title       string                 `json:"title,omitempty"`
-	Description string                 `json:"description,omitempty"`
-	Icon        string                 `json:"icon,omitempty"`
-	Ordinal     int                    `json:"ordinal,omitempty"`
-	Children    Actions                `json:"-"` // excluded for saving
-	Pkg         util.Pkg               `json:"-"`
-	Config      map[string]interface{} `json:"config,omitempty"`
+	Type        string        `json:"type,omitempty"`
+	Title       string        `json:"title,omitempty"`
+	Description string        `json:"description,omitempty"`
+	Icon        string        `json:"icon,omitempty"`
+	Ordinal     int           `json:"ordinal,omitempty"`
+	Children    Actions       `json:"-"` // excluded for saving
+	Pkg         util.Pkg      `json:"-"`
+	Config      util.ValueMap `json:"config,omitempty"`
 }
 
 func newDTO(a *Action) *dto {
 	return &dto{
-		Type: a.Type, Title: a.Title, Description: a.Description, Icon: a.Icon,
-		Ordinal: a.Ordinal, Children: a.Children, Pkg: a.Pkg, Config: a.Config.ToMap(),
+		Type: a.Type.Key, Title: a.Title, Description: a.Description, Icon: a.Icon,
+		Ordinal: a.Ordinal, Children: a.Children, Pkg: a.Pkg, Config: a.Config,
 	}
 }
 
 func (d *dto) ToAction(key string) *Action {
+	t, _ := TypeFromString(d.Type)
 	return &Action{
-		Key: key, Type: d.Type, Title: d.Title, Description: d.Description, Icon: d.Icon,
-		Ordinal: d.Ordinal, Children: d.Children, Pkg: d.Pkg, Config: util.ValueMapFrom(d.Config),
+		Key: key, Type: t, Title: d.Title, Description: d.Description, Icon: d.Icon,
+		Ordinal: d.Ordinal, Children: d.Children, Pkg: d.Pkg, Config: d.Config,
 	}
 }

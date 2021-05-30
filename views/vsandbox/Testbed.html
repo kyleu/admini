@@ -16,7 +16,7 @@
 {%= tabs(as, ps) %}
 {%= accordion(as, ps) %}
 {%= modal(as, ps) %}
-{%- code data := ps.Data.(map[string]interface{}) -%}
+{%- code data := ps.Data.(util.ValueMap) -%}
 {% if len(data) > 0 %}{%= db(as, ps) %}{% endif %}
 {% endfunc %}
 
@@ -97,7 +97,7 @@
 {%- endfunc -%}
 
 {%- func db(as *app.State, ps *cutil.PageState) -%}
-  {%- code data := ps.Data.(map[string]interface{}) -%}
+  {%- code data := ps.Data.(util.ValueMap) -%}
   <div class="card">
     <h3>Types</h3>
     <pre>{%s queries.ListTypes("") %}</pre>

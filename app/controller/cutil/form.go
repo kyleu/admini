@@ -15,16 +15,11 @@ func ParseForm(req *http.Request) (util.ValueMap, error) {
 }
 
 func parseJSONForm(req *http.Request) (util.ValueMap, error) {
-	m := map[string]interface{}{}
-	err := util.FromJSONReader(req.Body, &m)
+	ret := util.ValueMap{}
+	err := util.FromJSONReader(req.Body, &ret)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't parse JSON body")
 	}
-	ret := make(util.ValueMap, 0, len(m))
-	for k, v := range m {
-		ret = append(ret, &util.ValueMapEntry{Key: k, Value: v})
-	}
-	ret.Sort()
 	return ret, nil
 }
 
@@ -33,10 +28,9 @@ func parseHTTPForm(req *http.Request) (util.ValueMap, error) {
 		return nil, errors.Wrap(err, "can't parse form")
 	}
 
-	ret := make(util.ValueMap, 0, len(req.Form))
+	ret := make(util.ValueMap, len(req.Form))
 	for k, v := range req.Form {
-		ret = append(ret, &util.ValueMapEntry{Key: k, Value: v})
+		ret[k] = v
 	}
-	ret.Sort()
 	return ret, nil
 }
