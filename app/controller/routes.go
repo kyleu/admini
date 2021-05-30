@@ -48,6 +48,7 @@ func BuildRouter() (*mux.Router, error) {
 	r.Path("/project/{key}/actions").Methods(http.MethodGet).Handler(wrap(ActionWorkbench)).Name("action.workbench")
 	r.Path("/project/{key}/actions").Methods(http.MethodPost).Handler(wrap(ActionOrdering)).Name("action.ordering")
 	r.PathPrefix("/project/{key}/action").Methods(http.MethodGet).Handler(wrap(ActionEdit)).Name("action.edit")
+	r.PathPrefix("/project/{key}/action").Methods(http.MethodPost).Handler(wrap(ActionSave)).Name("action.save")
 	r.Path("/project/{key}/test").Methods(http.MethodGet).Handler(wrap(ProjectTest)).Name("project.test")
 	r.Path("/project/{key}/delete").Methods(http.MethodGet).Handler(wrap(ProjectDelete)).Name("project.delete")
 

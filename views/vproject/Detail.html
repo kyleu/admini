@@ -6,21 +6,34 @@
 
 {% code type Detail struct {
   layout.Basic
-  Project *project.Project
+  View *project.View
 } %}
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-project"><button type="button">JSON</button></a></div>
-    <h3>{%s p.Project.Name() %}</h3>
-    {% if p.Project.Description != "" %}<em>{%s p.Project.Description %}</em>{% endif %}
+    <h3>{%s p.View.Project.Name() %}</h3>
+    {% if p.View.Project.Description != "" %}<em>{%s p.View.Project.Description %}</em>{% endif %}
     <p>
-      <a href="{%s as.Route(`workspace`, `key`, p.Project.Key) %}"><button type="button">Workspace</button></a>
-      <a href="{%s as.Route(`project.edit`, `key`, p.Project.Key) %}"><button type="button">Edit</button></a>
-      <a href="{%s as.Route(`action.workbench`, `key`, p.Project.Key) %}"><button type="button">Actions</button></a>
-      <a href="{%s as.Route(`project.test`, `key`, p.Project.Key) %}"><button type="button">Test</button></a>
+      <a href="{%s as.Route(`workspace`, `key`, p.View.Project.Key) %}"><button type="button">Workspace</button></a>
+      <a href="{%s as.Route(`project.edit`, `key`, p.View.Project.Key) %}"><button type="button">Edit</button></a>
+      <a href="{%s as.Route(`action.workbench`, `key`, p.View.Project.Key) %}"><button type="button">Actions</button></a>
+      <a href="{%s as.Route(`project.test`, `key`, p.View.Project.Key) %}"><button type="button">Test</button></a>
     </p>
   </div>
 
-  {%= components.JSONModal("project", "Project JSON", p.Project, 1) %}
+  <div class="card">
+    {%- if len(p.View.Sources) == 0 -%}
+      <h3>No sources in project</h3>
+    {%- else -%}
+      <h3>{%= components.Plural(len(p.View.Sources), `source`, `sources`) %} in project</h3>
+      <ul>
+      {%- for _, s := range p.View.Sources -%}
+        <li><a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Name() %}</a></li>
+      {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  {%= components.JSONModal("project", "Project JSON", p.View.Project, 1) %}
 {% endfunc %}

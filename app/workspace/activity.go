@@ -27,8 +27,12 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 	}
 	sql := act.Config["query"]
 	if req.R.Method == http.MethodPost {
-		_ = req.R.ParseForm()
-		s := req.R.Form.Get("sql")
+		frm, err := cutil.ParseForm(req.R)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to parse form")
+		}
+
+		s, _ := frm.GetString("sql", true)
 		if s != "" {
 			sql = s
 		}

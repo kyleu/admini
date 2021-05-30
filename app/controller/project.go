@@ -29,13 +29,13 @@ func ProjectList(w http.ResponseWriter, r *http.Request) {
 func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 	act("project.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key := mux.Vars(r)["key"]
-		prj, err := as.Projects.LoadRequired(key, false)
+		prj, err := as.Projects.LoadView(key)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
-		ps.Title = prj.Name()
-		ps.Data = prj
-		return render(r, w, as, &vproject.Detail{Project: prj}, ps, "projects", prj.Key)
+		ps.Title = prj.Project.Name()
+		ps.Data = prj.Project
+		return render(r, w, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
 	})
 }
 

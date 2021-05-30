@@ -42,9 +42,9 @@ func render(r *http.Request, w http.ResponseWriter, appState *app.State, page la
 	println(len(breadcrumbs), strings.Join(breadcrumbs, "/"))
 
 	pageState.Breadcrumbs = append(pageState.Breadcrumbs, breadcrumbs...)
-	ct := getContentType(r)
-	if pageState.Data != nil && isContentTypeJSON(ct) {
-		return respondJSON(w, "", pageState.Data)
+	ct := cutil.GetContentType(r)
+	if pageState.Data != nil && cutil.IsContentTypeJSON(ct) {
+		return cutil.RespondJSON(w, "", pageState.Data)
 	}
 	startNanos := time.Now().UnixNano()
 	views.WriteRender(w, page, appState, pageState)
@@ -77,14 +77,18 @@ func flashAndRedir(success bool, msg string, redir string, w http.ResponseWriter
 	return redir, nil
 }
 
+func flashError(err error, redir string, w http.ResponseWriter, r *http.Request, ps *cutil.PageState) (string, error) {
+	return flashAndRedir(false, err.Error(), redir, w, r, ps)
+}
+
 func Options(w http.ResponseWriter, r *http.Request) {
-	writeCORS(w)
+	cutil.WriteCORS(w)
 	w.WriteHeader(http.StatusOK)
 }
 
 func NotFound(w http.ResponseWriter, r *http.Request) {
 	act("notfound", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		writeCORS(w)
+		cutil.WriteCORS(w)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.WriteHeader(http.StatusNotFound)
 		ps.Logger.Warnf("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)

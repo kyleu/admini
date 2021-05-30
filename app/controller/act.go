@@ -56,7 +56,7 @@ func actPrepare(r *http.Request, w http.ResponseWriter) *cutil.PageState {
 
 func actComplete(key string, ps *cutil.PageState, r *http.Request, w http.ResponseWriter, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	status := http.StatusOK
-	writeCORS(w)
+	cutil.WriteCORS(w)
 	startNanos := time.Now().UnixNano()
 	redir, err := f(currentApp, ps)
 	if err != nil {

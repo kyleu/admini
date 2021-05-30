@@ -1,4 +1,4 @@
-package controller
+package cutil
 
 import (
 	"net/http"
@@ -11,11 +11,18 @@ import (
 
 const jsonMIME = "application/json"
 
-func respondJSON(w http.ResponseWriter, filename string, body interface{}) (string, error) {
-	return respondMIME(filename, "application/json", "json", util.ToJSONBytes(body, true), w)
+func WriteCORS(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Method", "GET,POST,DELETE,PUT,PATCH,OPTIONS,HEAD")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
 }
 
-func respondMIME(filename string, mime string, ext string, ba []byte, w http.ResponseWriter) (string, error) {
+func RespondJSON(w http.ResponseWriter, filename string, body interface{}) (string, error) {
+	return RespondMIME(filename, "application/json", "json", util.ToJSONBytes(body, true), w)
+}
+
+func RespondMIME(filename string, mime string, ext string, ba []byte, w http.ResponseWriter) (string, error) {
 	w.Header().Set("Content-Type", mime+"; charset=UTF-8")
 	if len(filename) > 0 {
 		if !strings.HasSuffix(filename, "."+ext) {
@@ -23,7 +30,7 @@ func respondMIME(filename string, mime string, ext string, ba []byte, w http.Res
 		}
 		w.Header().Set("Content-Disposition", `attachment; filename="`+filename+`"`)
 	}
-	writeCORS(w)
+	WriteCORS(w)
 	if len(ba) == 0 {
 		return "", errors.New("no bytes available to write")
 	}
@@ -34,14 +41,7 @@ func respondMIME(filename string, mime string, ext string, ba []byte, w http.Res
 	return "", nil
 }
 
-func writeCORS(w http.ResponseWriter) {
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Method", "GET,POST,DELETE,PUT,PATCH,OPTIONS,HEAD")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
-}
-
-func getContentType(r *http.Request) string {
+func GetContentType(r *http.Request) string {
 	ret := r.Header.Get("Content-Type")
 	if idx := strings.Index(ret, ";"); idx > -1 {
 		ret = ret[0:idx]
@@ -57,6 +57,6 @@ func getContentType(r *http.Request) string {
 	}
 }
 
-func isContentTypeJSON(c string) bool {
+func IsContentTypeJSON(c string) bool {
 	return c == jsonMIME || c == "text/json"
 }

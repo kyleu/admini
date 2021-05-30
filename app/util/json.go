@@ -3,6 +3,7 @@ package util
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 )
 
 // Converts the argument to a string containing pretty JSON, logging errors
@@ -28,6 +29,10 @@ func ToJSONBytes(x interface{}, indent bool) []byte {
 // Parses the provided JSON to the provided interface
 func FromJSON(msg json.RawMessage, tgt interface{}) error {
 	return json.Unmarshal(msg, tgt)
+}
+
+func FromJSONReader(r io.Reader, tgt interface{}) error {
+	return json.NewDecoder(r).Decode(tgt)
 }
 
 // Parses the provided JSON to the provided interface, validating that all fields are used

@@ -27,16 +27,28 @@ func ProjectNew(w http.ResponseWriter, r *http.Request) {
 
 func ProjectInsert(w http.ResponseWriter, r *http.Request) {
 	act("project.insert", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		_ = r.ParseForm()
-		key := r.Form.Get("key")
-		if key == "" {
-			return flashAndRedir(false, "key must be provided", as.Route("project.new", "key", key), w, r, ps)
+		frm, err := cutil.ParseForm(r)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to parse form")
 		}
-		title := r.Form.Get("title")
-		description := r.Form.Get("description")
-		sources := r.Form["sources"]
+		key, err := frm.GetString("key", false)
+		if err != nil {
+			return flashError(err, as.Route("project.new", "key", key), w, r, ps)
+		}
+		title, err := frm.GetString("title", true)
+		if err != nil {
+			return flashError(err, as.Route("project.new", "key", key), w, r, ps)
+		}
+		description, err := frm.GetString("description", true)
+		if err != nil {
+			return "", err
+		}
+		sources, err := frm.GetStringArray("sources", true)
+		if err != nil {
+			return "", err
+		}
 		ret := &project.Project{Key: key, Title: title, Description: description, Sources: sources}
-		err := currentApp.Projects.Save(ret, false)
+		err = currentApp.Projects.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
@@ -64,7 +76,11 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request) {
 
 func ProjectSave(w http.ResponseWriter, r *http.Request) {
 	act("project.save", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		_ = r.ParseForm()
+		frm, err := cutil.ParseForm(r)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to parse form")
+		}
+
 		key := mux.Vars(r)["key"]
 
 		prj, err := as.Projects.LoadRequired(key, false)
@@ -72,9 +88,18 @@ func ProjectSave(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to load project ["+key+"]")
 		}
 
-		prj.Title = r.Form.Get("title")
-		prj.Description = r.Form.Get("description")
-		prj.Sources = r.Form["sources"]
+		prj.Title, err = frm.GetString("title", true)
+		if err != nil {
+			return "", err
+		}
+		prj.Description, err = frm.GetString("description", true)
+		if err != nil {
+			return "", err
+		}
+		prj.Sources, err = frm.GetStringArray("sources", true)
+		if err != nil {
+			return "", err
+		}
 
 		err = currentApp.Projects.Save(prj, true)
 		if err != nil {
@@ -88,7 +113,6 @@ func ProjectSave(w http.ResponseWriter, r *http.Request) {
 
 func ProjectDelete(w http.ResponseWriter, r *http.Request) {
 	act("project.delete", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		_ = r.ParseForm()
 		key := mux.Vars(r)["key"]
 
 		err := as.Projects.Delete(key)

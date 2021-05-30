@@ -33,16 +33,29 @@ func SourceNew(w http.ResponseWriter, r *http.Request) {
 
 func SourceInsert(w http.ResponseWriter, r *http.Request) {
 	act("source.insert", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		_ = r.ParseForm()
-		key := r.Form.Get("key")
-		if key == "" {
-			return flashAndRedir(false, "key must be provided", as.Route("source.new", "key", key), w, r, ps)
+		frm, err := cutil.ParseForm(r)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to parse form")
 		}
-		title := r.Form.Get("title")
-		description := r.Form.Get("description")
-		typ := r.Form.Get("type")
+
+		key, err := frm.GetString("key", false)
+		if err != nil {
+			return flashError(err, as.Route("source.new", "key", key), w, r, ps)
+		}
+		title, err := frm.GetString("title", true)
+		if err != nil {
+			return "", err
+		}
+		description, err := frm.GetString("description", true)
+		if err != nil {
+			return "", err
+		}
+		typ, err := frm.GetString("type", true)
+		if err != nil {
+			return "", err
+		}
 		ret := currentApp.Sources.NewSource(key, title, description, schema.OriginFromString(typ))
-		err := currentApp.Sources.Save(ret, false)
+		err = currentApp.Sources.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
@@ -78,7 +91,11 @@ func SourceEdit(w http.ResponseWriter, r *http.Request) {
 
 func SourceSave(w http.ResponseWriter, r *http.Request) {
 	act("source.save", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		_ = r.ParseForm()
+		frm, err := cutil.ParseForm(r)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to parse form")
+		}
+
 		key := mux.Vars(r)["key"]
 
 		src, err := as.Sources.Load(key, false)
@@ -86,24 +103,32 @@ func SourceSave(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to load source ["+key+"]")
 		}
 
-		src.Title = r.Form.Get("title")
-		src.Description = r.Form.Get("description")
+		src.Title, err = frm.GetString("title", true)
+		if err != nil {
+			return "", err
+		}
+		src.Description, err = frm.GetString("description", true)
+		if err != nil {
+			return "", err
+		}
 
 		switch src.Type {
 		case schema.OriginPostgres:
-			p := 0
-			ps := r.Form.Get("port")
-			if ps != "" {
-				p, _ = strconv.Atoi(ps)
+			ps, _ := frm.GetString("port", true)
+			params := &database.DBParams{}
+			params.Host, err = frm.GetString("host", false)
+			if err != nil {
+				return "", err
 			}
-			src.Config = util.ToJSONBytes(&database.DBParams{
-				Host:     r.Form.Get("host"),
-				Port:     p,
-				Username: r.Form.Get("username"),
-				Password: r.Form.Get("password"),
-				Database: r.Form.Get("database"),
-				Schema:   r.Form.Get("schema"),
-			}, true)
+			if ps != "" {
+				params.Port, _ = strconv.Atoi(ps)
+			}
+			params.Username, _ = frm.GetString("username", true)
+			params.Password, _ = frm.GetString("password", true)
+			params.Database, _ = frm.GetString("database", true)
+			params.Schema, _ = frm.GetString("schema", true)
+
+			src.Config = util.ToJSONBytes(params, true)
 		default:
 			return "", errors.New("unable to parse config for source type [" + src.Type.String() + "]")
 		}
@@ -120,7 +145,6 @@ func SourceSave(w http.ResponseWriter, r *http.Request) {
 
 func SourceDelete(w http.ResponseWriter, r *http.Request) {
 	act("source.delete", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		_ = r.ParseForm()
 		key := mux.Vars(r)["key"]
 
 		err := as.Sources.Delete(key)
