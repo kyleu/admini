@@ -12,6 +12,7 @@
 
 .drag-container .container {
   padding: 12px 0;
+  transition: padding 400ms linear;
 }
 
 .drag-container .handle {
@@ -44,6 +45,10 @@
 }
 
 /* readonly */
+.drag-container.readonly .container {
+  padding: 0;
+}
+
 .drag-container.readonly .drag-edit {
   display: block;
 }

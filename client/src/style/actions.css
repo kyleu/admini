@@ -16,7 +16,7 @@
 .action-workbench .l {
   padding: 12px;
   width: 60%;
-  transition: width 200ms linear;
+  transition: width 400ms linear;
 }
 
 .action-workbench .l .tracked {
@@ -26,7 +26,7 @@
 .action-workbench .r {
   padding: 12px;
   width: 40%;
-  transition: width 200ms linear;
+  transition: width 400ms linear;
 }
 
 .action-workbench .r .remove {

@@ -23,14 +23,14 @@
 
   <div class="card">
     {%- if len(p.View.Sources) == 0 -%}
-      <h3>No sources in project</h3>
+    <h3>No sources in project</h3>
     {%- else -%}
-      <h3>{%= components.Plural(len(p.View.Sources), `source`, `sources`) %} in project</h3>
-      <ul>
-      {%- for _, s := range p.View.Sources -%}
-        <li><a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Name() %}</a></li>
-      {%- endfor -%}
-      </ul>
+    <h3>{%= components.Plural(len(p.View.Sources), `source`, `sources`) %} in project</h3>
+    <ul>
+    {%- for _, s := range p.View.Sources -%}
+      <li><a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Name() %}</a></li>
+    {%- endfor -%}
+    </ul>
     {%- endif -%}
   </div>
 
