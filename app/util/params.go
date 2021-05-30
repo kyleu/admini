@@ -95,7 +95,6 @@ func (p *Params) GetOrdering(col string) *Ordering {
 // converts this Params into a SQL order by clause
 func (p *Params) OrderByString() string {
 	ret := make([]string, 0, len(p.Orderings))
-
 	for _, o := range p.Orderings {
 		dir := ""
 		if !o.Asc {
@@ -103,7 +102,6 @@ func (p *Params) OrderByString() string {
 		}
 		ret = append(ret, o.Column+dir)
 	}
-
 	return strings.Join(ret, ", ")
 }
 
@@ -112,11 +110,9 @@ func (p *Params) Filtered(available []string, logger *zap.SugaredLogger) *Params
 	if available == nil {
 		available = AllowedColumns[p.Key]
 	}
-
 	if len(available) == 0 {
 		logger.Warn("no columns available for [" + p.Key + "]")
 	}
-
 	if len(p.Orderings) > 0 {
 		allowed := Orderings{}
 
@@ -134,10 +130,8 @@ func (p *Params) Filtered(available []string, logger *zap.SugaredLogger) *Params
 				logger.Warnf(msg, o.Column, p.Key, strings.Join(available, ", "))
 			}
 		}
-
 		return &Params{Key: p.Key, Orderings: allowed, Limit: p.Limit, Offset: p.Offset}
 	}
-
 	return p
 }
 

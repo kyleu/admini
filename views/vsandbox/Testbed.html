@@ -26,8 +26,8 @@
     <div style="display: flex;">
       {%- code
       keys := make([]string, 0, len(util.SVGLibrary))
-      for k, _ := range util.SVGLibrary {
-      keys = append(keys, k)
+      for k := range util.SVGLibrary {
+        keys = append(keys, k)
       }
       sort.Strings(keys)
       -%}

@@ -42,10 +42,7 @@ func (m *Model) Description() string {
 }
 
 func (m *Model) Path() []string {
-	ret := make([]string, 0, len(m.Pkg)+1)
-	for _, x := range m.Pkg {
-		ret = append(ret, x)
-	}
+	ret := util.StringArrayCopy(m.Pkg)
 	ret = append(ret, m.Key)
 	return ret
 }

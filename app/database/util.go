@@ -1,7 +1,7 @@
 package database
 
 import (
-	"fmt"
+	"github.com/kyleu/admini/app/util"
 	"strings"
 )
 
@@ -27,9 +27,6 @@ func StringToArray(s string) []string {
 
 // Converts provided array elements to strings, then joins them as a list
 func valueStrings(values []interface{}) string {
-	ret := make([]string, 0, len(values))
-	for _, v := range values {
-		ret = append(ret, fmt.Sprintf(`"%v"`, v))
-	}
+	ret := util.StringArrayFromInterfaces(values)
 	return strings.Join(ret, ", ")
 }

@@ -67,8 +67,7 @@ func SQLUpdate(table string, columns []string, where string) string {
 
 	stmts := make([]string, 0, len(columns))
 	for i, col := range columns {
-		s := fmt.Sprintf("%v = $%v", col, i+1)
-		stmts = append(stmts, s)
+		stmts = append(stmts, fmt.Sprintf("%v = $%v", col, i+1))
 	}
 	return fmt.Sprintf("update %v set %v%v", table, strings.Join(stmts, ", "), whereClause)
 }

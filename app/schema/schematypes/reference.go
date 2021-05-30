@@ -33,8 +33,7 @@ func (x *Reference) From(v interface{}) interface{} {
 }
 
 func (x *Reference) Path() []string {
-	ret := make([]string, 0, len(x.Pkg)+1)
-	copy(ret, x.Pkg)
+	ret := util.StringArrayCopy(x.Pkg)
 	return append(ret, x.K)
 }
 

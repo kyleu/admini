@@ -7,6 +7,7 @@
       <thead>
         <tr>
           <th>Name</th>
+          <th>Description</th>
           <th></th>
         </tr>
       </thead>
@@ -14,6 +15,7 @@
         {%- for _, p := range projects -%}
         <tr>
           <td><a href="{%s as.Route(`project.detail`, `key`, p.Key) %}">{%s p.Name() %}</a></td>
+          <td>{%s p.Description %}</td>
           <td class="shrink">
             <a href="{%s as.Route(`project.edit`, `key`, p.Key) %}"><button type="button">edit</button></a>
             <a href="{%s as.Route(`workspace`, `key`, p.Key) %}"><button type="button">workspace</button></a>
