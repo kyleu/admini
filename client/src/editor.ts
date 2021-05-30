@@ -28,7 +28,6 @@ export function editorInit() {
           }
         }
       }
-      console.log(editorCache);
     }
     frm.onreset = buildCache;
     buildCache();

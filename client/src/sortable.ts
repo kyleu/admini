@@ -21,15 +21,14 @@ function sortableCreate(dd: Element) {
     if (!l) {
       l = dd;
     }
-    const lOpts = {group: {name: 'nested'}, handle: '.handle', onAdd: onAdd, animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
-    function onAdd(ev: Event) {
+    const onAdd = (ev: Event) => {
       const i = (ev as any).item as HTMLElement;
       new Sortable(i.querySelector(".container"), lOpts);
       (i.querySelector(".remove") as HTMLElement).onclick = function() { remove(dd, i); };
       update(dd);
-    }
+    };
+    const lOpts = {group: {name: 'nested'}, handle: '.handle', onAdd: onAdd, onUpdate: () => update(dd), animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
     for (const c of Array.from(l.getElementsByClassName('container'))) {
-      console.log(c);
       new Sortable(c, lOpts);
     }
     for (const rem of Array.from(l.getElementsByClassName("remove"))) {
@@ -80,8 +79,6 @@ function update(dd: Element) {
   }
 
   sEl.value = js;
-  console.log("O: " + origEl.value);
-  console.log("N: " +  sEl.value);
 }
 
 interface Item {
