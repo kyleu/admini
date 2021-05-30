@@ -76,19 +76,20 @@ func sourceAll(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error)
 }
 
 func sourceItem(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
-	p, err := rootItemFor(req, act.Config["source"])
+	src := act.Config.GetStringOpt("source")
+	p, err := rootItemFor(req, src)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
 	var x []string
 	if act.Type == "package" || act.Type == "model" {
-		t := act.Config[act.Type]
+		t := act.Config.GetStringOpt(act.Type)
 		if t == "" {
 			return ErrResult(req, act, errors.New("must provide ["+act.Type+"] in config"))
 		}
 		x = util.SplitAndTrim(t, "/")
 	}
-	return process(req, act, p, act.Config["source"], append(x, req.Path...))
+	return process(req, act, p, src, append(x, req.Path...))
 }
 
 func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package, srcKey string, path []string) (*Result, error) {

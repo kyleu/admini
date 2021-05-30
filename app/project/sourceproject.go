@@ -1,6 +1,7 @@
 package project
 
 import (
+	"github.com/kyleu/admini/app/util"
 	"strings"
 
 	"github.com/kyleu/admini/app/project/action"
@@ -29,7 +30,7 @@ func (s *Service) LoadSourceProject(sourceKey string) (*View, error) {
 
 	if len(mp.ChildPackages) > 0 {
 		for _, p := range mp.ChildPackages {
-			pCfg := map[string]string{"source": src.Key, "package": p.Key}
+			pCfg := util.ValueMapFor("source", src.Key, "package", p.Key)
 			acts = append(acts, &action.Action{Key: p.Key, Type: "package", Title: p.Key, Config: pCfg})
 		}
 		acts = append(acts, &action.Action{Key: "separator", Type: "separator"})
@@ -37,13 +38,13 @@ func (s *Service) LoadSourceProject(sourceKey string) (*View, error) {
 
 	if len(mp.ChildModels) > 0 {
 		for _, m := range mp.ChildModels {
-			mCfg := map[string]string{"source": src.Key, "model": strings.Join(append(m.Pkg, m.Key), "/")}
+			mCfg := util.ValueMapFor("source", src.Key, "model", strings.Join(append(m.Pkg, m.Key), "/"))
 			acts = append(acts, &action.Action{Key: m.Key, Type: "model", Title: m.Name(), Config: mCfg})
 		}
 		acts = append(acts, &action.Action{Key: "separator", Type: "separator"})
 	}
 
-	sCfg := map[string]string{"source": src.Key, "activity": "sql"}
+	sCfg := util.ValueMapFor("source", src.Key, "activity", "sql")
 	sd := "Run ad-hoc SQL queries and DDL"
 	acts = append(acts, &action.Action{Key: "sql", Type: "activity", Title: "SQL Playground", Description: sd, Ordinal: 0, Config: sCfg})
 

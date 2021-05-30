@@ -128,9 +128,9 @@ func itemsForPackage(x *menu.Item, act *action.Action, view *project.View) error
 	if err != nil {
 		return err
 	}
-	pkgStr, ok := act.Config["package"]
-	if !ok {
-		return errors.New("no [package] in config")
+	pkgStr, err := act.Config.GetString("package", false)
+	if err != nil {
+		return errors.Wrap(err, "no [package] in config")
 	}
 	pkg := util.SplitAndTrim(pkgStr, "/")
 	if len(pkg) == 0 {
@@ -149,9 +149,9 @@ func itemsForPackage(x *menu.Item, act *action.Action, view *project.View) error
 }
 
 func schemaFor(act *action.Action, view *project.View) (*schema.Schema, error) {
-	sourceKey, ok := act.Config["source"]
-	if !ok {
-		return nil, errors.New("source [" + sourceKey + "] is not included in this project")
+	sourceKey, err := act.Config.GetString("source", false)
+	if err != nil {
+		return nil, errors.Wrap(err, "key [source] was not provided")
 	}
 
 	sch, err := view.Schemata.GetWithError(sourceKey)

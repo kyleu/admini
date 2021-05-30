@@ -16,7 +16,7 @@
     <em>Static</em>
   </div>
   <div class="card">
-    {%s= p.Act.Config["content"] %}
+    {%s p.Act.Config.GetStringOpt("content") %}
   </div>
   {%-= resultChildren(p.Req, p.Act, 1) -%}
   {%-= resultDebug(p.Req, p.Act) -%}
