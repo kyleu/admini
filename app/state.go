@@ -11,6 +11,7 @@ import (
 )
 
 type State struct {
+	Debug        bool
 	Router       *mux.Router
 	Files        filesystem.FileLoader
 	Sources      *source.Service
@@ -20,12 +21,12 @@ type State struct {
 	routerLogger *zap.SugaredLogger
 }
 
-func NewState(r *mux.Router, f *filesystem.FileSystem, ls *loader.Service, log *zap.SugaredLogger) (*State, error) {
+func NewState(debug bool, r *mux.Router, f *filesystem.FileSystem, ls *loader.Service, log *zap.SugaredLogger) (*State, error) {
 	rl := log.With(zap.String("service", "router"))
 	ss := source.NewService(action.TypeSource.Key, f, ls, log)
 	ps := project.NewService("project", f, ss, ls, log)
 
-	ret := &State{Router: r, Files: f, Sources: ss, Projects: ps, Loaders: ls, RootLogger: log, routerLogger: rl}
+	ret := &State{Debug: debug, Router: r, Files: f, Sources: ss, Projects: ps, Loaders: ls, RootLogger: log, routerLogger: rl}
 	return ret, nil
 }
 

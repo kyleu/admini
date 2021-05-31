@@ -13,12 +13,11 @@
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="#modal-source"><button type="button">JSON</button></a></div>
+    <div class="right"><a href="{%s as.Route(`source.edit`, `key`, p.Source.Key) %}"><button type="button">Edit</button></a></div>
     <h3>{%= components.SVGRef(p.Source.Type.Icon, 0, 0, ``, ``, ps) %} {%s p.Source.Name() %}</h3>
     {% if p.Source.Description != "" %}<em>{%s p.Source.Description %}</em>{% endif %}
     <p>
       <a href="{%s as.Route(`workspace.source`, `key`, p.Source.Key) %}"><button type="button">Workspace</button></a>
-      <a href="{%s as.Route(`source.edit`, `key`, p.Source.Key) %}"><button type="button">Edit</button></a>
       <a href="{%s as.Route(`source.refresh`, `key`, p.Source.Key) %}"><button type="button">Refresh</button></a>
       <a href="#modal-schema"><button type="button">Schema</button></a>
     </p>
@@ -36,6 +35,5 @@
     </ul>
   </div>
 
-  {%= components.JSONModal("source", "Source JSON", p.Source, 1) %}
   {%= components.JSONModal("schema", "Schema JSON", p.Schema, 1) %}
 {% endfunc %}

@@ -6,8 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kyleu/admini/views/verror"
-
 	"github.com/pkg/errors"
 
 	"github.com/gorilla/sessions"
@@ -83,21 +81,3 @@ func flashError(err error, redir string, w http.ResponseWriter, r *http.Request,
 	return flashAndRedir(false, err.Error(), redir, w, r, ps)
 }
 
-func Options(w http.ResponseWriter, r *http.Request) {
-	cutil.WriteCORS(w)
-	w.WriteHeader(http.StatusOK)
-}
-
-func NotFound(w http.ResponseWriter, r *http.Request) {
-	act("notfound", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		cutil.WriteCORS(w)
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.WriteHeader(http.StatusNotFound)
-		ps.Logger.Warnf("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
-		if ps.Title == "" {
-			ps.Title = "404"
-		}
-		ps.Data = "404 not found"
-		return render(r, w, as, &verror.NotFound{}, ps, "Not Found")
-	})
-}

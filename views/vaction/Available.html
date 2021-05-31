@@ -10,7 +10,7 @@
 
 {% func Available(v *project.View, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
   <div class="container">
-  {%= itemTemplate(action.TypeFolder, action.TypeFolder.Key, `New Folder`, indent) %}
+  {%= itemTemplate(action.TypeFolder, `folder`, `New Folder`, indent) %}
   {%= itemTemplate(action.TypeStatic, action.TypeStatic.Key, `Static Content`, indent) %}
   {%= itemTemplate(action.TypeSeparator, action.TypeSeparator.Key, `Separator`, indent) %}
   {%= itemTemplate(action.TypeAll, action.TypeAll.Key, `All Sources`, indent) %}

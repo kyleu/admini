@@ -22,10 +22,10 @@ type Loader struct {
 	logger *zap.SugaredLogger
 }
 
-func NewLoader(logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
+func NewLoader(logger *zap.SugaredLogger, debug bool) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
 		log := logger.With(zap.String("service", "loader.postgres"), zap.String("source", key))
-		db, err := openDatabase(cfg, log)
+		db, err := openDatabase(cfg, debug, log)
 		if err != nil {
 			return nil, errors.Wrap(err, "error opening database")
 		}
@@ -51,12 +51,13 @@ func (l *Loader) Default(m *model.Model) ([]interface{}, error) {
 	return ret, nil
 }
 
-func openDatabase(cfg []byte, logger *zap.SugaredLogger) (*database.Service, error) {
+func openDatabase(cfg []byte, debug bool, logger *zap.SugaredLogger) (*database.Service, error) {
 	config := &database.DBParams{}
 	err := util.FromJSON(cfg, config)
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing database config")
 	}
+	config.Debug = debug
 	db, err := database.OpenDatabase(config, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error opening database")

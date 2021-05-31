@@ -63,7 +63,7 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, err
 		var err error
 		c := util.SplitAndTrim(o.OriginalPath, "/")
 		if len(c) < 1 {
-			c = []string{"folder"}
+			return nil, errors.New("attempted to create new action with no arguments")
 		}
 		t, err := TypeFromString(c[0])
 		if err != nil {

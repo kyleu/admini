@@ -19,88 +19,102 @@
         <a href="{%= vutil.WorkspaceLink(as, `workspace.source`, schemaKey, model.Path()...) %}"><button type="button">View</button></a>
       </div>
 
-      <h4>{%= components.Plural(len(model.Fields), `field`, `fields`) %}</h4>
-      {% if len(model.Fields) == 0 %}
-      <div>No fields in {%s model.Type.String() %}</div>
-      {% else %}
-      <table>
-        <thead>
-          <tr>
-            <th>Key</th>
-            <th>Type</th>
-            <th title="nullable">∅</th>
-            <th title="read-only">RO</th>
-            <th>Metadata</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for _, f := range model.Fields %}
-          <tr>
-            <td>{%= fieldview.String(f.Key) %}</td>
-            <td>{%= fieldview.Type(f.Type) %}</td>
-            <td>{%= fieldview.Boolean(f.Nullable()) %}</td>
-            <td>{%= fieldview.Boolean(f.ReadOnly) %}</td>
-            <td><div class="pre">{%s util.ToJSON(f.Metadata) %}</div></td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-      {% endif %}
-
-      <h4>{%= components.Plural(len(model.Indexes), `index`, `indexes`) %}</h4>
-      {% if len(model.Indexes) == 0 %}
-      <div>No indexes in {%s model.Type.String() %}</div>
-      {% else %}
-      <table>
-        <thead>
-          <tr>
-            <th>Key</th>
-            <th>Fields</th>
-            <th>Unique</th>
-            <th title="Primary Key">PK</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for _, idx := range model.Indexes %}
-          <tr>
-            <td>{%= fieldview.String(idx.Key) %}</td>
-            <td>{%= fieldview.ArrayString(idx.Fields) %}</td>
-            <td>{%= fieldview.Boolean(idx.Unique) %}</td>
-            <td>{%= fieldview.Boolean(idx.Primary) %}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-      {% endif %}
-
-      <h4>{%= components.Plural(len(model.Relationships), `relationship`, `relationships`) %}</h4>
-      {% if len(model.Relationships) == 0 %}
-      <div>No relationships in {%s model.Type.String() %}</div>
-      {% else %}
-      <table>
-        <thead>
-          <tr>
-            <th>Key</th>
-            <th>Fields</th>
-            <th>Target Package</th>
-            <th>Target Model</th>
-            <th>Target Fields</th>
-          </tr>
-        </thead>
-        <tbody>
-        {% for _, rel := range model.Relationships %}
-          <tr>
-            <td>{%= fieldview.String(rel.Key) %}</td>
-            <td>{%= fieldview.ArrayString(rel.SourceFields) %}</td>
-            <td>{%= fieldview.Package(rel.TargetPkg) %}</td>
-            <td>{%= fieldview.String(rel.TargetModel) %}</td>
-            <td>{%= fieldview.ArrayString(rel.TargetFields) %}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-      {% endif %}
-      <div class="spacer"></div>
+      <ul class="accordion">
+        <li>
+          <input id="{%s model.String() %}-fields" type="checkbox" hidden />
+          <label for="{%s model.String() %}-fields">{%= components.ExpandCollapse(3, ps) %} {%= components.Plural(len(model.Fields), `field`, `fields`) %}</label>
+          <div class="bd">
+            {% if len(model.Fields) == 0 %}
+            <div>No fields in {%s model.Type.String() %}</div>
+            {% else %}
+            <table>
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Type</th>
+                  <th title="nullable">∅</th>
+                  <th title="read-only">RO</th>
+                  <th>Metadata</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for _, f := range model.Fields %}
+                <tr>
+                  <td>{%= fieldview.String(f.Key) %}</td>
+                  <td>{%= fieldview.Type(f.Type) %}</td>
+                  <td>{%= fieldview.Boolean(f.Nullable()) %}</td>
+                  <td>{%= fieldview.Boolean(f.ReadOnly) %}</td>
+                  <td><div class="pre">{%s util.ToJSON(f.Metadata) %}</div></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+        </li>
+        <li>
+          <input id="{%s model.String() %}-indexes" type="checkbox" hidden />
+          <label for="{%s model.String() %}-indexes">{%= components.ExpandCollapse(3, ps) %} {%= components.Plural(len(model.Indexes), `index`, `indexes`) %}</label>
+          <div class="bd">
+            {% if len(model.Indexes) == 0 %}
+            <div>No indexes in {%s model.Type.String() %}</div>
+            {% else %}
+            <table>
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Fields</th>
+                  <th>Unique</th>
+                  <th title="Primary Key">PK</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for _, idx := range model.Indexes %}
+                <tr>
+                  <td>{%= fieldview.String(idx.Key) %}</td>
+                  <td>{%= fieldview.ArrayString(idx.Fields) %}</td>
+                  <td>{%= fieldview.Boolean(idx.Unique) %}</td>
+                  <td>{%= fieldview.Boolean(idx.Primary) %}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+        </li>
+        <li>
+          <input id="{%s model.String() %}-relations" type="checkbox" hidden />
+          <label for="{%s model.String() %}-relations">{%= components.ExpandCollapse(3, ps) %} {%= components.Plural(len(model.Relationships), `relationship`, `relationships`) %}</label>
+          <div class="bd">
+            {% if len(model.Relationships) == 0 %}
+            <div>No relationships in {%s model.Type.String() %}</div>
+            {% else %}
+            <table>
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Fields</th>
+                  <th>Target Package</th>
+                  <th>Target Model</th>
+                  <th>Target Fields</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for _, rel := range model.Relationships %}
+                <tr>
+                  <td>{%= fieldview.String(rel.Key) %}</td>
+                  <td>{%= fieldview.ArrayString(rel.SourceFields) %}</td>
+                  <td>{%= fieldview.Package(rel.TargetPkg) %}</td>
+                  <td>{%= fieldview.String(rel.TargetModel) %}</td>
+                  <td>{%= fieldview.ArrayString(rel.TargetFields) %}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+        </li>
+      </ul>
     </div>
   </li>
 {%- endfunc -%}

@@ -21,6 +21,7 @@ func BuildRouter() (*mux.Router, error) {
 	r.Path("/search").Methods(http.MethodGet).Handler(wrap(Search)).Name("search")
 	r.Path("/profile").Methods(http.MethodGet).Handler(wrap(Profile)).Name("profile")
 	r.Path("/settings").Methods(http.MethodGet).Handler(wrap(Settings)).Name("settings")
+	r.PathPrefix("/admin").Methods(http.MethodGet).Handler(wrap(Admin)).Name("admin")
 
 	help := r.Path("/help").Subrouter()
 	help.Methods(http.MethodGet).Handler(wrap(Help)).Name("help")
