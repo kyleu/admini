@@ -10,7 +10,7 @@ import (
 type ValueMap map[string]interface{}
 
 func ValueMapFor(kvs ...interface{}) ValueMap {
-	ret := make(ValueMap, len(kvs) / 2)
+	ret := make(ValueMap, len(kvs)/2)
 	for i := 0; i < len(kvs); i += 2 {
 		k, ok := kvs[i].(string)
 		if !ok {
@@ -55,6 +55,7 @@ func (c ValueMap) GetStringOpt(k string) string {
 	ret, _ := c.GetString(k, true)
 	return ret
 }
+
 func (c ValueMap) GetStringArray(k string, allowMissing bool) ([]string, error) {
 	v, err := c.GetRequired(k)
 	if err != nil {

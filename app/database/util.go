@@ -1,8 +1,9 @@
 package database
 
 import (
-	"github.com/kyleu/admini/app/util"
 	"strings"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 // Converts a string array into a SQL array string

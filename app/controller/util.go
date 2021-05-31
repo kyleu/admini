@@ -3,7 +3,6 @@ package controller
 import (
 	"net/http"
 	"os"
-	"runtime/debug"
 	"strings"
 	"time"
 
@@ -16,7 +15,6 @@ import (
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
-	"github.com/kyleu/admini/views/vhelp"
 )
 
 var (
@@ -43,8 +41,12 @@ func render(r *http.Request, w http.ResponseWriter, appState *app.State, page la
 
 	pageState.Breadcrumbs = append(pageState.Breadcrumbs, breadcrumbs...)
 	ct := cutil.GetContentType(r)
-	if pageState.Data != nil && cutil.IsContentTypeJSON(ct) {
-		return cutil.RespondJSON(w, "", pageState.Data)
+	if pageState.Data != nil {
+		if cutil.IsContentTypeJSON(ct) {
+			return cutil.RespondJSON(w, "", pageState.Data)
+		} else if cutil.IsContentTypeXML(ct) {
+			return cutil.RespondXML(w, "", pageState.Data)
+		}
 	}
 	startNanos := time.Now().UnixNano()
 	views.WriteRender(w, page, appState, pageState)
@@ -97,26 +99,5 @@ func NotFound(w http.ResponseWriter, r *http.Request) {
 		}
 		ps.Data = "404 not found"
 		return render(r, w, as, &verror.NotFound{}, ps, "Not Found")
-	})
-}
-
-func Modules(w http.ResponseWriter, r *http.Request) {
-	act("modules", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		mods, ok := debug.ReadBuildInfo()
-		if !ok {
-			return "", errors.New("unable to gather modules")
-		}
-		ps.Title = "Modules"
-		ps.Data = mods.Deps
-		return render(r, w, as, &vhelp.Modules{Mods: mods.Deps}, ps, "modules")
-	})
-}
-
-func Routes(w http.ResponseWriter, r *http.Request) {
-	act("routes", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		routes := cutil.ExtractRoutes(as.Router)
-		ps.Title = "Routes"
-		ps.Data = routes
-		return render(r, w, as, &vhelp.Routes{Routes: routes}, ps, "routes")
 	})
 }

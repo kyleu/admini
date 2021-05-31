@@ -3,7 +3,13 @@ package controller
 import (
 	"net/http"
 	"path/filepath"
+	"runtime/debug"
 	"strings"
+
+	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/views/vhelp"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/assets"
 )
@@ -18,6 +24,27 @@ func Favicon(w http.ResponseWriter, r *http.Request) {
 func RobotsTxt(w http.ResponseWriter, r *http.Request) {
 	data, hash, contentType, err := assets.Asset(assetBase, "/robots.txt")
 	ZipResponse(w, r, data, hash, contentType, err)
+}
+
+func Modules(w http.ResponseWriter, r *http.Request) {
+	act("modules", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		mods, ok := debug.ReadBuildInfo()
+		if !ok {
+			return "", errors.New("unable to gather modules")
+		}
+		ps.Title = "Modules"
+		ps.Data = mods.Deps
+		return render(r, w, as, &vhelp.Modules{Mods: mods.Deps}, ps, "modules")
+	})
+}
+
+func Routes(w http.ResponseWriter, r *http.Request) {
+	act("routes", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		routes := cutil.ExtractRoutes(as.Router)
+		ps.Title = "Routes"
+		ps.Data = routes
+		return render(r, w, as, &vhelp.Routes{Routes: routes}, ps, "routes")
+	})
 }
 
 func Static(w http.ResponseWriter, r *http.Request) {

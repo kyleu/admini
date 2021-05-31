@@ -1,14 +1,14 @@
 package cutil
 
 import (
+	"net/http"
+
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
-	"net/http"
 )
 
 func ParseForm(req *http.Request) (util.ValueMap, error) {
-	ct := GetContentType(req)
-	if IsContentTypeJSON(ct) {
+	if ct := GetContentType(req); IsContentTypeJSON(ct) {
 		return parseJSONForm(req)
 	}
 	return parseHTTPForm(req)

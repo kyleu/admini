@@ -72,7 +72,7 @@ func openDatabase(cfg []byte, logger *zap.SugaredLogger) (*database.Service, err
 func forTable(m *model.Model) (string, string) {
 	cols := make([]string, 0, len(m.Fields))
 	for _, f := range m.Fields {
-		cols = append(cols, "\"" + f.Key + "\"")
+		cols = append(cols, "\""+f.Key+"\"")
 	}
 	tbl := "\"" + m.Key + "\""
 	if len(m.Pkg) > 0 {

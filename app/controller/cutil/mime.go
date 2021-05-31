@@ -1,6 +1,7 @@
 package cutil
 
 import (
+	"encoding/xml"
 	"net/http"
 	"strings"
 
@@ -8,8 +9,6 @@ import (
 
 	"github.com/kyleu/admini/app/util"
 )
-
-const jsonMIME = "application/json"
 
 func WriteCORS(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
@@ -20,6 +19,19 @@ func WriteCORS(w http.ResponseWriter) {
 
 func RespondJSON(w http.ResponseWriter, filename string, body interface{}) (string, error) {
 	return RespondMIME(filename, "application/json", "json", util.ToJSONBytes(body, true), w)
+}
+
+type XMLResponse struct {
+	Result interface{} `xml:"result"`
+}
+
+func RespondXML(w http.ResponseWriter, filename string, body interface{}) (string, error) {
+	body = XMLResponse{Result: body}
+	b, err := xml.Marshal(body)
+	if err != nil {
+		return "", errors.Wrapf(err, "can't serialize response of type [%T] to XML", body)
+	}
+	return RespondMIME(filename, "text/xml", "xml", b, w)
 }
 
 func RespondMIME(filename string, mime string, ext string, ba []byte, w http.ResponseWriter) (string, error) {
@@ -51,12 +63,18 @@ func GetContentType(r *http.Request) string {
 	case "":
 		return strings.TrimSpace(ret)
 	case "json":
-		return jsonMIME
+		return "application/json"
+	case "xml":
+		return "text/xml"
 	default:
 		return strings.TrimSpace(ret)
 	}
 }
 
 func IsContentTypeJSON(c string) bool {
-	return c == jsonMIME || c == "text/json"
+	return c == "application/json" || c == "text/json"
+}
+
+func IsContentTypeXML(c string) bool {
+	return c == "application/xml" || c == "text/xml"
 }

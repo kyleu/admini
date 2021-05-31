@@ -1,8 +1,9 @@
 package project
 
 import (
-	"github.com/kyleu/admini/app/util"
 	"strings"
+
+	"github.com/kyleu/admini/app/util"
 
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/schema"

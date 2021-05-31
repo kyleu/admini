@@ -38,8 +38,7 @@ func (l *Loader) Count(m *model.Model) (int, error) {
 	c := struct {
 		C int `db:"c"`
 	}{}
-	err := l.db.Get(&c, q, nil)
-	if err != nil {
+	if err := l.db.Get(&c, q, nil); err != nil {
 		return 0, errors.Wrapf(err, "error listing models for [%v]", m.Key)
 	}
 	return c.C, nil
