@@ -11,8 +11,8 @@ type Package struct {
 	ChildPackages Packages `json:"childPackages,omitempty"`
 }
 
-func (p *Package) Path() []string {
-	return append([]string{}, p.Pkg.Push(p.Key)...)
+func (p *Package) Path() util.Pkg {
+	return p.Pkg.With(p.Key)
 }
 
 func (p *Package) PathString() string {

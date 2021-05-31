@@ -41,10 +41,8 @@ func (m *Model) Description() string {
 	return m.Type.String() + " model [" + m.Name() + "]"
 }
 
-func (m *Model) Path() []string {
-	ret := util.StringArrayCopy(m.Pkg)
-	ret = append(ret, m.Key)
-	return ret
+func (m *Model) Path() util.Pkg {
+	return m.Pkg.With(m.Key)
 }
 
 func (m *Model) PathString() string {

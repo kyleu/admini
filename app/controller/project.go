@@ -51,7 +51,7 @@ func ProjectTest(w http.ResponseWriter, r *http.Request) {
 
 		req := action.NewRequest(action.TypeModel.Key, "list", action.TypeSource.Key, "admini_test", action.TypeModel.Key, "public/simple")
 
-		q, err := action.Qualify(req, v.Project.Actions)
+		q, err := action.Qualify(req, v.Project.Actions, v.Schemata)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to qualify project ["+key+"]")
 		}

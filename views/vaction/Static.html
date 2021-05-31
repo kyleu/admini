@@ -16,16 +16,17 @@
     <em>Static</em>
   </div>
   <div class="card">
+    {%- code ct := p.Act.Config.GetStringOpt("content") -%}
     {%- switch p.Act.Config.GetStringOpt("format") -%}
     {%- case "html" -%}
-    {%s= p.Act.Config.GetStringOpt("content") %}
+    {%s= ct %}
     {%- case "text" -%}
-    {%s p.Act.Config.GetStringOpt("content") %}
+    {%s ct %}
     {%- case "code" -%}
-    <pre>{%s p.Act.Config.GetStringOpt("content") %}</pre>
+    <pre>{%s ct %}</pre>
     {%- default -%}
-    {%s p.Act.Config.GetStringOpt("content") %}
-    {% endswitch %}
+    {%s ct %}
+    {%- endswitch -%}
   </div>
   {%-= resultChildren(p.Req, p.Act, 1) -%}
   {%-= resultDebug(p.Req, p.Act) -%}

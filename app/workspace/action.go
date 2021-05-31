@@ -44,14 +44,16 @@ func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, er
 	switch act.Type {
 	case action.TypeFolder:
 		return NewResult("", nil, req, act, act, &vaction.Folder{Req: req, Act: act}), nil
+	case action.TypeStatic:
+		return NewResult("", nil, req, act, act, &vaction.Static{Req: req, Act: act}), nil
+
 	case action.TypeAll:
 		return sourceAll(req, act)
 	case action.TypeSource, action.TypePackage, action.TypeModel:
 		return sourceItem(req, act)
-	case action.TypeStatic:
-		return NewResult("", nil, req, act, act, &vaction.Static{Req: req, Act: act}), nil
 	case action.TypeActivity:
 		return sourceActivity(req, act)
+
 	default:
 		page := &views.TODO{Message: "unhandled action type [" + act.Type.Key + "]"}
 		return NewResult("", nil, req, act, act, page), nil

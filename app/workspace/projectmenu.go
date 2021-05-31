@@ -56,10 +56,10 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 		switch act.Type {
 		case action.TypeFolder:
 			// noop
-		case action.TypeSeparator:
-			x = &menu.Item{}
 		case action.TypeStatic:
 			// noop
+		case action.TypeSeparator:
+			x = &menu.Item{}
 
 		case action.TypeAll:
 			err = itemsForAll(x, act, view)
@@ -71,6 +71,7 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 			// err = itemsForModel(x, act, view)
 		case action.TypeActivity:
 			// noop
+
 		default:
 			err = errors.New("unhandled menu action type [" + act.Type.Key + "]")
 		}

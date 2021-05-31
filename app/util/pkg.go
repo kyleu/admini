@@ -67,6 +67,18 @@ func (p Pkg) With(key string) Pkg {
 	return append(append(Pkg{}, p...), key)
 }
 
+func (p Pkg) StartsWith(t Pkg) bool {
+	if len(p) < len(t) {
+		return false
+	}
+	for i, x := range t {
+		if p[i] != x {
+			return false
+		}
+	}
+	return true
+}
+
 func SplitPackage(s string) (Pkg, string) {
 	sp := strings.Split(s, "::")
 	pkg := sp[0 : len(sp)-1]
