@@ -36,6 +36,6 @@ func errMessage(t string, q string, values []interface{}) string {
 
 func (s *Service) logQuery(msg string, q string, values []interface{}) {
 	if s.debug != nil {
-		s.debug.Info("%v {\n  SQL: %v\n  Values: %v\n}", msg, strings.TrimSpace(q), valueStrings(values))
+		s.debug.Infof("%v {\n  SQL: %v\n  Values: %v\n}", msg, strings.TrimSpace(q), valueStrings(values))
 	}
 }

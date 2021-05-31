@@ -34,7 +34,7 @@ func Run() error {
 
 	flags := parseFlags()
 
-	logger.With(zap.String("address", flags.Address), zap.Int("port", int(util.AppPort))).Info("[" + util.AppName + "]")
+	logger.With(zap.Bool("debug", flags.Debug), zap.String("address", flags.Address), zap.Int("port", int(util.AppPort))).Info("[" + util.AppName + "]")
 
 	r, err := controller.BuildRouter()
 	if err != nil {
