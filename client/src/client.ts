@@ -1,5 +1,4 @@
 import "./client.css"
-import {appName} from "./util";
 import {menuInit} from "./menu";
 import {flashInit} from "./flash";
 import {editorInit} from "./editor";

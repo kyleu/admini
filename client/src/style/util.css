@@ -68,3 +68,17 @@
   margin-left: 16px;
   margin-bottom: 8px;
 }
+
+.icon {
+  float: left;
+  margin-right: 6px;
+  margin-top: 1px;
+}
+
+.icon-choice input {
+  display: none;
+}
+
+.icon-choice input:checked ~ * {
+  border: 3px solid var(--color-highlight);
+}
