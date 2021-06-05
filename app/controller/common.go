@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"net/http"
 	"runtime/debug"
 
 	"github.com/valyala/fasthttp"
@@ -15,15 +14,15 @@ import (
 
 func Options(ctx *fasthttp.RequestCtx) {
 	cutil.WriteCORS(ctx)
-	ctx.SetStatusCode(http.StatusOK)
+	ctx.SetStatusCode(fasthttp.StatusOK)
 }
 
 func NotFound(ctx *fasthttp.RequestCtx) {
 	act("notfound", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		cutil.WriteCORS(ctx)
 		ctx.Response.Header.Set("Content-Type", "text/html; charset=utf-8")
-		ctx.SetStatusCode(http.StatusNotFound)
-		ps.Logger.Warnf("%s %s returned [%d]", string(ctx.Method()), string(ctx.Request.URI().Path()), http.StatusNotFound)
+		ctx.SetStatusCode(fasthttp.StatusNotFound)
+		ps.Logger.Warnf("%s %s returned [%d]", string(ctx.Method()), string(ctx.Request.URI().Path()), fasthttp.StatusNotFound)
 		if ps.Title == "" {
 			ps.Title = "404"
 		}

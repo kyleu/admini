@@ -66,7 +66,7 @@ func processModelExport(req *cutil.WorkspaceRequest, act *action.Action, m *mode
 		page := &vexport.Detail{Format: f, Results: res}
 		return NewResult("", bc, req, act, nil, page), nil
 	default:
-		return nil, errors.Errorf("unhandled path [%v]", strings.Join(additional, "/"))
+		return nil, errors.Errorf("unhandled path [%s]", strings.Join(additional, "/"))
 	}
 }
 

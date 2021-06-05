@@ -10,7 +10,6 @@ import (
 type Relationship struct {
 	Key          string   `json:"key"`
 	SourceFields []string `json:"srcFields"`
-	TargetSource string   `json:"tgtSource"`
 	TargetPkg    util.Pkg `json:"tgtPackage"`
 	TargetModel  string   `json:"tgtModel"`
 	TargetFields []string `json:"tgtFields"`

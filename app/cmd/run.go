@@ -38,7 +38,7 @@ func Run() error {
 		zap.Int("port", util.AppPort),
 	).Infof("[%s]", util.AppName)
 
-	r := controller.BuildRouterNew()
+	r := controller.BuildRouter()
 
 	f := filesystem.NewFileSystem("data", logger)
 	ls := loader.NewService()

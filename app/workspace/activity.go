@@ -1,13 +1,11 @@
 package workspace
 
 import (
-	"net/http"
-
 	"github.com/kyleu/admini/app/action"
-
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/pkg/errors"
+	"github.com/valyala/fasthttp"
 )
 
 func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
@@ -28,7 +26,7 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 		return ErrResult(req, act, errors.New("must provide source in action config"))
 	}
 	sql := act.Config.GetStringOpt("query")
-	if string(req.Ctx.Method()) == http.MethodPost {
+	if string(req.Ctx.Method()) == fasthttp.MethodPost {
 		frm, err := cutil.ParseForm(req.Ctx)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to parse form")

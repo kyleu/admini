@@ -2,57 +2,59 @@ package controller
 
 import (
 	"github.com/fasthttp/router"
+	"github.com/valyala/fasthttp"
 )
 
-func BuildRouterNew() *router.Router {
+func BuildRouter() *router.Router {
+	w := fasthttp.CompressHandler
 	r := router.New()
-	r.GET("/", Home)
+	r.GET("/", w(Home))
 
-	r.GET(defaultSearchPath, Search)
-	r.GET(defaultProfilePath, Profile)
-	r.GET("/settings", Settings)
-	r.GET("/admin", Admin)
+	r.GET(defaultSearchPath, w(Search))
+	r.GET(defaultProfilePath, w(Profile))
+	r.GET("/settings", w(Settings))
+	r.GET("/admin", w(Admin))
 
-	r.GET("/help", Help)
-	r.GET("/feedback", Feedback)
+	r.GET("/help", w(Help))
+	r.GET("/feedback", w(Feedback))
 
-	r.GET("/source", SourceList)
-	r.POST("/source", SourceInsert)
-	r.GET("/source/_new", SourceNew)
-	r.GET("/source/{key}", SourceDetail)
-	r.GET("/source/{key}/edit", SourceEdit)
-	r.POST("/source/{key}", SourceSave)
-	r.GET("/source/{key}/refresh", SourceRefresh)
-	r.GET("/source/{key}/delete", SourceDelete)
+	r.GET("/source", w(SourceList))
+	r.POST("/source", w(SourceInsert))
+	r.GET("/source/_new", w(SourceNew))
+	r.GET("/source/{key}", w(SourceDetail))
+	r.GET("/source/{key}/edit", w(SourceEdit))
+	r.POST("/source/{key}", w(SourceSave))
+	r.GET("/source/{key}/refresh", w(SourceRefresh))
+	r.GET("/source/{key}/delete", w(SourceDelete))
 
-	r.GET("/project", ProjectList)
-	r.POST("/project", ProjectInsert)
-	r.GET("/project/_new", ProjectNew)
-	r.GET("/project/{key}", ProjectDetail)
-	r.POST("/project/{key}", ProjectSave)
-	r.GET("/project/{key}/edit", ProjectEdit)
-	r.POST("/project/{key}/actions", ActionOrdering)
-	r.GET("/project/{key}/action/{_:*}", ActionEdit)
-	r.POST("/project/{key}/action/{_:*}", ActionSave)
-	r.GET("/project/{key}/test", ProjectTest)
-	r.GET("/project/{key}/delete", ProjectDelete)
+	r.GET("/project", w(ProjectList))
+	r.POST("/project", w(ProjectInsert))
+	r.GET("/project/_new", w(ProjectNew))
+	r.GET("/project/{key}", w(ProjectDetail))
+	r.POST("/project/{key}", w(ProjectSave))
+	r.GET("/project/{key}/edit", w(ProjectEdit))
+	r.POST("/project/{key}/actions", w(ActionOrdering))
+	r.GET("/project/{key}/action/{_:*}", w(ActionEdit))
+	r.POST("/project/{key}/action/{_:*}", w(ActionSave))
+	r.GET("/project/{key}/test", w(ProjectTest))
+	r.GET("/project/{key}/delete", w(ProjectDelete))
 
-	r.GET("/x/{key}", WorkspaceProject)
-	r.GET("/x/{key}/{_:*}", WorkspaceProject)
-	r.GET("/s/{key}", WorkspaceSource)
-	r.GET("/s/{key}/{_:*}", WorkspaceSource)
+	r.GET("/x/{key}", w(WorkspaceProject))
+	r.GET("/x/{key}/{_:*}", w(WorkspaceProject))
+	r.GET("/s/{key}", w(WorkspaceSource))
+	r.GET("/s/{key}/{_:*}", w(WorkspaceSource))
 
-	r.GET("/sandbox", SandboxList)
-	r.GET("/sandbox/{key}", SandboxRun)
+	r.GET("/sandbox", w(SandboxList))
+	r.GET("/sandbox/{key}", w(SandboxRun))
 
-	r.GET("/modules", Modules)
+	r.GET("/modules", w(Modules))
 
 	r.GET("/favicon.ico", Favicon)
 	r.GET("/robots.txt", RobotsTxt)
 	r.GET("/assets/{_:*}", Static)
 
-	r.OPTIONS("/", Options)
-	r.OPTIONS("/{_:*}", Options)
+	r.OPTIONS("/", w(Options))
+	r.OPTIONS("/{_:*}", w(Options))
 	r.NotFound = NotFound
 
 	return r

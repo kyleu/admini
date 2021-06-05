@@ -41,7 +41,7 @@ func SetState(a *app.State) {
 func ctxRequiredString(ctx *fasthttp.RequestCtx, key string, allowEmpty bool) (string, error) {
 	v, ok := ctx.UserValue(key).(string)
 	if !ok || ((!allowEmpty) && v == "") {
-		return v, errors.Errorf("must provide [%v] in path", key)
+		return v, errors.Errorf("must provide [%s] in path", key)
 	}
 	return v, nil
 }

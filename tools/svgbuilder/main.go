@@ -91,7 +91,7 @@ func template(src string, svgs []*SVG) string {
 		case "search", "up", "down", "left", "right":
 			// noop
 		default:
-			keys = append(keys, fmt.Sprintf(`"%v"`, svg.Key))
+			keys = append(keys, fmt.Sprintf(`"%s"`, svg.Key))
 		}
 	}
 

@@ -52,7 +52,6 @@ func loadForeignKeys(models model.Models, db *database.Service) error {
 			curr = &model.Relationship{
 				Key:          k.Name,
 				SourceFields: []string{},
-				TargetSource: "TODO",
 				TargetPkg:    util.Pkg{k.TargetSchema},
 				TargetModel:  k.TargetTable,
 				TargetFields: []string{},

@@ -2,7 +2,7 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func FormInput(key string, id string, value string) %}{% stripspace %}
-  <input id="{%s id %}" name="{%s key %}" value="{%v value %}" />
+  <input id="{%s id %}" name="{%s key %}" value="{%s value %}" />
 {% endstripspace %}{% endfunc %}
 
 {% func FormInputNumber(key string, id string, value int) %}{% stripspace %}
@@ -10,7 +10,7 @@
 {% endstripspace %}{% endfunc %}
 
 {% func FormTextarea(key string, id string, value string) %}{% stripspace %}
-  <textarea id="{%s id %}" name="{%s key %}">{%v value %}</textarea>
+  <textarea id="{%s id %}" name="{%s key %}">{%s value %}</textarea>
 {% endstripspace %}{% endfunc %}
 
 {% func FormSelect(key string, id string, value string, opts []string, titles []string, indent int) %}{% stripspace %}

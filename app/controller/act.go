@@ -2,7 +2,6 @@ package controller
 
 import (
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/valyala/fasthttp"
@@ -43,7 +42,7 @@ func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 		logger.Warnf("error retrieving session: %+v", err)
 	}
 	if session.IsNew {
-		session.Options = &sessions.Options{Path: "/", HttpOnly: true /* , SameSite: http.SameSiteStrictMode */}
+		session.Options = &sessions.Options{Path: "/", HttpOnly: true /* , SameSite: fasthttp.SameSiteStrictMode */}
 		err = session.Save(ctx)
 		if err != nil {
 			logger.Warnf("can't save session: %+v", err)
@@ -62,12 +61,12 @@ func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 }
 
 func actComplete(key string, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	status := http.StatusOK
+	status := fasthttp.StatusOK
 	cutil.WriteCORS(ctx)
 	startNanos := time.Now().UnixNano()
 	redir, err := f(currentApp, ps)
 	if err != nil {
-		status = http.StatusInternalServerError
+		status = fasthttp.StatusInternalServerError
 		ctx.SetStatusCode(status)
 
 		ps.Logger.Errorf("error running action [%s]: %+v", key, err)
@@ -86,7 +85,7 @@ func actComplete(key string, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f fu
 	}
 	if redir != "" {
 		ctx.Response.Header.Set("Location", redir)
-		status = http.StatusFound
+		status = fasthttp.StatusFound
 		ctx.SetStatusCode(status)
 	}
 	elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
