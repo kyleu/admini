@@ -22,11 +22,7 @@
         <tbody>
           {%= components.TableInput("key", "Key", p.Act.Key, 5) %}
           {%= components.TableInput("title", "Title", p.Act.Title, 5) %}
-          <tr>
-            <th class="shrink"><label>Icon</label></th>
-            <td>{%= components.IconPicker(p.Act.Icon, "icon", ps, 7) %}
-            </td>
-          </tr>
+          {%= components.TableIcons("icon", "Icon", p.Act.Icon, ps, 5) %}
           {%= components.TableTextarea("description", "Description", p.Act.Description, 5) %}
           {%- switch p.Act.Type -%}
           {%- case action.TypeStatic -%}

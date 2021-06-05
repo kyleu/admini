@@ -114,3 +114,14 @@
   </tr>
 {% endstripspace %}{% endfunc %}
 
+{% func TableIcons(key string, title string, value string, ps *cutil.PageState, indent int) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label>{%s title %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>{%= IconPicker(value, key, ps, indent + 2) %}
+    </td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
+

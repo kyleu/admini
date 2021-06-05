@@ -6,59 +6,59 @@
 
 /* light theme */
 :root {
-  --border: 1px solid #ddd;
+  --border: 1px solid #dddddd;
   --box-shadow: 0 4px 4px 0 rgba(0,0,0,0.12),0 1px 12px 0 rgba(0,0,0,0.12),0 4px 4px -1px rgba(0,0,0,0.12);
   --link-text-decoration: none;
 
-  --color-foreground: black;
-  --color-foreground-muted: #999;
-  --color-background: white;
-  --color-background-muted: #eee;
+  --color-foreground: #000000;
+  --color-foreground-muted: #999999;
+  --color-background: #ffffff;
+  --color-background-muted: #eeeeee;
 
-  --color-highlight: green;
+  --color-highlight: #008000;
   --color-link: #2d414e;
   --color-link-visited: #406379;
 
-  --color-success: green;
-  --color-error: red;
-
-  --color-nav-foreground: black;
+  --color-nav-foreground: #000000;
   --color-nav-background: #4f9abd;
 
-  --color-menu-foreground: black;
-  --color-menu-background: aliceblue;
-  --color-menu-final: antiquewhite;
+  --color-menu-foreground: #000000;
+  --color-menu-background: #f0f8ff;
+  --color-menu-background-selected: #faebd7;
 
   --color-modal-backdrop: rgba(77, 77, 77, .7);
+
+  --color-success: #008000;
+  --color-error: red;
 }
 
 /* dark theme */
 @media (prefers-color-scheme: dark) {
   :root {
-    --border: 1px solid #666;
+    --border: 1px solid #666666;
     --box-shadow: 0 4px 4px 0 rgba(255,255,255,0.12),0 1px 12px 0 rgba(255,255,255,0.12),0 4px 4px -1px rgba(255,255,255,0.12);
     --link-text-decoration: none;
 
-    --color-foreground: white;
-    --color-foreground-muted: #999;
+    --color-foreground: #ffffff;
+    --color-foreground-muted: #999999;
     --color-background: #121212;
-    --color-background-muted: #333;
+    --color-background-muted: #333333;
 
-    --color-highlight: green;
-    --color-link: #ddd;
-    --color-link-visited: #aaa;
+    --color-highlight: #008000;
+    --color-link: #dddddd;
+    --color-link-visited: #aaaaaa;
 
-    --color-success: green;
-    --color-error: red;
-
-    --color-nav-foreground: #fff;
+    --color-nav-foreground: #ffffff;
     --color-nav-background: #2d414e;
 
-    --color-menu-foreground: #ddd;
+    --color-menu-foreground: #dddddd;
     --color-menu-background: #171f24;
-    --color-menu-final: #333;
+    --color-menu-background-selected: #333333;
 
     --color-modal-backdrop: rgba(33, 33, 33, .7);
+
+    --color-success: #008000;
+    --color-error: red;
   }
 }
 

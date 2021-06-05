@@ -35,7 +35,7 @@
 }
 
 .menu-container .final {
-  background-color: var(--color-menu-final);
+  background-color: var(--color-menu-background-selected);
 }
 
 .menu-container .separator {

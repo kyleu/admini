@@ -1,0 +1,30 @@
+{% import "github.com/kyleu/admini/app/user" %}
+
+{% func ThemeEditor(t user.Colors) %}{% stripspace %}
+  <table>
+    <tbody>
+      {%= colorInput("foreground", t.Foreground) %}
+      {%= colorInput("foreground-muted", t.ForegroundMuted) %}
+      {%= colorInput("background", t.Background) %}
+      {%= colorInput("background-muted", t.BackgroundMuted) %}
+
+      {%= colorInput("highlight", t.Highlight) %}
+      {%= colorInput("link", t.Link) %}
+      {%= colorInput("link-visited", t.LinkVisited) %}
+
+      {%= colorInput("nav-foreground", t.NavForeground) %}
+      {%= colorInput("nav-background", t.NavBackground) %}
+
+      {%= colorInput("menu-foreground", t.MenuForeground) %}
+      {%= colorInput("menu-background", t.MenuBackground) %}
+      {%= colorInput("menu-background-selected", t.MenuBackgroundSelected) %}
+    </tbody>
+  </table>
+{% endstripspace %}{% endfunc %}
+
+{% func colorInput(k string, v string) %}{% stripspace %}
+  <tr>
+    <td>{%s k %}</td>
+    <td><input class="color-var" data-var="color-{%s k %}" type="color" value="{%s v %}" /></td>
+  </tr>
+{% endstripspace %}{% endfunc %}

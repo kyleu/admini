@@ -7,6 +7,7 @@
 {% code type Profile struct {
   layout.Basic
   Profile *user.Profile
+  Theme *user.Theme
 } %}
 
 {% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
@@ -15,6 +16,15 @@
     <h3>Profile</h3>
     <p>Name: {%s p.Profile.Name %}</p>
   </div>
+  <div class="card">
+    <h3>Colors!</h3>
+    <div class="spacer"></div>
+    <form>
+      {%= components.ThemeEditor(p.Theme.Light) %}
+      <div class="spacer"></div>
+      <button type="reset" onclick="admini.themeReset(); return true;">Reset</button>
+    </form>
+  </div>
   {%= components.JSONModal("profile", "Profile JSON", p.Profile, 1) %}
+  <style type="text/css">{%s p.Theme.CSS(2) %}  </style>
 {% endfunc %}
-

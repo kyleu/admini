@@ -18,11 +18,7 @@
         <tbody>
           {%= components.TableInput("key", "Key", "", 5) %}
           {%= components.TableInput("title", "Title", "", 5) %}
-          <tr>
-            <th class="shrink"><label>Icon</label></th>
-            <td>{%= components.IconPicker("", "icon", ps, 7) %}
-            </td>
-          </tr>
+          {%= components.TableIcons("icon", "Icon", "", ps, 5) %}
           {%= components.TableTextarea("description", "Description", "", 5) %}
           {%= components.TableRadio("type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5) %}
         </tbody>

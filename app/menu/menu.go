@@ -12,13 +12,13 @@ func For(as *app.State) Items {
 	return Items{
 		&Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: "/project", Children: projectItems(as)},
 		Separator,
-		&Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Icon: "star", Route: "/source", Children: sourceItems(as)},
+		&Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Icon: "database", Route: "/source", Children: sourceItems(as)},
 		Separator,
-		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "star", Route: "/sandbox", Children: sandboxItems()},
+		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "code", Route: "/sandbox", Children: sandboxItems()},
 		Separator,
-		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "star", Route: "/settings"},
-		&Item{Key: "feedback", Title: "Feedback", Description: "Submit feedback so we can improve " + util.AppName, Icon: "star", Route: "/feedback"},
-		&Item{Key: "help", Title: "Help", Description: "Get assistance and advice for using " + util.AppName, Icon: "star", Route: "/help"},
+		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/settings"},
+		&Item{Key: "feedback", Title: "Feedback", Description: "Submit feedback so we can improve " + util.AppName, Icon: "mail", Route: "/feedback"},
+		&Item{Key: "help", Title: "Help", Description: "Get assistance and advice for using " + util.AppName, Icon: "comment", Route: "/help"},
 	}
 }
 

@@ -15,6 +15,6 @@ func Profile(ctx *fasthttp.RequestCtx) {
 		profile := &user.Profile{Name: "Test"}
 		ps.Title = "Profile"
 		ps.Data = profile
-		return render(ctx, as, &vprofile.Profile{Profile: profile}, ps, "Profile")
+		return render(ctx, as, &vprofile.Profile{Profile: profile, Theme: user.ThemeDefault}, ps, "Profile")
 	})
 }
