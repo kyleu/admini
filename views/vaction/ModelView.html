@@ -4,6 +4,7 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
@@ -53,7 +54,7 @@
               }
             -%}
             {%- for _, q := range quals -%}
-            <a href="{%s p.Req.Route(q.Link()...) %}" title="{%s rel.String() %}">REL</a>
+            <a href="{%s p.Req.Route(q.Link()...) %}" title="{%s rel.String() %}">{%= components.SVGRef(q.Icon, 16, 16, "", ps) %}</a>
             {%- endfor -%}
             {%- endfor -%}
           </td>

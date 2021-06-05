@@ -17,7 +17,7 @@
 {% func (p *ActivitySQL) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
-    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 32, 32, "icon", ps) %}{%s p.Act.Name() %}</h3>
+    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
     <em>SQL Playground</em>
     <form class="sql editor" action="" method="post">
       <textarea name="sql" placeholder="SQL">{%s p.SQL %}</textarea>

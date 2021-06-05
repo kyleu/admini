@@ -2,8 +2,6 @@ package model
 
 import (
 	"encoding/json"
-
-	"github.com/pkg/errors"
 )
 
 type Type struct {
@@ -15,7 +13,6 @@ type Type struct {
 
 var (
 	TypeEnum         = Type{Key: "enum", Title: "Enum", Plural: "Enums", Icon: "world"}
-	TypeSequence     = Type{Key: "sequence", Title: "Sequence", Plural: "Sequences", Icon: "world"}
 	TypeStruct       = Type{Key: "struct", Title: "Struct", Plural: "Structs", Icon: "world"}
 	TypeInterface    = Type{Key: "interface", Title: "Interface", Plural: "Interfaces", Icon: "world"}
 	TypeUnion        = Type{Key: "union", Title: "Union", Plural: "Unions", Icon: "world"}
@@ -23,10 +20,7 @@ var (
 	TypeUnknown      = Type{Key: "unknown", Title: "Unknown", Plural: "Unknowns", Icon: "world"}
 )
 
-var AllModelTypes = []Type{
-	TypeEnum, TypeSequence, TypeStruct,
-	TypeInterface, TypeUnion, TypeIntersection,
-}
+var AllModelTypes = []Type{TypeEnum, TypeStruct, TypeInterface, TypeUnion, TypeIntersection, TypeUnknown}
 
 func modelTypeFromString(s string) (Type, error) {
 	for _, t := range AllModelTypes {
@@ -34,7 +28,7 @@ func modelTypeFromString(s string) (Type, error) {
 			return t, nil
 		}
 	}
-	return TypeUnknown, errors.New("\"unhandled model type [\" + s + \"]\"")
+	return TypeUnknown, nil
 }
 
 func (t *Type) String() string {

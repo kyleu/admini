@@ -30,8 +30,6 @@ func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 		ret.Type = model.TypeStruct
 	case "view":
 		ret.Type = model.TypeInterface
-	case "sequence":
-		ret.Type = model.TypeSequence
 	default:
 		logger.Warnf("unknown model type [%s]", t.Type)
 		ret.Type = model.TypeUnknown

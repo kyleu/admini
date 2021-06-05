@@ -18,7 +18,7 @@ from
   pg_catalog.pg_class c
   left join pg_catalog.pg_namespace n ON n.oid = c.relnamespace
 where
-  c.relkind IN ('r','p','v','m','S','f','')
+  c.relkind IN ('r','p','v','m','f','')
   and n.nspname not in ('information_schema', 'pg_catalog')
   and n.nspname !~ '^pg_toast'
   {% if schema != "" %}

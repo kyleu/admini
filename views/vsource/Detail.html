@@ -19,7 +19,6 @@
     <p>
       <a href="/s/{%s p.Source.Key %}"><button type="button">Workspace</button></a>
       <a href="/source/{%s p.Source.Key %}/refresh"><button type="button">Refresh</button></a>
-      <a href="#modal-schema"><button type="button">Schema</button></a>
     </p>
   </div>
 
@@ -34,6 +33,4 @@
     {%- endif -%}
     </ul>
   </div>
-
-  {%= components.JSONModal("schema", "Schema JSON", p.Schema, 1) %}
 {% endfunc %}

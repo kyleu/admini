@@ -3,6 +3,7 @@
 {% import "github.com/kyleu/admini/app/field" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
@@ -52,7 +53,7 @@
             %}
             {% for _, q := range quals %}
               {% space %}
-              <a href="{%s ws.Route(q.Link()...) %}" title="{%s q.String() %}">REL</a>
+              <a href="{%s ws.Route(q.Link()...) %}" title="{%s q.String() %}">{%= components.SVGRef(q.Icon, 16, 16, "", ws.PS) %}</a>
             {% endfor %}
           {% endfor %}
         {% endif %}
