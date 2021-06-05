@@ -52,17 +52,12 @@
   display: block;
 }
 
-.inline-icon {
-  float: left;
-  margin-right: 4px;
-}
-
 .svg-fill {
-  fill: var(--color-foreground);
+  fill: currentColor;
 }
 
 .svg-stroke {
-  stroke: var(--color-foreground);
+  stroke: currentColor;
 }
 
 .error-owned {

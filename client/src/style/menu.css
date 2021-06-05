@@ -103,11 +103,3 @@
 .menu-container input[type=checkbox]:checked + label .collapse {
   display: inline;
 }
-
-.menu-container .svg-fill, .menu-svg-fill {
-  fill: var(--color-menu-foreground);
-}
-
-.menu-container .svg-stroke, .menu-svg-stroke {
-  stroke: var(--color-menu-foreground);
-}

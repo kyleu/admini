@@ -41,7 +41,7 @@ func main() {
 func markup(key string, bytes []byte) string {
 	orig := strings.TrimSpace(string(bytes))
 	if !strings.Contains(orig, "id=\"svg-") {
-		panic("no id for SVG [" + key + "]")
+		panic(fmt.Sprintf("no id for SVG [%s]", key))
 	}
 	replaced := re.ReplaceAllLiteralString(orig, "")
 	return replaced
@@ -50,7 +50,7 @@ func markup(key string, bytes []byte) string {
 func loadSVGs(src string) ([]*SVG, error) {
 	files, err := ioutil.ReadDir(src)
 	if err != nil {
-		return nil, errors.Wrapf(err, "cannot list path [%v]", src)
+		return nil, errors.Wrapf(err, "cannot list path [%s]", src)
 	}
 	var svgs []*SVG
 	for _, f := range files {
@@ -82,9 +82,16 @@ func template(src string, svgs []*SVG) string {
 	}
 
 	maxKeyLength := 0
+	var keys []string
 	for _, svg := range svgs {
 		if len(svg.Key) > maxKeyLength {
 			maxKeyLength = len(svg.Key)
+		}
+		switch svg.Key {
+		case "search", "up", "down", "left", "right":
+			// noop
+		default:
+			keys = append(keys, fmt.Sprintf(`"%v"`, svg.Key))
 		}
 	}
 
@@ -92,11 +99,14 @@ func template(src string, svgs []*SVG) string {
 	w("package util")
 	w("")
 	w("var SVGLibrary = map[string]string{")
-	msg := "\t%-" + fmt.Sprintf("%v", maxKeyLength+3) + "v `%v`,"
+	msg := "\t%-" + fmt.Sprintf("%d", maxKeyLength+3) + "s `%s`,"
 	for _, fn := range svgs {
 		w(fmt.Sprintf(msg, `"`+fn.Key+`":`, fn.Markup))
 	}
 	w("}")
+	w("")
+	w("var SVGIconKeys = []string{" + strings.Join(keys, ", ") + "}")
+	w("")
 
 	return out.String()
 }

@@ -87,6 +87,7 @@ input[type=checkbox]:checked ~ .menu-toggle > .diagonal.part-2 {
 
 #navbar .logo {
   margin: 8px;
+  color: var(--color-nav-foreground);
 }
 
 #navbar .breadcrumbs {
@@ -108,12 +109,3 @@ input[type=checkbox]:checked ~ .menu-toggle > .diagonal.part-2 {
 #navbar .profile {
   margin: 12px;
 }
-
-#navbar .svg-fill, .nav-svg-fill {
-  fill: var(--color-nav-foreground);
-}
-
-#navbar .svg-stroke, .nav-svg-stroke {
-  stroke: var(--color-nav-foreground);
-}
-
