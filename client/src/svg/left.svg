@@ -1,3 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-  <polyline id="svg-left" fill="none" class="svg-stroke" stroke-width="1.03" points="13 4 7 10 13 16" />
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="svg-left" viewBox="0 0 20 20">
+    <polyline fill="none" stroke="#000" class="svg-stroke" stroke-width="1.03" points="13 4 7 10 13 16" />
+  </symbol>
+  <use xlink:href="#svg-left" />
 </svg>

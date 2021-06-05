@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="svg-mail" viewBox="0 0 20 20">
+    <polyline fill="none" stroke="#000" class="svg-stroke" points="1.4,6.5 10,11 18.6,6.5" />
+    <path class="svg-fill" d="M 1,4 1,16 19,16 19,4 1,4 Z M 18,15 2,15 2,5 18,5 18,15 Z" />
+  </symbol>
+  <use xlink:href="#svg-mail" />
+</svg>

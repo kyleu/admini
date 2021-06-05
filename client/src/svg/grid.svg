@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="svg-grid" viewBox="0 0 20 20">
+    <rect class="svg-fill" x="2" y="2" width="3" height="3" />
+    <rect class="svg-fill" x="8" y="2" width="3" height="3" />
+    <rect class="svg-fill" x="14" y="2" width="3" height="3" />
+    <rect class="svg-fill" x="2" y="8" width="3" height="3" />
+    <rect class="svg-fill" x="8" y="8" width="3" height="3" />
+    <rect class="svg-fill" x="14" y="8" width="3" height="3" />
+    <rect class="svg-fill" x="2" y="14" width="3" height="3" />
+    <rect class="svg-fill" x="8" y="14" width="3" height="3" />
+    <rect class="svg-fill" x="14" y="14" width="3" height="3" />
+  </symbol>
+  <use xlink:href="#svg-grid" />
+</svg>

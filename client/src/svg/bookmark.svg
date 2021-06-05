@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="svg-bookmark" viewBox="0 0 20 20">
+    <polygon fill="none" stroke="#000" class="svg-stroke" points="5.5 1.5 15.5 1.5 15.5 17.5 10.5 12.5 5.5 17.5" />
+  </symbol>
+  <use xlink:href="#svg-bookmark" />
+</svg>

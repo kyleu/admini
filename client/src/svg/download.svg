@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="svg-download" viewBox="0 0 20 20">
+    <polyline fill="none" stroke="#000" class="svg-stroke" points="14,10 9.5,14.5 5,10" />
+    <rect class="svg-fill" x="3" y="17" width="13" height="1" />
+    <line fill="none" stroke="#000" class="svg-stroke" x1="9.5" y1="13.91" x2="9.5" y2="3" />
+  </symbol>
+  <use xlink:href="#svg-download" />
+</svg>

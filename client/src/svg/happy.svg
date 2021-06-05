@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="svg-happy" viewBox="0 0 20 20">
+    <circle class="svg-fill" cx="13" cy="7" r="1" />
+    <circle class="svg-fill" cx="7" cy="7" r="1" />
+    <circle fill="none" stroke="#000" class="svg-stroke" cx="10" cy="10" r="8.5" />
+    <path fill="none" stroke="#000" class="svg-stroke" d="M14.6,11.4 C13.9,13.3 12.1,14.5 10,14.5 C7.9,14.5 6.1,13.3 5.4,11.4" />
+  </symbol>
+  <use xlink:href="#svg-happy" />
+</svg>

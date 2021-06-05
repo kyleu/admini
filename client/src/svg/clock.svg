@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="svg-clock" viewBox="0 0 20 20">
+    <circle fill="none" stroke="#000" class="svg-stroke" stroke-width="1.1" cx="10" cy="10" r="9" />
+    <rect class="svg-fill" x="9" y="4" width="1" height="7" />
+    <path fill="none" stroke="#000" class="svg-stroke" stroke-width="1.1" d="M13.018,14.197 L9.445,10.625" />
+  </symbol>
+  <use xlink:href="#svg-clock" />
+</svg>
