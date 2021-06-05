@@ -1,11 +1,12 @@
 package workspace
 
 import (
+	"fmt"
+
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/kyleu/admini/views/vworkspace"
@@ -32,9 +33,9 @@ func NewResult(title string, bc []string, req *cutil.WorkspaceRequest, act *acti
 func ErrResult(req *cutil.WorkspaceRequest, act *action.Action, err error) (*Result, error) {
 	title := "Error"
 	if act != nil {
-		title += ": " + act.Name()
+		title = fmt.Sprintf("%s: %s", title, act.Name())
 	}
-	return NewResult(title, nil, req, act, "ERROR: "+err.Error(), nil), err
+	return NewResult(title, nil, req, act, fmt.Sprintf("ERROR: %s", err.Error()), nil), err
 }
 
 func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
@@ -55,8 +56,7 @@ func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, er
 		return sourceActivity(req, act)
 
 	default:
-		page := &views.TODO{Message: "unhandled action type [" + act.Type.Key + "]"}
-		return NewResult("", nil, req, act, act, page), nil
+		return nil, errors.Errorf("unhandled action type [%s]", act.Type.Key)
 	}
 }
 
@@ -87,7 +87,7 @@ func sourceItem(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error
 	if act.Type == action.TypePackage || act.Type == action.TypeModel {
 		t := act.Config.GetStringOpt(act.Type.Key)
 		if t == "" {
-			return ErrResult(req, act, errors.New("must provide ["+act.Type.Key+"] in config"))
+			return ErrResult(req, act, errors.Errorf("must provide [%s] in config", act.Type.Key))
 		}
 		x = util.SplitAndTrim(t, "/")
 	}
@@ -102,9 +102,9 @@ func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package
 	case *model.Package:
 		return processPackage(req, act, t)
 	case error:
-		return ErrResult(req, act, errors.Wrapf(t, "provided path [%v] can't be loaded", req.R.URL.Path))
+		return ErrResult(req, act, errors.Wrapf(t, "provided path [%s] can't be loaded", string(req.Ctx.URI().Path())))
 	case nil:
-		return ErrResult(req, act, errors.Errorf("nil path [%v] can't be loaded", req.R.URL.Path))
+		return ErrResult(req, act, errors.Errorf("nil path [%s] can't be loaded", string(req.Ctx.URI().Path())))
 	default:
 		return ErrResult(req, act, errors.Errorf("unhandled type: %T", t))
 	}
@@ -116,7 +116,7 @@ func rootItemFor(req *cutil.WorkspaceRequest, srcKey string) (*model.Package, er
 	}
 	sch, ok := req.Schemata[srcKey]
 	if !ok {
-		return nil, errors.New("no schema registered for source [" + srcKey + "]")
+		return nil, errors.Errorf("no schema registered for source [%s]", srcKey)
 	}
 	return sch.ModelsByPackage(), nil
 }

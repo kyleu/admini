@@ -22,7 +22,7 @@ func loadChildren(dir string, files filesystem.FileLoader, pkg util.Pkg) (Action
 		}
 		x, err := loadAction(dir, kid, files, pkg)
 		if err != nil {
-			return nil, errors.Wrapf(err, "error loading [%v]", kid)
+			return nil, errors.Wrapf(err, "error loading [%s]", kid)
 		}
 		ret = append(ret, x)
 	}
@@ -40,7 +40,7 @@ func loadAction(dir string, key string, files filesystem.FileLoader, pkg util.Pk
 	if files.Exists(js) {
 		out, err := files.ReadFile(js)
 		if err != nil {
-			return nil, errors.Wrap(err, "unable to read action ["+kp+"]")
+			return nil, errors.Wrapf(err, "unable to read action [%s]", kp)
 		}
 
 		err = util.FromJSON(out, d)

@@ -1,7 +1,11 @@
 package workspace
 
 import (
+	"fmt"
 	"strings"
+
+	"github.com/kyleu/admini/app/export"
+	"github.com/kyleu/admini/views/vexport"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/loader"
@@ -9,7 +13,6 @@ import (
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/pkg/errors"
 )
@@ -21,48 +24,75 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	switch additional[0] {
 	case "new":
 		return processModelNew(req, act, srcKey, m)
+	case "export":
+		return processModelExport(req, act, m, additional[1:])
 	case "v":
 		return processModelView(req, act, srcKey, m, additional[1:])
 	case "x":
 		return processModelEdit(req, act, srcKey, m, additional[1:])
 	default:
-		msg := "unhandled model parameters [" + strings.Join(additional, "/") + "]"
-		page := &views.TODO{Message: msg}
-		return NewResult("", nil, req, act, msg, page), nil
+		return nil, errors.Errorf("unhandled model parameters [%s]", strings.Join(additional, "/"))
 	}
-}
-
-func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, t *model.Model) (*Result, error) {
-	_, ld, params, err := loaderFor(req, act, srcKey)
-	if err != nil {
-		return ErrResult(req, act, err)
-	}
-
-	rs, err := ld.List(t, params)
-	if err != nil {
-		return ErrResult(req, act, errors.Wrap(err, "unable to list model ["+t.Key+"]"))
-	}
-	page := &vaction.ModelList{Req: req, Act: act, Model: t, ParamSet: params, Result: rs}
-	return NewResult("", nil, req, act, rs, page), nil
 }
 
 func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
-	_, ld, _, err := loaderFor(req, act, srcKey)
+	_, ld, _, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
 
 	x, err := ld.Default(m)
 	if err != nil {
-		return ErrResult(req, act, errors.Wrap(err, "can't load ["+m.Key+"] defaults"))
+		return ErrResult(req, act, errors.Wrapf(err, "can't load [%s] defaults", m.Key))
 	}
 
 	page := &vaction.ModelNew{Req: req, Act: act, Model: m, Defaults: x}
 	return NewResult("", nil, req, act, x, page), nil
 }
 
+func processModelExport(req *cutil.WorkspaceRequest, act *action.Action, m *model.Model, additional []string) (*Result, error) {
+	bc := append(act.Path(), req.Path...)
+	switch len(additional) {
+	case 0:
+		page := &vexport.List{Req: req, Act: act, Model: m}
+		return NewResult("", bc, req, act, nil, page), nil
+	case 2:
+		f := export.AllFormats.Get(additional[0], additional[1])
+		res, err := export.Model(m, f, nil)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to export")
+		}
+		page := &vexport.Detail{Format: f, Results: res}
+		return NewResult("", bc, req, act, nil, page), nil
+	default:
+		return nil, errors.Errorf("unhandled path [%v]", strings.Join(additional, "/"))
+	}
+}
+
+func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
+	switch m.Type {
+	case model.TypeStruct:
+		_, ld, params, err := loaderFor(req, srcKey)
+		if err != nil {
+			return ErrResult(req, act, err)
+		}
+
+		rs, err := ld.List(m, params)
+		if err != nil {
+			return ErrResult(req, act, errors.Wrapf(err, "unable to list model [%s]", m.Key))
+		}
+		page := &vaction.ModelList{Req: req, Act: act, Model: m, ParamSet: params, Result: rs}
+		return NewResult("", nil, req, act, rs, page), nil
+	case model.TypeEnum:
+		page := &vaction.ModelEnum{Req: req, Act: act, Model: m}
+		return NewResult("", nil, req, act, m, page), nil
+	default:
+		return nil, errors.Errorf("unhandled model type [%s]", m.Type.String())
+	}
+}
+
 func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
-	_, ld, params, err := loaderFor(req, act, srcKey)
+	_, ld, params, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -82,7 +112,7 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 }
 
 func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
-	_, ld, params, err := loaderFor(req, act, srcKey)
+	_, ld, params, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -100,7 +130,7 @@ func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	idBC := make([]string, 0, len(idStrings))
 	u := req.RouteAct(act, 1+len(idStrings), append([]string{`v`}, idStrings...)...)
 	for _, idString := range idStrings {
-		idBC = append(idBC, idString+"||"+u)
+		idBC = append(idBC, fmt.Sprintf("%s||%s", idString, u))
 	}
 
 	bc := append(append(append(act.Path(), req.Path[:idx]...), idBC...), "edit")
@@ -115,19 +145,19 @@ func getModel(m *model.Model, idStrings []string, ld loader.Loader) ([]interface
 
 	rs, err := ld.Get(m, ids)
 	if err != nil {
-		return nil, errors.Wrap(err, "unable to retrieve model ["+m.Key+"] with key ["+strings.Join(idStrings, "/")+"]")
+		return nil, errors.Wrapf(err, "unable to retrieve model [%s] with key [%s]", m.Key, strings.Join(idStrings, "/"))
 	}
 	switch len(rs.Data) {
 	case 0:
-		return nil, errors.Errorf("no [%v] found with key [%v]", m.Name(), strings.Join(idStrings, "/"))
+		return nil, errors.Errorf("no [%s] found with key [%s]", m.Name(), strings.Join(idStrings, "/"))
 	case 1:
 		return rs.Data[0], nil
 	default:
-		return nil, errors.Errorf("multiple [%v] found with key [%v]", m.Name(), strings.Join(idStrings, "/"))
+		return nil, errors.Errorf("multiple [%s] found with key [%s]", m.Name(), strings.Join(idStrings, "/"))
 	}
 }
 
-func loaderFor(req *cutil.WorkspaceRequest, act *action.Action, srcKey string) (*source.Source, loader.Loader, util.ParamSet, error) {
+func loaderFor(req *cutil.WorkspaceRequest, srcKey string) (*source.Source, loader.Loader, util.ParamSet, error) {
 	s, err := req.Sources.GetWithError(srcKey)
 	if err != nil {
 		return nil, nil, nil, err
@@ -137,6 +167,6 @@ func loaderFor(req *cutil.WorkspaceRequest, act *action.Action, srcKey string) (
 	if err != nil {
 		return nil, nil, nil, errors.Wrap(err, "no loader available")
 	}
-	p := cutil.ParamSetFromRequest(req.R)
+	p := cutil.ParamSetFromRequest(req.Ctx)
 	return s, l, p, nil
 }

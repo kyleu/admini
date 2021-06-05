@@ -18,7 +18,7 @@ func (x *Map) Key() string {
 }
 
 func (x *Map) String() string {
-	return fmt.Sprintf("%v[%v]%v", x.Key(), x.K.String(), x.V.String())
+	return fmt.Sprintf("%s[%s]%s", x.Key(), x.K.String(), x.V.String())
 }
 
 func (x *Map) Sortable() bool {

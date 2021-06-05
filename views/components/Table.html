@@ -1,0 +1,116 @@
+{% import "fmt" %}
+{% import "github.com/valyala/fasthttp" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+{% import "github.com/kyleu/admini/views/components/fieldedit" %}
+
+{% func thNormal(section string, key string, title string, params *util.Params, u *fasthttp.URI, tooltip string, ps *cutil.PageState) %}{% stripspace %}
+  <a class="sort-hover" href="?{%s= params.CloneOrdering(&util.Ordering{Column: key, Asc: true}).ToQueryString(u) %}" title="{%s tooltip %}">
+    <div class="sort-icon" title="click to sort by this column, ascending">{%= SVGRef(`down`, 0, 0, ``, ps) %}</div>
+    <div class="sort-title">{%s title %}</div>
+  </a>
+{% endstripspace %}{% endfunc %}
+
+{% func thSorted(asc bool, section string, key string, title string, params *util.Params, u *fasthttp.URI, tooltip string, ps *cutil.PageState) %}{% stripspace %}
+  {% code
+    ascStr := "ascending"
+    dirStr := "up"
+    if(asc) {
+      ascStr = "descending"
+      dirStr = "down"
+    }
+  %}
+  <a href="?{%s= params.CloneOrdering(&util.Ordering{Column: key, Asc: !asc}).ToQueryString(u) %}" title="{%s tooltip %}">
+    <div class="sort-icon" title="click to sort by this column,{% space %}{%s ascStr %}">{%= SVGRef(dirStr, 0, 0, ``, ps) %}</div>
+    <div class="sort-title">{%s title %}</div>
+  </a>
+{% endstripspace %}{% endfunc %}
+
+{% func TableHeader(section string, key string, title string, params *util.Params, u *fasthttp.URI, tooltip string, sortable bool, ps *cutil.PageState) %}{% stripspace %}
+<th scope="col">
+  {% if !sortable %}
+  <div title="{%s tooltip %}">{%s title %}</div>
+  {% elseif params == nil %}
+  {%= thNormal(section, key, title, params, u, tooltip, ps) %}
+  {% else %}
+  {%code o := params.GetOrdering(key) %}
+  {% if o == nil %}
+  {%= thNormal(section, key, title, params, u, tooltip, ps) %}
+  {% else %}
+  {%= thSorted(o.Asc, section, key, title, params, u, tooltip, ps) %}
+  {% endif %}
+  {% endif %}
+</th>
+{% endstripspace %}{% endfunc %}
+
+{% func TableInput(key string, title string, value string, indent int) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>{%= fieldedit.FormInput(key, "input-" + key, value) %}</td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
+
+{% func TableInputNumber(key string, title string, value int, indent int) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>{%= fieldedit.FormInputNumber(key, "input-" + key, value) %}</td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
+
+{% func TableTextarea(key string, title string, value string, indent int) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>{%= fieldedit.FormTextarea(key, "input-" + key, value) %}</td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
+
+{% func TableSelect(key string, title string, value string, opts []string, titles []string, indent int) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>{%= fieldedit.FormSelect(key, "input-" + key, value, opts, titles, indent) %}</td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
+
+{% func TableRadio(key string, title string, value string, opts []string, titles []string, indent int) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label>{%s title %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>
+      {%= fieldedit.FormRadio(key, value, opts, titles, indent + 2) %}
+    {%= vutil.Indent(true, indent + 1) %}
+    </td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
+
+{% func TableBoolean(key string, title string, value bool, indent int) %}{% stripspace %}
+  {%= TableRadio(key, title, fmt.Sprintf("%v", value), []string{"true", "false"}, []string{"True", "False"}, indent) %}
+{% endstripspace %}{% endfunc %}
+
+{% func TableCheckbox(key string, title string, values []string, opts []string, titles []string, indent int) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label>{%s title %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>
+      {%= fieldedit.FormCheckbox(key, values, opts, titles, indent + 2) %}
+    {%= vutil.Indent(true, indent + 1) %}
+    </td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
+

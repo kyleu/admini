@@ -13,12 +13,12 @@
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="{%s as.Route(`source.edit`, `key`, p.Source.Key) %}"><button type="button">Edit</button></a></div>
-    <h3>{%= components.SVGRef(p.Source.Type.Icon, 0, 0, ``, ``, ps) %} {%s p.Source.Name() %}</h3>
+    <div class="right"><a href="/source/{%s p.Source.Key %}/edit"><button type="button">Edit</button></a></div>
+    <h3>{%= components.SVGRef(p.Source.Type.Icon, 0, 0, ``, ps) %} {%s p.Source.Name() %}</h3>
     {% if p.Source.Description != "" %}<em>{%s p.Source.Description %}</em>{% endif %}
     <p>
-      <a href="{%s as.Route(`workspace.source`, `key`, p.Source.Key) %}"><button type="button">Workspace</button></a>
-      <a href="{%s as.Route(`source.refresh`, `key`, p.Source.Key) %}"><button type="button">Refresh</button></a>
+      <a href="/s/{%s p.Source.Key %}"><button type="button">Workspace</button></a>
+      <a href="/source/{%s p.Source.Key %}/refresh"><button type="button">Refresh</button></a>
       <a href="#modal-schema"><button type="button">Schema</button></a>
     </p>
   </div>

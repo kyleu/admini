@@ -1,6 +1,7 @@
 package lpostgres
 
 import (
+	"fmt"
 	"strings"
 
 	"go.uber.org/zap"
@@ -73,7 +74,7 @@ func openDatabase(cfg []byte, debug bool, logger *zap.SugaredLogger) (*database.
 func forTable(m *model.Model) (string, string) {
 	cols := make([]string, 0, len(m.Fields))
 	for _, f := range m.Fields {
-		cols = append(cols, "\""+f.Key+"\"")
+		cols = append(cols, fmt.Sprintf(`"%s"`, f.Key))
 	}
 	tbl := "\"" + m.Key + "\""
 	if len(m.Pkg) > 0 {

@@ -1,4 +1,3 @@
-{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/field" %}
 {% import "github.com/kyleu/admini/app/model" %}
@@ -7,7 +6,7 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool, params *util.Params) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <tr>
     {% if showNum %}
@@ -19,9 +18,9 @@
       {%code col := row[fIdx] %}
       {%= vutil.Indent(true, indent + 1) %}
       <td>
-        {% if m != nil && m.IsPK(f.Key, ps.Logger) %}
+        {% if m != nil && m.IsPK(f.Key, ws.PS.Logger) %}
           {% code
-            rowPK, err := model.GetStrings(fields, m.GetPK(ps.Logger), row)
+            rowPK, err := model.GetStrings(fields, m.GetPK(ws.PS.Logger), row)
             if err != nil {
               panic(err)
             }
@@ -41,10 +40,20 @@
               if err != nil {
                 panic(err)
               }
-              link := append(append(rel.TargetPkg, rel.TargetModel, `v`), rowFK...)
+              src := act.Config["source"]
+              if act.Type == action.TypeAll {
+                src = ws.Path[0]
+              }
+              req := action.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
+              quals, err := action.Qualify(req, ws.Project.Actions, ws.Schemata)
+              if err != nil {
+                panic(err)
+              }
             %}
-            {% space %}
-            <a href="{%= vutil.WorkspaceLink(as, ws.T, ws.K, link...) %}" title="{%s rel.String() %}">REL</a>
+            {% for _, q := range quals %}
+              {% space %}
+              <a href="{%s ws.Route(q.Link()...) %}" title="{%s q.String() %}">REL</a>
+            {% endfor %}
           {% endfor %}
         {% endif %}
       </td>

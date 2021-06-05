@@ -13,18 +13,18 @@ type Type struct {
 }
 
 var (
-	ModelTypeEnum         = Type{Key: "enum", Title: "Enum", Plural: "Enums"}
-	ModelTypeSequence     = Type{Key: "sequence", Title: "Sequence", Plural: "Sequences"}
-	ModelTypeStruct       = Type{Key: "struct", Title: "Struct", Plural: "Structs"}
-	ModelTypeInterface    = Type{Key: "interface", Title: "Interface", Plural: "Interfaces"}
-	ModelTypeUnion        = Type{Key: "union", Title: "Union", Plural: "Unions"}
-	ModelTypeIntersection = Type{Key: "intersection", Title: "Intersection", Plural: "Intersections"}
-	ModelTypeUnknown      = Type{Key: "unknown", Title: "Unknown", Plural: "Unknowns"}
+	TypeEnum         = Type{Key: "enum", Title: "Enum", Plural: "Enums"}
+	TypeSequence     = Type{Key: "sequence", Title: "Sequence", Plural: "Sequences"}
+	TypeStruct       = Type{Key: "struct", Title: "Struct", Plural: "Structs"}
+	TypeInterface    = Type{Key: "interface", Title: "Interface", Plural: "Interfaces"}
+	TypeUnion        = Type{Key: "union", Title: "Union", Plural: "Unions"}
+	TypeIntersection = Type{Key: "intersection", Title: "Intersection", Plural: "Intersections"}
+	TypeUnknown      = Type{Key: "unknown", Title: "Unknown", Plural: "Unknowns"}
 )
 
 var AllModelTypes = []Type{
-	ModelTypeEnum, ModelTypeSequence, ModelTypeStruct,
-	ModelTypeInterface, ModelTypeUnion, ModelTypeIntersection,
+	TypeEnum, TypeSequence, TypeStruct,
+	TypeInterface, TypeUnion, TypeIntersection,
 }
 
 func modelTypeFromString(s string) (Type, error) {
@@ -33,7 +33,7 @@ func modelTypeFromString(s string) (Type, error) {
 			return t, nil
 		}
 	}
-	return ModelTypeUnknown, errors.New("\"unhandled model type [\" + s + \"]\"")
+	return TypeUnknown, errors.New("\"unhandled model type [\" + s + \"]\"")
 }
 
 func (t *Type) String() string {

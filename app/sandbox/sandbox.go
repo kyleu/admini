@@ -7,10 +7,13 @@ import (
 	"go.uber.org/zap"
 )
 
+type runFn func(st *app.State, logger *zap.SugaredLogger) (interface{}, error)
+
 type Sandbox struct {
-	Key   string                                                              `json:"key,omitempty"`
-	Title string                                                              `json:"title,omitempty"`
-	Run   func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) `json:"-"`
+	Key   string `json:"key,omitempty"`
+	Title string `json:"title,omitempty"`
+	Icon  string `json:"icon,omitempty"`
+	Run   runFn  `json:"-"`
 }
 
 type Sandboxes []*Sandbox
@@ -26,11 +29,11 @@ func (s Sandboxes) Get(key string) *Sandbox {
 
 var AllSandboxes = Sandboxes{codegen, reflection, testbed}
 
-var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
-	return "TODO", nil
+var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Icon: "star", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
+	return "Work in progress...", nil
 }}
 
-var reflection = &Sandbox{Key: "reflection", Title: "Reflection", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
+var reflection = &Sandbox{Key: "reflection", Title: "Reflection", Icon: "star", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	test := &database.DBParams{Host: "localhost", Port: 5432, Username: "user", Password: "pass", Database: "db", Schema: "schema", Debug: true}
 	ret, err := result.FromReflection("sandbox", test)
 	return ret, err

@@ -49,7 +49,7 @@ func (s *Service) LoadSourceProject(sourceKey string) (*View, error) {
 	sd := "Run ad-hoc SQL queries and DDL"
 	acts = append(acts, &action.Action{Key: "sql", Type: action.TypeActivity, Title: "SQL Playground", Description: sd, Ordinal: 0, Config: sCfg})
 
-	prj := &Project{Key: SourceProjectPrefix + src.Key, Title: src.Title, Description: src.Description, Sources: []string{sourceKey}, Actions: acts}
+	prj := &Project{Key: SourceProjectPrefix + src.Key, Title: src.Title, Icon: src.Icon, Description: src.Description, Sources: []string{sourceKey}, Actions: acts}
 
 	return &View{Project: prj, Sources: sources, Schemata: schemata}, nil
 }

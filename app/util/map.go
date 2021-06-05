@@ -24,7 +24,7 @@ func ValueMapFor(kvs ...interface{}) ValueMap {
 func (c ValueMap) GetRequired(k string) (interface{}, error) {
 	v, ok := c[k]
 	if !ok {
-		msg := "no form value [%v] among candidates [%v]"
+		msg := "no form value [%s] among candidates [%s]"
 		return nil, errors.Errorf(msg, k, strings.Join(c.Keys(), ", "))
 	}
 	return v, nil
@@ -36,17 +36,19 @@ func (c ValueMap) GetString(k string, allowEmpty bool) (string, error) {
 		return "", err
 	}
 
-	ret := ""
+	var ret string
 	switch t := v.(type) {
 	case []string:
 		ret = strings.Join(t, "|")
 	case string:
 		ret = t
+	case nil:
+		ret = ""
 	default:
 		return "", errors.Errorf("expected string or array of strings, encountered %T: %v", t, t)
 	}
 	if !allowEmpty && ret == "" {
-		return "", errors.Errorf("field [%v] may not be empty", k)
+		return "", errors.Errorf("field [%s] may not be empty", k)
 	}
 	return ret, nil
 }
@@ -76,7 +78,7 @@ func (c ValueMap) GetStringArray(k string, allowMissing bool) ([]string, error) 
 const selectedSuffix = "--selected"
 
 func (c ValueMap) AsChanges() (ValueMap, error) {
-	keys := []string{}
+	var keys []string
 	vals := ValueMap{}
 
 	for k, v := range c {
@@ -86,7 +88,7 @@ func (c ValueMap) AsChanges() (ValueMap, error) {
 		} else {
 			curr, ok := vals[k]
 			if ok {
-				return nil, errors.Errorf("multiple values presented for [%v] (%v/%v)", k, curr, v)
+				return nil, errors.Errorf("multiple values presented for [%s] (%v/%v)", k, curr, v)
 			}
 			vals[k] = v
 		}

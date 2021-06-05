@@ -45,10 +45,10 @@ func sourceMenuAddModel(ret menu.Items, m *model.Model, path string) menu.Items 
 
 func sourceMenuAddPackage(ret menu.Items, mp *model.Package, path string) menu.Items {
 	path = filepath.Join(path, mp.Key)
-	desc := fmt.Sprintf("package [%v], containing [%v] models", mp.Key, len(mp.ChildModels))
+	desc := fmt.Sprintf("package [%s], containing [%d] models", mp.Key, len(mp.ChildModels))
 
 	if len(mp.ChildPackages) > 0 {
-		desc += fmt.Sprintf(" and [%v] packages", len(mp.ChildPackages))
+		desc += fmt.Sprintf(" and [%d] packages", len(mp.ChildPackages))
 	}
 	i := &menu.Item{
 		Key:         mp.Key,

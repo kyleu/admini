@@ -18,24 +18,50 @@
 
 {% func (p *ModelView) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    {% code
+    {%- code
       rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(ps.Logger), p.Result)
       if err != nil {
         panic(err)
       }
-    %}
+    -%}
     <div class="right"><a href="{%s p.Req.RouteAct(p.Act, 1 + len(rowPK), append([]string{`x`}, rowPK...)...) %}">Edit</a></div>
     <h3>{%s strings.Join(rowPK, "/") %}</h3>
     <em>{%s p.Model.Name() %}</em>
     <div class="spacer"></div>
     <table>
       <tbody>
-        {% for idx, f := range p.Model.Fields %}
-          <tr>
-            <th class="shrink">{%s f.Key %}</th>
-            <td class="overflow">{%= fieldview.Any(p.Result[idx], f.Type) %}</td>
-          </tr>
-        {% endfor %}
+        {%- for idx, f := range p.Model.Fields -%}
+        <tr>
+          <th class="shrink">{%s f.Key %}</th>
+          {%- if true -%}
+          <td class="overflow">
+            {%= fieldview.Any(p.Result[idx], f.Type) %}
+            {%- for _, rel := range p.Model.ApplicableRelations(f.Key) -%}
+            {%- code
+              rowFK, err := model.GetStrings(p.Model.Fields, rel.SourceFields, p.Result)
+              if err != nil {
+                panic(err)
+              }
+              src := p.Act.Config["source"]
+              if p.Act.Type == action.TypeAll {
+                src = p.Req.Path[0]
+              }
+              req := action.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
+              quals, err := action.Qualify(req, p.Req.Project.Actions, p.Req.Schemata)
+              if err != nil {
+                panic(err)
+              }
+            -%}
+            {%- for _, q := range quals -%}
+            <a href="{%s p.Req.Route(q.Link()...) %}" title="{%s rel.String() %}">REL</a>
+            {%- endfor -%}
+            {%- endfor -%}
+          </td>
+          {%- else -%}
+          <td class="overflow">{%= fieldview.Any(p.Result[idx], f.Type) %}</td>
+          {%- endif -%}
+        </tr>
+        {%- endfor -%}
       </tbody>
     </table>
   </div>

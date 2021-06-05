@@ -1,7 +1,5 @@
 package filesystem
 
-import "strings"
-
 type FileLoader interface {
 	Root() string
 	ReadFile(path string) ([]byte, error)
@@ -16,12 +14,4 @@ type FileLoader interface {
 	IsDir(path string) bool
 	Remove(path string) error
 	RemoveRecursive(pt string) error
-}
-
-func FilenameOf(fn string) string {
-	idx := strings.LastIndex(fn, "/")
-	if idx > -1 {
-		fn = fn[idx+1:]
-	}
-	return fn
 }

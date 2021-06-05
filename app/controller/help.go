@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"net/http"
+	"fmt"
 
 	"github.com/kyleu/admini/app/util"
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 
@@ -14,22 +15,22 @@ import (
 var helpContent = util.ValueMap{
 	"_": "help",
 	"urls": map[string]string{
-		"TODO": "http://TODO",
+		"home": "/",
 	},
 }
 
-func Feedback(w http.ResponseWriter, r *http.Request) {
-	act("feedback", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Feedback(ctx *fasthttp.RequestCtx) {
+	act("feedback", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "Feedback"
-		ps.Data = "to submit feedback, email " + util.AppContact
-		return render(r, w, as, &vhelp.Feedback{}, ps, "feedback")
+		ps.Data = fmt.Sprintf("to submit feedback, email %s", util.AppContact)
+		return render(ctx, as, &vhelp.Feedback{}, ps, "feedback")
 	})
 }
 
-func Help(w http.ResponseWriter, r *http.Request) {
-	act("help", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Help(ctx *fasthttp.RequestCtx) {
+	act("help", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "Help"
 		ps.Data = helpContent
-		return render(r, w, as, &vhelp.Help{}, ps, "help")
+		return render(ctx, as, &vhelp.Help{}, ps, "help")
 	})
 }

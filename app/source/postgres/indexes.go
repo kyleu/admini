@@ -30,7 +30,7 @@ func (r indexResult) AsIndex() *model.Index {
 }
 
 func loadIndexes(models model.Models, db *database.Service) error {
-	idxs := []*indexResult{}
+	var idxs []*indexResult
 	err := db.Select(&idxs, queries.ListIndexes(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list indexes")
@@ -39,7 +39,7 @@ func loadIndexes(models model.Models, db *database.Service) error {
 	for _, idx := range idxs {
 		mod := models.Get(util.Pkg{idx.Schema}, idx.Table)
 		if mod == nil {
-			return errors.Errorf("no table [%v] found among [%v] candidates", idx.Table, len(models))
+			return errors.Errorf("no table [%s] found among [%d] candidates", idx.Table, len(models))
 		}
 		err = mod.AddIndex(idx.AsIndex())
 		if err != nil {

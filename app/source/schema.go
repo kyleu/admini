@@ -39,7 +39,7 @@ func (s *Service) SaveSchema(key string, sch *schema.Schema) error {
 	j := util.ToJSONBytes(sch, true)
 	err := s.files.WriteFile(p, j, true)
 	if err != nil {
-		return errors.Wrapf(err, "unable to save schema [%v]", key)
+		return errors.Wrapf(err, "unable to save schema [%s]", key)
 	}
 	s.schemaCache[key] = sch
 	return nil
@@ -56,7 +56,7 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 		return nil, 0, errors.Wrapf(err, "can't create loader for source [%s]", key)
 	}
 	if ld == nil {
-		return nil, 0, errors.Errorf("no loader defined for type [" + source.Type.String() + "]")
+		return nil, 0, errors.Errorf("no loader defined for type [%s]", source.Type.String())
 	}
 	sch, err := ld.Schema()
 	if err != nil {

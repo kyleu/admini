@@ -27,26 +27,26 @@ func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 
 	switch t.Type {
 	case "table":
-		ret.Type = model.ModelTypeStruct
+		ret.Type = model.TypeStruct
 	case "view":
-		ret.Type = model.ModelTypeInterface
+		ret.Type = model.TypeInterface
 	case "sequence":
-		ret.Type = model.ModelTypeSequence
+		ret.Type = model.TypeSequence
 	default:
-		logger.Warn("unknown model type [" + t.Type + "]")
-		ret.Type = model.ModelTypeUnknown
+		logger.Warnf("unknown model type [%s]", t.Type)
+		ret.Type = model.TypeUnknown
 	}
 	return ret
 }
 
 func loadTables(enums model.Models, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
-	tables := []*tableResult{}
+	var tables []*tableResult
 	err := db.Select(&tables, queries.ListTables(db.SchemaName), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list tables")
 	}
 
-	logger.Infof("loading [%v] tables and [%v] enums", len(tables), len(enums))
+	logger.Infof("loading [%d] tables and [%d] enums", len(tables), len(enums))
 
 	ret := make(model.Models, 0, len(tables))
 	for _, t := range tables {

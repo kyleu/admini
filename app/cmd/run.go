@@ -2,6 +2,9 @@ package cmd
 
 import (
 	"fmt"
+
+	"github.com/valyala/fasthttp"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller"
 	"github.com/kyleu/admini/app/filesystem"
@@ -13,17 +16,12 @@ import (
 	"github.com/kyleu/admini/app/util"
 	"github.com/spf13/pflag"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 type Flags struct {
 	Address string
 	Debug   bool
 	Profile bool
-}
-
-func (f *Flags) String() string {
-	return fmt.Sprintf("addr: %v, debug: %v, profile: %v", f.Address, f.Debug, f.Profile)
 }
 
 func Run() error {
@@ -34,12 +32,13 @@ func Run() error {
 
 	flags := parseFlags()
 
-	logger.With(zap.Bool("debug", flags.Debug), zap.String("address", flags.Address), zap.Int("port", int(util.AppPort))).Info("[" + util.AppName + "]")
+	logger.With(
+		zap.Bool("debug", flags.Debug),
+		zap.String("address", flags.Address),
+		zap.Int("port", util.AppPort),
+	).Infof("[%s]", util.AppName)
 
-	r, err := controller.BuildRouter()
-	if err != nil {
-		return err
-	}
+	r := controller.BuildRouterNew()
 
 	f := filesystem.NewFileSystem("data", logger)
 	ls := loader.NewService()
@@ -52,7 +51,8 @@ func Run() error {
 	}
 	controller.SetState(st)
 
-	return http.ListenAndServe(fmt.Sprintf("%s:%v", flags.Address, util.AppPort), r)
+	s := &fasthttp.Server{Handler: r.Handler, Name: util.AppName, ReadBufferSize: 32768}
+	return s.ListenAndServe(fmt.Sprintf("%s:%d", flags.Address, util.AppPort))
 }
 
 func parseFlags() *Flags {

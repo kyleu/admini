@@ -1,33 +1,35 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/project/action" %}
-{% import "github.com/kyleu/admini/app/result" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vresult" %}
 
-{% code type ActivitySQL struct {
+{% code type ModelEnum struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
-  SQL string
-  Res *result.Result
+  Model *model.Model
 } %}
 
-{% func (p *ActivitySQL) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *ModelEnum) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
     <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 32, 32, "icon", ps) %}{%s p.Act.Name() %}</h3>
-    <em>SQL Playground</em>
-    <form class="sql editor" action="" method="post">
-      <textarea name="sql" placeholder="SQL">{%s p.SQL %}</textarea>
-      <button type="submit">Run</button>
-    </form>
+    <em>Model [{%s p.Model.Name() %}] ({%s p.Model.Type.String() %})</em>
+    <a href="#modal-model"><button type="button">Model</button></a>
   </div>
-  {%- if p.Res != nil -%}
-  {%= vresult.Simple(p.Res, 2, as, ps) %}
-  {%- endif -%}
 
-  {%-= resultChildren(p.Req, p.Act, 2) -%}
+  <div class="card">
+    <h3>Values</h3>
+    <ul>
+      {%- for _, f := range p.Model.Fields -%}
+      <li>{%s f.Key %} <em>{%s f.Description() %}</em></li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  {%= components.JSONModal("model", "Model JSON", p.Model, 1) %}
+  {%-= resultChildren(p.Req, p.Act, 1) -%}
   {%-= resultDebug(p.Req, p.Act) -%}
 {% endfunc %}

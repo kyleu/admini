@@ -71,12 +71,12 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, err
 		}
 		act, err = NewAction(c[1:], t, pkg)
 		if err != nil {
-			return nil, errors.Wrap(err, "can't parse new action from ["+o.OriginalPath+"]")
+			return nil, errors.Wrapf(err, "can't parse new action from [%s]", o.OriginalPath)
 		}
 	} else {
 		act, _ = acts.Get(p)
 		if act == nil {
-			return nil, errors.Errorf("no original action available at path [%v]", o.OriginalPath)
+			return nil, errors.Errorf("no original action available at path [%s]", o.OriginalPath)
 		}
 	}
 	act.Ordinal = idx

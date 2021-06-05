@@ -1,6 +1,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/components" %}
 
 {%- func Table(sources source.Sources, as *app.State, ps *cutil.PageState) -%}
     <table>
@@ -16,14 +17,14 @@
       {%- for _, s := range sources -%}
         <tr>
           <td>
-            <a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Name() %}</a>
+            <a href="/source/{%s s.Key %}">{%= components.SVGRef(s.IconWithFallback(), 16, 16, "icon", ps) %}{%s s.Name() %}</a>
           </td>
           <td>{%s s.Description %}</td>
           <td>{%s s.Type.String() %}</td>
           <td class="shrink">
-            <a href="{%s as.Route(`source.edit`, `key`, s.Key) %}"><button type="button">edit</button></a>
-            <a href="{%s as.Route(`source.refresh`, `key`, s.Key) %}"><button type="button">refresh</button></a>
-            <a href="{%s as.Route(`workspace.source`, `key`, s.Key) %}"><button type="button">workspace</button></a>
+            <a href="/source/{%s s.Key %}/edit"><button type="button">edit</button></a>
+            <a href="/source/{%s s.Key %}/refresh"><button type="button">refresh</button></a>
+            <a href="/s/{%s s.Key %}"><button type="button">workspace</button></a>
           </td>
         </tr>
       {%- endfor -%}

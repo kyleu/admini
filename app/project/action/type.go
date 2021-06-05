@@ -9,22 +9,23 @@ import (
 type Type struct {
 	Key         string
 	Title       string
+	Icon        string
 	Description string
 }
 
 var (
-	TypeFolder    = Type{Key: "", Title: "Folder", Description: "holds other actions, like a folder"}
-	TypeStatic    = Type{Key: "static", Title: "Static", Description: "returns HTML for rendering"}
-	TypeSeparator = Type{Key: "separator", Title: "Separator", Description: "a separator, used between other items"}
+	TypeFolder    = Type{Key: "", Title: "Folder", Icon: "folder", Description: "holds other actions, like a folder"}
+	TypeStatic    = Type{Key: "static", Title: "Static", Icon: "star", Description: "returns HTML for rendering"}
+	TypeSeparator = Type{Key: "separator", Title: "Separator", Icon: "star", Description: "a separator, used between other items"}
 
-	TypeAll      = Type{Key: "all", Title: "All Sources", Description: "provides actions for each source in the system"}
-	TypeSource   = Type{Key: "source", Title: "Source", Description: "provides actions for each model in the source"}
-	TypePackage  = Type{Key: "package", Title: "Package", Description: "provides actions for a package contained in a source"}
-	TypeModel    = Type{Key: "model", Title: "Model", Description: "provides actions for a model contained in a source"}
-	TypeActivity = Type{Key: "activity", Title: "Activity", Description: "provides actions for a specific activity"}
+	TypeAll      = Type{Key: "all", Title: "All Sources", Icon: "star", Description: "provides actions for each source in the system"}
+	TypeSource   = Type{Key: "source", Title: "Source", Icon: "star", Description: "provides actions for each model in the source"}
+	TypePackage  = Type{Key: "package", Title: "Package", Icon: "star", Description: "provides actions for a package contained in a source"}
+	TypeModel    = Type{Key: "model", Title: "Model", Icon: "star", Description: "provides actions for a model contained in a source"}
+	TypeActivity = Type{Key: "activity", Title: "Activity", Icon: "star", Description: "provides actions for a specific activity"}
 
-	TypeTest    = Type{Key: "test", Title: "Test", Description: "a test action, who knows what it'll do"}
-	TypeUnknown = Type{Key: "unknown", Title: "Unknown", Description: "an unknown action type"}
+	TypeTest    = Type{Key: "test", Title: "Test", Icon: "star", Description: "a test action, who knows what it'll do"}
+	TypeUnknown = Type{Key: "unknown", Title: "Unknown", Icon: "star", Description: "an unknown action type"}
 )
 
 var AllTypes = []Type{
@@ -40,7 +41,7 @@ func TypeFromString(s string) (Type, error) {
 	if s == "folder" {
 		return TypeFolder, nil
 	}
-	return TypeUnknown, errors.New("unhandled action type from string [" + s + "]")
+	return TypeUnknown, errors.Errorf("unhandled action type from string [%s]", s)
 }
 
 func (t *Type) String() string {

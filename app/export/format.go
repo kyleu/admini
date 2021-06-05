@@ -1,6 +1,8 @@
 package export
 
 import (
+	"fmt"
+
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -21,7 +23,7 @@ func (f Format) Get(s string) string {
 			return "*logrus.Logger"
 		}
 	default:
-		return "unknown key [" + s + "]"
+		return fmt.Sprintf("unknown key [%s]", s)
 	}
 }
 

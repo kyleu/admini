@@ -6,10 +6,8 @@ import (
 	"go.uber.org/zap"
 )
 
-// A map of string keys to Params
 type ParamSet map[string]*Params
 
-// Gets the Params matching the provided key
 func (s ParamSet) Get(key string, allowed []string, logger *zap.SugaredLogger) *Params {
 	x, ok := s[key]
 	if !ok {

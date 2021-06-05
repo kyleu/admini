@@ -8,7 +8,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// Runs a SQL query, returning a resultset or error
 func (s *Service) Query(q string, tx *sqlx.Tx, values ...interface{}) (*sqlx.Rows, error) {
 	s.logQuery("running raw query", q, values)
 	if tx == nil {
@@ -17,7 +16,6 @@ func (s *Service) Query(q string, tx *sqlx.Tx, values ...interface{}) (*sqlx.Row
 	return tx.Queryx(q, values...)
 }
 
-// Runs a SQL query and parses into the "dest" argument for all rows, returning an optional error
 func (s *Service) Select(dest interface{}, q string, tx *sqlx.Tx, values ...interface{}) error {
 	s.logQuery(fmt.Sprintf("selecting rows of type [%T]", dest), q, values)
 	if tx == nil {
@@ -26,7 +24,6 @@ func (s *Service) Select(dest interface{}, q string, tx *sqlx.Tx, values ...inte
 	return tx.Select(dest, q, values...)
 }
 
-// Runs a SQL query for a single row and parses into the "dest" argument, returning an optional error
 func (s *Service) Get(dto interface{}, q string, tx *sqlx.Tx, values ...interface{}) error {
 	s.logQuery(fmt.Sprintf("getting single row of type [%T]", dto), q, values)
 	if tx == nil {
@@ -39,7 +36,6 @@ type singleIntResult struct {
 	X *int64 `db:"x"`
 }
 
-// Runs a SQL query for a single integer return value (like counts), returning that int and an optional error
 func (s *Service) SingleInt(q string, tx *sqlx.Tx, values ...interface{}) (int64, error) {
 	x := &singleIntResult{}
 	var err error

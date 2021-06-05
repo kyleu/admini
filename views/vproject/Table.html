@@ -1,6 +1,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/views/components" %}
 
 {%- func Table(projects project.Projects, as *app.State, ps *cutil.PageState) -%}
     <table>
@@ -14,11 +15,11 @@
       <tbody>
         {%- for _, p := range projects -%}
         <tr>
-          <td><a href="{%s as.Route(`project.detail`, `key`, p.Key) %}">{%s p.Name() %}</a></td>
+          <td><a href="/project/{%s p.Key %}">{%= components.SVGRef(p.IconWithFallback(), 16, 16, "icon", ps) %}{%s p.Name() %}</a></td>
           <td>{%s p.Description %}</td>
           <td class="shrink">
-            <a href="{%s as.Route(`project.edit`, `key`, p.Key) %}"><button type="button">edit</button></a>
-            <a href="{%s as.Route(`workspace`, `key`, p.Key) %}"><button type="button">workspace</button></a>
+            <a href="/project/{%s p.Key %}/edit"><button type="button">edit</button></a>
+            <a href="/x/{%s p.Key %}"><button type="button">workspace</button></a>
           </td>
         </tr>
         {%- endfor -%}

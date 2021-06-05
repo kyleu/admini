@@ -27,9 +27,9 @@ func NewService(path string, logger *zap.SugaredLogger) (*Service, error) {
 				if !ok {
 					return
 				}
-				logger.Infof("event [%v]", event)
+				logger.Infof("event [%s]", event.String())
 				if event.Op&fsnotify.Write == fsnotify.Write {
-					logger.Infof("modified file [%v]", event.Name)
+					logger.Infof("modified file [%s]", event.Name)
 				}
 			case err, ok := <-watcher.Errors:
 				if !ok {

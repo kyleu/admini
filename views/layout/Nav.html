@@ -5,7 +5,7 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func Nav(ps *cutil.PageState) %}<nav id="navbar">
-  <a class="logo" href="{%s ps.RootPath %}">{%= components.SVGRef(`app`, 32, 32, ``, `-544 556 90 90`, ps) %}</a>
+  <a class="logo" href="{%s ps.RootPath %}">{%= components.SVGRef(ps.RootIcon, 32, 32, ``, ps) %}</a>
   <div class="breadcrumbs">
     <a class="link" href="{%s ps.RootPath %}">{%s ps.RootTitle %}</a>{%= NavItems(ps.Menu, ps.Breadcrumbs) %}
   </div>
@@ -13,7 +13,8 @@
     <input type="search" name="q" placeholder=" " />
     <div class="search-image" style="display: none;"><svg><use xlink:href="#svg-search" /></svg></div>
   </form>
-  <a class="profile" title="profile" href="{%s ps.ProfilePath %}">{%= components.SVGRef(`profile`, 24, 24, ``, ``, ps) %}</a>
+  <a class="profile" title="profile" href="{%s ps.ProfilePath %}">{%= components.SVGRef(`profile`, 24, 24, ``, ps) %}</a>
+
   <input type="checkbox" id="menu-toggle-input" style="display: none;" />
   <label class="menu-toggle" for="menu-toggle-input"><div class="spinner diagonal part-1"></div><div class="spinner horizontal"></div><div class="spinner diagonal part-2"></div></label>
   {%= Menu(ps) %}

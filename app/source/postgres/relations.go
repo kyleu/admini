@@ -44,7 +44,7 @@ func loadForeignKeys(models model.Models, db *database.Service) error {
 	for _, k := range keys {
 		mod := models.Get(util.Pkg{k.Schema}, k.Table)
 		if mod == nil {
-			return errors.Errorf("no table [%v] found among [%v] candidates", k.Table, len(models))
+			return errors.Errorf("no model [%s] found among [%d] candidates", k.Table, len(models))
 		}
 
 		curr := mod.Relationships.Get(k.Name)
@@ -52,6 +52,7 @@ func loadForeignKeys(models model.Models, db *database.Service) error {
 			curr = &model.Relationship{
 				Key:          k.Name,
 				SourceFields: []string{},
+				TargetSource: "TODO",
 				TargetPkg:    util.Pkg{k.TargetSchema},
 				TargetModel:  k.TargetTable,
 				TargetFields: []string{},

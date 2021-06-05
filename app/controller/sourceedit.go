@@ -2,10 +2,9 @@ package controller
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 
-	"github.com/kyleu/admini/views"
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/schema"
@@ -17,30 +16,28 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/views/vsource"
-
-	"github.com/gorilla/mux"
 )
 
-func SourceNew(w http.ResponseWriter, r *http.Request) {
-	act("source.new", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func SourceNew(ctx *fasthttp.RequestCtx) {
+	act("source.new", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "New Source"
 		t := schema.OriginPostgres
 		s := &source.Source{Type: t}
 		ps.Data = s
-		return render(r, w, as, &vsource.New{Origin: t}, ps, "sources", "New")
+		return render(ctx, as, &vsource.New{Origin: t}, ps, "sources", "New")
 	})
 }
 
-func SourceInsert(w http.ResponseWriter, r *http.Request) {
-	act("source.insert", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(r)
+func SourceInsert(ctx *fasthttp.RequestCtx) {
+	act("source.insert", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(ctx)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return flashError(err, as.Route("source.new", "key", key), w, r, ps)
+			return flashError(err, "/source/_new", ctx, ps)
 		}
 		title, err := frm.GetString("title", true)
 		if err != nil {
@@ -59,18 +56,21 @@ func SourceInsert(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
-		return flashAndRedir(true, "saved new source", as.Route("source.edit", "key", key), w, r, ps)
+		return flashAndRedir(true, "saved new source", fmt.Sprintf("/source/%s", key), ctx, ps)
 	})
 }
 
-func SourceEdit(w http.ResponseWriter, r *http.Request) {
-	act("source.edit", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key := mux.Vars(r)["key"]
+func SourceEdit(ctx *fasthttp.RequestCtx) {
+	act("source.edit", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := ctxRequiredString(ctx, "key", false)
+		if err != nil {
+			return "", err
+		}
 		src, err := as.Sources.Load(key, false)
 		if err != nil {
-			return "", errors.Wrap(err, "unable to load source ["+key+"]")
+			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
-		ps.Title = "Edit [" + src.Name() + "]"
+		ps.Title = fmt.Sprintf("Edit [%s]", src.Name())
 		ps.Data = src
 
 		switch src.Type {
@@ -82,25 +82,28 @@ func SourceEdit(w http.ResponseWriter, r *http.Request) {
 					return "", errors.Wrap(err, "can't parse postgres config")
 				}
 			}
-			return render(r, w, as, &vsource.EditPostgres{Source: src, Cfg: pcfg}, ps, "sources", src.Key, "Edit")
+			return render(ctx, as, &vsource.EditPostgres{Source: src, Cfg: pcfg}, ps, "sources", src.Key, "Edit")
 		default:
-			return render(r, w, as, &views.TODO{Message: "unhandled source type [" + src.Type.String() + "]"}, ps, "sources", src.Key, "Edit")
+			msg := fmt.Sprintf("unhandled source type [%s]", src.Type.String())
+			return flashAndRedir(false, msg, "/source", ctx, ps)
 		}
 	})
 }
 
-func SourceSave(w http.ResponseWriter, r *http.Request) {
-	act("source.save", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(r)
+func SourceSave(ctx *fasthttp.RequestCtx) {
+	act("source.save", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(ctx)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key := mux.Vars(r)["key"]
-
+		key, err := ctxRequiredString(ctx, "key", false)
+		if err != nil {
+			return "", err
+		}
 		src, err := as.Sources.Load(key, false)
 		if err != nil {
-			return "", errors.Wrap(err, "unable to load source ["+key+"]")
+			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
 
 		src.Title, err = frm.GetString("title", true)
@@ -130,29 +133,31 @@ func SourceSave(w http.ResponseWriter, r *http.Request) {
 
 			src.Config = util.ToJSONBytes(params, true)
 		default:
-			return "", errors.New("unable to parse config for source type [" + src.Type.String() + "]")
+			return "", errors.Errorf("unable to parse config for source type [%s]", src.Type.String())
 		}
 
 		err = currentApp.Sources.Save(src, true)
 		if err != nil {
-			return "", errors.Wrap(err, "unable to save source ["+key+"]")
+			return "", errors.Wrapf(err, "unable to save source [%s]", key)
 		}
 
-		msg := fmt.Sprintf(`saved source "%v"`, key)
-		return flashAndRedir(true, msg, as.Route("source.detail", "key", key), w, r, ps)
+		msg := fmt.Sprintf(`saved source "%s"`, key)
+		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), ctx, ps)
 	})
 }
 
-func SourceDelete(w http.ResponseWriter, r *http.Request) {
-	act("source.delete", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key := mux.Vars(r)["key"]
-
-		err := as.Sources.Delete(key)
+func SourceDelete(ctx *fasthttp.RequestCtx) {
+	act("source.delete", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := ctxRequiredString(ctx, "key", false)
 		if err != nil {
-			return "", errors.Wrap(err, "unable to delete source ["+key+"]")
+			return "", err
+		}
+		err = as.Sources.Delete(key)
+		if err != nil {
+			return "", errors.Wrapf(err, "unable to delete source [%s]", key)
 		}
 
-		msg := fmt.Sprintf(`deleted source "%v"`, key)
-		return flashAndRedir(true, msg, as.Route("source.list"), w, r, ps)
+		msg := fmt.Sprintf(`deleted source "%s"`, key)
+		return flashAndRedir(true, msg, "/source", ctx, ps)
 	})
 }

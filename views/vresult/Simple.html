@@ -1,0 +1,77 @@
+{% import "fmt" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/field" %}
+{% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func Simple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+  <div class="card">
+    {%= vutil.Indent(true, indent) %}
+    <div class="right">{%= components.Plural(len(r.Data), `row`, `rows`) %}</div>
+    {%= vutil.Indent(true, indent) %}
+    <h3>{%s r.Title %}</h3>
+    {%= simpleTable(r, indent, false, nil, as, ps) %}
+  {%= vutil.Indent(true, indent - 1) %}
+  </div>
+{% endstripspace %}{% endfunc %}
+
+{% func simpleTable(r *result.Result, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+  {%= vutil.Indent(true, indent) %}
+  <div class="result-table">
+    {%= vutil.Indent(true, indent + 1) %}
+    <table>
+      {%= vutil.Indent(true, indent + 2) %}
+      <thead>
+        {%= vutil.Indent(true, indent + 3) %}
+        <tr>
+          {% if showNum %}
+            {%= vutil.Indent(true, indent + 4) %}
+            <th></th>
+          {% endif %}
+          {% for fIdx, field := range r.Fields %}
+            {%= vutil.Indent(true, indent + 4) %}
+            {% code tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, field.Key, fIdx, field.Type) %}
+            {%= components.TableHeader("x", field.Key, field.Key, params, ps.URI, tooltip, false, ps) %}
+          {% endfor %}
+        {%= vutil.Indent(true, indent + 3) %}
+        </tr>
+      {%= vutil.Indent(true, indent + 2) %}
+      </thead>
+      {%= vutil.Indent(true, indent + 2) %}
+      <tbody>
+        {% for rIdx, row := range r.Data %}
+          {%= simpleRow(rIdx, row, r.Fields, indent + 3, showNum, params, as, ps) %}
+        {% endfor %}
+
+        {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
+          {%= vutil.Indent(true, indent + 3) %}
+          <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ps.URI) %}</td></tr>
+        {% endif %}
+      {%= vutil.Indent(true, indent + 2) %}
+      </tbody>
+    {%= vutil.Indent(true, indent + 1) %}
+    </table>
+  {%= vutil.Indent(true, indent) %}
+  </div>
+{% endstripspace %}{% endfunc %}
+
+{% func simpleRow(idx int, row []interface{}, fields field.Fields, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+  {%= vutil.Indent(true, indent) %}
+  <tr>
+    {% if showNum %}
+      {%= vutil.Indent(true, indent + 1) %}
+      <th><em>{%d idx + 1 %}</em></th>
+    {% endif %}
+
+    {% for fIdx, f := range fields %}
+      {%code col := row[fIdx] %}
+      {%= vutil.Indent(true, indent + 1) %}
+      <td>{%= fieldview.Any(col, f.Type) %}</td>
+    {% endfor %}
+    {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}

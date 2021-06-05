@@ -1,6 +1,7 @@
 package workspace
 
 import (
+	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -16,21 +17,21 @@ import (
 
 func ProjectMenu(as *app.State, prj *project.View) (menu.Items, error) {
 	overviewDesc := "Overview of the project, displaying details about the configuration"
-	overviewRoute := as.Route("workspace", "key", prj.Project.Key)
+	overviewRoute := fmt.Sprintf("/x/%s", prj.Project.Key)
 	if strings.HasPrefix(prj.Project.Key, project.SourceProjectPrefix) {
-		overviewRoute = as.Route("workspace.source", "key", strings.TrimPrefix(prj.Project.Key, project.SourceProjectPrefix))
+		overviewRoute = fmt.Sprintf("/s/%s", strings.TrimPrefix(prj.Project.Key, project.SourceProjectPrefix))
 	}
 	overview := &menu.Item{Key: "overview", Title: "Project overview", Description: overviewDesc, Route: overviewRoute}
 	ret := menu.Items{overview, menu.Separator}
 
 	pKey := prj.Project.Key
-	rt := "workspace"
+	rt := "/x"
 	if strings.HasPrefix(pKey, project.SourceProjectPrefix) {
 		pKey = strings.TrimPrefix(pKey, project.SourceProjectPrefix)
-		rt = "workspace.source"
+		rt = "/s"
 	}
 
-	m, err := ToMenu(as, as.Route(rt, "key", pKey), prj.Project.Actions, prj)
+	m, err := ToMenu(as, fmt.Sprintf("%s/%s", rt, pKey), prj.Project.Actions, prj)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +50,7 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 			Key:         act.Key,
 			Title:       act.Name(),
 			Description: act.Description,
-			Icon:        act.Icon,
+			Icon:        act.IconWithFallback(),
 			Route:       p,
 		}
 		var err error
@@ -62,7 +63,7 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 			x = &menu.Item{}
 
 		case action.TypeAll:
-			err = itemsForAll(x, act, view)
+			err = itemsForAll(x, view)
 		case action.TypeSource:
 			err = itemsForSource(x, act, view)
 		case action.TypePackage:
@@ -73,7 +74,7 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 			// noop
 
 		default:
-			err = errors.New("unhandled menu action type [" + act.Type.Key + "]")
+			err = errors.Errorf("unhandled menu action type [%s]", act.Type.Key)
 		}
 		if err != nil {
 			return nil, err
@@ -92,7 +93,7 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 	return ret, nil
 }
 
-func itemsForAll(x *menu.Item, act *action.Action, view *project.View) error {
+func itemsForAll(x *menu.Item, view *project.View) error {
 	for _, src := range view.Sources {
 		sch, err := view.Schemata.GetWithError(src.Key)
 		if err != nil {
@@ -154,7 +155,7 @@ func schemaFor(act *action.Action, view *project.View) (*schema.Schema, error) {
 
 	sch, err := view.Schemata.GetWithError(sourceKey)
 	if err != nil {
-		return nil, errors.Wrap(err, "source ["+sourceKey+"] is not included in this project")
+		return nil, errors.Wrapf(err, "source [%s] is not included in this project", sourceKey)
 	}
 	return sch, nil
 }

@@ -20,7 +20,7 @@ func (x *List) Key() string {
 }
 
 func (x *List) String() string {
-	return fmt.Sprintf("[]%v", x.T.String())
+	return fmt.Sprintf("[]%s", x.T.String())
 }
 
 func (x *List) Sortable() bool {

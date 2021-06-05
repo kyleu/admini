@@ -2,7 +2,7 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/project" %}
 {% import "github.com/kyleu/admini/app/source" %}
-{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Edit struct {
@@ -14,33 +14,21 @@
 {% func (p *Edit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right">
-      <a class="link-confirm" data-message="Are you sure you want to delete project [{%s p.Project.Key %}]?" href="{%s as.Route(`project.delete`, `key`, p.Project.Key) %}">Delete Project</a>
+      <a class="link-confirm" data-message="Are you sure you want to delete project [{%s p.Project.Key %}]?" href="/project/{%s p.Project.Key %}/delete">Delete Project</a>
     </div>
     <h3>Edit [{%s p.Project.Key %}]</h3>
     <div class="spacer"></div>
-    <form class="editor" action="{%s as.Route(`project.save`, `key`, p.Project.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor" action="/project/{%s p.Project.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
+          {%= components.TableInput("title", "Title", p.Project.Title, 5) %}
           <tr>
-            <th class="shrink"><label for="input-title">Title</label></th>
-            <td><input value="{%v p.Project.Title %}" name="title" id="input-title" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-description">Description</label></th>
-            <td><input value="{%v p.Project.Description %}" name="description" id="input-description" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label>Sources</label></th>
-            <td>
-            {%- for _, src := range p.AvailableSources -%}
-            {%- if util.StringArrayContains(p.Project.Sources, src.Key) -%}
-              <div><label><input value="{%s src.Key %}" name="sources" type="checkbox" checked="checked" /> {%s src.Name() %}</label></div>
-            {%- else -%}
-              <div><label><input value="{%s src.Key %}" name="sources" type="checkbox" /> {%s src.Name() %}</label></div>
-            {%- endif -%}
-            {%- endfor -%}
+            <th class="shrink"><label>Icon</label></th>
+            <td>{%= components.IconPicker(p.Project.Icon, "icon", ps, 7) %}
             </td>
           </tr>
+          {%= components.TableInput("description", "Description", p.Project.Description, 5) %}
+          {%= components.TableCheckbox("sources", "Sources", p.Project.Sources, p.AvailableSources.Keys(), p.AvailableSources.Titles(), 5) %}
         </tbody>
       </table>
       <div class="spacer"></div>

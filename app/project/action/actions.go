@@ -63,12 +63,12 @@ func (a Actions) CleanKeys() {
 		idx := 1
 		for match != nil {
 			idx++
-			match = a.Find(fmt.Sprintf("%v-%v", proposed, idx))
+			match = a.Find(fmt.Sprintf("%s-%d", proposed, idx))
 		}
 		if idx == 1 {
 			act.Key = proposed
 		} else {
-			act.Key = fmt.Sprintf("%v-%v", proposed, idx)
+			act.Key = fmt.Sprintf("%s-%d", proposed, idx)
 		}
 	}
 }

@@ -3,7 +3,7 @@
 
 {% func ExpandCollapse(indent int, ps *cutil.PageState) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
-  {%= SVGRef(`right`, 15, 15, `expand`, ``, ps) %}
+  {%= SVGRef(`right`, 15, 15, `expand`, ps) %}
   {%= vutil.Indent(true, indent) %}
-  {%= SVGRef(`down`, 15, 15, `collapse`, ``, ps) %}
+  {%= SVGRef(`down`, 15, 15, `collapse`, ps) %}
 {% endstripspace %}{% endfunc %}

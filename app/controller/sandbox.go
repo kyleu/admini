@@ -1,8 +1,7 @@
 package controller
 
 import (
-	"net/http"
-
+	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -10,24 +9,26 @@ import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/views/vsandbox"
 
-	"github.com/gorilla/mux"
 	"github.com/kyleu/admini/app/sandbox"
 )
 
-func SandboxList(w http.ResponseWriter, r *http.Request) {
-	act("sandbox.list", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func SandboxList(ctx *fasthttp.RequestCtx) {
+	act("sandbox.list", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "Sandboxes"
 		ps.Data = sandbox.AllSandboxes
-		return render(r, w, as, &vsandbox.List{}, ps, "sandbox")
+		return render(ctx, as, &vsandbox.List{}, ps, "sandbox")
 	})
 }
 
-func SandboxRun(w http.ResponseWriter, r *http.Request) {
-	act("sandbox.run", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key := mux.Vars(r)["key"]
+func SandboxRun(ctx *fasthttp.RequestCtx) {
+	act("sandbox.run", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := ctxRequiredString(ctx, "key", false)
+		if err != nil {
+			return "", err
+		}
 		sb := sandbox.AllSandboxes.Get(key)
 		if sb == nil {
-			return ersp("no sandbox with key [" + key + "]")
+			return ersp("no sandbox with key [%s]", key)
 		}
 		ret, err := sb.Run(as, ps.Logger.With(zap.String("sandbox", key)))
 		if err != nil {
@@ -36,8 +37,8 @@ func SandboxRun(w http.ResponseWriter, r *http.Request) {
 		ps.Title = sb.Title
 		ps.Data = ret
 		if sb.Key == "testbed" {
-			return render(r, w, as, &vsandbox.Testbed{}, ps, "sandbox", sb.Key)
+			return render(ctx, as, &vsandbox.Testbed{}, ps, "sandbox", sb.Key)
 		}
-		return render(r, w, as, &vsandbox.Run{Key: key, Title: sb.Title, Result: ret}, ps, "sandbox", sb.Key)
+		return render(ctx, as, &vsandbox.Run{Key: key, Title: sb.Title, Result: ret}, ps, "sandbox", sb.Key)
 	})
 }

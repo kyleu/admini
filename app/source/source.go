@@ -13,6 +13,7 @@ import (
 type Source struct {
 	Key         string          `json:"-"`
 	Title       string          `json:"title,omitempty"`
+	Icon        string          `json:"icon,omitempty"`
 	Description string          `json:"description,omitempty"`
 	Paths       []string        `json:"paths,omitempty"`
 	Type        schema.Origin   `json:"type,omitempty"`
@@ -26,6 +27,13 @@ func (s *Source) Name() string {
 	return s.Title
 }
 
+func (s *Source) IconWithFallback() string {
+	if s.Icon == "" {
+		return "app"
+	}
+	return s.Icon
+}
+
 type Sources []*Source
 
 func (s Sources) Get(key string) *Source {
@@ -37,6 +45,22 @@ func (s Sources) Get(key string) *Source {
 	return nil
 }
 
+func (s Sources) Keys() []string {
+	ret := make([]string, 0, len(s))
+	for _, x := range s {
+		ret = append(ret, x.Key)
+	}
+	return ret
+}
+
+func (s Sources) Titles() []string {
+	ret := make([]string, 0, len(s))
+	for _, x := range s {
+		ret = append(ret, x.Title)
+	}
+	return ret
+}
+
 func (s Sources) GetWithError(key string) (*Source, error) {
 	if ret := s.Get(key); ret != nil {
 		return ret, nil
@@ -46,7 +70,7 @@ func (s Sources) GetWithError(key string) (*Source, error) {
 	for _, x := range s {
 		keys = append(keys, x.Key)
 	}
-	return nil, errors.Errorf("no source [%v] available among candidates [%v]", key, strings.Join(keys, ", "))
+	return nil, errors.Errorf("no source [%s] available among candidates [%s]", key, strings.Join(keys, ", "))
 }
 
 func (s Sources) Sort() {

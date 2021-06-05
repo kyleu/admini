@@ -26,14 +26,11 @@
               <td>{%= fieldedit.Any(p.Defaults[idx], f.Type, f.Nullable(), f.Key) %}</td>
             </tr>
           {% endfor %}
-          <tr>
-            <td colspan="2">
-              <button type="submit">Save Changes</button>
-              <button type="reset">Reset</button>
-            </td>
-          </tr>
         </tbody>
       </table>
+      <div class="spacer"></div>
+      <button type="submit">Save Changes</button>
+      <button type="reset">Reset</button>
     </form>
   </div>
 {% endfunc %}

@@ -17,7 +17,7 @@ func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action) (*Result, e
 	case "":
 		return ErrResult(req, act, errors.New("must provide activity in action config"))
 	default:
-		return ErrResult(req, act, errors.New("invalid activity ["+a+"] in action config"))
+		return ErrResult(req, act, errors.Errorf("invalid activity [%s] in action config", a))
 	}
 }
 
@@ -27,8 +27,8 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 		return ErrResult(req, act, errors.New("must provide source in action config"))
 	}
 	sql := act.Config.GetStringOpt("query")
-	if req.R.Method == http.MethodPost {
-		frm, err := cutil.ParseForm(req.R)
+	if string(req.Ctx.Method()) == http.MethodPost {
+		frm, err := cutil.ParseForm(req.Ctx)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to parse form")
 		}
@@ -45,7 +45,7 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 	}
 	src := req.Sources.Get(srcKey)
 	if src == nil {
-		return ErrResult(req, act, errors.New("source ["+srcKey+"] is not in this project's configuration"))
+		return ErrResult(req, act, errors.Errorf("source [%s] is not in this project's configuration", srcKey))
 	}
 	ld, err := req.AS.Loaders.Get(src.Type, src.Key, src.Config)
 	if err != nil {

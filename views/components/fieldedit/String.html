@@ -1,7 +1,5 @@
+{% import "fmt" %}
+
 {% func String(x interface{}, nullable bool, k string, id string) %}{% stripspace %}
-{% if id == "" %}
-<input value="{%v x %}" name="{%s k %}" />
-{% else %}
-<input value="{%v x %}" name="{%s k %}" id="{%s id %}" />
-{% endif %}
+{%= FormInput(k, id, fmt.Sprintf("%v", x)) %}
 {% endstripspace %}{% endfunc %}

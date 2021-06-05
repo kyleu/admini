@@ -17,7 +17,7 @@ func (x *Int) Key() string {
 
 func (x *Int) String() string {
 	if x.Bits > 0 {
-		return fmt.Sprintf("%v%v", x.Key(), x.Bits)
+		return fmt.Sprintf("%s%d", x.Key(), x.Bits)
 	}
 	return x.Key()
 }

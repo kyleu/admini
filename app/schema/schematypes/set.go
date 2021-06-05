@@ -17,7 +17,7 @@ func (x *Set) Key() string {
 }
 
 func (x *Set) String() string {
-	return fmt.Sprintf("%v[%v]", x.Key(), x.T.String())
+	return fmt.Sprintf("%s[%s]", x.Key(), x.T.String())
 }
 
 func (x *Set) Sortable() bool {

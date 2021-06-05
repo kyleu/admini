@@ -58,7 +58,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 }
 
 func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
-	cols := []*columnResult{}
+	var cols []*columnResult
 	err := db.Select(&cols, queries.ListColumns(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list columns")
@@ -67,9 +67,9 @@ func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredL
 	for _, col := range cols {
 		mod := models.Get(util.Pkg{col.Schema}, col.Table)
 		if mod == nil {
-			return errors.Errorf("no table [%v] found among [%v] candidates", col.Table, len(models))
+			return errors.Errorf("no table [%s] found among [%d] candidates", col.Table, len(models))
 		}
-		err = mod.AddField(col.AsField(mod.Type == model.ModelTypeInterface, logger))
+		err = mod.AddField(col.AsField(mod.Type == model.TypeInterface, logger))
 		if err != nil {
 			return errors.Wrap(err, "can't add field")
 		}

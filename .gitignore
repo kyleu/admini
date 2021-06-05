@@ -9,7 +9,5 @@
 
 **/*.html.go
 **/*.sql.go
-**/*.tmp
-**/*~
 
 /client/node_modules

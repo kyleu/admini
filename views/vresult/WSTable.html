@@ -1,5 +1,4 @@
 {% import "fmt" %}
-{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/result" %}
 {% import "github.com/kyleu/admini/app/model" %}
@@ -8,7 +7,7 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, model *model.Model, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, model *model.Model, indent int, showNum bool, params *util.Params) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <div class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
@@ -25,7 +24,7 @@
             {%= vutil.Indent(true, indent + 4) %}
             {% code tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, field.Key, fIdx, field.Type) %}
             {% code srt := model != nil && field.Type.Sortable() %}
-            {%= components.TableHeader("x", field.Key, field.Key, params, ps.URL, tooltip, srt, ps) %}
+            {%= components.TableHeader("x", field.Key, field.Key, params, ws.PS.URI, tooltip, srt, ws.PS) %}
           {% endfor %}
         {%= vutil.Indent(true, indent + 3) %}
         </tr>
@@ -34,12 +33,12 @@
       {%= vutil.Indent(true, indent + 2) %}
       <tbody>
         {% for rIdx, row := range r.Data %}
-          {%= WSRow(ws, act, rIdx, row, r.Fields, model, indent + 3, showNum, params, as, ps) %}
+          {%= WSRow(ws, act, rIdx, row, r.Fields, model, indent + 3, showNum, params) %}
         {% endfor %}
 
         {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
           {%= vutil.Indent(true, indent + 3) %}
-          <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ps.URL) %}</td></tr>
+          <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ws.PS.URI) %}</td></tr>
         {% endif %}
       {%= vutil.Indent(true, indent + 2) %}
       </tbody>

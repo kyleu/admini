@@ -1,32 +1,35 @@
 package cutil
 
 import (
-	"net/http"
+	"fmt"
+	"path/filepath"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/views/vutil"
+	"github.com/valyala/fasthttp"
 )
 
 type WorkspaceRequest struct {
-	T        string              `json:"t"`
-	K        string              `json:"k"`
-	W        http.ResponseWriter `json:"-"`
-	R        *http.Request       `json:"-"`
-	AS       *app.State          `json:"-"`
-	PS       *PageState          `json:"-"`
-	Item     interface{}         `json:"item,omitempty"`
-	Path     []string            `json:"path,omitempty"`
-	Project  *project.Project    `json:"-"`
-	Sources  source.Sources      `json:"-"`
-	Schemata schema.Schemata     `json:"-"`
+	T        string               `json:"t"`
+	K        string               `json:"k"`
+	Ctx      *fasthttp.RequestCtx `json:"-"`
+	AS       *app.State           `json:"-"`
+	PS       *PageState           `json:"-"`
+	Item     interface{}          `json:"item,omitempty"`
+	Path     []string             `json:"path,omitempty"`
+	Project  *project.Project     `json:"-"`
+	Sources  source.Sources       `json:"-"`
+	Schemata schema.Schemata      `json:"-"`
 }
 
 func (r *WorkspaceRequest) Route(path ...string) string {
-	url := vutil.WorkspaceLink(r.AS, r.T, r.K, path...)
+	url := fmt.Sprintf("/%s/%s", r.T, r.K)
+	if len(path) > 0 {
+		url += "/" + filepath.Join(path...)
+	}
 	return url
 }
 

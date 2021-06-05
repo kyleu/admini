@@ -1,6 +1,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/project/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
@@ -11,25 +12,31 @@
 
 {% func (p *WorkspaceOverview) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>{%s p.Req.Project.Name() %}</h3>
-    {%= actionList(p.Req, p.Req.Project.Actions, 2) %}
+    <h3>{%= components.SVGRef(p.Req.Project.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Req.Project.Name() %}</h3>
+    {%= actionList(p.Req, p.Req.Project.Actions, ps, 2) %}
   </div>
 {% endfunc %}
 
-{% func actionList(req *cutil.WorkspaceRequest, acts action.Actions, indent int) %}{% stripspace %}
+{% func actionList(req *cutil.WorkspaceRequest, acts action.Actions, ps *cutil.PageState, indent int) %}{% stripspace %}
   <ul>
   {% for _, act := range acts %}
     {% if act.Type != action.TypeSeparator %}
       {% if len(act.Children) == 0 %}
         {%= vutil.Indent(true, indent + 1) %}
-        <li><a href="{%s req.Route(act.Path()...) %}">{%s act.Name() %}</a></li>
+        <li><a href="{%s req.Route(act.Path()...) %}">
+          {%= components.SVGRef(act.IconWithFallback(), 16, 16, "icon", ps) %}
+          {%s act.Name() %}
+        </a></li>
       {% else %}
         {%= vutil.Indent(true, indent + 1) %}
         <li>
           {%= vutil.Indent(true, indent + 2) %}
-          <a href="{%s req.Route(act.Path()...) %}">{%s act.Name() %}</a>
+          <a href="{%s req.Route(act.Path()...) %}">
+            {%= components.SVGRef(act.IconWithFallback(), 16, 16, "icon", ps) %}
+            {%s act.Name() %}
+          </a>
           {%= vutil.Indent(true, indent + 2) %}
-          {%= actionList(req, act.Children, indent + 2) %}
+          {%= actionList(req, act.Children, ps, indent + 2) %}
         {%= vutil.Indent(true, indent + 1) %}
         </li>
       {% endif %}

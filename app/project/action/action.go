@@ -38,6 +38,16 @@ func (a *Action) Size() int {
 	return ret
 }
 
+func (a *Action) IconWithFallback() string {
+	if a.Icon != "" {
+		return a.Icon
+	}
+	if a.Type.Icon != "" {
+		return a.Type.Icon
+	}
+	return "app"
+}
+
 func (a *Action) Clone(pkg util.Pkg, kids Actions) *Action {
 	return &Action{
 		Key: a.Key, Type: a.Type, Title: a.Title, Description: a.Description,

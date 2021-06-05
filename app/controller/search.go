@@ -1,8 +1,9 @@
 package controller
 
 import (
-	"net/http"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 
@@ -10,13 +11,13 @@ import (
 	"github.com/kyleu/admini/views/vsearch"
 )
 
-func Search(w http.ResponseWriter, r *http.Request) {
-	act("search", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		q := r.URL.Query().Get("q")
+func Search(ctx *fasthttp.RequestCtx) {
+	act("search", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		q := string(ctx.URI().QueryArgs().Peek("q"))
 		q = strings.TrimSpace(q)
 		results := []string{"a", "b", "c"}
 		ps.Title = "Search Results"
 		ps.Data = results
-		return render(r, w, as, &vsearch.Results{Q: q, Results: results}, ps, "Search")
+		return render(ctx, as, &vsearch.Results{Q: q, Results: results}, ps, "Search")
 	})
 }

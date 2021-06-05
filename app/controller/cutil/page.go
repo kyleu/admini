@@ -1,11 +1,12 @@
 package cutil
 
 import (
-	"net/url"
+	"fmt"
 
+	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"github.com/gorilla/sessions"
+	"github.com/go-gem/sessions"
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/util"
 )
@@ -14,12 +15,13 @@ type PageState struct {
 	Title         string             `json:"title"`
 	Description   string             `json:"description"`
 	Method        string             `json:"method"`
-	URL           *url.URL           `json:"-"`
+	URI           *fasthttp.URI      `json:"-"`
 	Menu          menu.Items         `json:"menu"`
 	Breadcrumbs   Breadcrumbs        `json:"breadcrumbs"`
 	Flashes       []string           `json:"flashes"`
 	Session       *sessions.Session  `json:"-"`
 	Icons         []string           `json:"icons"`
+	RootIcon      string             `json:"rootIcon"`
 	RootPath      string             `json:"rootPath"`
 	RootTitle     string             `json:"rootTitle"`
 	SearchPath    string             `json:"searchPath"`
@@ -42,5 +44,5 @@ func (p *PageState) TitleString() string {
 	if p.Title == "" {
 		return util.AppName
 	}
-	return p.Title + " - " + util.AppName
+	return fmt.Sprintf("%s - %s", p.Title, util.AppName)
 }

@@ -10,13 +10,18 @@ import (
 type Relationship struct {
 	Key          string   `json:"key"`
 	SourceFields []string `json:"srcFields"`
+	TargetSource string   `json:"tgtSource"`
 	TargetPkg    util.Pkg `json:"tgtPackage"`
 	TargetModel  string   `json:"tgtModel"`
 	TargetFields []string `json:"tgtFields"`
 }
 
 func (r *Relationship) String() string {
-	return fmt.Sprintf("%v: [%v] -> %v[%v]", r.Key, strings.Join(r.SourceFields, ", "), r.TargetModel, strings.Join(r.TargetFields, ", "))
+	return fmt.Sprintf("%s: [%s] -> %s[%s]", r.Key, strings.Join(r.SourceFields, ", "), r.TargetModel, strings.Join(r.TargetFields, ", "))
+}
+
+func (r *Relationship) Path() string {
+	return strings.Join(append(r.TargetPkg, r.TargetModel), "/")
 }
 
 type Relationships []*Relationship

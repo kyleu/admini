@@ -4,6 +4,7 @@
 {% import "github.com/kyleu/admini/app/sandbox" %}
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vproject" %}
 {% import "github.com/kyleu/admini/views/vsource" %}
@@ -16,32 +17,32 @@
 
 {% func (p *Home) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>{%s util.AppName %}</h3>
+    <h3>{%= components.SVGRef(`app`, 20, 20, `icon`, ps) %}{%s util.AppName %}</h3>
   </div>
 
   <div class="card">
-    <h3><a href="{%s as.Route(`project.list`) %}">Projects</a></h3>
+    <h3><a href="/project">Projects</a></h3>
     {%- if len(p.Sources) == 0 -%}
-    <p>no projects available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
+    <p>no projects available, why not <a href="/project/_new">add one</a></p>
     {%- else -%}
     {%-= vproject.Table(p.Projects, as, ps) -%}
     {%- endif -%}
   </div>
 
   <div class="card">
-    <h3><a href="{%s as.Route(`source.list`) %}">Sources</a></h3>
+    <h3><a href="/source">Sources</a></h3>
     {%- if len(p.Sources) == 0 -%}
-    <p>no sources available, why not <a href="{%s as.Route(`todo`) %}">add one</a></p>
+    <p>no sources available, why not <a href="/source/_new">add one</a></p>
     {%- else -%}
     {%-= vsource.Table(p.Sources, as, ps) -%}
     {%- endif -%}
   </div>
 
   <div class="card">
-    <h3><a href="{%s as.Route(`sandbox.list`) %}">Sandboxes</a></h3>
+    <h3><a href="/sandbox">Sandboxes</a></h3>
     <ul>
       {%- for _, s := range sandbox.AllSandboxes -%}
-      <li><a href="{%s as.Route(`sandbox.run`, `key`, s.Key) %}">{%s s.Title %}</a></li>
+      <li><a href="/sandbox/{%s s.Key %}">{%s s.Title %}</a></li>
       {%- endfor -%}
     </ul>
   </div>

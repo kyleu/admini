@@ -5,47 +5,49 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/valyala/fasthttp"
+
 	"github.com/kyleu/admini/app/assets"
 )
 
 const assetBase = "assets"
 
-func Favicon(w http.ResponseWriter, r *http.Request) {
+func Favicon(ctx *fasthttp.RequestCtx) {
 	data, hash, contentType, err := assets.Asset(assetBase, "/favicon.ico")
-	ZipResponse(w, r, data, hash, contentType, err)
+	ZipResponse(ctx, data, hash, contentType, err)
 }
 
-func RobotsTxt(w http.ResponseWriter, r *http.Request) {
+func RobotsTxt(ctx *fasthttp.RequestCtx) {
 	data, hash, contentType, err := assets.Asset(assetBase, "/robots.txt")
-	ZipResponse(w, r, data, hash, contentType, err)
+	ZipResponse(ctx, data, hash, contentType, err)
 }
 
-func Static(w http.ResponseWriter, r *http.Request) {
-	path, err := filepath.Abs(strings.TrimPrefix(r.URL.Path, "/assets"))
+func Static(ctx *fasthttp.RequestCtx) {
+	path, err := filepath.Abs(strings.TrimPrefix(string(ctx.Request.URI().Path()), "/assets"))
 	if err == nil {
 		if !strings.HasPrefix(path, "/") {
 			path = "/" + path
 		}
 		data, hash, contentType, e := assets.Asset(assetBase, path)
-		ZipResponse(w, r, data, hash, contentType, e)
+		ZipResponse(ctx, data, hash, contentType, e)
 	} else {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		ctx.Error(err.Error(), http.StatusBadRequest)
 	}
 }
 
-func ZipResponse(w http.ResponseWriter, r *http.Request, data []byte, hash string, contentType string, err error) {
+func ZipResponse(ctx *fasthttp.RequestCtx, data []byte, hash string, contentType string, err error) {
 	if err == nil {
-		w.Header().Set("Content-Encoding", "gzip")
-		w.Header().Set("Content-Type", contentType)
-		// w.Header().Add("Cache-Control", "public, max-age=31536000")
-		w.Header().Add("ETag", hash)
-		if r.Header.Get("If-None-Match") == hash {
-			w.WriteHeader(http.StatusNotModified)
+		ctx.Response.Header.Set("Content-Encoding", "gzip")
+		ctx.Response.Header.SetContentType(contentType)
+		// ctx.Response.Header.Add("Cache-Control", "public, max-age=31536000")
+		ctx.Response.Header.Add("ETag", hash)
+		if string(ctx.Request.Header.Peek("If-None-Match")) == hash {
+			ctx.SetStatusCode(http.StatusNotModified)
 		} else {
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write(data)
+			ctx.SetStatusCode(http.StatusOK)
+			_, _ = ctx.Write(data)
 		}
 	} else {
-		http.Error(w, err.Error(), http.StatusNotFound)
+		ctx.Error(err.Error(), http.StatusNotFound)
 	}
 }

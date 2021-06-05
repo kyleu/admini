@@ -31,11 +31,7 @@ func (s Schemata) GetWithError(key string) (*Schema, error) {
 	for k := range s {
 		keys = append(keys, k)
 	}
-	return nil, errors.Errorf("no schema [%v] available among candidates [%v]", key, strings.Join(keys, ", "))
-}
-
-func NewSchema(paths []string, md *Metadata) *Schema {
-	return &Schema{Paths: paths, Metadata: md}
+	return nil, errors.Errorf("no schema [%s] available among candidates [%s]", key, strings.Join(keys, ", "))
 }
 
 func (s *Schema) AddPath(path string) bool {
@@ -54,7 +50,7 @@ func (s *Schema) AddScalar(sc *Scalar) error {
 		return errors.New("nil scalar")
 	}
 	if s.Scalars.Get(sc.Pkg, sc.Key) != nil {
-		return errors.New("scalar [" + sc.Key + "] already exists")
+		return errors.Errorf("scalar [%s] already exists", sc.Key)
 	}
 	s.Scalars = append(s.Scalars, sc)
 	return nil
@@ -65,18 +61,18 @@ func (s *Schema) AddModel(m *model.Model) error {
 		return errors.New("nil model")
 	}
 	if s.Models.Get(m.Pkg, m.Key) != nil {
-		return errors.New("model [" + m.Key + "] already exists")
+		return errors.Errorf("model [%s] already exists", m.Key)
 	}
 	s.Models = append(s.Models, m)
 	return nil
 }
 
-func (s *Schema) Validate() *ValidationResult {
-	return validateSchema(s)
+func (s *Schema) Validate(n string) *ValidationResult {
+	return validateSchema(n, s)
 }
 
-func (s *Schema) ValidateModel(m *model.Model) *ValidationResult {
-	r := &ValidationResult{Schema: "TODO"}
+func (s *Schema) ValidateModel(sch string, m *model.Model) *ValidationResult {
+	r := &ValidationResult{Schema: sch}
 	return validateModel(r, s, m)
 }
 

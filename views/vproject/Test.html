@@ -3,15 +3,15 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type TODO struct {
+{% code type Test struct {
   layout.Basic
   Message string
 } %}
 
-{% func (p *TODO) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Test) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>TODO</h3>
-    <p>{% if p.Message == `` %}TODO!{% else %}{%s p.Message %}{% endif %}</p>
+    <h3>Project Test</h3>
+    <p>{%s p.Message %}</p>
     {% if ps.Data != nil %}{%= fieldview.JSON(ps.Data) %}{% endif %}
   </div>
 {% endfunc %}

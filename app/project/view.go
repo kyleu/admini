@@ -37,13 +37,13 @@ func (s *Service) LoadView(key string) (*View, error) {
 func (s *Service) schemataFor(key string) (schema.Schemata, error) {
 	p, err := s.LoadRequired(key, false)
 	if err != nil {
-		return nil, errors.Wrapf(err, "can't load project [%v]", key)
+		return nil, errors.Wrapf(err, "can't load project [%s]", key)
 	}
 	ret := map[string]*schema.Schema{}
 	for _, sch := range p.Sources {
 		x, err := s.sources.LoadSchema(sch)
 		if err != nil {
-			return nil, errors.Wrapf(err, "can't load schema [%v] for project [%v]", sch, p.Key)
+			return nil, errors.Wrapf(err, "can't load schema [%s] for project [%s]", sch, p.Key)
 		}
 		ret[sch] = x
 	}
@@ -55,7 +55,7 @@ func (s *Service) sourcesFor(p *Project) (source.Sources, error) {
 	for _, sch := range p.Sources {
 		x, err := s.sources.Load(sch, false)
 		if err != nil {
-			return nil, errors.Wrapf(err, "can't load source [%v] for project [%v]", sch, p.Key)
+			return nil, errors.Wrapf(err, "can't load source [%s] for project [%s]", sch, p.Key)
 		}
 		ret = append(ret, x)
 	}

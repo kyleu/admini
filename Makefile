@@ -11,8 +11,8 @@ dev: ## Start the project, reloading on changes
 templates:
 	bin/templates.sh
 
-.PHONY: build-debug
-build-debug: templates ## Build all binaries
+.PHONY: build
+build: templates ## Build all binaries
 	go build -gcflags "all=-N -l" -o build/debug/ .
 
 .PHONY: build-release-ci

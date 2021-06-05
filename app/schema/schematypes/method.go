@@ -11,7 +11,7 @@ type Argument struct {
 }
 
 func (a Argument) String() string {
-	return fmt.Sprintf("%v %v", a.Key, a.Type.String())
+	return fmt.Sprintf("%s %s", a.Key, a.Type.String())
 }
 
 type Arguments []Argument
@@ -34,7 +34,7 @@ func (x *Method) String() string {
 	for _, arg := range x.Args {
 		argStrings = append(argStrings, arg.String())
 	}
-	return fmt.Sprintf("fn(%v) %v", strings.Join(argStrings, ", "), x.Ret.String())
+	return fmt.Sprintf("fn(%s) %s", strings.Join(argStrings, ", "), x.Ret.String())
 }
 
 func (x *Method) Sortable() bool {

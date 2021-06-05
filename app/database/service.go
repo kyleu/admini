@@ -9,7 +9,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// Database access service
 type Service struct {
 	DatabaseName string
 	SchemaName   string
@@ -17,12 +16,10 @@ type Service struct {
 	db           *sqlx.DB
 }
 
-// Returns a fresh Service
 func NewService(dbName string, schName string, debug *zap.SugaredLogger, db *sqlx.DB) *Service {
 	return &Service{DatabaseName: dbName, SchemaName: schName, debug: debug, db: db}
 }
 
-// Begins a transaction, be sure to commit it when you're done
 func (s *Service) StartTransaction() (*sqlx.Tx, error) {
 	if s.debug != nil {
 		s.debug.Info("opening transaction")
@@ -31,11 +28,11 @@ func (s *Service) StartTransaction() (*sqlx.Tx, error) {
 }
 
 func errMessage(t string, q string, values []interface{}) string {
-	return fmt.Sprintf("error running %v sql [%v] with values [%v]", t, strings.TrimSpace(q), valueStrings(values))
+	return fmt.Sprintf("error running %s sql [%s] with values [%s]", t, strings.TrimSpace(q), valueStrings(values))
 }
 
 func (s *Service) logQuery(msg string, q string, values []interface{}) {
 	if s.debug != nil {
-		s.debug.Infof("%v {\n  SQL: %v\n  Values: %v\n}", msg, strings.TrimSpace(q), valueStrings(values))
+		s.debug.Infof("%s {\n  SQL: %s\n  Values: %s\n}", msg, strings.TrimSpace(q), valueStrings(values))
 	}
 }

@@ -1,22 +1,24 @@
 package controller
 
 import (
+	"os"
+	"runtime/pprof"
+	"strings"
+
+	"github.com/valyala/fasthttp"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vadmin"
 	"github.com/pkg/errors"
-	"net/http"
-	"os"
-	"runtime/pprof"
-	"strings"
 )
 
-func Admin(w http.ResponseWriter, r *http.Request) {
-	act("admin", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		path := util.SplitAndTrim(strings.TrimPrefix(r.URL.Path, "/admin"), "/")
+func Admin(ctx *fasthttp.RequestCtx) {
+	act("admin", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		path := util.SplitAndTrim(strings.TrimPrefix(string(ctx.URI().Path()), "/admin"), "/")
 		if len(path) == 0 {
-			return render(r, w, as, &vadmin.List{}, ps)
+			return render(ctx, as, &vadmin.List{}, ps)
 		}
 		switch path[0] {
 		case "cpu":
@@ -26,21 +28,21 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					return "", err
 				}
-				return flashAndRedir(true, "started CPU profile", as.Route("admin"), w, r, ps)
+				return flashAndRedir(true, "started CPU profile", "/admin", ctx, ps)
 			case "stop":
 				pprof.StopCPUProfile()
-				return flashAndRedir(true, "stopped CPU profile", as.Route("admin"), w, r, ps)
+				return flashAndRedir(true, "stopped CPU profile", "/admin", ctx, ps)
 			default:
-				return "", errors.New("unhandled CPU profile action [" + path[1] + "]")
+				return "", errors.Errorf("unhandled CPU profile action [%s]", path[1])
 			}
 		case "heap":
 			err := takeHeapProfile()
 			if err != nil {
 				return "", err
 			}
-			return flashAndRedir(true, "wrote heap profile", as.Route("admin"), w, r, ps)
+			return flashAndRedir(true, "wrote heap profile", "/admin", ctx, ps)
 		default:
-			return "", errors.New("unhandled admin action [" + path[0] + "]")
+			return "", errors.Errorf("unhandled admin action [%s]", path[0])
 		}
 	})
 }

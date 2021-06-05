@@ -170,7 +170,7 @@ func (x *Wrapped) UnmarshalJSON(data []byte) error {
 		t = &Unknown{X: "unmarshal:" + wu.K}
 	}
 	if err != nil {
-		return errors.Wrapf(err, "unable to unmarshal wrapped field of type [%v]", wu.K)
+		return errors.Wrapf(err, "unable to unmarshal wrapped field of type [%s]", wu.K)
 	}
 	if t == nil {
 		return errors.New("nil type returned from unmarshal")

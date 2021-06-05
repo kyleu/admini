@@ -51,19 +51,19 @@ func (e *customEncoder) EncodeEntry(entry zapcore.Entry, fields []zapcore.Field)
 	tm := entry.Time.Format(timeFormat)
 
 	msg := entry.Message
-	msgLines := []string{}
+	var msgLines []string
 	if strings.Contains(msg, "\n") {
 		msgLines = strings.Split(msg, "\n")
 		msg = msgLines[0]
 		msgLines = msgLines[1:]
 	}
 
-	addLine(fmt.Sprintf("[%v] %v %v", lvl, tm, Cyan.Add(msg)))
+	addLine(fmt.Sprintf("[%s] %s %s", lvl, tm, Cyan.Add(msg)))
 	for _, ml := range msgLines {
 		if strings.Contains(ml, util.AppKey) {
 			ml = Green.Add(ml)
 		}
-		addLine("  " + ml)
+		addLine("  " + Cyan.Add(ml))
 	}
 	if len(data) > 0 {
 		addLine("  " + util.ToJSONCompact(data))

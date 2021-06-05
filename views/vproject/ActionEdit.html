@@ -1,0 +1,51 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type ActionEdit struct {
+  layout.Basic
+  Project *project.Project
+  Act *action.Action
+} %}
+
+{% func (p *ActionEdit) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right"><em>{%s p.Act.Type.Title %}</em></div>
+    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
+    <div class="spacer"></div>
+    <form class="editor" action="/project/{%s p.Project.Key %}/action/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
+      <table>
+        <tbody>
+          {%= components.TableInput("key", "Key", p.Act.Key, 5) %}
+          {%= components.TableInput("title", "Title", p.Act.Title, 5) %}
+          <tr>
+            <th class="shrink"><label>Icon</label></th>
+            <td>{%= components.IconPicker(p.Act.Icon, "icon", ps, 7) %}
+            </td>
+          </tr>
+          {%= components.TableTextarea("description", "Description", p.Act.Description, 5) %}
+          {%- switch p.Act.Type -%}
+          {%- case action.TypeStatic -%}
+          {%- code
+            format, _ := p.Act.Config["format"].(string)
+            content, _ := p.Act.Config["content"].(string)
+          -%}
+          {%= components.TableSelect("format", "Format", format, []string{"html", "text", "code"}, []string{"HTML", "Text", "Code"}, 5) %}
+          {%= components.TableTextarea("content", "Content", content, 5) %}
+          {%- endswitch -%}
+        </tbody>
+      </table>
+      <div class="spacer"></div>
+      <button type="submit">Save Changes</button>
+      <a href="/project/{%s p.Project.Key %}"><button type="button">Cancel</button></a>
+    </form>
+  </div>
+  <div class="card">
+    <h3>Action JSON</h3>
+    {%= fieldview.JSON(p.Act) %}
+  </div>
+{% endfunc %}

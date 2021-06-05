@@ -52,6 +52,12 @@ func (s *Service) NewSource(key string, title string, description string, t sche
 
 func (s *Service) Load(key string, force bool) (*Source, error) {
 	if !force {
+		if s.cache == nil {
+			err := s.reloadSourceCache()
+			if err != nil {
+				return nil, err
+			}
+		}
 		if curr := s.cache.Get(key); curr != nil {
 			return curr, nil
 		}
@@ -61,7 +67,7 @@ func (s *Service) Load(key string, force bool) (*Source, error) {
 
 	out, err := s.files.ReadFile(p)
 	if err != nil {
-		return nil, errors.Wrap(err, "unable to read source ["+key+"]")
+		return nil, errors.Wrapf(err, "unable to read source [%s]", key)
 	}
 
 	ret := &Source{}
@@ -77,13 +83,13 @@ func (s *Service) Load(key string, force bool) (*Source, error) {
 func (s *Service) Save(src *Source, overwrite bool) error {
 	p := filepath.Join(s.root, src.Key)
 	if !overwrite && s.files.Exists(p) {
-		return errors.Errorf("source [%v] already exists", src.Key)
+		return errors.Errorf("source [%s] already exists", src.Key)
 	}
 	f := filepath.Join(p, "source.json")
 	j := util.ToJSONBytes(src, true)
 	err := s.files.WriteFile(f, j, overwrite)
 	if err != nil {
-		return errors.Wrapf(err, "unable to save schema [%v]", src.Key)
+		return errors.Wrapf(err, "unable to save schema [%s]", src.Key)
 	}
 	err = s.reloadSourceCache()
 	if err != nil {
@@ -95,7 +101,7 @@ func (s *Service) Save(src *Source, overwrite bool) error {
 func (s *Service) Delete(key string) error {
 	p := filepath.Join(s.root, key)
 	if !s.files.Exists(p) {
-		return errors.Errorf("source [%v] doesn't exist", key)
+		return errors.Errorf("source [%s] doesn't exist", key)
 	}
 	err := s.files.RemoveRecursive(p)
 	if err != nil {
@@ -114,9 +120,9 @@ func (s *Service) reloadSourceCache() error {
 	ret := make(Sources, 0, len(dirs))
 
 	for _, dir := range dirs {
-		src, err := s.Load(dir, false)
+		src, err := s.Load(dir, true)
 		if err != nil {
-			return errors.Wrapf(err, "unable to load source [%v]", dir)
+			return errors.Wrapf(err, "unable to load source [%s]", dir)
 		}
 		ret = append(ret, src)
 	}

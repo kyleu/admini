@@ -17,7 +17,7 @@ func (x *Range) Key() string {
 }
 
 func (x *Range) String() string {
-	return fmt.Sprintf("range[%v]", x.T.String())
+	return fmt.Sprintf("range[%s]", x.T.String())
 }
 
 func (x *Range) Sortable() bool {

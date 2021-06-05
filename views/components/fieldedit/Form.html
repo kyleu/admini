@@ -1,0 +1,68 @@
+{% import "github.com/kyleu/admini/views/vutil" %}
+{% import "github.com/kyleu/admini/app/util" %}
+
+{% func FormInput(key string, id string, value string) %}{% stripspace %}
+  <input id="{%s id %}" name="{%s key %}" value="{%v value %}" />
+{% endstripspace %}{% endfunc %}
+
+{% func FormInputNumber(key string, id string, value int) %}{% stripspace %}
+  <input id="{%s id %}" name="{%s key %}" type="number" value="{%d value %}" />
+{% endstripspace %}{% endfunc %}
+
+{% func FormTextarea(key string, id string, value string) %}{% stripspace %}
+  <textarea id="{%s id %}" name="{%s key %}">{%v value %}</textarea>
+{% endstripspace %}{% endfunc %}
+
+{% func FormSelect(key string, id string, value string, opts []string, titles []string, indent int) %}{% stripspace %}
+  <select name="{%s key %}" id="{%s id %}">
+    {% for idx, opt := range opts %}
+      {% code
+        title := opt
+        if idx < len(titles) {
+          title = titles[idx]
+        }
+      %}
+      {%= vutil.Indent(true, indent + 1) %}
+      {% if opt == value %}
+        <option selected="selected" value="{%s opt %}">{%s title %}</option>
+      {% else %}
+        <option value="{%s opt %}">{%s title %}</option>
+      {% endif %}
+    {% endfor %}
+  {%= vutil.Indent(true, indent) %}
+  </select>
+{% endstripspace %}{% endfunc %}
+
+{% func FormRadio(key string, value string, opts []string, titles []string, indent int) %}{% stripspace %}
+  {% for idx, opt := range opts %}
+    {% code
+      title := opt
+      if idx < len(titles) {
+        title = titles[idx]
+      }
+    %}
+    {%= vutil.Indent(true, indent) %}
+    {% if opt == value %}
+      <label><input type="radio" name="{%s key %}" value="{%s opt %}" checked="checked" />{% space %}{%s title %}</label>
+    {% else %}
+      <label><input type="radio" name="{%s key %}" value="{%s opt %}" />{% space %}{%s title %}</label>
+    {% endif %}
+  {% endfor %}
+{% endstripspace %}{% endfunc %}
+
+{% func FormCheckbox(key string, values []string, opts []string, titles []string, indent int) %}{% stripspace %}
+  {% for idx, opt := range opts %}
+    {% code
+      title := opt
+      if idx < len(titles) {
+        title = titles[idx]
+      }
+    %}
+    {%= vutil.Indent(true, indent) %}
+    {% if util.StringArrayContains(values, opt) %}
+      <label><input type="checkbox" name="{%s key %}" value="{%s opt %}" checked="checked" />{% space %}{%s title %}</label>
+    {% else %}
+      <label><input type="checkbox" name="{%s key %}" value="{%s opt %}" />{% space %}{%s title %}</label>
+    {% endif %}
+  {% endfor %}
+{% endstripspace %}{% endfunc %}

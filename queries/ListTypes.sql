@@ -30,6 +30,7 @@ where
   and n.nspname <> 'pg_catalog'
   and n.nspname <> 'information_schema'
   and pg_catalog.pg_type_is_visible(t.oid)
+  and t.typcategory = 'E'
 order by
   1,
   2

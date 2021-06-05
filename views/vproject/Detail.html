@@ -3,7 +3,6 @@
 {% import "github.com/kyleu/admini/app/project" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vaction" %}
 
 {% code type Detail struct {
   layout.Basic
@@ -12,12 +11,12 @@
 
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="{%s as.Route(`project.edit`, `key`, p.View.Project.Key) %}"><button type="button">Edit</button></a></div>
-    <h3>{%s p.View.Project.Name() %}</h3>
+    <div class="right"><a href="/project/{%s p.View.Project.Key %}/edit"><button type="button">Edit</button></a></div>
+    <h3>{%= components.SVGRef(p.View.Project.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.View.Project.Name() %}</h3>
     {% if p.View.Project.Description != "" %}<em>{%s p.View.Project.Description %}</em>{% endif %}
     <p>
-      <a href="{%s as.Route(`workspace`, `key`, p.View.Project.Key) %}"><button type="button">Workspace</button></a>
-      <a href="{%s as.Route(`project.test`, `key`, p.View.Project.Key) %}"><button type="button">Test</button></a>
+      <a href="/x/{%s p.View.Project.Key %}"><button type="button">Workspace</button></a>
+      <a href="/project/{%s p.View.Project.Key %}/test"><button type="button">Test</button></a>
     </p>
   </div>
 
@@ -28,7 +27,7 @@
     <h3>{%= components.Plural(len(p.View.Sources), `source`, `sources`) %} in project</h3>
     <ul>
     {%- for _, s := range p.View.Sources -%}
-      <li><a href="{%s as.Route(`source.detail`, `key`, s.Key) %}">{%s s.Name() %}</a></li>
+      <li><a href="/source/{%s s.Key %}">{%= components.SVGRef(s.IconWithFallback(), 16, 16, "icon", ps) %}{%s s.Name() %}</a></li>
     {%- endfor -%}
     </ul>
     {%- endif -%}
@@ -43,25 +42,25 @@
         <div class="drag-actions right no-changes">
           <div class="message"><em>no changes</em></div>
           <div class="form">
-            <form action="{%s as.Route(`action.ordering`, `key`, p.View.Project.Key) %}" method="post">
+            <form action="/project/{%s p.View.Project.Key %}/actions" method="post">
               <input type="hidden" class="drag-state-original" value=""/>
               <input type="hidden" class="drag-state" value="" name="ordering"/>
               <button type="submit">Save</button>
             </form>
           </div>
         </div>
-        <h3 class="no-padding"><span class="drag-tracked-size">{%d p.View.Project.Actions.Size() %}</span> Actions</h3>
+        <h3 class="no-padding"><span class="drag-tracked-size">{%d p.View.Project.Actions.Size() %}</span> actions</h3>
         <div class="clear"></div>
         <div class="container tracked">
           {%- for _, act := range p.View.Project.Actions -%}
-          {%= vaction.List(p.View.Project.Key, act, as, ps, 5) %}
+          {%= ActionList(p.View.Project.Key, act, as, ps, 5) %}
           {%- endfor -%}
         </div>
       </div>
       <div class="r">
         <h3 class="no-padding">Available</h3>
         <div class="container">
-          {%= vaction.Available(p.View, as, ps, 5) %}
+          {%= ActionAvailable(p.View, as, ps, 5) %}
         </div>
       </div>
     </div>

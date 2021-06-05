@@ -16,6 +16,13 @@ func (f *Field) String() string {
 	return f.Key + " " + f.Type.String()
 }
 
+func (f *Field) Description() string {
+	if f.Metadata == nil {
+		return ""
+	}
+	return f.Metadata.Description
+}
+
 func (f *Field) Nullable() bool {
 	return f.Type.IsOption()
 }

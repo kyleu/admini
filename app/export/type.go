@@ -1,6 +1,8 @@
 package export
 
 import (
+	"fmt"
+
 	"github.com/kyleu/admini/app/schema/schematypes"
 	"github.com/kyleu/admini/app/util"
 )
@@ -10,7 +12,7 @@ func typeString(typ schematypes.Type, f *Format) (string, []util.Pkg) {
 	case *schematypes.Wrapped:
 		return typeString(t.T, f)
 	case *schematypes.Unknown:
-		return "string /* " + t.X + " */", nil
+		return fmt.Sprintf("string /* %s */", t.X), nil
 	case *schematypes.Error:
 		return "string /* ERROR: " + t.Message + " */", nil
 
@@ -26,7 +28,7 @@ func typeString(typ schematypes.Type, f *Format) (string, []util.Pkg) {
 	case *schematypes.Map:
 		kts, kp := typeString(t.K, f)
 		vts, vp := typeString(t.V, f)
-		return "map[" + kts + "]" + vts, append(kp, vp...)
+		return fmt.Sprintf("map[%s]%s", kts, vts), append(kp, vp...)
 	case *schematypes.Option:
 		ts, p := typeString(t.T, f)
 		return "*" + ts, p

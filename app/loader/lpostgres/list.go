@@ -16,18 +16,18 @@ func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, err
 	q := modelListQuery(m, params.Get(m.Key, m.Fields.Names(), l.logger))
 	rows, err := l.db.Query(q, nil)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error listing models for [%v]", m.Key)
+		return nil, errors.Wrapf(err, "error listing models for [%s]", m.Key)
 	}
 
 	count, err := l.Count(m)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
+		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.Key)
 	}
 
 	var timing *result.Timing
 	ret, err := ParseResultFields(m.Name(), count, q, timing, m.Fields, rows)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error constructing result for [%v]", m.Key)
+		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.Key)
 	}
 
 	return ret, nil
@@ -39,7 +39,7 @@ func (l *Loader) Count(m *model.Model) (int, error) {
 		C int `db:"c"`
 	}{}
 	if err := l.db.Get(&c, q, nil); err != nil {
-		return 0, errors.Wrapf(err, "error listing models for [%v]", m.Key)
+		return 0, errors.Wrapf(err, "error listing models for [%s]", m.Key)
 	}
 	return c.C, nil
 }

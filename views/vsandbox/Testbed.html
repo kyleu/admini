@@ -33,7 +33,7 @@
       -%}
       {%- for _, k := range keys -%}
       <div style="text-align: center; margin: 6px 12px 6px 0; padding: 6px; border: var(--border)">
-        <div style="width: 64px; height: 64px;">{%s= util.SVGLibrary[k] %}</div>
+        <div>{%= components.SVGRef(k, 64, 64, "icon", ps) %}</div>
         {%s k %}
       </div>
       {%- endfor -%}
@@ -101,26 +101,26 @@
   <div class="card">
     <h3>Types</h3>
     <pre>{%s queries.ListTypes("") %}</pre>
-    {%= vresult.View("", "", data["types"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.Simple(data["types"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Tables</h3>
     <pre>{%s queries.ListTables("") %}</pre>
-    {%= vresult.View("", "", data["tables"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.Simple(data["tables"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Columns</h3>
     <pre>{%s queries.ListColumns("") %}</pre>
-    {%= vresult.View("", "", data["columns"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.Simple(data["columns"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Indexes</h3>
     <pre>{%s queries.ListIndexes("") %}</pre>
-    {%= vresult.View("", "", data["indexes"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.Simple(data["indexes"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Foreign Keys</h3>
     <pre>{%s queries.ListForeignKeys("") %}</pre>
-    {%= vresult.View("", "", data["fks"].(*result.Result), nil, 3, nil, as, ps) %}
+    {%= vresult.Simple(data["fks"].(*result.Result), 3, as, ps) %}
   </div>
 {%- endfunc -%}

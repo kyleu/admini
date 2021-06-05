@@ -2,6 +2,7 @@
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/project/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type Package struct {
@@ -14,7 +15,7 @@
 {% func (p *Package) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
-    <h3>{%s p.Act.Name() %}</h3>
+    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 32, 32, "icon", ps) %}{%s p.Act.Name() %}</h3>
     <em>Package [{%s p.Pkg.Key %}]</em>
 
     {%- if len(p.Pkg.ChildPackages) > 0 -%}

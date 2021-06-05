@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/pkg/errors"
@@ -38,7 +39,7 @@ func (m *Model) Name() string {
 }
 
 func (m *Model) Description() string {
-	return m.Type.String() + " model [" + m.Name() + "]"
+	return fmt.Sprintf("%s model [%s]", m.Type.String(), m.Name())
 }
 
 func (m *Model) Path() util.Pkg {
@@ -71,7 +72,7 @@ func (m *Model) AddField(f *field.Field) error {
 		return errors.New("nil field")
 	}
 	if _, v := m.Fields.Get(f.Key); v != nil {
-		return errors.New("field [" + f.Key + "] already exists")
+		return errors.Errorf("field [%s] already exists", f.Key)
 	}
 	m.Fields = append(m.Fields, f)
 	return nil
@@ -82,7 +83,7 @@ func (m *Model) AddIndex(i *Index) error {
 		return errors.New("nil index")
 	}
 	if m.Indexes.Get(i.Key) != nil {
-		return errors.New("index [" + i.Key + "] already exists")
+		return errors.Errorf("index [%s] already exists", i.Key)
 	}
 	m.Indexes = append(m.Indexes, i)
 	return nil
@@ -93,7 +94,7 @@ func (m *Model) AddRelationship(r *Relationship) error {
 		return errors.New("nil relation")
 	}
 	if m.Relationships.Get(r.Key) != nil {
-		return errors.New("relation [" + r.Key + "] already exists")
+		return errors.Errorf("relation [%s] already exists", r.Key)
 	}
 	m.Relationships = append(m.Relationships, r)
 	return nil

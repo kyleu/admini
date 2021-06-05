@@ -78,17 +78,3 @@ func (p Pkg) StartsWith(t Pkg) bool {
 	}
 	return true
 }
-
-func SplitPackage(s string) (Pkg, string) {
-	sp := strings.Split(s, "::")
-	pkg := sp[0 : len(sp)-1]
-	n := sp[len(sp)-1]
-	return pkg, n
-}
-
-func SplitPackageSlash(s string) (Pkg, string) {
-	sp := strings.Split(s, "/")
-	pkg := sp[0 : len(sp)-1]
-	n := sp[len(sp)-1]
-	return pkg, n
-}

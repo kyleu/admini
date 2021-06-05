@@ -12,7 +12,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// Parameters used to start a database connection
 type DBParams struct {
 	Host     string `json:"host"`
 	Port     int    `json:"port"`
@@ -23,7 +22,6 @@ type DBParams struct {
 	Debug    bool   `json:"debug,omitempty"`
 }
 
-// Opens a database connection pool
 func OpenDatabase(params *DBParams, logger *zap.SugaredLogger) (*Service, error) {
 	host := params.Host
 	if host == "" {

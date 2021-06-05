@@ -19,21 +19,28 @@ func getSource(act *Action, schemata schema.Schemata) (*model.Package, error) {
 	return sch.ModelsByPackage(), nil
 }
 
-func getPackage(act *Action, schemata schema.Schemata) (*model.Package, []string, error) {
+func getItem(act *Action, schemata schema.Schemata, key string) (interface{}, []string, error) {
 	sch, err := getSource(act, schemata)
 	if err != nil {
 		return nil, nil, err
 	}
-	p, err := act.Config.GetString(TypePackage.Key, false)
+	p, err := act.Config.GetString(key, false)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "config key [package] must be provided")
 	}
 
 	i, remaining := sch.Get(util.SplitAndTrim(p, "/"))
 	if i == nil {
-		return nil, nil, errors.Errorf("no package found at path [%s]", p)
+		return nil, nil, errors.Errorf("no item found at path [%s]", p)
 	}
+	return i, remaining, nil
+}
 
+func getPackage(act *Action, schemata schema.Schemata) (*model.Package, []string, error) {
+	i, remaining, err := getItem(act, schemata, TypePackage.Key)
+	if err != nil {
+		return nil, nil, err
+	}
 	switch t := i.(type) {
 	case *model.Package:
 		return t, remaining, nil
@@ -43,20 +50,10 @@ func getPackage(act *Action, schemata schema.Schemata) (*model.Package, []string
 }
 
 func getModel(act *Action, schemata schema.Schemata) (*model.Model, []string, error) {
-	sch, err := getSource(act, schemata)
+	i, remaining, err := getItem(act, schemata, TypeModel.Key)
 	if err != nil {
 		return nil, nil, err
 	}
-	p, err := act.Config.GetString(TypeModel.Key, false)
-	if err != nil {
-		return nil, nil, errors.Wrap(err, "config key [model] must be provided")
-	}
-
-	i, remaining := sch.Get(util.SplitAndTrim(p, "/"))
-	if i == nil {
-		return nil, nil, errors.Errorf("no model found at path [%s]", p)
-	}
-
 	switch t := i.(type) {
 	case *model.Model:
 		return t, remaining, nil

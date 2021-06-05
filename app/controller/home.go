@@ -1,9 +1,8 @@
 package controller
 
 import (
-	"net/http"
-
 	"github.com/kyleu/admini/app/util"
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 
@@ -20,11 +19,11 @@ var homeContent = util.ValueMap{
 	},
 }
 
-func Home(w http.ResponseWriter, r *http.Request) {
-	act("home", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Home(ctx *fasthttp.RequestCtx) {
+	act("home", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		projects, _ := as.Projects.List()
 		sources, _ := as.Sources.List()
 		ps.Data = homeContent
-		return render(r, w, as, &views.Home{Sources: sources, Projects: projects}, ps)
+		return render(ctx, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
 }

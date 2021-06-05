@@ -18,6 +18,22 @@ var (
 	OriginUnknown    = Origin{Key: "unknown", Title: "Unknown", Icon: "star", Description: "Not quite sure what this is"}
 )
 
+func OriginKeys() []string {
+	ret := make([]string, 0, len(AllOrigins))
+	for _, x := range AllOrigins {
+		ret = append(ret, x.Key)
+	}
+	return ret
+}
+
+func OriginTitles() []string {
+	ret := make([]string, 0, len(AllOrigins))
+	for _, x := range AllOrigins {
+		ret = append(ret, x.Title)
+	}
+	return ret
+}
+
 var AllOrigins = []Origin{OriginPostgres, OriginGraphQL, OriginProtobuf, OriginJSONSchema, OriginMock}
 
 func OriginFromString(s string) Origin {

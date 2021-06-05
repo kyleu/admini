@@ -28,7 +28,7 @@ type enumResult struct {
 	Description sql.NullString `db:"description"`
 }
 
-func (t *enumResult) ToModel(logger *zap.SugaredLogger) *model.Model {
+func (t *enumResult) ToModel() *model.Model {
 	els := strings.Split(t.Elements, "\n")
 	fields := make(field.Fields, 0, len(els))
 	for _, el := range els {
@@ -40,7 +40,7 @@ func (t *enumResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 
 	ret := &model.Model{
 		Key:    t.Name,
-		Type:   model.ModelTypeEnum,
+		Type:   model.TypeEnum,
 		Fields: fields,
 		Pkg:    util.Pkg{t.Schema},
 	}
@@ -48,17 +48,17 @@ func (t *enumResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 }
 
 func loadEnums(db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
-	enums := []*enumResult{}
+	var enums []*enumResult
 	err := db.Select(&enums, queries.ListTypes(db.SchemaName), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list enums")
 	}
 
-	logger.Infof("loading [%v] enums", len(enums))
+	logger.Infof("loading [%d] enums", len(enums))
 
 	ret := make(model.Models, 0, len(enums))
 	for _, t := range enums {
-		ret = append(ret, t.ToModel(logger))
+		ret = append(ret, t.ToModel())
 	}
 	return ret, nil
 }

@@ -1,80 +1,59 @@
 package controller
 
 import (
-	"net/http"
-
-	"github.com/gorilla/handlers"
-
-	"github.com/gorilla/mux"
+	"github.com/fasthttp/router"
 )
 
-func wrap(f http.HandlerFunc) http.Handler {
-	return handlers.CompressHandler(f)
-}
+func BuildRouterNew() *router.Router {
+	r := router.New()
+	r.GET("/", Home)
 
-func BuildRouter() (*mux.Router, error) {
-	r := mux.NewRouter()
+	r.GET(defaultSearchPath, Search)
+	r.GET(defaultProfilePath, Profile)
+	r.GET("/settings", Settings)
+	r.GET("/admin", Admin)
 
-	// Home
-	r.Path("/").Methods(http.MethodGet).Handler(wrap(Home)).Name("home")
+	r.GET("/help", Help)
+	r.GET("/feedback", Feedback)
 
-	r.Path("/search").Methods(http.MethodGet).Handler(wrap(Search)).Name("search")
-	r.Path("/profile").Methods(http.MethodGet).Handler(wrap(Profile)).Name("profile")
-	r.Path("/settings").Methods(http.MethodGet).Handler(wrap(Settings)).Name("settings")
-	r.PathPrefix("/admin").Methods(http.MethodGet).Handler(wrap(Admin)).Name("admin")
+	r.GET("/source", SourceList)
+	r.POST("/source", SourceInsert)
+	r.GET("/source/_new", SourceNew)
+	r.GET("/source/{key}", SourceDetail)
+	r.GET("/source/{key}/edit", SourceEdit)
+	r.POST("/source/{key}", SourceSave)
+	r.GET("/source/{key}/refresh", SourceRefresh)
+	r.GET("/source/{key}/delete", SourceDelete)
 
-	help := r.Path("/help").Subrouter()
-	help.Methods(http.MethodGet).Handler(wrap(Help)).Name("help")
-	r.Path("/feedback").Methods(http.MethodGet).Handler(wrap(Feedback)).Name("feedback")
+	r.GET("/project", ProjectList)
+	r.POST("/project", ProjectInsert)
+	r.GET("/project/_new", ProjectNew)
+	r.GET("/project/{key}", ProjectDetail)
+	r.POST("/project/{key}", ProjectSave)
+	r.GET("/project/{key}/edit", ProjectEdit)
+	r.POST("/project/{key}/actions", ActionOrdering)
+	r.GET("/project/{key}/action/{_:*}", ActionEdit)
+	r.POST("/project/{key}/action/{_:*}", ActionSave)
+	r.GET("/project/{key}/test", ProjectTest)
+	r.GET("/project/{key}/delete", ProjectDelete)
 
-	// Source
-	source := r.Path("/source").Subrouter()
-	source.Methods(http.MethodGet).Handler(wrap(SourceList)).Name("source.list")
-	source.Methods(http.MethodPost).Handler(wrap(SourceInsert)).Name("source.insert")
-	r.Path("/source/_new").Methods(http.MethodGet).Handler(wrap(SourceNew)).Name("source.new.form")
-	r.Path("/source/{key}").Methods(http.MethodGet).Handler(wrap(SourceDetail)).Name("source.detail")
-	r.Path("/source/{key}/edit").Methods(http.MethodGet).Handler(wrap(SourceEdit)).Name("source.edit")
-	r.Path("/source/{key}/edit").Methods(http.MethodPost).Handler(wrap(SourceSave)).Name("source.save")
-	r.Path("/source/{key}/refresh").Methods(http.MethodGet).Handler(wrap(SourceRefresh)).Name("source.refresh")
-	r.Path("/source/{key}/delete").Methods(http.MethodGet).Handler(wrap(SourceDelete)).Name("source.delete")
+	r.GET("/x/{key}", WorkspaceProject)
+	r.GET("/x/{key}/{_:*}", WorkspaceProject)
+	r.GET("/s/{key}", WorkspaceSource)
+	r.GET("/s/{key}/{_:*}", WorkspaceSource)
 
-	// Project
-	project := r.Path("/project").Subrouter()
-	project.Methods(http.MethodGet).Handler(wrap(ProjectList)).Name("project.list")
-	project.Methods(http.MethodPost).Handler(wrap(ProjectInsert)).Name("project.insert")
-	r.Path("/project/_new").Methods(http.MethodGet).Handler(wrap(ProjectNew)).Name("project.new.form")
-	r.Path("/project/{key}").Methods(http.MethodGet).Handler(wrap(ProjectDetail)).Name("project.detail")
-	r.Path("/project/{key}/edit").Methods(http.MethodGet).Handler(wrap(ProjectEdit)).Name("project.edit")
-	r.Path("/project/{key}/edit").Methods(http.MethodPost).Handler(wrap(ProjectSave)).Name("project.save")
-	r.Path("/project/{key}/actions").Methods(http.MethodPost).Handler(wrap(ActionOrdering)).Name("action.ordering")
-	r.PathPrefix("/project/{key}/action").Methods(http.MethodGet).Handler(wrap(ActionEdit)).Name("action.edit")
-	r.PathPrefix("/project/{key}/action").Methods(http.MethodPost).Handler(wrap(ActionSave)).Name("action.save")
-	r.Path("/project/{key}/test").Methods(http.MethodGet).Handler(wrap(ProjectTest)).Name("project.test")
-	r.Path("/project/{key}/delete").Methods(http.MethodGet).Handler(wrap(ProjectDelete)).Name("project.delete")
+	r.GET("/sandbox", SandboxList)
+	r.GET("/sandbox/{key}", SandboxRun)
 
-	// Workspace
-	_ = r.PathPrefix("/x/{key}").Handler(wrap(WorkspaceProject)).Name("workspace")
-	_ = r.PathPrefix("/s/{key}").Handler(wrap(WorkspaceSource)).Name("workspace.source")
+	r.GET("/modules", Modules)
 
-	// Sandbox
-	sandbox := r.Path("/sandbox").Subrouter()
-	sandbox.Methods(http.MethodGet).Handler(wrap(SandboxList)).Name("sandbox.list")
-	r.Path("/sandbox/{key}").Methods(http.MethodGet).Handler(wrap(SandboxRun)).Name("sandbox.run")
+	r.GET("/favicon.ico", Favicon)
+	r.GET("/robots.txt", RobotsTxt)
+	r.GET("/assets/{_:*}", Static)
 
-	// Util
-	_ = r.Path("/util").Subrouter()
-	r.Path("/util/modules").Methods(http.MethodGet).Handler(wrap(Modules)).Name("modules")
-	r.Path("/util/routes").Methods(http.MethodGet).Handler(wrap(Routes)).Name("routes")
+	r.OPTIONS("/", Options)
+	r.OPTIONS("/{_:*}", Options)
+	r.NotFound = NotFound
 
-	// Assets
-	_ = r.Path("/assets").Subrouter()
-	r.Path("/sitemap.xml").Methods(http.MethodGet).Handler(http.HandlerFunc(SitemapXML)).Name("sitemap")
-	r.Path("/favicon.ico").Methods(http.MethodGet).Handler(http.HandlerFunc(Favicon)).Name("favicon")
-	r.Path("/robots.txt").Methods(http.MethodGet).Handler(http.HandlerFunc(RobotsTxt)).Name("robots")
-	r.PathPrefix("/assets").Methods(http.MethodGet).Handler(http.HandlerFunc(Static)).Name("assets")
-
-	r.PathPrefix("").Methods(http.MethodOptions).Handler(wrap(Options))
-	r.PathPrefix("").Handler(wrap(NotFound))
-
-	return r, nil
+	return r
 }

@@ -1,0 +1,20 @@
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func IconPicker(selected string, name string, ps *cutil.PageState, indent int) %}{% stripspace %}
+  {% for _, k := range util.SVGIconKeys %}
+  {%= vutil.Indent(true, indent) %}
+  <label class="icon-choice" title="{%s k %}">
+    {%= vutil.Indent(true, indent + 1) %}
+    {% if k == selected %}
+      <input type="radio" name="{%s name %}" value="{%s k %}" checked="checked" />
+    {% else %}
+      <input type="radio" name="{%s name %}" value="{%s k %}" />
+    {% endif %}
+    {%= vutil.Indent(true, indent + 1) %}
+    {%= SVGRef(k, 48, 48, "", ps) %}
+  {%= vutil.Indent(true, indent) %}
+  </label>
+  {% endfor %}
+{% endstripspace %}{% endfunc %}

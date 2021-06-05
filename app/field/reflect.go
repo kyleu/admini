@@ -1,7 +1,6 @@
 package field
 
 import (
-	"fmt"
 	"reflect"
 
 	"github.com/kyleu/admini/app/schema/schematypes"
@@ -68,6 +67,6 @@ func fromReflect(t reflect.Type) *schematypes.Wrapped {
 	case reflect.UnsafePointer:
 		return schematypes.NewError("can't reflect unsafe pointers")
 	default:
-		return schematypes.NewUnknown(fmt.Sprintf("%v", t.Kind()))
+		return schematypes.NewUnknown(t.Kind().String())
 	}
 }

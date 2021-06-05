@@ -8,7 +8,7 @@
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func Available(v *project.View, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
+{% func ActionAvailable(v *project.View, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
   <div class="container">
   {%= itemTemplate(action.TypeFolder, `folder`, `New Folder`, indent) %}
   {%= itemTemplate(action.TypeStatic, action.TypeStatic.Key, `Static Content`, indent) %}
@@ -28,7 +28,7 @@
 
 {% func itemModelPackage(src *source.Source, pkg *model.Package, showRoot bool, indent int) %}{% stripspace %}
   {% if showRoot %}
-    {%= itemTemplate(action.TypePackage, fmt.Sprintf("package/%v/%v", src.Key, pkg.PathString()), pkg.Key, indent) %}
+    {%= itemTemplate(action.TypePackage, fmt.Sprintf("package/%s/%s", src.Key, pkg.PathString()), pkg.Key, indent) %}
   {% endif %}
   {% for _, p := range pkg.ChildPackages %}
     {%= vutil.Indent(true, indent) %}
@@ -36,7 +36,7 @@
   {% endfor %}
   {% for _, m := range pkg.ChildModels %}
     {%= vutil.Indent(true, indent) %}
-    {%= itemTemplate(action.TypeModel, fmt.Sprintf("model/%v/%v", src.Key, m.PathString()), m.Name(), indent) %}
+    {%= itemTemplate(action.TypeModel, fmt.Sprintf("model/%s/%s", src.Key, m.PathString()), m.Name(), indent) %}
   {% endfor %}
 {% endstripspace %}{% endfunc %}
 

@@ -7,7 +7,6 @@ import (
 
 const whereSpaces = " where "
 
-// Creates a SQL insert statement, potentially for multiple rows
 func SQLInsert(table string, columns []string, rows int) string {
 	if rows <= 0 {
 		rows = 1
@@ -17,14 +16,13 @@ func SQLInsert(table string, columns []string, rows int) string {
 	for i := 0; i < rows; i++ {
 		var ph []string
 		for idx := range columns {
-			ph = append(ph, fmt.Sprintf("$%v", (i*len(columns))+idx+1))
+			ph = append(ph, fmt.Sprintf("$%d", (i*len(columns))+idx+1))
 		}
 		placeholders = append(placeholders, "("+strings.Join(ph, ", ")+")")
 	}
-	return fmt.Sprintf("insert into %v (%v) values %v", table, colString, strings.Join(placeholders, ", "))
+	return fmt.Sprintf("insert into %s (%s) values %s", table, colString, strings.Join(placeholders, ", "))
 }
 
-// Creates a SQL select statement
 func SQLSelect(columns string, tables string, where string, orderBy string, limit int, offset int) string {
 	if columns == "" {
 		columns = "*"
@@ -42,23 +40,21 @@ func SQLSelect(columns string, tables string, where string, orderBy string, limi
 
 	limitClause := ""
 	if limit > 0 {
-		limitClause = fmt.Sprintf(" limit %v", limit)
+		limitClause = fmt.Sprintf(" limit %d", limit)
 	}
 
 	offsetClause := ""
 	if offset > 0 {
-		offsetClause = fmt.Sprintf(" offset %v", offset)
+		offsetClause = fmt.Sprintf(" offset %d", offset)
 	}
 
 	return "select " + columns + " from " + tables + whereClause + orderByClause + limitClause + offsetClause
 }
 
-// Creates a SQL select statement with a simple where clause
 func SQLSelectSimple(columns string, tables string, where ...string) string {
 	return SQLSelect(columns, tables, strings.Join(where, " and "), "", 0, 0)
 }
 
-// Creates a SQL update statement
 func SQLUpdate(table string, columns []string, where string) string {
 	whereClause := ""
 	if len(where) > 0 {
@@ -67,15 +63,14 @@ func SQLUpdate(table string, columns []string, where string) string {
 
 	stmts := make([]string, 0, len(columns))
 	for i, col := range columns {
-		stmts = append(stmts, fmt.Sprintf("%v = $%v", col, i+1))
+		stmts = append(stmts, fmt.Sprintf("%s = $%d", col, i+1))
 	}
-	return fmt.Sprintf("update %v set %v%v", table, strings.Join(stmts, ", "), whereClause)
+	return fmt.Sprintf("update %s set %s%s", table, strings.Join(stmts, ", "), whereClause)
 }
 
-// Creates a SQL delete statement
 func SQLDelete(table string, where string) string {
 	if strings.TrimSpace(where) == "" {
-		return "attempt to delete from [" + table + "] with empty where clause"
+		return fmt.Sprintf("attempt to delete from [%s] with empty where clause", table)
 	}
 	return "delete from " + table + whereSpaces + where
 }

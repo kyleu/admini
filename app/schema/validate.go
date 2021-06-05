@@ -1,6 +1,7 @@
 package schema
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/kyleu/admini/app/model"
@@ -31,8 +32,8 @@ func (v *ValidationResult) log(category string, modelKey string, msg string, lev
 	v.Messages = append(v.Messages, ValidationMessage{Category: category, ModelKey: modelKey, Message: msg, Level: level})
 }
 
-func validateSchema(s *Schema) *ValidationResult {
-	r := &ValidationResult{Schema: "TODO"}
+func validateSchema(n string, s *Schema) *ValidationResult {
+	r := &ValidationResult{Schema: n}
 	for _, m := range s.Models {
 		r = validateModel(r, s, m)
 	}
@@ -43,7 +44,8 @@ func validateModel(r *ValidationResult, s *Schema, m *model.Model) *ValidationRe
 	encountered := map[string]bool{}
 	for _, f := range m.Fields {
 		if encountered[f.Key] {
-			r.log(m.Type.Key, m.Key, m.Type.String()+" ["+m.Key+"] field ["+f.Key+"] appears twice", LevelError)
+			msg := fmt.Sprintf("%s [%s] field [%s] appears twice", m.Type.String(), m.Key, f.Key)
+			r.log(m.Type.Key, m.Key, msg, LevelError)
 		}
 		encountered[f.Key] = true
 	}
@@ -58,9 +60,9 @@ func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKe
 	case *schematypes.Wrapped:
 		validateType(r, s, mType, mKey, fKey, t.T)
 	case *schematypes.Unknown:
-		r.log(mType, mKey, "field ["+fKey+"] has unknown type ["+t.X+"]", LevelWarn)
+		r.log(mType, mKey, fmt.Sprintf("field [%s] has unknown type [%s]", fKey, t.X), LevelWarn)
 	case *schematypes.Error:
-		r.log(mType, mKey, "field ["+fKey+"] has error: "+t.Message, LevelWarn)
+		r.log(mType, mKey, fmt.Sprintf("field [%s] has error: %s", fKey, t.Message), LevelWarn)
 	case *schematypes.Option:
 		validateType(r, s, mType, mKey, fKey, t.T)
 	case *schematypes.List:
@@ -73,7 +75,8 @@ func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKe
 	case *schematypes.Reference:
 		if s.Models.Get(t.Pkg, t.K) == nil && s.Scalars.Get(t.Pkg, t.K) == nil {
 			pkg := strings.Join(t.Pkg, ".")
-			r.log(mType, mKey, "field ["+fKey+"] has reference to unknown type ["+pkg+"::"+t.K+"]", LevelWarn)
+			msg := fmt.Sprintf("field [%s] has reference to unknown type [%s::%s]", fKey, pkg, t.K)
+			r.log(mType, mKey, msg, LevelWarn)
 		}
 
 	default:

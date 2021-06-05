@@ -36,33 +36,33 @@ func (l *Loader) Connection() (interface{}, error) {
 func (l *Loader) Schema() (*schema.Schema, error) {
 	o, ok := mockData[l.key]
 	if !ok {
-		return nil, errors.Errorf("no mock data for [%v]", l.key)
+		return nil, errors.Errorf("no mock data for [%s]", l.key)
 	}
 
 	return o.Schema, nil
 }
 
-func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, error) {
+func (l *Loader) List(m *model.Model, _ util.ParamSet) (*result.Result, error) {
 	o, ok := mockData[l.key]
 	if !ok {
-		return nil, errors.Errorf("no mock data for [%v]", l.key)
+		return nil, errors.Errorf("no mock data for [%s]", l.key)
 	}
 
 	return o.Data[m.Key], nil
 }
 
-func (l *Loader) Count(m *model.Model) (int, error) {
+func (l *Loader) Count(*model.Model) (int, error) {
 	return 1000, nil
 }
 
-func (l *Loader) Get(m *model.Model, ids []interface{}) (*result.Result, error) {
+func (l *Loader) Get(*model.Model, []interface{}) (*result.Result, error) {
 	return nil, errors.New("implement me")
 }
 
-func (l *Loader) Query(sql string) (*result.Result, error) {
+func (l *Loader) Query(string) (*result.Result, error) {
 	return nil, errors.New("implement me")
 }
 
-func (l *Loader) Default(m *model.Model) ([]interface{}, error) {
+func (l *Loader) Default(*model.Model) ([]interface{}, error) {
 	return nil, errors.New("implement me")
 }

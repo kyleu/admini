@@ -5,7 +5,6 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func Menu(ps *cutil.PageState) %}{% stripspace %}
-  {%= vutil.Indent(true, 1) %}
   <div class="menu-container">
     {%= vutil.Indent(true, 2) %}
     <div class="menu">
@@ -34,30 +33,35 @@
       {% code itemID := strings.Join(path, "--")%}
       {%= vutil.Indent(true, indent + 1) %}
       {% if active %}<li class="active">{% else %}<li>{% endif %}
-      {%= vutil.Indent(true, indent + 2) %}
-      {% if active %}
-        <input id="{%s itemID %}-input" type="checkbox" checked="checked" hidden />
-      {% else %}
-        <input id="{%s itemID %}-input" type="checkbox" hidden />
-      {% endif %}
-      {%= vutil.Indent(true, indent + 2) %}
-      {% if final %}<label class="final" for="{%s itemID %}-input" title="{%s i.Description %}">{% else %}<label for="{%s itemID %}-input" title="{%s i.Description %}">{% endif %}
-        {% if i.Route != "" %}
-          {%= vutil.Indent(true, indent + 3) %}
-          <a class="label-link" href="{%s i.Route %}">{%= components.SVGRef(`link`, 15, 15, ``, ``, ps) %}</a>
+        {%= vutil.Indent(true, indent + 2) %}
+        {% if active %}
+          <input id="{%s itemID %}-input" type="checkbox" checked="checked" hidden />
+        {% else %}
+          <input id="{%s itemID %}-input" type="checkbox" hidden />
         {% endif %}
-        {%= components.ExpandCollapse(indent + 3, ps) %}
-        {%= vutil.Indent(true, indent + 3) %}
-        {%s i.Title %}
-      {%= vutil.Indent(true, indent + 2) %}
-      </label>
-      {%= vutil.Indent(true, indent + 2) %}
-      <ul class="level-{%d len(path) %}">
-        {% for _, i := range i.Children %}
-          {%= MenuItem(i, path, breadcrumbs, indent + 2, ps) %}
-        {% endfor %}
-      {%= vutil.Indent(true, indent + 2) %}</ul>
-      {%= vutil.Indent(true, indent + 1) %}</li>
+        {%= vutil.Indent(true, indent + 2) %}
+        {% if final %}<label class="final" for="{%s itemID %}-input" title="{%s i.Description %}">{% else %}<label for="{%s itemID %}-input" title="{%s i.Description %}">{% endif %}
+          {% if i.Route != "" %}
+            {%= vutil.Indent(true, indent + 3) %}
+            <a class="label-link" href="{%s i.Route %}">{%= components.SVGRef(`link`, 15, 15, ``, ps) %}</a>
+          {% endif %}
+          {%= components.ExpandCollapse(indent + 3, ps) %}
+          {%= vutil.Indent(true, indent + 3) %}
+          {% if i.Icon != "" %}
+            {%= components.SVGRef(i.Icon, 16, 16, "icon", ps) %}
+          {% endif %}
+          {%s i.Title %}
+        {%= vutil.Indent(true, indent + 2) %}
+        </label>
+        {%= vutil.Indent(true, indent + 2) %}
+        <ul class="level-{%d len(path) %}">
+          {% for _, i := range i.Children %}
+            {%= MenuItem(i, path, breadcrumbs, indent + 2, ps) %}
+          {% endfor %}
+        {%= vutil.Indent(true, indent + 2) %}
+        </ul>
+        {%= vutil.Indent(true, indent + 1) %}
+      </li>
     {% else %}
       {% code
         finalClass := "item"
@@ -71,9 +75,19 @@
       {%= vutil.Indent(true, indent + 1) %}
       <li>
         {% if i.Description == "" %}
-          <a class="{%s finalClass %}" href="{%s i.Route %}">{%s i.Title %}</a>
+          <a class="{%s finalClass %}" href="{%s i.Route %}">
+            {% if i.Icon != "" %}
+              {%= components.SVGRef(i.Icon, 16, 16, "icon", ps) %}
+            {% endif %}
+            {%s i.Title %}
+          </a>
         {% else %}
-          <a class="{%s finalClass %}" href="{%s i.Route %}" title="{%s i.Description %}">{%s i.Title %}</a>
+          <a class="{%s finalClass %}" href="{%s i.Route %}" title="{%s i.Description %}">
+            {% if i.Icon != "" %}
+              {%= components.SVGRef(i.Icon, 16, 16, "icon", ps) %}
+            {% endif %}
+            {%s i.Title %}
+          </a>
         {% endif %}
       </li>
     {% endif %}

@@ -1,10 +1,10 @@
+{% import "path/filepath" %}
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
 
 {%- func ModelSummary(schemaKey string, idx int, model *model.Model, as *app.State, ps *cutil.PageState) -%}
   <li>
@@ -16,7 +16,7 @@
     </label>
     <div class="bd">
       <div>
-        <a href="{%= vutil.WorkspaceLink(as, `workspace.source`, schemaKey, model.Path()...) %}"><button type="button">View</button></a>
+        <a href="/s/{%s schemaKey %}/{%s filepath.Join(model.Path()...) %}"><button type="button">View</button></a>
       </div>
 
       <ul class="accordion">

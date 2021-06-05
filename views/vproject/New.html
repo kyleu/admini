@@ -2,6 +2,7 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/project" %}
 {% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type New struct {
@@ -14,37 +15,18 @@
   <div class="card">
     <h3>New Project</h3>
     <div class="spacer"></div>
-    <form class="editor" action="{%s as.Route(`project.insert`) %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor" action="/project" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
-          <tr>
-            <th class="shrink"><label for="input-key">Key</label></th>
-            <td><input name="key" id="input-key" value="" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-title">Title</label></th>
-            <td><input name="title" id="input-title" value="" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-description">Description</label></th>
-            <td><input name="description" id="input-description" value="" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label>Sources</label></th>
-            <td>
-              {%- for _, src := range p.AvailableSources -%}
-              <div><label><input value="{%s src.Key %}" name="sources" type="checkbox" /> {%s src.Name() %}</label></div>
-              {%- endfor -%}
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <button type="submit">Save Changes</button>
-              <a href="{%s as.Route(`project.list`) %}"><button type="button">Cancel</button></a>
-            </td>
-          </tr>
+          {%= components.TableInput("key", "Key", "", 5) %}
+          {%= components.TableInput("title", "Title", "", 5) %}
+          {%= components.TableInput("description", "Description", "", 5) %}
+          {%= components.TableCheckbox("sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Titles(), 5) %}
         </tbody>
       </table>
+      <div class="spacer"></div>
+      <button type="submit">Save Changes</button>
+      <a href="/project"><button type="button">Cancel</button></a>
     </form>
   </div>
 {% endfunc %}

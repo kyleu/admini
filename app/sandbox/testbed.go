@@ -14,7 +14,7 @@ import (
 	"github.com/kyleu/admini/queries"
 )
 
-var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Run: onTestbed}
+var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "star", Run: onTestbed}
 
 func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := util.ValueMap{}
@@ -41,12 +41,12 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 			var rows *sqlx.Rows
 			rows, err = conn.Query(q, nil)
 			if err != nil {
-				return errors.Wrapf(err, "can't query %v", key)
+				return errors.Wrapf(err, "can't query %s", key)
 			}
 			var res *result.Result
 			res, err = lpostgres.ParseResult(key, 0, q, nil, rows, logger)
 			if err != nil {
-				return errors.Wrapf(err, "can't parse result for %v", key)
+				return errors.Wrapf(err, "can't parse result for %s", key)
 			}
 			ret[key] = res
 			return nil

@@ -16,7 +16,7 @@ func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schem
 		return nil, errors.Wrap(err, "can't load metadata")
 	}
 
-	scalars, err := loadScalars(db)
+	scalars, err := loadScalars()
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load scalars")
 	}

@@ -1,6 +1,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/schema" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type New struct {
@@ -12,41 +13,18 @@
   <div class="card">
     <h3>New Source</h3>
     <div class="spacer"></div>
-    <form class="editor" action="{%s as.Route(`source.insert`) %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor" action="/source" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
-          <tr>
-            <th class="shrink"><label for="input-key">Key</label></th>
-            <td><input name="key" id="input-key" value="" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-title">Title</label></th>
-            <td><input name="title" id="input-title" value="" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-description">Description</label></th>
-            <td><input name="description" id="input-description" value="" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label>Type</label></th>
-            <td>
-              {%- for _, o := range schema.AllOrigins -%}
-              {%- if o == p.Origin  -%}
-              <label><input name="type" type="radio" class="input" value="{%s o.Key %}" checked="checked" /> {%s o.Title %}</label>
-              {%- else -%}
-              <label><input name="type" type="radio" class="input" value="{%s o.Key %}" /> {%s o.Title %}</label>
-              {%- endif -%}
-              {%- endfor -%}
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <button type="submit">Save Changes</button>
-              <a href="{%s as.Route(`source.list`) %}"><button type="button">Cancel</button></a>
-            </td>
-          </tr>
+          {%= components.TableInput("key", "Key", "", 5) %}
+          {%= components.TableInput("title", "Title", "", 5) %}
+          {%= components.TableTextarea("description", "Description", "", 5) %}
+          {%= components.TableRadio("type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5) %}
         </tbody>
       </table>
+      <div class="spacer"></div>
+      <button type="submit">Save Changes</button>
+      <a href="/source"><button type="button">Cancel</button></a>
     </form>
   </div>
 {% endfunc %}

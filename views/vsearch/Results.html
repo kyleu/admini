@@ -11,7 +11,7 @@
 {% func (p *Results) Body(as *app.State, ps *cutil.PageState) %}
 <div class="card">
   <h3>{% if p.Q == "" %}Search{% else %}[{%s p.Q %}] search results{% endif %}</h3>
-  <form action="{%s as.Route(`search`) %}">
+  <form action="{%s ps.SearchPath %}">
     <input name="q" value="{%s p.Q %}" />
   </form>
 </div>
@@ -23,7 +23,7 @@
   {% else %}
   <ul>
     {% for _, res := range p.Results %}
-    <li>TODO: {%s res %}</li>
+    <li>Coming soon: {%s res %}</li>
     {% endfor %}
   </ul>
   {% endif %}

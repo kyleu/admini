@@ -9,6 +9,7 @@ import (
 type Project struct {
 	Key         string         `json:"-"`
 	Title       string         `json:"title,omitempty"`
+	Icon        string         `json:"icon,omitempty"`
 	Description string         `json:"description,omitempty"`
 	Sources     []string       `json:"sources,omitempty"`
 	Actions     action.Actions `json:"actions,omitempty"`
@@ -19,6 +20,13 @@ func (p *Project) Name() string {
 		return p.Key
 	}
 	return p.Title
+}
+
+func (p *Project) IconWithFallback() string {
+	if p.Icon == "" {
+		return "app"
+	}
+	return p.Icon
 }
 
 type Projects []*Project
@@ -39,8 +47,7 @@ func (p Projects) Replace(n *Project) Projects {
 			return nil
 		}
 	}
-	p = append(p, n)
-	return p
+	return append(p, n)
 }
 
 func (p Projects) Sort() {

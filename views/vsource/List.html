@@ -10,7 +10,7 @@
 
 {% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="{%s as.Route(`source.new.form`) %}">add new</a></div>
+    <div class="right"><a href="/source/_new">add new</a></div>
     <h3>Sources</h3>
     {%= Table(p.Sources, as, ps) %}
   </div>

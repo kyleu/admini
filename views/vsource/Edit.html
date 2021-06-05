@@ -2,6 +2,7 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/database" %}
 {% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type EditPostgres struct {
@@ -13,22 +14,16 @@
 {% func (p *EditPostgres) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right">
-      <a class="link-confirm" data-message="Are you sure you want to delete source [{%s p.Source.Key %}]?" href="{%s as.Route(`source.delete`, `key`, p.Source.Key) %}">Delete Source</a>
+      <a class="link-confirm" data-message="Are you sure you want to delete source [{%s p.Source.Key %}]?" href="/source/{%s p.Source.Key %}/delete">Delete Source</a>
     </div>
     <h3>Edit [{%s p.Source.Key %}]</h3>
     <div class="spacer"></div>
-    <form class="editor" action="{%s as.Route(`source.save`, `key`, p.Source.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor" action="/source/{%s p.Source.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
-          <tr>
-            <th class="shrink"><label for="input-title">Title</label></th>
-            <td><input value="{%v p.Source.Title %}" name="title" id="input-title" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-description">Description</label></th>
-            <td><input value="{%v p.Source.Description %}" name="description" id="input-description" /></td>
-          </tr>
-          {%= databaseFields(p.Cfg) %}
+          {%= components.TableInput("title", "Title", p.Source.Title, 5) %}
+          {%= components.TableInput("description", "Description", p.Source.Description, 5) %}
+          {%= databaseFields(p.Cfg, 5) %}
         </tbody>
       </table>
       <div class="spacer"></div>
@@ -38,34 +33,12 @@
   </div>
 {% endfunc %}
 
-
-{% func databaseFields(cfg *database.DBParams) %}
-          <tr>
-            <th class="shrink"><label for="input-host">Host</label></th>
-            <td><input value="{%v cfg.Host %}" name="host" id="input-host" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-port">Port</label></th>
-            <td><input value="{%v cfg.Port %}" name="port" id="input-port" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-username">Username</label></th>
-            <td><input value="{%v cfg.Username %}" name="username" id="input-username" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-password">Password</label></th>
-            <td><input value="{%v cfg.Password %}" name="password" id="input-password" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-database">Database</label></th>
-            <td><input value="{%v cfg.Database %}" name="database" id="input-database" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-schema">Schema</label></th>
-            <td><input value="{%v cfg.Schema %}" name="schema" id="input-schema" /></td>
-          </tr>
-          <tr>
-            <th class="shrink"><label for="input-debug">Debug</label></th>
-            <td><input value="{%v cfg.Debug %}" name="debug" id="input-debug" /></td>
-          </tr>
-{% endfunc %}
+{% func databaseFields(cfg *database.DBParams, indent int) %}{% stripspace %}
+  {%= components.TableInput("host", "Host", cfg.Host, indent) %}
+  {%= components.TableInputNumber("port", "Port", cfg.Port, indent) %}
+  {%= components.TableInput("username", "Username", cfg.Username, indent) %}
+  {%= components.TableInput("password", "Password", cfg.Password, indent) %}
+  {%= components.TableInput("database", "Database", cfg.Database, indent) %}
+  {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}
+  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+{% endstripspace %}{% endfunc %}

@@ -1,14 +1,14 @@
 {% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/export" %}
 {% import "github.com/kyleu/admini/app/model" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/project/action" %}
 {% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
 
 {% code type List struct {
   layout.Basic
-  CtxT string
-  CtxK string
+  Act *action.Action
+  Req *cutil.WorkspaceRequest
   Model *model.Model
 } %}
 
@@ -17,7 +17,7 @@
     <h3>{%s ps.Title %}</h3>
     <ul>
       {%- for _, f := range export.AllFormats -%}
-      <li><a href="{%= vutil.WorkspaceLink(as, p.CtxT, p.CtxK, append(p.Model.Path(), `export`, f.Language, f.Flavor)...) %}">{%s f.Language %} ({%s f.Flavor %})</a></li>
+      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), f.Language, f.Flavor)...) %}">{%s f.Language %} ({%s f.Flavor %})</a></li>
       {%- endfor -%}
     </ul>
   </div>

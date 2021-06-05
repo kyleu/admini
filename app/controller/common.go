@@ -1,51 +1,45 @@
 package controller
 
 import (
+	"net/http"
+	"runtime/debug"
+
+	"github.com/valyala/fasthttp"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/views/verror"
 	"github.com/kyleu/admini/views/vhelp"
 	"github.com/pkg/errors"
-	"net/http"
-	"runtime/debug"
 )
 
-func Options(w http.ResponseWriter, r *http.Request) {
-	cutil.WriteCORS(w)
-	w.WriteHeader(http.StatusOK)
+func Options(ctx *fasthttp.RequestCtx) {
+	cutil.WriteCORS(ctx)
+	ctx.SetStatusCode(http.StatusOK)
 }
 
-func NotFound(w http.ResponseWriter, r *http.Request) {
-	act("notfound", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		cutil.WriteCORS(w)
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.WriteHeader(http.StatusNotFound)
-		ps.Logger.Warnf("%v %v returned [%d]", r.Method, r.URL.Path, http.StatusNotFound)
+func NotFound(ctx *fasthttp.RequestCtx) {
+	act("notfound", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		cutil.WriteCORS(ctx)
+		ctx.Response.Header.Set("Content-Type", "text/html; charset=utf-8")
+		ctx.SetStatusCode(http.StatusNotFound)
+		ps.Logger.Warnf("%s %s returned [%d]", string(ctx.Method()), string(ctx.Request.URI().Path()), http.StatusNotFound)
 		if ps.Title == "" {
 			ps.Title = "404"
 		}
 		ps.Data = "404 not found"
-		return render(r, w, as, &verror.NotFound{}, ps, "Not Found")
+		return render(ctx, as, &verror.NotFound{}, ps, "Not Found")
 	})
 }
 
-func Modules(w http.ResponseWriter, r *http.Request) {
-	act("modules", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Modules(ctx *fasthttp.RequestCtx) {
+	act("modules", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		mods, ok := debug.ReadBuildInfo()
 		if !ok {
 			return "", errors.New("unable to gather modules")
 		}
 		ps.Title = "Modules"
 		ps.Data = mods.Deps
-		return render(r, w, as, &vhelp.Modules{Mods: mods.Deps}, ps, "modules")
-	})
-}
-
-func Routes(w http.ResponseWriter, r *http.Request) {
-	act("routes", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		routes := cutil.ExtractRoutes(as.Router)
-		ps.Title = "Routes"
-		ps.Data = routes
-		return render(r, w, as, &vhelp.Routes{Routes: routes}, ps, "routes")
+		return render(ctx, as, &vhelp.Modules{Mods: mods.Deps}, ps, "modules")
 	})
 }

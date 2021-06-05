@@ -1,6 +1,7 @@
 package action
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/kyleu/admini/app/util"
@@ -15,7 +16,7 @@ func NewAction(args []string, typ Type, pkg util.Pkg) (*Action, error) {
 	case TypeStatic:
 		return base(typ, typ.Key, "Static Content", pkg, cfg), nil
 	case TypeSeparator:
-		return base(typ, typ.Key, "Separator", pkg, cfg), nil
+		return base(typ, typ.Key, "---", pkg, cfg), nil
 	case TypeAll:
 		return base(typ, typ.Key, "All Sources", pkg, cfg), nil
 	case TypeSource:
@@ -27,7 +28,7 @@ func NewAction(args []string, typ Type, pkg util.Pkg) (*Action, error) {
 		return base(typ, srcKey, srcKey, pkg, cfg), nil
 	case TypePackage:
 		if len(args) < 2 {
-			return nil, errors.Errorf("require at least two arguments, observed [%v]", len(args))
+			return nil, errors.Errorf("require at least two arguments, observed [%d]", len(args))
 		}
 		srcKey := args[0]
 		cfg[TypeSource.Key] = srcKey
@@ -36,7 +37,7 @@ func NewAction(args []string, typ Type, pkg util.Pkg) (*Action, error) {
 		return base(typ, key, key, pkg, cfg), nil
 	case TypeModel:
 		if len(args) < 2 {
-			return nil, errors.Errorf("require at least two arguments, observed [%v]", len(args))
+			return nil, errors.Errorf("require at least two arguments, observed [%d]", len(args))
 		}
 		srcKey := args[0]
 		cfg[TypeSource.Key] = srcKey
@@ -45,15 +46,15 @@ func NewAction(args []string, typ Type, pkg util.Pkg) (*Action, error) {
 		return base(typ, key, key, pkg, cfg), nil
 	case TypeActivity:
 		if len(args) != 2 {
-			return nil, errors.Errorf("require exactly two arguments, observed [%v]", len(args))
+			return nil, errors.Errorf("require exactly two arguments, observed [%d]", len(args))
 		}
 		srcKey := args[0]
 		activity := args[1]
 		cfg[TypeSource.Key] = srcKey
 		cfg[TypeActivity.Key] = activity
-		return base(typ, srcKey+"-"+activity, srcKey+" SQL", pkg, cfg), nil
+		return base(typ, fmt.Sprintf("%s-%s", srcKey, activity), fmt.Sprintf("%s SQL", srcKey), pkg, cfg), nil
 	default:
-		return nil, errors.New("can't create unhandled action [" + typ.Key + "]")
+		return nil, errors.Errorf("can't create unhandled action [%s]", typ.Key)
 	}
 }
 

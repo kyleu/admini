@@ -1,9 +1,8 @@
 package controller
 
 import (
-	"net/http"
-
 	"github.com/kyleu/admini/app/user"
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 
@@ -11,11 +10,11 @@ import (
 	"github.com/kyleu/admini/views/vprofile"
 )
 
-func Profile(w http.ResponseWriter, r *http.Request) {
-	act("profile", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Profile(ctx *fasthttp.RequestCtx) {
+	act("profile", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		profile := &user.Profile{Name: "Test"}
 		ps.Title = "Profile"
 		ps.Data = profile
-		return render(r, w, as, &vprofile.Profile{Profile: profile}, ps, "Profile")
+		return render(ctx, as, &vprofile.Profile{Profile: profile}, ps, "Profile")
 	})
 }

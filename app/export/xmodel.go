@@ -29,11 +29,11 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result 
 	}
 
 	f.W("type "+util.ToCamel(m.Key)+" struct {", 1)
-	msg := "%-" + fmt.Sprintf("%v", maxKeyLength) + "v %-" + fmt.Sprintf("%v", maxTypeLength) + "v %v%v"
+	msg := "%-" + fmt.Sprintf("%d", maxKeyLength) + "s %-" + fmt.Sprintf("%d", maxTypeLength) + "s %s%s"
 	for _, fld := range m.Fields {
 		typ, imp := typeString(fld.Type, fm)
 		if len(imp) > 0 {
-			logger.Warn("TODO: imports!")
+			logger.Warn("imports...")
 		}
 		omit := ""
 		if fld.Nullable() {
@@ -47,7 +47,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result 
 	}
 	f.W("}", -1)
 	f.W("")
-	f.W(fmt.Sprintf("type %vs []*%v", util.ToCamel(m.Key), util.ToCamel(m.Key)))
+	f.W(fmt.Sprintf("type %ss []*%s", util.ToCamel(m.Key), util.ToCamel(m.Key)))
 
 	ret := &Result{Key: "model", Out: f}
 	return ret

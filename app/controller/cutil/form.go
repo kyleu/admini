@@ -1,36 +1,39 @@
 package cutil
 
 import (
-	"net/http"
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 )
 
-func ParseForm(req *http.Request) (util.ValueMap, error) {
-	if ct := GetContentType(req); IsContentTypeJSON(ct) {
-		return parseJSONForm(req)
+func ParseForm(ctx *fasthttp.RequestCtx) (util.ValueMap, error) {
+	if ct := GetContentType(ctx); IsContentTypeJSON(ct) {
+		return parseJSONForm(ctx)
 	}
-	return parseHTTPForm(req)
+	return parseHTTPForm(ctx)
 }
 
-func parseJSONForm(req *http.Request) (util.ValueMap, error) {
+func parseJSONForm(ctx *fasthttp.RequestCtx) (util.ValueMap, error) {
 	ret := util.ValueMap{}
-	err := util.FromJSONReader(req.Body, &ret)
+	err := util.FromJSON(ctx.Request.Body(), &ret)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't parse JSON body")
 	}
 	return ret, nil
 }
 
-func parseHTTPForm(req *http.Request) (util.ValueMap, error) {
-	if err := req.ParseForm(); err != nil {
-		return nil, errors.Wrap(err, "can't parse form")
-	}
-
-	ret := make(util.ValueMap, len(req.Form))
-	for k, v := range req.Form {
+func parseHTTPForm(ctx *fasthttp.RequestCtx) (util.ValueMap, error) {
+	f := ctx.PostArgs()
+	ret := make(util.ValueMap, f.Len())
+	f.VisitAll(func(key []byte, value []byte) {
+		k := string(key)
+		xs := f.PeekMulti(k)
+		v := make([]string, 0, len(xs))
+		for _, x := range xs {
+			v = append(v, string(x))
+		}
 		ret[k] = v
-	}
+	})
 	return ret, nil
 }
