@@ -2,10 +2,10 @@ package app
 
 import (
 	"github.com/fasthttp/router"
+	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/filesystem"
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/source"
 	"go.uber.org/zap"
 )

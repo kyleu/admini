@@ -2,8 +2,8 @@ package controller
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/action"
 
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/util"
 	"github.com/valyala/fasthttp"
 

@@ -1,11 +1,11 @@
 package project
 
 import (
+	"github.com/kyleu/admini/app/action"
 	"path/filepath"
 
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/source"

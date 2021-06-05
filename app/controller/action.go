@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/action"
 	"path/filepath"
 	"strings"
 	"time"
@@ -10,7 +11,6 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 

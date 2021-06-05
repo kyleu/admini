@@ -1,5 +1,5 @@
 {% import "fmt" %}
 
 {% func String(x interface{}, nullable bool, k string, id string) %}{% stripspace %}
-{%= FormInput(k, id, fmt.Sprintf("%v", x)) %}
+  {%= FormInput(k, id, fmt.Sprintf("%v", x)) %}
 {% endstripspace %}{% endfunc %}

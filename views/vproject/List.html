@@ -9,9 +9,9 @@
 } %}
 
 {% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
-<div class="card">
-  <div class="right"><a href="/project/_new">add new</a></div>
-  <h3>Projects</h3>
-  {%= Table(p.Projects, as, ps) %}
-</div>
+  <div class="card">
+    <div class="right"><a href="/project/_new">add new</a></div>
+    <h3>Projects</h3>
+    {%= Table(p.Projects, as, ps) %}
+  </div>
 {% endfunc %}

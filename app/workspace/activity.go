@@ -1,10 +1,10 @@
 package workspace
 
 import (
+	"github.com/kyleu/admini/app/action"
 	"net/http"
 
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/pkg/errors"
 )

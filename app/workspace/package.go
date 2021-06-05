@@ -1,9 +1,9 @@
 package workspace
 
 import (
+	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/views/vaction"
 )
 

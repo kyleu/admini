@@ -2,11 +2,11 @@ package cutil
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/action"
 	"path/filepath"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
 	"github.com/valyala/fasthttp"

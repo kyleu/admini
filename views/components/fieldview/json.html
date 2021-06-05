@@ -1,8 +1,10 @@
-{% import (
-  "github.com/kyleu/admini/app/controller/cutil"
-) %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
 
 {% func JSON(v interface{}) %}{% stripspace %}
   {% code out, err := cutil.Format(v, `json`) %}
-  {% if err == nil %}{%s= out %}{% else %}{%s err.Error() %}{% endif %}
+  {% if err == nil %}
+    {%s= out %}
+  {% else %}
+    {%s err.Error() %}
+  {% endif %}
 {% endstripspace %}{% endfunc %}

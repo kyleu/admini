@@ -2,10 +2,10 @@ package workspace
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/action"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/layout"
 	"github.com/kyleu/admini/views/vaction"

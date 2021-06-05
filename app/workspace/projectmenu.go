@@ -2,6 +2,7 @@ package workspace
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/action"
 	"path/filepath"
 	"strings"
 
@@ -9,7 +10,6 @@ import (
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/project/action"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
