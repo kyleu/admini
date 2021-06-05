@@ -34,19 +34,14 @@ func ProjectInsert(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return flashError(err, "/project/_new", ctx, ps)
 		}
-		title, err := frm.GetString("title", true)
-		if err != nil {
-			return flashError(err, "/project/_new", ctx, ps)
-		}
-		description, err := frm.GetString("description", true)
-		if err != nil {
-			return "", err
-		}
+		title := frm.GetStringOpt("title")
+		icon := frm.GetStringOpt("icon")
+		description := frm.GetStringOpt("description")
 		sources, err := frm.GetStringArray("sources", true)
 		if err != nil {
 			return "", err
 		}
-		ret := &project.Project{Key: key, Title: title, Description: description, Sources: sources}
+		ret := &project.Project{Key: key, Title: title, Icon: icon, Description: description, Sources: sources}
 		err = currentApp.Projects.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
@@ -93,14 +88,9 @@ func ProjectSave(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
 
-		prj.Title, err = frm.GetString("title", true)
-		if err != nil {
-			return "", err
-		}
-		prj.Description, err = frm.GetString("description", true)
-		if err != nil {
-			return "", err
-		}
+		prj.Title = frm.GetStringOpt("title")
+		prj.Icon = frm.GetStringOpt("icon")
+		prj.Description = frm.GetStringOpt("description")
 		prj.Sources, err = frm.GetStringArray("sources", true)
 		if err != nil {
 			return "", err

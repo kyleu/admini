@@ -34,10 +34,7 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
-		ordering, err := frm.GetString("ordering", true)
-		if err != nil {
-			return "", err
-		}
+		ordering := frm.GetStringOpt("ordering")
 
 		actOrders := action.Orderings{}
 		err = util.FromJSON([]byte(ordering), &actOrders)

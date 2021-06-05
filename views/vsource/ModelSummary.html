@@ -12,7 +12,7 @@
     <label for="model-list-{%d idx %}">
       <em class="right">{%s model.Pkg.ToPath() %}</em>
       {%= components.ExpandCollapse(3, ps) %}
-      {%s model.Name() %}
+      {%= components.SVGRef(model.Type.Icon, 16, 16, `icon`, ps) %}{%s model.Name() %}
     </label>
     <div class="bd">
       <div>

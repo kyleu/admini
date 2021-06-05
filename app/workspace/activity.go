@@ -33,7 +33,7 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 			return nil, errors.Wrap(err, "unable to parse form")
 		}
 
-		s, _ := frm.GetString("sql", true)
+		s := frm.GetStringOpt("sql")
 		if s != "" {
 			sql = s
 		}

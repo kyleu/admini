@@ -34,6 +34,7 @@ func SourceMenuModel(m *model.Model, path string) *menu.Item {
 	return &menu.Item{
 		Key:         m.Key,
 		Title:       m.Name(),
+		Icon:        m.Type.Icon,
 		Description: m.Description(),
 		Route:       path,
 	}
@@ -53,6 +54,7 @@ func sourceMenuAddPackage(ret menu.Items, mp *model.Package, path string) menu.I
 	i := &menu.Item{
 		Key:         mp.Key,
 		Title:       mp.Key,
+		Icon:        "world",
 		Description: desc,
 		Route:       path,
 	}

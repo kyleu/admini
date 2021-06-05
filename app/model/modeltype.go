@@ -10,16 +10,17 @@ type Type struct {
 	Key    string
 	Title  string
 	Plural string
+	Icon   string
 }
 
 var (
-	TypeEnum         = Type{Key: "enum", Title: "Enum", Plural: "Enums"}
-	TypeSequence     = Type{Key: "sequence", Title: "Sequence", Plural: "Sequences"}
-	TypeStruct       = Type{Key: "struct", Title: "Struct", Plural: "Structs"}
-	TypeInterface    = Type{Key: "interface", Title: "Interface", Plural: "Interfaces"}
-	TypeUnion        = Type{Key: "union", Title: "Union", Plural: "Unions"}
-	TypeIntersection = Type{Key: "intersection", Title: "Intersection", Plural: "Intersections"}
-	TypeUnknown      = Type{Key: "unknown", Title: "Unknown", Plural: "Unknowns"}
+	TypeEnum         = Type{Key: "enum", Title: "Enum", Plural: "Enums", Icon: "world"}
+	TypeSequence     = Type{Key: "sequence", Title: "Sequence", Plural: "Sequences", Icon: "world"}
+	TypeStruct       = Type{Key: "struct", Title: "Struct", Plural: "Structs", Icon: "world"}
+	TypeInterface    = Type{Key: "interface", Title: "Interface", Plural: "Interfaces", Icon: "world"}
+	TypeUnion        = Type{Key: "union", Title: "Union", Plural: "Unions", Icon: "world"}
+	TypeIntersection = Type{Key: "intersection", Title: "Intersection", Plural: "Intersections", Icon: "world"}
+	TypeUnknown      = Type{Key: "unknown", Title: "Unknown", Plural: "Unknowns", Icon: "world"}
 )
 
 var AllModelTypes = []Type{

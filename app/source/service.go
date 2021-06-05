@@ -39,8 +39,8 @@ func (s *Service) List() (Sources, error) {
 	return s.cache, nil
 }
 
-func (s *Service) NewSource(key string, title string, description string, t schema.Origin) *Source {
-	ret := &Source{Key: key, Title: title, Description: description, Type: t}
+func (s *Service) NewSource(key string, title string, icon string, description string, t schema.Origin) *Source {
+	ret := &Source{Key: key, Title: title, Icon: icon, Description: description, Type: t}
 	switch t {
 	case schema.OriginPostgres:
 		ret.Config = util.ToJSONBytes(&database.DBParams{Host: "localhost", Port: 5432, Database: key}, true)

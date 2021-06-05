@@ -104,6 +104,7 @@ func itemsForAll(x *menu.Item, view *project.View) error {
 		kid := &menu.Item{
 			Key:         src.Key,
 			Title:       src.Name(),
+			Icon:        src.IconWithFallback(),
 			Description: src.Description,
 			Route:       path,
 			Children:    SourceMenuPackage(sch.ModelsByPackage(), path),

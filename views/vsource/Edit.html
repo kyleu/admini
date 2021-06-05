@@ -22,6 +22,11 @@
       <table>
         <tbody>
           {%= components.TableInput("title", "Title", p.Source.Title, 5) %}
+          <tr>
+            <th class="shrink"><label>Icon</label></th>
+            <td>{%= components.IconPicker(p.Source.Icon, "icon", ps, 7) %}
+            </td>
+          </tr>
           {%= components.TableInput("description", "Description", p.Source.Description, 5) %}
           {%= databaseFields(p.Cfg, 5) %}
         </tbody>

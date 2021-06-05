@@ -108,4 +108,5 @@ input[type=checkbox]:checked ~ .menu-toggle > .diagonal.part-2 {
 
 #navbar .profile {
   margin: 12px;
+  color: var(--color-nav-foreground);
 }

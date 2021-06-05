@@ -39,19 +39,11 @@ func SourceInsert(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return flashError(err, "/source/_new", ctx, ps)
 		}
-		title, err := frm.GetString("title", true)
-		if err != nil {
-			return "", err
-		}
-		description, err := frm.GetString("description", true)
-		if err != nil {
-			return "", err
-		}
-		typ, err := frm.GetString("type", true)
-		if err != nil {
-			return "", err
-		}
-		ret := currentApp.Sources.NewSource(key, title, description, schema.OriginFromString(typ))
+		title := frm.GetStringOpt("title")
+		icon := frm.GetStringOpt("icon")
+		description := frm.GetStringOpt("description")
+		typ := frm.GetStringOpt("type")
+		ret := currentApp.Sources.NewSource(key, title, icon, description, schema.OriginFromString(typ))
 		err = currentApp.Sources.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
@@ -106,30 +98,22 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
 
-		src.Title, err = frm.GetString("title", true)
-		if err != nil {
-			return "", err
-		}
-		src.Description, err = frm.GetString("description", true)
-		if err != nil {
-			return "", err
-		}
+		src.Title = frm.GetStringOpt("title")
+		src.Icon = frm.GetStringOpt("icon")
+		src.Description = frm.GetStringOpt("description")
 
 		switch src.Type {
 		case schema.OriginPostgres:
-			ps, _ := frm.GetString("port", true)
+			ps := frm.GetStringOpt("port")
 			params := &database.DBParams{}
-			params.Host, err = frm.GetString("host", false)
-			if err != nil {
-				return "", err
-			}
+			params.Host = frm.GetStringOpt("host")
 			if ps != "" {
 				params.Port, _ = strconv.Atoi(ps)
 			}
-			params.Username, _ = frm.GetString("username", true)
-			params.Password, _ = frm.GetString("password", true)
-			params.Database, _ = frm.GetString("database", true)
-			params.Schema, _ = frm.GetString("schema", true)
+			params.Username = frm.GetStringOpt("username")
+			params.Password = frm.GetStringOpt("password")
+			params.Database = frm.GetStringOpt("database")
+			params.Schema = frm.GetStringOpt("schema")
 
 			src.Config = util.ToJSONBytes(params, true)
 		default:

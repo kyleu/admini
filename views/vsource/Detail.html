@@ -14,7 +14,7 @@
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="/source/{%s p.Source.Key %}/edit"><button type="button">Edit</button></a></div>
-    <h3>{%= components.SVGRef(p.Source.Type.Icon, 0, 0, ``, ps) %} {%s p.Source.Name() %}</h3>
+    <h3>{%= components.SVGRef(p.Source.IconWithFallback(), 20, 20, `icon`, ps) %}{%s p.Source.Name() %}</h3>
     {% if p.Source.Description != "" %}<em>{%s p.Source.Description %}</em>{% endif %}
     <p>
       <a href="/s/{%s p.Source.Key %}"><button type="button">Workspace</button></a>
