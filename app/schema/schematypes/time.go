@@ -19,10 +19,7 @@ func (x *Time) String() string {
 }
 
 func (x *Time) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewTime() *Wrapped {

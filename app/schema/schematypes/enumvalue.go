@@ -19,10 +19,7 @@ func (x *EnumValue) Sortable() bool {
 }
 
 func (x *EnumValue) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewEnumValue() *Wrapped {

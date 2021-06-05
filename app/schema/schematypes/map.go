@@ -26,10 +26,7 @@ func (x *Map) Sortable() bool {
 }
 
 func (x *Map) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewMap(k *Wrapped, v *Wrapped) *Wrapped {

@@ -3,6 +3,8 @@ package assets
 import (
 	"bytes"
 	"compress/gzip"
+
+	// nolint
 	"crypto/md5"
 	"encoding/hex"
 	"io/ioutil"
@@ -29,6 +31,7 @@ func Asset(base, path string) ([]byte, string, string, error) {
 		data = b.Bytes()
 	}
 
+	// nolint
 	sum := md5.Sum(data)
 
 	return data, hex.EncodeToString(sum[1:]), mime.TypeByExtension(filepath.Ext(file)), nil

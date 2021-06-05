@@ -21,10 +21,7 @@ func (x *Option) Sortable() bool {
 }
 
 func (x *Option) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewOption(t *Wrapped) *Wrapped {

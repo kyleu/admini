@@ -19,10 +19,7 @@ func (x *Char) Sortable() bool {
 }
 
 func (x *Char) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewChar() *Wrapped {

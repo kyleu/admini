@@ -1,6 +1,9 @@
 package user
 
-import "strings"
+import (
+	"io"
+	"strings"
+)
 
 type Theme struct {
 	Key   string
@@ -37,10 +40,10 @@ var ThemeDefault = &Theme{
 	},
 }
 
-func add(sb *strings.Builder, s string, indent int) {
+func add(sb io.StringWriter, s string, indent int) {
 	indention := ""
 	for i := 0; i < indent; i++ {
 		indention += "  "
 	}
-	sb.WriteString(indention+s+"\n")
+	_, _ = sb.WriteString(indention + s + "\n")
 }

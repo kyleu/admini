@@ -1,16 +1,17 @@
 package project
 
 import (
-	"github.com/kyleu/admini/app/action"
 	"sort"
+
+	"github.com/kyleu/admini/app/action"
 )
 
 type Project struct {
-	Key         string          `json:"-"`
-	Title       string          `json:"title,omitempty"`
-	Icon        string          `json:"icon,omitempty"`
-	Description string          `json:"description,omitempty"`
-	Sources     []string        `json:"sources,omitempty"`
+	Key         string         `json:"-"`
+	Title       string         `json:"title,omitempty"`
+	Icon        string         `json:"icon,omitempty"`
+	Description string         `json:"description,omitempty"`
+	Sources     []string       `json:"sources,omitempty"`
 	Actions     action.Actions `json:"actions,omitempty"`
 }
 

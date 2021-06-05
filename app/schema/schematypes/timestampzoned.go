@@ -19,10 +19,7 @@ func (x *TimestampZoned) Sortable() bool {
 }
 
 func (x *TimestampZoned) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewTimestampZoned() *Wrapped {

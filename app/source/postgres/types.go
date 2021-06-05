@@ -15,6 +15,7 @@ func TypeForName(t string, logger *zap.SugaredLogger) *schematypes.Wrapped {
 	return typeFor(t, nil, logger)
 }
 
+// nolint
 func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes.Wrapped {
 	if cr != nil && cr.Nullable == pgYes {
 		cr.Nullable = pgNo

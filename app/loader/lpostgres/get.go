@@ -38,7 +38,7 @@ func modelGetByPKQuery(m *model.Model, logger *zap.SugaredLogger) (string, error
 	if len(pk) == 0 {
 		return "", errors.Errorf("no PK for model [%s]", m.Key)
 	}
-	var where []string
+	where := make([]string, 0, len(pk))
 	for idx, pkf := range pk {
 		where = append(where, fmt.Sprintf(`"%s" = $%d`, pkf, idx+1))
 	}

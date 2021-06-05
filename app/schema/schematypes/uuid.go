@@ -19,10 +19,7 @@ func (x *UUID) String() string {
 }
 
 func (x *UUID) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewUUID() *Wrapped {

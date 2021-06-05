@@ -68,7 +68,7 @@ linters:
     - deadcode
     - depguard
     - dogsled
-    - dupl
+    # - dupl
     - errcheck
     - errorlint
     - exportloopref
@@ -77,17 +77,16 @@ linters:
     - exportloopref
     - forbidigo
     - forcetypeassert
-    # - funlen
-    # - gci
+    - funlen
     # - gochecknoglobals
     - gochecknoinits
-    # - gocognit
+    - gocognit
     - goconst
     - gocritic
-    # - gocyclo
-    # - godot
-    ###########- godox
-    # - goerr113
+    - gocyclo
+    - godot
+    - godox
+    - goerr113
     - gofmt
     - gofumpt
     - goheader
@@ -97,7 +96,7 @@ linters:
     - gomoddirectives
     - gomodguard
     - goprintffuncname
-    # - gosec
+    - gosec
     - gosimple
     - govet
     - ifshort
@@ -108,7 +107,7 @@ linters:
     - makezero
     - misspell
     - nakedret
-    - nestif
+    # - nestif
     - noctx
     - nolintlint
     - paralleltest

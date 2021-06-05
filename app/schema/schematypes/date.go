@@ -19,10 +19,7 @@ func (x *Date) Sortable() bool {
 }
 
 func (x *Date) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func NewDate() *Wrapped {

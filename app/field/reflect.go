@@ -10,6 +10,7 @@ func NewFieldByType(key string, t reflect.Type, ro bool, md *Metadata) *Field {
 	return &Field{Key: key, Type: fromReflect(t), ReadOnly: ro, Metadata: md}
 }
 
+// nolint
 func fromReflect(t reflect.Type) *schematypes.Wrapped {
 	switch t.Kind() {
 	case reflect.Invalid:

@@ -11,10 +11,7 @@ import (
 )
 
 func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {
-	metadata, err := loadMetadata(db)
-	if err != nil {
-		return nil, errors.Wrap(err, "can't load metadata")
-	}
+	metadata := loadMetadata(db)
 
 	scalars, err := loadScalars()
 	if err != nil {

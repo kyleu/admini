@@ -59,4 +59,3 @@ var SVGLibrary = map[string]string{
 }
 
 var SVGIconKeys = []string{"album", "app", "ban", "bell", "bolt", "bookmark", "calendar", "camera", "cart", "check", "clock", "code", "cog", "comment", "database", "download", "file-text", "folder", "forward", "github", "grid", "handle", "happy", "hashtag", "heart", "image", "info", "link", "location", "lock", "mail", "microphone", "nut", "pencil", "play", "print", "profile", "project", "question", "reply", "server", "settings", "social", "star", "tag", "trash", "unlock", "upload", "world"}
-

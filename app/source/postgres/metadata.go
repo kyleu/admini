@@ -5,7 +5,7 @@ import (
 	"github.com/kyleu/admini/app/schema"
 )
 
-func loadMetadata(db *database.Service) (*schema.Metadata, error) {
+func loadMetadata(db *database.Service) *schema.Metadata {
 	return &schema.Metadata{
 		Description: "asdfsdf",
 		Comments:    nil,
@@ -13,5 +13,5 @@ func loadMetadata(db *database.Service) (*schema.Metadata, error) {
 		Source:      "postgres:" + db.DatabaseName,
 		Line:        0,
 		Column:      0,
-	}, nil
+	}
 }

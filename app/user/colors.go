@@ -27,7 +27,7 @@ func (c *Colors) CSS(indent int) string {
 	sb := &strings.Builder{}
 	add(sb, ":root {", indent)
 	prop := func(k string, v string) {
-		add(sb, fmt.Sprintf("--color-%s: %s;", k, v), indent + 1)
+		add(sb, fmt.Sprintf("--color-%s: %s;", k, v), indent+1)
 	}
 	prop("foreground", c.Foreground)
 	prop("foreground-muted", c.ForegroundMuted)

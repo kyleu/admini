@@ -26,10 +26,7 @@ func (x *Reference) String() string {
 }
 
 func (x *Reference) From(v interface{}) interface{} {
-	switch t := v.(type) {
-	default:
-		return invalidInput(x.Key(), t)
-	}
+	return invalidInput(x.Key(), x)
 }
 
 func (x *Reference) Path() []string {
