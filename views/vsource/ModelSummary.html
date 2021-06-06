@@ -22,7 +22,7 @@
       <ul class="accordion">
         <li>
           <input id="{%s model.String() %}-fields" type="checkbox" hidden />
-          <label for="{%s model.String() %}-fields">{%= components.ExpandCollapse(3, ps) %} {%= components.Plural(len(model.Fields), `field`, `fields`) %}</label>
+          <label for="{%s model.String() %}-fields">{%= components.ExpandCollapse(3, ps) %} {%s util.Plural(len(model.Fields), `field`, `fields`) %}</label>
           <div class="bd">
             {% if len(model.Fields) == 0 %}
             <div>No fields in {%s model.Type.String() %}</div>
@@ -54,7 +54,7 @@
         </li>
         <li>
           <input id="{%s model.String() %}-indexes" type="checkbox" hidden />
-          <label for="{%s model.String() %}-indexes">{%= components.ExpandCollapse(3, ps) %} {%= components.Plural(len(model.Indexes), `index`, `indexes`) %}</label>
+          <label for="{%s model.String() %}-indexes">{%= components.ExpandCollapse(3, ps) %} {%s util.Plural(len(model.Indexes), `index`, `indexes`) %}</label>
           <div class="bd">
             {% if len(model.Indexes) == 0 %}
             <div>No indexes in {%s model.Type.String() %}</div>
@@ -84,7 +84,7 @@
         </li>
         <li>
           <input id="{%s model.String() %}-relations" type="checkbox" hidden />
-          <label for="{%s model.String() %}-relations">{%= components.ExpandCollapse(3, ps) %} {%= components.Plural(len(model.Relationships), `relationship`, `relationships`) %}</label>
+          <label for="{%s model.String() %}-relations">{%= components.ExpandCollapse(3, ps) %} {%s util.Plural(len(model.Relationships), `relationship`, `relationships`) %}</label>
           <div class="bd">
             {% if len(model.Relationships) == 0 %}
             <div>No relationships in {%s model.Type.String() %}</div>

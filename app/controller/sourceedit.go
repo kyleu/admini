@@ -74,7 +74,8 @@ func SourceEdit(ctx *fasthttp.RequestCtx) {
 					return "", errors.Wrap(err, "can't parse postgres config")
 				}
 			}
-			return render(ctx, as, &vsource.EditPostgres{Source: src, Cfg: pcfg}, ps, "sources", src.Key, "Edit")
+			page := &vsource.EditPostgres{Source: src, Cfg: pcfg}
+			return render(ctx, as, page, ps, "sources", src.Key, "Edit")
 		default:
 			msg := fmt.Sprintf("unhandled source type [%s]", src.Type.String())
 			return flashAndRedir(false, msg, "/source", ctx, ps)

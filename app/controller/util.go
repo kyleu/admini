@@ -91,7 +91,11 @@ func flashAndRedir(success bool, msg string, redir string, ctx *fasthttp.Request
 		status = "success"
 	}
 	ps.Session.AddFlash(fmt.Sprintf("%s:%s", status, msg))
-	_ = ps.Session.Save(ctx)
+	err := ps.Session.Save(ctx)
+	if err != nil {
+		return "", errors.Wrap(err, "unable to save flash session")
+	}
+
 	if strings.HasPrefix(redir, "/") {
 		return redir, nil
 	}

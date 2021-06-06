@@ -20,11 +20,10 @@
     <h3>Colors!</h3>
     <div class="spacer"></div>
     <form>
-      {%= components.ThemeEditor(p.Theme.Light) %}
+      {%= components.ThemeEditor(p.Theme.Light, 3) %}
       <div class="spacer"></div>
       <button type="reset" onclick="admini.themeReset(); return true;">Reset</button>
     </form>
   </div>
   {%= components.JSONModal("profile", "Profile JSON", p.Profile, 1) %}
-  <style type="text/css">{%s p.Theme.CSS(2) %}  </style>
 {% endfunc %}

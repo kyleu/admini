@@ -29,7 +29,7 @@ var ThemeDefault = &Theme{
 		Background: "#ffffff", BackgroundMuted: "#eeeeee",
 		Highlight: "#008000", Link: "#2d414e", LinkVisited: "#406379",
 		NavForeground: "#000000", NavBackground: "#4f9abd",
-		MenuForeground: "#000000", MenuBackground: "#F0F8FF", MenuBackgroundSelected: "#FAEBD7",
+		MenuForeground: "#000000", MenuBackground: "#f0f8ff", MenuBackgroundSelected: "#faebd7",
 	},
 	Dark: Colors{
 		Foreground: "#ffffff", ForegroundMuted: "#999999",

@@ -75,10 +75,18 @@
   margin-top: 1px;
 }
 
+.icon-choice {
+  /*display: flex;*/
+}
+
 .icon-choice input {
   display: none;
 }
 
 .icon-choice input:checked ~ * {
   border: 3px solid var(--color-highlight);
+}
+
+.scroll-x {
+  overflow-x: auto;
 }

@@ -74,7 +74,11 @@ function update(dd: Element) {
     }
     const sEl = document.querySelector(".drag-tracked-size") as HTMLElement;
     if (sEl) {
-      sEl.innerText = count.toString(10);
+      if (count === 1) {
+        sEl.innerText = count.toString(10) + (sEl.dataset.sing ? " " + sEl.dataset.sing: "");
+      } else {
+        sEl.innerText = count.toString(10) + (sEl.dataset.plur ? " " + sEl.dataset.plur: "");
+      }
     }
   }
 

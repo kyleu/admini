@@ -3,18 +3,24 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func IconPicker(selected string, name string, ps *cutil.PageState, indent int) %}{% stripspace %}
-  {% for _, k := range util.SVGIconKeys %}
   {%= vutil.Indent(true, indent) %}
-  <label class="icon-choice" title="{%s k %}">
+  <div class="scroll-x">
     {%= vutil.Indent(true, indent + 1) %}
-    {% if k == selected %}
-      <input type="radio" name="{%s name %}" value="{%s k %}" checked="checked" />
-    {% else %}
-      <input type="radio" name="{%s name %}" value="{%s k %}" />
-    {% endif %}
+    <div class="icon-choice">
+      {% for _, k := range util.SVGIconKeys %}
+        {%= vutil.Indent(true, indent + 2) %}
+        <label title="{%s k %}">
+          {% if k == selected %}
+            <input type="radio" name="{%s name %}" value="{%s k %}" checked="checked" />
+          {% else %}
+            <input type="radio" name="{%s name %}" value="{%s k %}" />
+          {% endif %}
+          {% space %}
+          {%= SVGRef(k, 48, 48, "", ps) %}
+        </label>
+      {% endfor %}
     {%= vutil.Indent(true, indent + 1) %}
-    {%= SVGRef(k, 48, 48, "", ps) %}
+    </div>
   {%= vutil.Indent(true, indent) %}
-  </label>
-  {% endfor %}
+  </div>
 {% endstripspace %}{% endfunc %}

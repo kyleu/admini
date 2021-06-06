@@ -2,6 +2,8 @@ package action
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/kyleu/admini/app/util"
 
 	"github.com/pkg/errors"
 )
@@ -64,4 +66,34 @@ func (t *Type) UnmarshalJSON(data []byte) error {
 	}
 	*t = x
 	return nil
+}
+
+func (t Type) ConfigString(cfg util.ValueMap) string {
+	switch t {
+	case TypeFolder:
+		return ""
+	case TypeStatic:
+		return ""
+	case TypeSeparator:
+		return ""
+
+	case TypeAll:
+		return "All Sources"
+	case TypeSource:
+		return cfg.GetStringOpt("source")
+	case TypePackage:
+		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("package"))
+	case TypeModel:
+		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("model"))
+	case TypeActivity:
+		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("activity"))
+
+	case TypeTest:
+		return "TEST"
+	case TypeUnknown:
+		return "UNKNOWN"
+
+	default:
+		return "???"
+	}
 }

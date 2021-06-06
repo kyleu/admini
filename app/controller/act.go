@@ -41,8 +41,8 @@ func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 	if err != nil {
 		logger.Warnf("error retrieving session: %+v", err)
 	}
+	session.Options = &sessions.Options{Path: "/", HttpOnly: true /* , SameSite: http.SameSiteStrictMode */}
 	if session.IsNew {
-		session.Options = &sessions.Options{Path: "/", HttpOnly: true /* , SameSite: fasthttp.SameSiteStrictMode */}
 		err = session.Save(ctx)
 		if err != nil {
 			logger.Warnf("can't save session: %+v", err)
@@ -53,7 +53,7 @@ func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 	if len(flashes) > 0 {
 		err = session.Save(ctx)
 		if err != nil {
-			logger.Warnf("cannot save session flashes: %+v", err)
+			logger.Warnf("can't save session without flashes: %+v", err)
 		}
 	}
 

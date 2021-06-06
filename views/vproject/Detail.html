@@ -1,6 +1,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
@@ -24,7 +25,7 @@
     {%- if len(p.View.Sources) == 0 -%}
     <h3>No sources in project</h3>
     {%- else -%}
-    <h3>{%= components.Plural(len(p.View.Sources), `source`, `sources`) %} in project</h3>
+    <h3>{%s util.Plural(len(p.View.Sources), `source`, `sources`) %} in project</h3>
     <ul>
     {%- for _, s := range p.View.Sources -%}
       <li><a href="/source/{%s s.Key %}">{%= components.SVGRef(s.IconWithFallback(), 16, 16, "icon", ps) %}{%s s.Name() %}</a></li>
@@ -49,7 +50,7 @@
             </form>
           </div>
         </div>
-        <h3 class="no-padding"><span class="drag-tracked-size">{%d p.View.Project.Actions.Size() %}</span> actions</h3>
+        <h3 class="no-padding"><span class="drag-tracked-size" data-sing="action" data-plur="actions">{%s util.Plural(p.View.Project.Actions.Size(), "action", "actions") %}</span></h3>
         <div class="clear"></div>
         <div class="container tracked">
           {%- for _, act := range p.View.Project.Actions -%}

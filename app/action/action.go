@@ -1,6 +1,7 @@
 package action
 
 import (
+	"fmt"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -21,6 +22,18 @@ func (a *Action) Name() string {
 		return a.Key
 	}
 	return a.Title
+}
+
+func (a *Action) ConfigString() string {
+	ret := a.Type.ConfigString(a.Config)
+	if len(a.Children) == 0 {
+		return ret
+	}
+	kids := util.Plural(len(a.Children), "child", "children")
+	if ret == "" {
+		return kids
+	}
+	return fmt.Sprintf("%s, %s", ret, kids)
 }
 
 func (a *Action) Path() []string {

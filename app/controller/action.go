@@ -58,7 +58,7 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		msg := fmt.Sprintf("saved [%d] actions in [%.3fms]", count, elapsedMillis)
+		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.Plural(count, "action", "actions"), elapsedMillis)
 		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), ctx, ps)
 	})
 }
@@ -103,11 +103,13 @@ func ActionSave(ctx *fasthttp.RequestCtx) {
 			shouldReload = true
 		}
 
-		a.Title = frm.GetStringOpt("title")
-		a.Description = frm.GetStringOpt("description")
-		icon := frm.GetStringOpt("icon")
-		if icon != "" {
-			a.Icon = icon
+		if a.Type != action.TypeSeparator {
+			a.Title = frm.GetStringOpt("title")
+			a.Description = frm.GetStringOpt("description")
+			icon := frm.GetStringOpt("icon")
+			if icon != "" {
+				a.Icon = icon
+			}
 		}
 		actPath := filepath.Join("project", p.Key, "actions", strings.Join(a.Pkg, "/"))
 		_, err = action.Save(actPath, a, currentApp.Files)

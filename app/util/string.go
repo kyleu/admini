@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/iancoleman/strcase"
@@ -48,6 +49,14 @@ func ToCamel(s string) string {
 
 func ToLowerCamel(s string) string {
 	return acr(strcase.ToLowerCamel(s))
+}
+
+func Plural(count int, sing string, plur string) string {
+	x := sing
+	if count != 1 {
+		x = plur
+	}
+	return fmt.Sprintf("%d %s", count, x)
 }
 
 func acr(ret string) string {
