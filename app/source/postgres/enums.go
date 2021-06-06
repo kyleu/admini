@@ -14,7 +14,7 @@ import (
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/queries"
+	"github.com/kyleu/admini/queries/qpostgres"
 )
 
 type enumResult struct {
@@ -49,7 +49,7 @@ func (t *enumResult) ToModel() *model.Model {
 
 func loadEnums(db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
 	var enums []*enumResult
-	err := db.Select(&enums, queries.ListTypes(db.SchemaName), nil)
+	err := db.Select(&enums, qpostgres.ListTypes(db.SchemaName), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list enums")
 	}

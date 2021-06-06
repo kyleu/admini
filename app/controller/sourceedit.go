@@ -66,15 +66,8 @@ func SourceEdit(ctx *fasthttp.RequestCtx) {
 		ps.Data = src
 
 		switch src.Type {
-		case schema.OriginPostgres:
-			pcfg := &database.DBParams{}
-			if len(src.Config) > 0 {
-				err = util.FromJSON(src.Config, pcfg)
-				if err != nil {
-					return "", errors.Wrap(err, "can't parse postgres config")
-				}
-			}
-			page := &vsource.EditPostgres{Source: src, Cfg: pcfg}
+		case schema.OriginPostgres, schema.OriginSQLite:
+			page := &vsource.Edit{Source: src}
 			return render(ctx, as, page, ps, "sources", src.Key, "Edit")
 		default:
 			msg := fmt.Sprintf("unhandled source type [%s]", src.Type.String())
@@ -106,7 +99,7 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 		switch src.Type {
 		case schema.OriginPostgres:
 			ps := frm.GetStringOpt("port")
-			params := &database.DBParams{}
+			params := &database.PostgresParams{}
 			params.Host = frm.GetStringOpt("host")
 			if ps != "" {
 				params.Port, _ = strconv.Atoi(ps)
@@ -115,6 +108,14 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 			params.Password = frm.GetStringOpt("password")
 			params.Database = frm.GetStringOpt("database")
 			params.Schema = frm.GetStringOpt("schema")
+			params.Debug, _ = frm.GetBool("debug")
+
+			src.Config = util.ToJSONBytes(params, true)
+		case schema.OriginSQLite:
+			params := &database.SQLiteParams{}
+			params.File = frm.GetStringOpt("file")
+			params.Schema = frm.GetStringOpt("schema")
+			params.Debug, _ = frm.GetBool("debug")
 
 			src.Config = util.ToJSONBytes(params, true)
 		default:

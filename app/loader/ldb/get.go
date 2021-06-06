@@ -1,4 +1,4 @@
-package lpostgres
+package ldb
 
 import (
 	"fmt"
@@ -13,12 +13,12 @@ import (
 	"github.com/kyleu/admini/app/result"
 )
 
-func (l *Loader) Get(m *model.Model, ids []interface{}) (*result.Result, error) {
-	q, err := modelGetByPKQuery(m, l.logger)
+func Get(db *database.Service, m *model.Model, ids []interface{}, logger *zap.SugaredLogger) (*result.Result, error) {
+	q, err := modelGetByPKQuery(m, logger)
 	if err != nil {
 		return nil, err
 	}
-	rows, err := l.db.Query(q, nil, ids...)
+	rows, err := db.Query(q, nil, ids...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.Key)
 	}

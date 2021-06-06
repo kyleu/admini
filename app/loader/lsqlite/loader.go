@@ -1,4 +1,4 @@
-package lpostgres
+package lsqlite
 
 import (
 	"github.com/kyleu/admini/app/loader/ldb"
@@ -24,7 +24,7 @@ type Loader struct {
 
 func NewLoader(logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
-		log := logger.With(zap.String("service", "loader.postgres"), zap.String("source", key))
+		log := logger.With(zap.String("service", "loader.sqlite"), zap.String("source", key))
 		db, err := openDatabase(cfg, log)
 		if err != nil {
 			return nil, errors.Wrap(err, "error opening database")
@@ -67,8 +67,8 @@ func (l *Loader) Default(m *model.Model) ([]interface{}, error) {
 	return ret, nil
 }
 
-func LoadConfig(cfg []byte) (*database.PostgresParams, error) {
-	params := &database.PostgresParams{}
+func LoadConfig(cfg []byte) (*database.SQLiteParams, error) {
+	params := &database.SQLiteParams{}
 	err := util.FromJSON(cfg, params)
 	if err != nil {
 		return nil, errors.Wrap(err, "error parsing database config")
@@ -81,7 +81,7 @@ func openDatabase(cfg []byte, logger *zap.SugaredLogger) (*database.Service, err
 	if err != nil {
 		return nil, err
 	}
-	db, err := database.OpenPostgresDatabase(params, logger)
+	db, err := database.OpenSQLiteDatabase(params, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error opening database")
 	}

@@ -24,10 +24,30 @@ func ValueMapFor(kvs ...interface{}) ValueMap {
 func (c ValueMap) GetRequired(k string) (interface{}, error) {
 	v, ok := c[k]
 	if !ok {
-		msg := "no form value [%s] among candidates [%s]"
+		msg := "no value [%s] among candidates [%s]"
 		return nil, errors.Errorf(msg, k, strings.Join(c.Keys(), ", "))
 	}
 	return v, nil
+}
+
+func (c ValueMap) GetBool(k string) (bool, error) {
+	v, err := c.GetRequired(k)
+	if err != nil {
+		return false, err
+	}
+
+	var ret bool
+	switch t := v.(type) {
+	case bool:
+		ret = t
+	case string:
+		ret = t == "true"
+	case nil:
+		ret = false
+	default:
+		return false, errors.Errorf("expected boolean or string, encountered %T: %v", t, t)
+	}
+	return ret, nil
 }
 
 func (c ValueMap) GetString(k string, allowEmpty bool) (string, error) {

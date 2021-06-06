@@ -12,7 +12,7 @@ import (
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/queries"
+	"github.com/kyleu/admini/queries/qpostgres"
 )
 
 type columnResult struct {
@@ -59,7 +59,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 
 func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var cols []*columnResult
-	err := db.Select(&cols, queries.ListColumns(db.SchemaName), nil)
+	err := db.Select(&cols, qpostgres.ListColumns(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list columns")
 	}

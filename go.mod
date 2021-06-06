@@ -16,4 +16,5 @@ require (
 	github.com/valyala/fasthttp v1.26.0
 	github.com/valyala/quicktemplate v1.6.3
 	go.uber.org/zap v1.16.0
+	modernc.org/sqlite v1.10.8
 )

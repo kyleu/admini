@@ -9,10 +9,11 @@ import (
 
 	// load postgres driver.
 	_ "github.com/jackc/pgx/v4/stdlib"
+
 	"github.com/jmoiron/sqlx"
 )
 
-type DBParams struct {
+type PostgresParams struct {
 	Host     string `json:"host"`
 	Port     int    `json:"port"`
 	Username string `json:"username"`
@@ -22,7 +23,7 @@ type DBParams struct {
 	Debug    bool   `json:"debug,omitempty"`
 }
 
-func OpenDatabase(params *DBParams, logger *zap.SugaredLogger) (*Service, error) {
+func OpenPostgresDatabase(params *PostgresParams, logger *zap.SugaredLogger) (*Service, error) {
 	host := params.Host
 	if host == "" {
 		host = "localhost"

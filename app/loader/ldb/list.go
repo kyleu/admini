@@ -1,7 +1,10 @@
-package lpostgres
+package ldb
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
+	"strings"
 
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/util"
@@ -12,14 +15,18 @@ import (
 
 var publicSchema = "public"
 
-func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, error) {
-	q := modelListQuery(m, params.Get(m.Key, m.Fields.Names(), l.logger))
-	rows, err := l.db.Query(q, nil)
+func List(db *database.Service, m *model.Model, params util.ParamSet, logger *zap.SugaredLogger) (*result.Result, error) {
+	p := params.Get(m.Key, m.Fields.Names(), logger)
+	if p != nil && p.Limit == 0 {
+		p.Limit = 100
+	}
+	q := modelListQuery(m, p)
+	rows, err := db.Query(q, nil)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.Key)
 	}
 
-	count, err := l.Count(m)
+	count, err := Count(db, m)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.Key)
 	}
@@ -33,12 +40,12 @@ func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, err
 	return ret, nil
 }
 
-func (l *Loader) Count(m *model.Model) (int, error) {
+func Count(db *database.Service, m *model.Model) (int, error) {
 	q := modelCountQuery(m)
 	c := struct {
 		C int `db:"c"`
 	}{}
-	if err := l.db.Get(&c, q, nil); err != nil {
+	if err := db.Get(&c, q, nil); err != nil {
 		return 0, errors.Wrapf(err, "error listing models for [%s]", m.Key)
 	}
 	return c.C, nil
@@ -59,4 +66,19 @@ func modelCountQuery(m *model.Model) string {
 	}
 
 	return database.SQLSelectSimple("count(*) as c", tbl, "")
+}
+
+func forTable(m *model.Model) (string, string) {
+	cols := make([]string, 0, len(m.Fields))
+	for _, f := range m.Fields {
+		cols = append(cols, fmt.Sprintf(`"%s"`, f.Key))
+	}
+	tbl := "\"" + m.Key + "\""
+	if len(m.Pkg) > 0 {
+		l := m.Pkg.Last()
+		if l != publicSchema {
+			tbl = "\"" + l + "\"." + tbl
+		}
+	}
+	return strings.Join(cols, ", "), tbl
 }

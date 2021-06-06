@@ -9,7 +9,7 @@ import (
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/queries"
+	"github.com/kyleu/admini/queries/qpostgres"
 )
 
 type tableResult struct {
@@ -39,7 +39,7 @@ func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 
 func loadTables(enums model.Models, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
 	var tables []*tableResult
-	err := db.Select(&tables, queries.ListTables(db.SchemaName), nil)
+	err := db.Select(&tables, qpostgres.ListTables(db.SchemaName), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list tables")
 	}

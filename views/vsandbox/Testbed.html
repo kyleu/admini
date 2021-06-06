@@ -4,7 +4,7 @@
 {% import "github.com/kyleu/admini/app/result" %}
 {% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/app/util" %}
-{% import "github.com/kyleu/admini/queries" %}
+{% import "github.com/kyleu/admini/queries/qpostgres" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vresult" %}
@@ -100,27 +100,27 @@
   {%- code data := ps.Data.(util.ValueMap) -%}
   <div class="card">
     <h3>Types</h3>
-    <pre>{%s queries.ListTypes("") %}</pre>
+    <pre>{%s qpostgres.ListTypes("") %}</pre>
     {%= vresult.Simple(data["types"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Tables</h3>
-    <pre>{%s queries.ListTables("") %}</pre>
+    <pre>{%s qpostgres.ListTables("") %}</pre>
     {%= vresult.Simple(data["tables"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Columns</h3>
-    <pre>{%s queries.ListColumns("") %}</pre>
+    <pre>{%s qpostgres.ListColumns("") %}</pre>
     {%= vresult.Simple(data["columns"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Indexes</h3>
-    <pre>{%s queries.ListIndexes("") %}</pre>
+    <pre>{%s qpostgres.ListIndexes("") %}</pre>
     {%= vresult.Simple(data["indexes"].(*result.Result), 3, as, ps) %}
   </div>
   <div class="card">
     <h3>Foreign Keys</h3>
-    <pre>{%s queries.ListForeignKeys("") %}</pre>
+    <pre>{%s qpostgres.ListForeignKeys("") %}</pre>
     {%= vresult.Simple(data["fks"].(*result.Result), 3, as, ps) %}
   </div>
 {%- endfunc -%}

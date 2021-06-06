@@ -1,17 +1,18 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/database" %}
+{% import "github.com/kyleu/admini/app/loader/lpostgres" %}
+{% import "github.com/kyleu/admini/app/loader/lsqlite" %}
+{% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/app/source" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type EditPostgres struct {
+{% code type Edit struct {
   layout.Basic
   Source *source.Source
-  Cfg *database.DBParams
 } %}
 
-{% func (p *EditPostgres) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Edit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right">
       <a class="link-confirm" data-message="Are you sure you want to delete source [{%s p.Source.Key %}]?" href="/source/{%s p.Source.Key %}/delete">Delete Source</a>
@@ -24,7 +25,12 @@
           {%= components.TableInput("title", "Title", p.Source.Title, 5) %}
           {%= components.TableIcons("icon", "Icon", p.Source.Icon, ps, 5) %}
           {%= components.TableInput("description", "Description", p.Source.Description, 5) %}
-          {%= databaseFields(p.Cfg, 5) %}
+          {%- switch p.Source.Type -%}
+          {%- case schema.OriginPostgres -%}
+          {%= postgresFields(p.Source.Config, 5) %}
+          {%- case schema.OriginSQLite -%}
+          {%= sqliteFields(p.Source.Config, 5) %}
+          {%- endswitch -%}
         </tbody>
       </table>
       <div class="spacer"></div>
@@ -34,12 +40,24 @@
   </div>
 {% endfunc %}
 
-{% func databaseFields(cfg *database.DBParams, indent int) %}{% stripspace %}
+{% func postgresFields(b []byte, indent int) %}{% stripspace %}
+  {% code
+    cfg, _ := lpostgres.LoadConfig(b)
+  %}
   {%= components.TableInput("host", "Host", cfg.Host, indent) %}
   {%= components.TableInputNumber("port", "Port", cfg.Port, indent) %}
   {%= components.TableInput("username", "Username", cfg.Username, indent) %}
   {%= components.TableInput("password", "Password", cfg.Password, indent) %}
   {%= components.TableInput("database", "Database", cfg.Database, indent) %}
+  {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}
+  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+{% endstripspace %}{% endfunc %}
+
+{% func sqliteFields(b []byte, indent int) %}{% stripspace %}
+  {% code
+    cfg, _ := lsqlite.LoadConfig(b)
+  %}
+  {%= components.TableInput("file", "File", cfg.File, indent) %}
   {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}
   {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}

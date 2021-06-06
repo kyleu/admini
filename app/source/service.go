@@ -43,7 +43,9 @@ func (s *Service) NewSource(key string, title string, icon string, description s
 	ret := &Source{Key: key, Title: title, Icon: icon, Description: description, Type: t}
 	switch t {
 	case schema.OriginPostgres:
-		ret.Config = util.ToJSONBytes(&database.DBParams{Host: "localhost", Port: 5432, Database: key}, true)
+		ret.Config = util.ToJSONBytes(&database.PostgresParams{Host: "localhost", Port: 5432, Database: key}, true)
+	case schema.OriginSQLite:
+		ret.Config = util.ToJSONBytes(&database.SQLiteParams{File: key + ".db"}, true)
 	default:
 		ret.Config = []byte("{}")
 	}

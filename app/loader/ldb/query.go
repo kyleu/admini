@@ -1,18 +1,20 @@
-package lpostgres
+package ldb
 
 import (
+	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/result"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
-func (l *Loader) Query(sql string) (*result.Result, error) {
-	rows, err := l.db.Query(sql, nil)
+func Query(db *database.Service, sql string, logger *zap.SugaredLogger) (*result.Result, error) {
+	rows, err := db.Query(sql, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "error running SQL")
 	}
 
 	var timing *result.Timing
-	ret, err := ParseResult("SQL result", 0, sql, timing, rows, l.logger)
+	ret, err := ParseResult("SQL result", 0, sql, timing, rows, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error constructing result for SQL")
 	}

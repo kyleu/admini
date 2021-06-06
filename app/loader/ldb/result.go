@@ -1,17 +1,13 @@
-package lpostgres
+package ldb
 
 import (
 	"database/sql"
-
-	"go.uber.org/zap"
-
-	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/field"
-
 	"github.com/jmoiron/sqlx"
+	"github.com/kyleu/admini/app/field"
 	"github.com/kyleu/admini/app/result"
 	"github.com/kyleu/admini/app/source/postgres"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
 func ParseResult(title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, logger *zap.SugaredLogger) (*result.Result, error) {

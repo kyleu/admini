@@ -1,6 +1,7 @@
 package sandbox
 
 import (
+	"github.com/kyleu/admini/app/loader/ldb"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
@@ -10,8 +11,7 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/loader/lpostgres"
-	"github.com/kyleu/admini/queries"
+	"github.com/kyleu/admini/queries/qpostgres"
 )
 
 var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "social", Run: onTestbed}
@@ -44,7 +44,7 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 				return errors.Wrapf(err, "can't query %s", key)
 			}
 			var res *result.Result
-			res, err = lpostgres.ParseResult(key, 0, q, nil, rows, logger)
+			res, err = ldb.ParseResult(key, 0, q, nil, rows, logger)
 			if err != nil {
 				return errors.Wrapf(err, "can't parse result for %s", key)
 			}
@@ -57,11 +57,11 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 			Key string
 			SQL string
 		}{
-			{Key: "types", SQL: queries.ListTypes(sch)},
-			{Key: "tables", SQL: queries.ListTables(sch)},
-			{Key: "columns", SQL: queries.ListColumns(sch)},
-			{Key: "indexes", SQL: queries.ListIndexes(sch)},
-			{Key: "fks", SQL: queries.ListForeignKeys(sch)},
+			{Key: "types", SQL: qpostgres.ListTypes(sch)},
+			{Key: "tables", SQL: qpostgres.ListTables(sch)},
+			{Key: "columns", SQL: qpostgres.ListColumns(sch)},
+			{Key: "indexes", SQL: qpostgres.ListIndexes(sch)},
+			{Key: "fks", SQL: qpostgres.ListForeignKeys(sch)},
 		}
 
 		for _, q := range x {

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/loader/lsqlite"
 
 	"github.com/valyala/fasthttp"
 
@@ -42,7 +43,8 @@ func Run() error {
 
 	f := filesystem.NewFileSystem("data", logger)
 	ls := loader.NewService()
-	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(logger, flags.Debug))
+	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(logger))
+	ls.Set(schema.OriginSQLite, lsqlite.NewLoader(logger))
 	ls.Set(schema.OriginMock, lmock.NewLoader(logger))
 
 	st, err := app.NewState(flags.Debug, r, f, ls, logger)

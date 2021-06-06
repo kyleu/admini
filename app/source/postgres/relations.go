@@ -9,7 +9,7 @@ import (
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/queries"
+	"github.com/kyleu/admini/queries/qpostgres"
 )
 
 type foreignKeyResult struct {
@@ -36,7 +36,7 @@ func (r foreignKeyResults) Sort() {
 
 func loadForeignKeys(models model.Models, db *database.Service) error {
 	keys := foreignKeyResults{}
-	err := db.Select(&keys, queries.ListForeignKeys(db.SchemaName), nil)
+	err := db.Select(&keys, qpostgres.ListForeignKeys(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list foreign keys")
 	}
