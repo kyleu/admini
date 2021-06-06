@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"github.com/jmoiron/sqlx"
 	"github.com/kyleu/admini/app/field"
+	"github.com/kyleu/admini/app/loader/lpostgres/postgres"
 	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/app/source/postgres"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )

@@ -2,16 +2,15 @@ package lsqlite
 
 import (
 	"github.com/kyleu/admini/app/loader/ldb"
+	"github.com/kyleu/admini/app/loader/lsqlite/sqlite"
 	"github.com/kyleu/admini/app/result"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
+	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/model"
-	"github.com/kyleu/admini/app/source/postgres"
-
-	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 )
@@ -40,7 +39,7 @@ func (l *Loader) Connection() (interface{}, error) {
 }
 
 func (l *Loader) Schema() (*schema.Schema, error) {
-	return postgres.LoadDatabaseSchema(l.db, l.logger)
+	return sqlite.LoadDatabaseSchema(l.db, l.logger)
 }
 
 func (l *Loader) Query(sql string) (*result.Result, error) {
