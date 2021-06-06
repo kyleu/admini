@@ -57,6 +57,15 @@ func (s *Service) reloadCache() error {
 	return nil
 }
 
+func (s *Service) ReloadProject(key string) error {
+	prj, err := s.LoadRequired(key, true)
+	if err != nil {
+		return errors.Wrapf(err, "unable to load project [%s]", key)
+	}
+	s.cache.Replace(prj)
+	return nil
+}
+
 func (s *Service) Load(key string, force bool) (*Project, error) {
 	if !force {
 		if s.cache == nil {
@@ -125,7 +134,7 @@ func (s *Service) Save(prj *Project, overwrite bool) error {
 	if err != nil {
 		return errors.Wrapf(err, "unable to save project [%s]", prj.Key)
 	}
-	err = s.reloadCache()
+	err = s.ReloadProject(prj.Key)
 	if err != nil {
 		return errors.Wrap(err, "unable to load sources")
 	}
@@ -135,7 +144,7 @@ func (s *Service) Save(prj *Project, overwrite bool) error {
 func (s *Service) Delete(key string) error {
 	p := filepath.Join(s.root, key)
 	if !s.files.Exists(p) {
-		return errors.Errorf("source [%s] doesn't exist", key)
+		return errors.Errorf("project [%s] doesn't exist", key)
 	}
 	err := s.files.RemoveRecursive(p)
 	if err != nil {
@@ -144,6 +153,22 @@ func (s *Service) Delete(key string) error {
 	err = s.reloadCache()
 	if err != nil {
 		return errors.Wrap(err, "unable to load project cache")
+	}
+	return nil
+}
+
+func (s *Service) DeleteAction(key string, act *action.Action) error {
+	p := filepath.Join(s.root, key)
+	if !s.files.Exists(p) {
+		return errors.Errorf("project [%s] doesn't exist", key)
+	}
+	err := action.Remove(filepath.Join(p, "actions"), act, s.files)
+	if err != nil {
+		return errors.Wrap(err, "unable to remove project action")
+	}
+	err = s.ReloadProject(key)
+	if err != nil {
+		return errors.Wrap(err, "unable to reload project cache")
 	}
 	return nil
 }

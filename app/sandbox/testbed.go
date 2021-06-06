@@ -14,7 +14,7 @@ import (
 	"github.com/kyleu/admini/queries"
 )
 
-var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "star", Run: onTestbed}
+var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "social", Run: onTestbed}
 
 func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := util.ValueMap{}

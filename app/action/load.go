@@ -58,3 +58,12 @@ func loadAction(dir string, key string, files filesystem.FileLoader, pkg util.Pk
 	ret.Children = x
 	return ret, nil
 }
+
+func Remove(root string, a *Action, files filesystem.FileLoader) error {
+	kp := filepath.Join(append([]string{root}, a.Path()...)...)
+	if !files.Exists(kp) {
+		return errors.Errorf("original action [%s] does not exist in package [%s::%s]", a.Key, root, a.Pkg.String())
+	}
+	return files.RemoveRecursive(kp)
+}
+

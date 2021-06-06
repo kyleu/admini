@@ -29,11 +29,11 @@ func (s Sandboxes) Get(key string) *Sandbox {
 
 var AllSandboxes = Sandboxes{codegen, reflection, testbed}
 
-var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Icon: "star", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
+var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Icon: "print", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	return "Work in progress...", nil
 }}
 
-var reflection = &Sandbox{Key: "reflection", Title: "Reflection", Icon: "star", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
+var reflection = &Sandbox{Key: "reflection", Title: "Reflection", Icon: "happy", Run: func(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	test := &database.DBParams{Host: "localhost", Port: 5432, Username: "user", Password: "pass", Database: "db", Schema: "schema", Debug: true}
 	ret, err := result.FromReflection("sandbox", test)
 	return ret, err

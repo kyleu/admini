@@ -89,8 +89,18 @@ func ActionSave(ctx *fasthttp.RequestCtx) {
 		}
 
 		newKey := frm.GetStringOpt("key")
+		shouldReload := false
 		if a.Key != newKey {
-			return "", errors.New("TODO: change action key")
+			na, _ := p.Actions.Get(a.Pkg.With(newKey))
+			if na != nil {
+				return "", errors.Errorf("Action with key [%s] already exists in package [%s]", newKey, a.Pkg.String())
+			}
+			err = as.Projects.DeleteAction(p.Key, a)
+			if err != nil {
+				return "", err
+			}
+			a.Key = newKey
+			shouldReload = true
 		}
 
 		a.Title = frm.GetStringOpt("title")
@@ -103,6 +113,13 @@ func ActionSave(ctx *fasthttp.RequestCtx) {
 		_, err = action.Save(actPath, a, currentApp.Files)
 		if err != nil {
 			return "", err
+		}
+
+		if shouldReload {
+			err = currentApp.Projects.ReloadProject(p.Key)
+			if err != nil {
+				return "", err
+			}
 		}
 
 		return flashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), ctx, ps)
