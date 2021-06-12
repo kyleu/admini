@@ -25,6 +25,10 @@ type Model struct {
 	pk            []string
 }
 
+func NewModel(pkg util.Pkg, key string) *Model {
+	return &Model{Key: key, Title: util.ToTitle(key), Pkg: pkg}
+}
+
 func (m *Model) String() string {
 	if len(m.Pkg) == 0 {
 		return m.Key

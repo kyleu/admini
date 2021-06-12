@@ -17,10 +17,7 @@ type tableResult struct {
 }
 
 func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
-	ret := &model.Model{
-		Key: t.Name,
-	}
-
+	ret := model.NewModel(nil, t.Name)
 	switch t.Type {
 	case "table":
 		ret.Type = model.TypeStruct

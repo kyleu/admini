@@ -29,6 +29,9 @@ type enumResult struct {
 }
 
 func (t *enumResult) ToModel() *model.Model {
+	ret := model.NewModel(util.Pkg{t.Schema}, t.Name)
+	ret.Type =  model.TypeEnum
+
 	els := strings.Split(t.Elements, "\n")
 	fields := make(field.Fields, 0, len(els))
 	for _, el := range els {
@@ -37,13 +40,8 @@ func (t *enumResult) ToModel() *model.Model {
 			Type: schematypes.NewEnumValue(),
 		})
 	}
+	ret.Fields = fields
 
-	ret := &model.Model{
-		Key:    t.Name,
-		Type:   model.TypeEnum,
-		Fields: fields,
-		Pkg:    util.Pkg{t.Schema},
-	}
 	return ret
 }
 

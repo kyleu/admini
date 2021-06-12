@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"sort"
 
 	"go.uber.org/zap"
 
@@ -49,7 +50,7 @@ func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredL
 		return errors.Wrap(err, "can't list columns")
 	}
 
-	pks := map[*model.Model]*model.Index{}
+	pks := map[*model.Model]map[int]string{}
 
 	for _, col := range cols {
 		mod := models.Get(nil, col.Table)
@@ -60,18 +61,27 @@ func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredL
 		if err != nil {
 			return errors.Wrap(err, "can't add field")
 		}
-		if col.PK == 1 {
-			curr := pks[mod]
-			if curr == nil {
-				curr = &model.Index{Key: mod.Key + "_pk", Unique: true, Primary: true}
+		if col.PK > 0 {
+			curr, ok := pks[mod]
+			if !ok {
+				curr = map[int]string{}
 				pks[mod] = curr
 			}
-			curr.Fields = append(curr.Fields, col.Name)
+			curr[col.PK] = col.Name
 		}
 	}
 
 	for k, v := range pks {
-		k.Indexes = append(k.Indexes, v)
+		idx := &model.Index{Key: k.Key + "_pk", Unique: true, Primary: true}
+		nums := make([]int, 0, len(v))
+		for num := range v {
+			nums = append(nums, num)
+		}
+		sort.Ints(nums)
+		for _, num := range nums {
+			idx.Fields = append(idx.Fields, v[num])
+		}
+		k.Indexes = append(k.Indexes, idx)
 	}
 
 	return nil
