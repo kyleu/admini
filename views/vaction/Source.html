@@ -21,7 +21,7 @@
     {%- if len(p.Pkg.ChildPackages) > 0 -%}
     <ul>
     {%- for _, pkg := range p.Pkg.ChildPackages -%}
-      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), pkg.Key)...) %}">{%s pkg.Key %}</a></li>
+      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), pkg.Key)...) %}">{%s pkg.Name() %}</a></li>
     {%- endfor -%}
     </ul>
     {%- endif -%}

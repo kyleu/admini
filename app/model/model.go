@@ -44,7 +44,7 @@ func (m *Model) Name() string {
 }
 
 func (m *Model) Description() string {
-	return fmt.Sprintf("%s model [%s]", m.Type.String(), m.Name())
+	return fmt.Sprintf("%s model [%s]", m.Type.String(), m.Key)
 }
 
 func (m *Model) Path() util.Pkg {

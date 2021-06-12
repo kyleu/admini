@@ -33,7 +33,7 @@ func (s *Service) LoadSourceProject(sourceKey string) (*View, error) {
 	if len(mp.ChildPackages) > 0 {
 		for _, p := range mp.ChildPackages {
 			pCfg := util.ValueMapFor(action.TypeSource.Key, src.Key, action.TypePackage.Key, p.Key)
-			acts = append(acts, &action.Action{Key: p.Key, Type: action.TypePackage, Title: p.Key, Config: pCfg})
+			acts = append(acts, &action.Action{Key: p.Key, Type: action.TypePackage, Title: p.Name(), Config: pCfg})
 		}
 		acts = append(acts, &action.Action{Key: action.TypeSeparator.Key, Type: action.TypeSeparator})
 	}

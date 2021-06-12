@@ -12,9 +12,9 @@ type Type struct {
 }
 
 var (
-	TypeEnum         = Type{Key: "enum", Title: "Enum", Plural: "Enums", Icon: "world"}
-	TypeStruct       = Type{Key: "struct", Title: "Struct", Plural: "Structs", Icon: "world"}
-	TypeInterface    = Type{Key: "interface", Title: "Interface", Plural: "Interfaces", Icon: "world"}
+	TypeEnum         = Type{Key: "enum", Title: "Enum", Plural: "Enums", Icon: "enum"}
+	TypeStruct       = Type{Key: "struct", Title: "Struct", Plural: "Structs", Icon: "struct"}
+	TypeInterface    = Type{Key: "interface", Title: "Interface", Plural: "Interfaces", Icon: "list"}
 	TypeUnion        = Type{Key: "union", Title: "Union", Plural: "Unions", Icon: "world"}
 	TypeIntersection = Type{Key: "intersection", Title: "Intersection", Plural: "Intersections", Icon: "world"}
 	TypeUnknown      = Type{Key: "unknown", Title: "Unknown", Plural: "Unknowns", Icon: "world"}

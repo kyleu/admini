@@ -53,7 +53,7 @@ func sourceMenuAddPackage(ret menu.Items, mp *model.Package, path string) menu.I
 	}
 	i := &menu.Item{
 		Key:         mp.Key,
-		Title:       mp.Key,
+		Title:       mp.Name(),
 		Icon:        "world",
 		Description: desc,
 		Route:       path,

@@ -6,9 +6,17 @@ import (
 
 type Package struct {
 	Key           string   `json:"key"`
+	Title         string   `json:"title,omitempty"`
 	Pkg           util.Pkg `json:"pkg"`
 	ChildModels   Models   `json:"childModels,omitempty"`
 	ChildPackages Packages `json:"childPackages,omitempty"`
+}
+
+func (p *Package) Name() string {
+	if p.Title == "" {
+		return p.Key
+	}
+	return p.Title
 }
 
 func (p *Package) Path() util.Pkg {
@@ -30,7 +38,7 @@ func (p *Package) GetPkg(key string, createIfMissing bool) *Package {
 		if pkgs[0] == "_root" {
 			pkgs = pkgs[1:]
 		}
-		x := &Package{Key: key, Pkg: pkgs}
+		x := &Package{Key: key, Title: util.ToTitle(key), Pkg: pkgs}
 		p.ChildPackages = append(p.ChildPackages, x)
 		return x
 	}
@@ -72,7 +80,7 @@ func (p *Package) Get(paths []string) (interface{}, []string) {
 type Packages []*Package
 
 func ToModelPackage(models Models) *Package {
-	ret := &Package{Key: "_root"}
+	ret := &Package{Key: "_root", Title: "Project Root"}
 	for _, m := range models {
 		ret.Add(m.Pkg, m)
 	}
