@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"strings"
+	"unicode"
 
 	"github.com/iancoleman/strcase"
 )
@@ -45,6 +46,22 @@ var acronyms = []string{"Id"}
 
 func ToCamel(s string) string {
 	return acr(strcase.ToCamel(s))
+}
+
+func ToTitle(s string) string {
+	ret := strings.Builder{}
+	runes := []rune(ToCamel(s))
+	for idx, c := range runes {
+		if idx > 0 && idx < len(runes) && unicode.IsUpper(c) {
+			if !unicode.IsUpper(runes[idx+1]) {
+				ret.WriteRune(' ')
+			} else if !unicode.IsUpper(runes[idx-1]) {
+				ret.WriteRune(' ')
+			}
+		}
+		ret.WriteRune(c)
+	}
+	return ret.String()
 }
 
 func ToLowerCamel(s string) string {

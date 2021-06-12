@@ -6,8 +6,4 @@ set -euo pipefail
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $dir/..
 
-t () {
-  go test github.com/kyleu/admini/$1
-}
-
-t "app"
+go test ./app/...
