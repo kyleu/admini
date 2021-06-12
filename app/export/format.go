@@ -7,6 +7,7 @@ import (
 )
 
 const LangGo = "go"
+const LangJSON = "json"
 
 type Format struct {
 	Language string `json:"language"`
@@ -30,6 +31,7 @@ func (f Format) Get(s string) string {
 type Formats []*Format
 
 var AllFormats = Formats{
+	{Language: LangJSON, Flavor: util.AppKey},
 	{Language: LangGo, Flavor: util.AppKey},
 	{Language: LangGo, Flavor: "npn"},
 	{Language: LangGo, Flavor: "fevo"},

@@ -1,7 +1,6 @@
 package sqlite
 
 import (
-	"github.com/kyleu/admini/app/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
@@ -13,17 +12,7 @@ import (
 func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {
 	metadata := loadMetadata(db)
 
-	scalars, err := loadScalars()
-	if err != nil {
-		return nil, errors.Wrap(err, "can't load scalars")
-	}
-
-	enums, err := loadEnums(db, logger)
-	if err != nil {
-		return nil, errors.Wrap(err, "can't load enums")
-	}
-
-	tables, err := loadTables(enums, db, logger)
+	tables, err := loadTables(db, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load tables")
 	}
@@ -43,15 +32,11 @@ func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schem
 		return nil, errors.Wrap(err, "can't load foreign keys")
 	}
 
-	models := make(model.Models, 0, len(tables)+len(enums))
-	models = append(models, enums...)
-	models = append(models, tables...)
-	models.Sort()
+	tables.Sort()
 
 	ret := &schema.Schema{
 		Paths:    []string{"postgres:" + db.DatabaseName},
-		Scalars:  scalars,
-		Models:   models,
+		Models:   tables,
 		Metadata: metadata,
 	}
 

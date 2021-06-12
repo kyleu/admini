@@ -1,6 +1,7 @@
 package sqlite
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/pkg/errors"
@@ -8,29 +9,29 @@ import (
 	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries/qsqlite"
 )
 
 type foreignKeyResult struct {
-	Name         string `db:"constraint_name"`
-	Ordinal      int    `db:"ordinal"`
-	Schema       string `db:"schema_name"`
-	Table        string `db:"table_name"`
-	Field        string `db:"column_name"`
-	TargetSchema string `db:"foreign_schema_name"`
-	TargetTable  string `db:"foreign_table_name"`
-	TargetField  string `db:"foreign_column_name"`
+	Ordinal      int    `db:"idx"`
+	Table        string `db:"src"`
+	Field        string `db:"src_col"`
+	TargetTable  string `db:"tgt"`
+	TargetField  string `db:"tgt_col"`
+}
+
+func (r *foreignKeyResult) String() string {
+	return fmt.Sprintf("rel-%s-%s", r.Table, r.TargetTable)
 }
 
 type foreignKeyResults []*foreignKeyResult
 
 func (r foreignKeyResults) Sort() {
 	sort.Slice(r, func(i int, j int) bool {
-		if r[i].Name == r[j].Name {
+		if r[i].Table == r[j].Table {
 			return r[i].Ordinal < r[j].Ordinal
 		}
-		return r[i].Name < r[j].Name
+		return r[i].Table < r[j].Table
 	})
 }
 
@@ -42,17 +43,16 @@ func loadForeignKeys(models model.Models, db *database.Service) error {
 	}
 
 	for _, k := range keys {
-		mod := models.Get(util.Pkg{k.Schema}, k.Table)
+		mod := models.Get(nil, k.Table)
 		if mod == nil {
 			return errors.Errorf("no model [%s] found among [%d] candidates", k.Table, len(models))
 		}
 
-		curr := mod.Relationships.Get(k.Name)
+		curr := mod.Relationships.Get(k.String())
 		if curr == nil {
 			curr = &model.Relationship{
-				Key:          k.Name,
+				Key:          k.String(),
 				SourceFields: []string{},
-				TargetPkg:    util.Pkg{k.TargetSchema},
 				TargetModel:  k.TargetTable,
 				TargetFields: []string{},
 			}

@@ -82,3 +82,22 @@ func (s *Schema) ModelsByPackage() *model.Package {
 	}
 	return s.modelsByPackage
 }
+
+func (s *Schema) CreateReferences() error {
+	for _, src := range s.Models {
+		if src.References != nil {
+			return errors.New("double call of CreateReferences")
+		}
+		for _, tgt := range s.Models {
+			for _, rel := range tgt.Relationships {
+				if rel.TargetPkg.Equals(src.Pkg) && rel.TargetModel == src.Key {
+					err := src.AddReference(model.ReferenceFromRelation(rel, tgt))
+					if err != nil {
+						return errors.Wrapf(err, "unable to add reference to [%s]", src.String())
+					}
+				}
+			}
+		}
+	}
+	return nil
+}

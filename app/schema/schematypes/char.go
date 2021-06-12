@@ -22,6 +22,10 @@ func (x *Char) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *Char) Default(string) interface{} {
+	return 'x'
+}
+
 func NewChar() *Wrapped {
 	return Wrap(&Char{})
 }

@@ -28,6 +28,10 @@ func (x *Range) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), v)
 }
 
+func (x *Range) Default(string) interface{} {
+	return ""
+}
+
 func NewRange(t *Wrapped) *Wrapped {
 	return Wrap(&Range{T: t})
 }

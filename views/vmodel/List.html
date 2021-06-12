@@ -1,0 +1,40 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/action" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vaction" %}
+{% import "github.com/kyleu/admini/views/vresult" %}
+
+{% code type List struct {
+  layout.Basic
+  Req *cutil.WorkspaceRequest
+  Act *action.Action
+  Model *model.Model
+  ParamSet util.ParamSet
+  Result *result.Result
+} %}
+
+{% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
+    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
+    <em>Model [{%s p.Model.Name() %}] ({%s p.Model.Type.String() %})</em>
+    <a href="#modal-model"><button type="button">Model</button></a>
+    <a href="#modal-result"><button type="button">Result</button></a>
+    <a href="{%s p.Req.RouteAct(p.Act, 0, `new`) %}"><button type="button">Create New</button></a>
+    <a href="{%s p.Req.RouteAct(p.Act, 0, `export`) %}"><button type="button">Export</button></a>
+  </div>
+
+  <div class="card">
+    {%= vresult.WSTable(p.Req, p.Act, p.Result, p.Model, 2, false, p.ParamSet.Get(p.Model.Key, p.Model.Fields.Names(), ps.Logger)) %}
+  </div>
+
+  {%= components.JSONModal("model", "Model JSON", p.Model, 1) %}
+  {%= components.JSONModal("result", "Result", p.Result, 1) %}
+  {%-= vaction.ResultChildren(p.Req, p.Act, 1) -%}
+  {%-= vaction.ResultDebug(p.Req, p.Act) -%}
+{% endfunc %}

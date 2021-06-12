@@ -30,6 +30,11 @@ func (s *Service) LoadSchema(key string) (*schema.Schema, error) {
 			return nil, err
 		}
 	}
+	err := ret.CreateReferences()
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to calculate references")
+	}
+
 	s.schemaCache[key] = ret
 	return ret, nil
 }
@@ -67,6 +72,11 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 	err = s.SaveSchema(key, sch)
 	if err != nil {
 		return nil, 0, errors.Wrapf(err, "can't save source with key [%s]", key)
+	}
+
+	err = sch.CreateReferences()
+	if err != nil {
+		return nil, 0, err
 	}
 
 	return sch, elapsedMillis, err

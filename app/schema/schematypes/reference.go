@@ -34,6 +34,10 @@ func (x *Reference) Path() []string {
 	return append(ret, x.K)
 }
 
+func (x *Reference) Default(string) interface{} {
+	return ""
+}
+
 func NewReference() *Wrapped {
 	return Wrap(&Reference{})
 }

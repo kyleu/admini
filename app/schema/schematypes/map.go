@@ -29,6 +29,10 @@ func (x *Map) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *Map) Default(string) interface{} {
+	return ""
+}
+
 func NewMap(k *Wrapped, v *Wrapped) *Wrapped {
 	return Wrap(&Map{K: k, V: v})
 }

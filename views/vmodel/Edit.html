@@ -7,7 +7,7 @@
 {% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ModelEdit struct {
+{% code type Edit struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
@@ -16,7 +16,7 @@
   Result []interface{}
 } %}
 
-{% func (p *ModelEdit) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *Edit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     {% code
       rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(ps.Logger), p.Result)
@@ -27,7 +27,7 @@
     <h3>Edit <a href="TODO">{%s strings.Join(rowPK, "/") %}</a></h3>
     <em><a href="TODO">{%s p.Model.Name() %}</a></em>
     <div class="spacer"></div>
-    <form class="editor" action="TODO" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor" action="{%s p.Req.RouteAct(p.Act, 0) %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%- for idx, f := range p.Model.Fields -%}

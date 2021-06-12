@@ -2,6 +2,7 @@ package field
 
 import (
 	"github.com/kyleu/admini/app/schema/schematypes"
+	"time"
 )
 
 type Field struct {
@@ -25,6 +26,17 @@ func (f *Field) Description() string {
 
 func (f *Field) Nullable() bool {
 	return f.Type.IsOption()
+}
+
+func (f *Field) DefaultClean() interface{} {
+	switch f.Default {
+	case nil:
+		return f.Type.Default(f.Key)
+	case "now()":
+		return time.Now()
+	default:
+		return f.Default
+	}
 }
 
 type Fields []*Field

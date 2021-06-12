@@ -22,6 +22,10 @@ func (x *XML) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *XML) Default(string) interface{} {
+	return "<todo />"
+}
+
 func NewXML() *Wrapped {
 	return Wrap(&XML{})
 }

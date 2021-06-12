@@ -1,5 +1,7 @@
 package schematypes
 
+import "time"
+
 const KeyTimestamp = "timestamp"
 
 type Timestamp struct{}
@@ -20,6 +22,10 @@ func (x *Timestamp) Sortable() bool {
 
 func (x *Timestamp) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
+}
+
+func (x *Timestamp) Default(string) interface{} {
+	return time.Now()
 }
 
 func NewTimestamp() *Wrapped {

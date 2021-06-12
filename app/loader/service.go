@@ -5,19 +5,21 @@ import (
 	"github.com/pkg/errors"
 )
 
+type loaderFn = func(key string, cfg []byte) (Loader, error)
+
 type Service struct {
-	loaders map[schema.Origin]func(key string, cfg []byte) (Loader, error)
+	loaders map[schema.Origin]loaderFn
 	cache   map[string]Loader
 }
 
 func NewService() *Service {
 	return &Service{
-		loaders: map[schema.Origin]func(key string, cfg []byte) (Loader, error){},
+		loaders: map[schema.Origin]loaderFn{},
 		cache:   map[string]Loader{},
 	}
 }
 
-func (s *Service) Set(o schema.Origin, f func(key string, cfg []byte) (Loader, error)) {
+func (s *Service) Set(o schema.Origin, f loaderFn) {
 	s.loaders[o] = f
 }
 

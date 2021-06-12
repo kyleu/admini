@@ -3,6 +3,7 @@ package sandbox
 import (
 	"github.com/kyleu/admini/app/loader/ldb"
 	"github.com/kyleu/admini/app/util"
+	"github.com/kyleu/admini/queries/qsqlite"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
@@ -11,14 +12,13 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/queries/qpostgres"
 )
 
 var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "social", Run: onTestbed}
 
 func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := util.ValueMap{}
-	sourceKey := "rituals.dev"
+	sourceKey := "chinook"
 	source, _ := st.Sources.Load(sourceKey, true)
 
 	if source != nil {
@@ -57,11 +57,10 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 			Key string
 			SQL string
 		}{
-			{Key: "types", SQL: qpostgres.ListTypes(sch)},
-			{Key: "tables", SQL: qpostgres.ListTables(sch)},
-			{Key: "columns", SQL: qpostgres.ListColumns(sch)},
-			{Key: "indexes", SQL: qpostgres.ListIndexes(sch)},
-			{Key: "fks", SQL: qpostgres.ListForeignKeys(sch)},
+			{Key: "tables", SQL: qsqlite.ListTables(sch)},
+			{Key: "columns", SQL: qsqlite.ListColumns(sch)},
+			{Key: "indexes", SQL: qsqlite.ListIndexes(sch)},
+			{Key: "fks", SQL: qsqlite.ListForeignKeys(sch)},
 		}
 
 		for _, q := range x {

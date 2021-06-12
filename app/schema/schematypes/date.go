@@ -1,5 +1,7 @@
 package schematypes
 
+import "time"
+
 const KeyDate = "date"
 
 type Date struct{}
@@ -20,6 +22,10 @@ func (x *Date) Sortable() bool {
 
 func (x *Date) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
+}
+
+func (x *Date) Default(string) interface{} {
+	return time.Now()
 }
 
 func NewDate() *Wrapped {

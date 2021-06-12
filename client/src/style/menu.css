@@ -1,10 +1,10 @@
 .menu-container {
   position:absolute;
-  top: 48px;
+  top: var(--nav-height);
   left: 0;
   width: 256px;
   min-width: 256px;
-  height: calc(100% - 48px);
+  height: calc(100% - var(--nav-height));
   overflow: auto;
   color: var(--color-menu-foreground);
   background-color: var(--color-menu-background);

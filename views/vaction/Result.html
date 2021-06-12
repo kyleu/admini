@@ -3,7 +3,7 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func resultChildren(req *cutil.WorkspaceRequest, act *action.Action, indent int) %}{% stripspace %}
+{% func ResultChildren(req *cutil.WorkspaceRequest, act *action.Action, indent int) %}{% stripspace %}
   {%- if len(act.Children) > 0 -%}
   <div class="card">
     {%= vutil.Indent(true, indent + 1) %}
@@ -21,6 +21,6 @@
   {%- endif -%}
 {% endstripspace %}{% endfunc %}
 
-{% func resultDebug(req *cutil.WorkspaceRequest, act *action.Action) %}
+{% func ResultDebug(req *cutil.WorkspaceRequest, act *action.Action) %}
   {%= components.JSONModal("action", "Action", act, 1) %}
 {% endfunc %}

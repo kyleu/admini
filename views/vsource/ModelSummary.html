@@ -114,6 +114,38 @@
             {% endif %}
           </div>
         </li>
+        <li>
+          <input id="{%s model.String() %}-references" type="checkbox" hidden />
+          <label for="{%s model.String() %}-references">{%= components.ExpandCollapse(3, ps) %} {%s util.Plural(len(model.References), `reference`, `references`) %}</label>
+          <div class="bd">
+            {% if len(model.References) == 0 %}
+            <div>No references in {%s model.Type.String() %}</div>
+            {% else %}
+            <table>
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Fields</th>
+                  <th>Source Package</th>
+                  <th>Source Model</th>
+                  <th>Source Fields</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for _, ref := range model.References %}
+                <tr>
+                  <td>{%= fieldview.String(ref.Key) %}</td>
+                  <td>{%= fieldview.ArrayString(ref.TargetFields) %}</td>
+                  <td>{%= fieldview.Package(ref.SourcePkg) %}</td>
+                  <td>{%= fieldview.String(ref.SourceModel) %}</td>
+                  <td>{%= fieldview.ArrayString(ref.SourceFields) %}</td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+        </li>
       </ul>
     </div>
   </li>

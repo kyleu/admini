@@ -14,6 +14,14 @@ func ParseForm(ctx *fasthttp.RequestCtx) (util.ValueMap, error) {
 	return parseHTTPForm(ctx)
 }
 
+func ParseFormAsChanges(ctx *fasthttp.RequestCtx) (util.ValueMap, error) {
+	ret, err := ParseForm(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to parse form")
+	}
+	return ret.AsChanges()
+}
+
 func parseJSONForm(ctx *fasthttp.RequestCtx) (util.ValueMap, error) {
 	ret := util.ValueMap{}
 	err := util.FromJSON(ctx.Request.Body(), &ret)

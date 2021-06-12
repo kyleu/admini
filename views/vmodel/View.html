@@ -8,7 +8,7 @@
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
-{% code type ModelView struct {
+{% code type View struct {
   layout.Basic
   Req *cutil.WorkspaceRequest
   Act *action.Action
@@ -17,7 +17,7 @@
   Result []interface{}
 } %}
 
-{% func (p *ModelView) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *View) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     {%- code
       rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(ps.Logger), p.Result)
@@ -34,7 +34,6 @@
         {%- for idx, f := range p.Model.Fields -%}
         <tr>
           <th class="shrink">{%s f.Key %}</th>
-          {%- if true -%}
           <td class="overflow">
             {%= fieldview.Any(p.Result[idx], f.Type) %}
             {%- for _, rel := range p.Model.ApplicableRelations(f.Key) -%}
@@ -58,13 +57,26 @@
             {%- endfor -%}
             {%- endfor -%}
           </td>
-          {%- else -%}
-          <td class="overflow">{%= fieldview.Any(p.Result[idx], f.Type) %}</td>
-          {%- endif -%}
         </tr>
         {%- endfor -%}
       </tbody>
     </table>
   </div>
+  {%- if len(p.Model.References) > 0 -%}
+  <div class="card">
+    <h3>References</h3>
+    <ul class="accordion">
+      {%- for _, r := range p.Model.References -%}
+      <li>
+        <input id="{%s r.Key %}-count" type="checkbox" hidden />
+        <label for="{%s r.Key %}-count">{%= components.ExpandCollapse(3, ps) %} {%s r.String() %}</label>
+        <div class="bd">
+          <div>TODO</div>
+        </div>
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%- endif -%}
 {% endfunc %}
 

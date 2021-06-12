@@ -1,5 +1,5 @@
 #navbar {
-  height: 48px;
+  height: var(--nav-height);
   display: flex;
   color: var(--color-nav-foreground);
   background-color: var(--color-nav-background);
@@ -92,7 +92,7 @@ input[type=checkbox]:checked ~ .menu-toggle > .diagonal.part-2 {
 
 #navbar .breadcrumbs {
   height: 40px;
-  line-height: 48px;
+  line-height: var(--nav-height);
   font-size: 24px;
   flex-grow: 1;
   overflow: hidden;

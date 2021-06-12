@@ -27,3 +27,7 @@ func (x *Option) From(v interface{}) interface{} {
 func NewOption(t *Wrapped) *Wrapped {
 	return Wrap(&Option{T: t})
 }
+
+func (x *Option) Default(string) interface{} {
+	return "∅"
+}

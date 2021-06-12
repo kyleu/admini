@@ -20,6 +20,7 @@ type Model struct {
 	Fields        field.Fields  `json:"fields,omitempty"`
 	Indexes       Indexes       `json:"indexes,omitempty"`
 	Relationships Relationships `json:"relationships,omitempty"`
+	References    References    `json:"-"`
 	Metadata      *Metadata     `json:"metadata,omitempty"`
 	pk            []string
 }
@@ -97,5 +98,16 @@ func (m *Model) AddRelationship(r *Relationship) error {
 		return errors.Errorf("relation [%s] already exists", r.Key)
 	}
 	m.Relationships = append(m.Relationships, r)
+	return nil
+}
+
+func (m *Model) AddReference(r *Reference) error {
+	if r == nil {
+		return errors.New("nil reference")
+	}
+	if m.References.Get(r.Key) != nil {
+		return errors.Errorf("reference [%s] already exists", r.Key)
+	}
+	m.References = append(m.References, r)
 	return nil
 }

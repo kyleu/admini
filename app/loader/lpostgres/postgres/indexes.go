@@ -43,7 +43,7 @@ func loadIndexes(models model.Models, db *database.Service) error {
 		}
 		err = mod.AddIndex(idx.AsIndex())
 		if err != nil {
-			return errors.Wrap(err, "can't add field")
+			return errors.Wrap(err, "can't add index")
 		}
 	}
 	return nil

@@ -13,6 +13,7 @@ type FileType struct {
 
 var (
 	FileTypeGo      = FileType{Key: "go", Title: "Go", Icon: "file", Description: "Golang source code"}
+	FileTypeJSON    = FileType{Key: "json", Title: "JSON", Icon: "file", Description: "JavaScript object notation"}
 	FileTypeText    = FileType{Key: "text", Title: "Text", Icon: "file", Description: "Plain text"}
 	FileTypeUnknown = FileType{Key: "unknown", Title: "unknown", Icon: "file", Description: "Unknown file type"}
 )

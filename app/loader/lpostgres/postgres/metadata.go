@@ -7,7 +7,7 @@ import (
 
 func loadMetadata(db *database.Service) *schema.Metadata {
 	return &schema.Metadata{
-		Description: "asdfsdf",
+		Description: "",
 		Comments:    nil,
 		Origin:      nil,
 		Source:      "postgres:" + db.DatabaseName,

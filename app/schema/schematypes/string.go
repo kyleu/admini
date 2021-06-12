@@ -38,6 +38,10 @@ func (x *String) From(v interface{}) interface{} {
 	}
 }
 
+func (x *String) Default(string) interface{} {
+	return ""
+}
+
 func NewString() *Wrapped {
 	return Wrap(&String{})
 }

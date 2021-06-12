@@ -22,6 +22,10 @@ func (x *JSON) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *JSON) Default(string) interface{} {
+	return "{}"
+}
+
 func NewJSON() *Wrapped {
 	return Wrap(&JSON{})
 }

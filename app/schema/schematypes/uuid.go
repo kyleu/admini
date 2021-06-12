@@ -22,6 +22,10 @@ func (x *UUID) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *UUID) Default(string) interface{} {
+	return "00000000-0000-0000-0000-000000000000"
+}
+
 func NewUUID() *Wrapped {
 	return Wrap(&UUID{})
 }

@@ -34,16 +34,12 @@ func NewLoader(logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.L
 
 var _ loader.Loader = (*Loader)(nil)
 
-func (l *Loader) Connection() (interface{}, error) {
-	return l.db, nil
-}
-
 func (l *Loader) Schema() (*schema.Schema, error) {
 	return sqlite.LoadDatabaseSchema(l.db, l.logger)
 }
 
-func (l *Loader) Query(sql string) (*result.Result, error) {
-	return ldb.Query(l.db, sql, l.logger)
+func (l *Loader) Connection() (interface{}, error) {
+	return l.db, nil
 }
 
 func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, error) {
@@ -56,6 +52,18 @@ func (l *Loader) Count(m *model.Model) (int, error) {
 
 func (l *Loader) Get(m *model.Model, ids []interface{}) (*result.Result, error) {
 	return ldb.Get(l.db, m, ids, l.logger)
+}
+
+func (l *Loader) Query(sql string) (*result.Result, error) {
+	return ldb.Query(l.db, sql, l.logger)
+}
+
+func (l *Loader) Add(*model.Model, util.ValueMap) ([]interface{}, error) {
+	return nil, errors.New("TODO: add not implemented")
+}
+
+func (l *Loader) Save(*model.Model, util.ValueMap) ([]interface{}, error) {
+	return nil, errors.New("TODO: save not implemented")
 }
 
 func (l *Loader) Default(m *model.Model) ([]interface{}, error) {

@@ -28,6 +28,10 @@ func (x *Set) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *Set) Default(string) interface{} {
+	return "[]"
+}
+
 func NewSet() *Wrapped {
 	return Wrap(&Set{})
 }

@@ -32,6 +32,10 @@ func (x *Bool) From(v interface{}) interface{} {
 	}
 }
 
+func (x *Bool) Default(string) interface{} {
+	return false
+}
+
 func NewBool() *Wrapped {
 	return Wrap(&Bool{})
 }

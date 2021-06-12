@@ -50,6 +50,10 @@ func (x *Method) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *Method) Default(key string) interface{} {
+	return key + "()"
+}
+
 func NewMethod(ret *Wrapped) *Wrapped {
 	return Wrap(&Method{Ret: ret})
 }

@@ -29,6 +29,10 @@ func (x *Error) From(v interface{}) interface{} {
 	}
 }
 
+func (x *Error) Default(string) interface{} {
+	return KeyError
+}
+
 func NewError(msg string) *Wrapped {
 	return Wrap(&Error{Message: msg})
 }

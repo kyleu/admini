@@ -26,3 +26,7 @@ func (x *Nil) From(v interface{}) interface{} {
 		return invalidInput(x.Key(), v)
 	}
 }
+
+func (x *Nil) Default(string) interface{} {
+	return "<nil>"
+}

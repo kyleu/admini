@@ -41,8 +41,10 @@ func BuildRouter() *router.Router {
 
 	r.GET("/x/{key}", w(WorkspaceProject))
 	r.GET("/x/{key}/{_:*}", w(WorkspaceProject))
+	r.POST("/x/{key}/{_:*}", w(WorkspaceProject))
 	r.GET("/s/{key}", w(WorkspaceSource))
 	r.GET("/s/{key}/{_:*}", w(WorkspaceSource))
+	r.POST("/s/{key}/{_:*}", w(WorkspaceSource))
 
 	r.GET("/sandbox", w(SandboxList))
 	r.GET("/sandbox/{key}", w(SandboxRun))

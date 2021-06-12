@@ -1,34 +1,19 @@
 -- {% func ListColumns(schema string) %}
 select
-  c.table_schema,
-  c.table_name,
-  c.column_name,
-  c.ordinal_position,
-  c.column_default,
-  c.is_nullable,
-  c.data_type,
-  e.data_type as array_type,
-  c.character_maximum_length,
-  c.character_octet_length,
-  c.numeric_precision,
-  c.numeric_precision_radix,
-  c.numeric_scale,
-  c.datetime_precision,
-  c.interval_type,
-  c.domain_schema,
-  c.domain_name,
-  c.udt_schema,
-  c.udt_name,
-  c.dtd_identifier,
-  c.is_updatable
+  m.name as "xn",
+  p.cid as "i",
+  p.name as "n",
+  p.type as "t",
+  p.pk as "pk",
+  p.dflt_value as "dv",
+  p."notnull" as "nn"
 from
-  information_schema.columns c
-  left join information_schema.element_types e on (
-    (c.table_catalog, c.table_schema, c.table_name, 'TABLE', c.dtd_identifier) = (e.object_catalog, e.object_schema, e.object_name, e.object_type, e.collection_type_identifier)
-  )
+  sqlite_master m
+  left outer join pragma_table_info(m.name) p on m.name <> p.name
 where
-  c.table_schema not in ('information_schema', 'pg_catalog')
-  {% if schema != "" %} and c.table_schema = '{%s schema %}'{% endif %}
+  m.type in ('table', 'view')
 order by
-  c.table_schema, c.table_name, c.ordinal_position;
+  xn, i
+;
+
 -- {% endfunc %}

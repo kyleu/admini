@@ -24,6 +24,10 @@ func (x *Unknown) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), v)
 }
 
+func (x *Unknown) Default(string) interface{} {
+	return x.X
+}
+
 func NewUnknown(x string) *Wrapped {
 	return Wrap(&Unknown{X: x})
 }

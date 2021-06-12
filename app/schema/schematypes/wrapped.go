@@ -39,6 +39,10 @@ func (x *Wrapped) From(v interface{}) interface{} {
 	return x.T.From(v)
 }
 
+func (x *Wrapped) Default(key string) interface{} {
+	return x.T.Default(key)
+}
+
 type wrappedUnmarshal struct {
 	K string          `json:"k"`
 	T json.RawMessage `json:"t,omitempty"`

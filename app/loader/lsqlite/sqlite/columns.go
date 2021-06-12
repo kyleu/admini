@@ -11,36 +11,21 @@ import (
 	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries/qsqlite"
 )
 
 type columnResult struct {
-	Schema                string         `db:"table_schema"`
-	Table                 string         `db:"table_name"`
-	Name                  string         `db:"column_name"`
-	Ordinal               int32          `db:"ordinal_position"`
-	Default               sql.NullString `db:"column_default"`
-	Nullable              string         `db:"is_nullable"`
-	DataType              string         `db:"data_type"`
-	ArrayType             sql.NullString `db:"array_type"`
-	CharLength            sql.NullInt32  `db:"character_maximum_length"`
-	OctetLength           sql.NullInt32  `db:"character_octet_length"`
-	NumericPrecision      sql.NullInt32  `db:"numeric_precision"`
-	NumericPrecisionRadix sql.NullInt32  `db:"numeric_precision_radix"`
-	NumericScale          sql.NullInt32  `db:"numeric_scale"`
-	DatetimePrecision     sql.NullInt32  `db:"datetime_precision"`
-	IntervalType          sql.NullInt32  `db:"interval_type"`
-	DomainSchema          sql.NullString `db:"domain_schema"`
-	DomainName            sql.NullString `db:"domain_name"`
-	UDTSchema             string         `db:"udt_schema"`
-	UDTName               string         `db:"udt_name"`
-	DTDIdentifier         string         `db:"dtd_identifier"`
-	Updatable             string         `db:"is_updatable"`
+	Table                 string         `db:"xn"`
+	Ordinal               int32          `db:"i"`
+	Name                  string         `db:"n"`
+	DataType              string         `db:"t"`
+	PK                    int            `db:"pk"`
+	Default               sql.NullString `db:"dv"`
+	NotNull               int            `db:"nn"`
 }
 
 func (cr *columnResult) IsNullable() bool {
-	return cr.Nullable == pgYes
+	return cr.NotNull == 0
 }
 
 func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger) *field.Field {
@@ -50,9 +35,9 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 	}
 	return &field.Field{
 		Key:      cr.Name,
-		Type:     typeFor(cr.UDTName, cr, logger),
+		Type:     typeFor(cr.DataType, cr, logger),
 		Default:  d,
-		ReadOnly: readOnlyOverride || (cr.Updatable == pgNo),
+		ReadOnly: readOnlyOverride,
 		Metadata: nil,
 	}
 }
@@ -64,8 +49,10 @@ func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredL
 		return errors.Wrap(err, "can't list columns")
 	}
 
+	pks := map[*model.Model]*model.Index{}
+
 	for _, col := range cols {
-		mod := models.Get(util.Pkg{col.Schema}, col.Table)
+		mod := models.Get(nil, col.Table)
 		if mod == nil {
 			return errors.Errorf("no table [%s] found among [%d] candidates", col.Table, len(models))
 		}
@@ -73,6 +60,18 @@ func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredL
 		if err != nil {
 			return errors.Wrap(err, "can't add field")
 		}
+		if col.PK == 1 {
+			curr := pks[mod]
+			if curr == nil {
+				curr = &model.Index{Key: mod.Key + "_pk", Unique: true, Primary: true}
+				pks[mod] = curr
+			}
+			curr.Fields = append(curr.Fields, col.Name)
+		}
+	}
+
+	for k, v := range pks {
+		k.Indexes = append(k.Indexes, v)
 	}
 
 	return nil

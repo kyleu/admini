@@ -29,10 +29,6 @@ func NewLoader(logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.L
 
 var _ loader.Loader = (*Loader)(nil)
 
-func (l *Loader) Connection() (interface{}, error) {
-	return nil, nil
-}
-
 func (l *Loader) Schema() (*schema.Schema, error) {
 	o, ok := mockData[l.key]
 	if !ok {
@@ -40,6 +36,10 @@ func (l *Loader) Schema() (*schema.Schema, error) {
 	}
 
 	return o.Schema, nil
+}
+
+func (l *Loader) Connection() (interface{}, error) {
+	return nil, nil
 }
 
 func (l *Loader) List(m *model.Model, _ util.ParamSet) (*result.Result, error) {
@@ -56,13 +56,21 @@ func (l *Loader) Count(*model.Model) (int, error) {
 }
 
 func (l *Loader) Get(*model.Model, []interface{}) (*result.Result, error) {
-	return nil, errors.New("implement me")
+	return nil, errors.New("mock not implemented")
 }
 
 func (l *Loader) Query(string) (*result.Result, error) {
-	return nil, errors.New("implement me")
+	return nil, errors.New("mock not implemented")
+}
+
+func (l *Loader) Add(*model.Model, util.ValueMap) ([]interface{}, error) {
+	return nil, errors.New("mock not implemented")
+}
+
+func (l *Loader) Save(*model.Model, util.ValueMap) ([]interface{}, error) {
+	return nil, errors.New("mock not implemented")
 }
 
 func (l *Loader) Default(*model.Model) ([]interface{}, error) {
-	return nil, errors.New("implement me")
+	return nil, errors.New("mock not implemented")
 }

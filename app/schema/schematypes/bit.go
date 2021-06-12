@@ -22,6 +22,10 @@ func (x *Bit) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *Bit) Default(string) interface{} {
+	return 0
+}
+
 func NewBit() *Wrapped {
 	return Wrap(&Bit{})
 }

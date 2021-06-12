@@ -22,6 +22,10 @@ func (x *EnumValue) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
+func (x *EnumValue) Default(key string) interface{} {
+	return key
+}
+
 func NewEnumValue() *Wrapped {
 	return Wrap(&EnumValue{})
 }

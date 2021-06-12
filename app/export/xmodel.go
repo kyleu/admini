@@ -2,14 +2,29 @@ package export
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/util"
 	"go.uber.org/zap"
 )
 
-func Model(m *model.Model, t *Format, logger *zap.SugaredLogger) ([]*Result, error) {
-	return []*Result{goModelFile(m, t, logger), goServiceFile(m, t)}, nil
+func Model(m *model.Model, t *Format, logger *zap.SugaredLogger) (Results, error) {
+	switch t.Language {
+	case "go":
+		return Results{goModelFile(m, t, logger), goServiceFile(m, t)}, nil
+	case "json":
+		return Results{jsonFile(m, t, logger)}, nil
+	default:
+		return nil, errors.Errorf("unhandled language [%s]", t.Language)
+	}
+}
+
+func jsonFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result {
+	f := NewJSONFile(m.Pkg, m.Key)
+	json := util.ToJSON(m)
+	f.W(json)
+	return &Result{Key: "json", Out: f}
 }
 
 func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result {

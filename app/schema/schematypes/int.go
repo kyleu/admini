@@ -39,6 +39,10 @@ func (x *Int) From(v interface{}) interface{} {
 	}
 }
 
+func (x *Int) Default(string) interface{} {
+	return 0
+}
+
 func NewInt(bits int) *Wrapped {
 	return Wrap(&Int{Bits: bits})
 }

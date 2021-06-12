@@ -1,5 +1,7 @@
 package schematypes
 
+import "time"
+
 const KeyTime = "time"
 
 type Time struct{}
@@ -20,6 +22,10 @@ func (x *Time) String() string {
 
 func (x *Time) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
+}
+
+func (x *Time) Default(string) interface{} {
+	return time.Now().Format("15:04:05")
 }
 
 func NewTime() *Wrapped {

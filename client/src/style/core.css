@@ -15,15 +15,11 @@ body {
   color: var(--color-foreground);
 }
 
-main {
-  padding: var(--padding);
-}
-
 #content {
-  height: calc(100% - 48px);
   margin-left: 256px;
   overflow: auto;
   transition: margin-left 250ms ease-in-out;
+  min-height: calc(100% - var(--nav-height));
 }
 
 @media (max-width: 800px) {

@@ -1,10 +1,5 @@
 .card {
   border: var(--border);
   padding: var(--padding);
-  margin-bottom: var(--padding);
-}
-
-.card h3 {
-  margin: 0;
-  padding: 0;
+  margin: var(--padding);
 }
