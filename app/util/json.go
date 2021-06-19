@@ -7,8 +7,6 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-type RawMessage jsoniter.RawMessage
-
 func ToJSON(x interface{}) string {
 	return string(ToJSONBytes(x, true))
 }
@@ -26,7 +24,7 @@ func ToJSONBytes(x interface{}, indent bool) []byte {
 	return b
 }
 
-func FromJSON(msg RawMessage, tgt interface{}) error {
+func FromJSON(msg jsoniter.RawMessage, tgt interface{}) error {
 	return jsoniter.Unmarshal(msg, tgt)
 }
 
