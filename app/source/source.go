@@ -1,7 +1,7 @@
 package source
 
 import (
-	"encoding/json"
+	"github.com/kyleu/admini/app/util"
 	"sort"
 	"strings"
 
@@ -17,7 +17,7 @@ type Source struct {
 	Description string          `json:"description,omitempty"`
 	Paths       []string        `json:"paths,omitempty"`
 	Type        schema.Origin   `json:"type,omitempty"`
-	Config      json.RawMessage `json:"config,omitempty"`
+	Config      util.RawMessage `json:"config,omitempty"`
 }
 
 func (s *Source) Name() string {
@@ -53,10 +53,10 @@ func (s Sources) Keys() []string {
 	return ret
 }
 
-func (s Sources) Titles() []string {
+func (s Sources) Names() []string {
 	ret := make([]string, 0, len(s))
 	for _, x := range s {
-		ret = append(ret, x.Title)
+		ret = append(ret, x.Name())
 	}
 	return ret
 }

@@ -1,8 +1,8 @@
 package action
 
 import (
-	"encoding/json"
 	"fmt"
+
 	"github.com/kyleu/admini/app/util"
 
 	"github.com/pkg/errors"
@@ -51,12 +51,12 @@ func (t *Type) String() string {
 }
 
 func (t *Type) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.Key)
+	return util.ToJSONBytes(t.Key, false), nil
 }
 
 func (t *Type) UnmarshalJSON(data []byte) error {
 	var s string
-	err := json.Unmarshal(data, &s)
+	err := util.FromJSON(data, &s)
 	if err != nil {
 		return err
 	}

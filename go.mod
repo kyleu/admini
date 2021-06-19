@@ -11,6 +11,7 @@ require (
 	github.com/iancoleman/strcase v0.1.3
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/jmoiron/sqlx v1.3.3
+	github.com/json-iterator/go v1.1.8
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/pflag v1.0.1
 	github.com/valyala/fasthttp v1.26.0

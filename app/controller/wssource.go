@@ -51,8 +51,11 @@ func WorkspaceSource(ctx *fasthttp.RequestCtx) {
 
 		a, remaining := pv.Project.Actions.Get(paths)
 
-		wr := &cutil.WorkspaceRequest{T: "s", K: sourceKey, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining, Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata}
+		wr := &cutil.WorkspaceRequest{
+			T: "s", K: sourceKey, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining,
+			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata,
+		}
 
-		return handleAction(wr, a)
+		return handleAction(wr, a, ctx, ps)
 	})
 }

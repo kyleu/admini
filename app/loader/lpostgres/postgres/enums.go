@@ -30,7 +30,7 @@ type enumResult struct {
 
 func (t *enumResult) ToModel() *model.Model {
 	ret := model.NewModel(util.Pkg{t.Schema}, t.Name)
-	ret.Type =  model.TypeEnum
+	ret.Type = model.TypeEnum
 
 	els := strings.Split(t.Elements, "\n")
 	fields := make(field.Fields, 0, len(els))

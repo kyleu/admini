@@ -1,13 +1,14 @@
 package workspace
 
 import (
+	"strings"
+
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/export"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/views/vexport"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 func processModelExport(req *cutil.WorkspaceRequest, act *action.Action, m *model.Model, additional []string) (*Result, error) {
@@ -28,4 +29,3 @@ func processModelExport(req *cutil.WorkspaceRequest, act *action.Action, m *mode
 		return nil, errors.Errorf("unhandled path [%s]", strings.Join(additional, "/"))
 	}
 }
-

@@ -51,12 +51,15 @@ func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 
 		a, remaining := pv.Project.Actions.Get(paths)
 
-		wr := &cutil.WorkspaceRequest{T: "x", K: pv.Project.Key, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining, Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata}
-		return handleAction(wr, a)
+		wr := &cutil.WorkspaceRequest{
+			T: "x", K: pv.Project.Key, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining,
+			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata,
+		}
+		return handleAction(wr, a, ctx, ps)
 	})
 }
 
-func handleAction(req *cutil.WorkspaceRequest, act *action.Action) (string, error) {
+func handleAction(req *cutil.WorkspaceRequest, act *action.Action, ctx *fasthttp.RequestCtx, ps *cutil.PageState) (string, error) {
 	if req == nil {
 		return "", errors.New("nil project request")
 	}
@@ -67,6 +70,11 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action) (string, erro
 	if err != nil {
 		return "", err
 	}
+
+	if res.Redirect != "" {
+		return flashAndRedir(true, res.Title, res.Redirect, ctx, ps)
+	}
+
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
 

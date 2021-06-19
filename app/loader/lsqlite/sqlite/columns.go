@@ -16,13 +16,13 @@ import (
 )
 
 type columnResult struct {
-	Table                 string         `db:"xn"`
-	Ordinal               int32          `db:"i"`
-	Name                  string         `db:"n"`
-	DataType              string         `db:"t"`
-	PK                    int            `db:"pk"`
-	Default               sql.NullString `db:"dv"`
-	NotNull               int            `db:"nn"`
+	Table    string         `db:"xn"`
+	Ordinal  int32          `db:"i"`
+	Name     string         `db:"n"`
+	DataType string         `db:"t"`
+	PK       int            `db:"pk"`
+	Default  sql.NullString `db:"dv"`
+	NotNull  int            `db:"nn"`
 }
 
 func (cr *columnResult) IsNullable() bool {

@@ -24,7 +24,7 @@
 
   <div class="card">
     <ul class="accordion">
-    {%- if p.Schema != nil -%}
+    {%- if p.Schema != nil && len(p.Schema.Models) > 0 -%}
       {%- for idx, model := range p.Schema.Models -%}
       {%= ModelSummary(p.Source.Key, idx, model, as, ps) %}
       {%- endfor -%}

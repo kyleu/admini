@@ -1,7 +1,7 @@
 package model
 
 import (
-	"encoding/json"
+	"github.com/kyleu/admini/app/util"
 )
 
 type Type struct {
@@ -36,12 +36,12 @@ func (t *Type) String() string {
 }
 
 func (t *Type) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.Key)
+	return util.ToJSONBytes(t.Key, false), nil
 }
 
 func (t *Type) UnmarshalJSON(data []byte) error {
 	var s string
-	err := json.Unmarshal(data, &s)
+	err := util.FromJSON(data, &s)
 	if err != nil {
 		return err
 	}

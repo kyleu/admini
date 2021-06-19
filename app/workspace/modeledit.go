@@ -2,6 +2,8 @@ package workspace
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/views/vmodel"
 
@@ -9,40 +11,6 @@ import (
 	"github.com/kyleu/admini/app/model"
 	"github.com/pkg/errors"
 )
-
-func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
-	_, ld, _, err := loaderFor(req, srcKey)
-	if err != nil {
-		return ErrResult(req, act, err)
-	}
-
-	x, err := ld.Default(m)
-	if err != nil {
-		return ErrResult(req, act, errors.Wrapf(err, "can't load [%s] defaults", m.Key))
-	}
-
-	page := &vmodel.New{Req: req, Act: act, Model: m, Defaults: x}
-	return NewResult("", nil, req, act, x, page), nil
-}
-
-func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
-	changes, err := cutil.ParseFormAsChanges(req.Ctx)
-	if err != nil {
-		return ErrResult(req, act, err)
-	}
-
-	_, ld, _, err := loaderFor(req, srcKey)
-	if err != nil {
-		return ErrResult(req, act, err)
-	}
-
-	res, err := ld.Add(m, changes)
-	if err != nil {
-		return ErrResult(req, act, err)
-	}
-
-	return nil, errors.Errorf("Added [%d] changes, received [%d] fields", len(changes), len(res))
-}
 
 func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
 	_, ld, params, err := loaderFor(req, srcKey)
@@ -87,4 +55,29 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	}
 
 	return nil, errors.Errorf("Saved [%d] changes, received [%d] fields", len(changes), len(res))
+}
+
+func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
+	pk := m.GetPK(req.PS.Logger)
+
+	_, ld, _, err := loaderFor(req, srcKey)
+	if err != nil {
+		return ErrResult(req, act, err)
+	}
+
+	vals := make([]interface{}, 0, len(idStrings))
+	for _, s := range idStrings {
+		vals = append(vals, s)
+	}
+
+	numAffected, err := ld.Remove(m, pk, vals, 1)
+	if err != nil {
+		return ErrResult(req, act, err)
+	}
+	if numAffected != 1 {
+		return ErrResult(req, act, errors.Errorf("expected one deleted row, observed [%d]", numAffected))
+	}
+
+	msg := fmt.Sprintf("Deleted %s [%s]", m.Name(), strings.Join(idStrings, ":"))
+	return RedirectResult(msg, req.Route(act.Path()...)), nil
 }

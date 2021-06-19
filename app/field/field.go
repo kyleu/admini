@@ -1,8 +1,9 @@
 package field
 
 import (
-	"github.com/kyleu/admini/app/schema/schematypes"
 	"time"
+
+	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
 type Field struct {

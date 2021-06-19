@@ -1,7 +1,6 @@
 /* normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 html {
-  line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -44,7 +43,6 @@ img {
 button, input, optgroup, select, textarea {
   font-family: inherit;
   font-size: 90%;
-  line-height: 1.15;
   margin: 0;
 }
 

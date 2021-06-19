@@ -66,4 +66,3 @@ func Remove(root string, a *Action, files filesystem.FileLoader) error {
 	}
 	return files.RemoveRecursive(kp)
 }
-

@@ -71,6 +71,10 @@ func (l *Loader) Save(*model.Model, util.ValueMap) ([]interface{}, error) {
 	return nil, errors.New("mock not implemented")
 }
 
+func (l *Loader) Remove(*model.Model, []string, []interface{}, int) (int, error) {
+	return 0, errors.New("mock not implemented")
+}
+
 func (l *Loader) Default(*model.Model) ([]interface{}, error) {
 	return nil, errors.New("mock not implemented")
 }

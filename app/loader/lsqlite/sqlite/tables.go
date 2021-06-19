@@ -12,8 +12,8 @@ import (
 )
 
 type tableResult struct {
-	Name   string `db:"n"`
-	Type   string `db:"t"`
+	Name string `db:"n"`
+	Type string `db:"t"`
 }
 
 func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {

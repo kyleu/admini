@@ -11,7 +11,7 @@ const KeyList = "list"
 var _ Type = (*List)(nil)
 
 type List struct {
-	T    *Wrapped `json:"t"`
+	V    *Wrapped `json:"v"`
 	Size int      `json:"size,omitempty"`
 }
 
@@ -20,11 +20,11 @@ func (x *List) Key() string {
 }
 
 func (x *List) String() string {
-	return fmt.Sprintf("[]%s", x.T.String())
+	return fmt.Sprintf("[]%s", x.V.String())
 }
 
 func (x *List) Sortable() bool {
-	return x.T.Sortable()
+	return x.V.Sortable()
 }
 
 func (x *List) From(v interface{}) interface{} {
@@ -42,9 +42,9 @@ func (x *List) Default(string) interface{} {
 }
 
 func NewList(t *Wrapped) *Wrapped {
-	return Wrap(&List{T: t})
+	return Wrap(&List{V: t})
 }
 
 func NewListSized(t *Wrapped, size int) *Wrapped {
-	return Wrap(&List{T: t, Size: size})
+	return Wrap(&List{V: t, Size: size})
 }

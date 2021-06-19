@@ -16,7 +16,7 @@ type Reference struct {
 }
 
 func ReferenceFromRelation(rel *Relationship, m *Model) *Reference {
-	return &Reference{Key: rel.Key, TargetFields: rel.TargetFields, SourcePkg:m.Pkg, SourceModel: m.Key, SourceFields: rel.SourceFields}
+	return &Reference{Key: rel.Key, TargetFields: rel.TargetFields, SourcePkg: m.Pkg, SourceModel: m.Key, SourceFields: rel.SourceFields}
 }
 
 func (r *Reference) String() string {

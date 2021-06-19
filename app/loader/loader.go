@@ -17,5 +17,6 @@ type Loader interface {
 	Query(sql string) (*result.Result, error)
 	Add(m *model.Model, changes util.ValueMap) ([]interface{}, error)
 	Save(m *model.Model, changes util.ValueMap) ([]interface{}, error)
+	Remove(m *model.Model, fields []string, values []interface{}, expected int) (int, error)
 	Default(m *model.Model) ([]interface{}, error)
 }

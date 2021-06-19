@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/pkg/errors"
-
 	"github.com/kyleu/admini/app/field"
 
 	"github.com/kyleu/admini/app/util"
@@ -26,7 +24,7 @@ type Model struct {
 }
 
 func NewModel(pkg util.Pkg, key string) *Model {
-	return &Model{Key: key, Title: util.ToTitle(key), Pkg: pkg}
+	return &Model{Key: key, Pkg: pkg}
 }
 
 func (m *Model) String() string {
@@ -70,48 +68,4 @@ func (m Models) Sort() {
 	sort.Slice(m, func(l int, r int) bool {
 		return m[l].Key < m[r].Key
 	})
-}
-
-func (m *Model) AddField(f *field.Field) error {
-	if f == nil {
-		return errors.New("nil field")
-	}
-	if _, v := m.Fields.Get(f.Key); v != nil {
-		return errors.Errorf("field [%s] already exists", f.Key)
-	}
-	m.Fields = append(m.Fields, f)
-	return nil
-}
-
-func (m *Model) AddIndex(i *Index) error {
-	if i == nil {
-		return errors.New("nil index")
-	}
-	if m.Indexes.Get(i.Key) != nil {
-		return errors.Errorf("index [%s] already exists", i.Key)
-	}
-	m.Indexes = append(m.Indexes, i)
-	return nil
-}
-
-func (m *Model) AddRelationship(r *Relationship) error {
-	if r == nil {
-		return errors.New("nil relation")
-	}
-	if m.Relationships.Get(r.Key) != nil {
-		return errors.Errorf("relation [%s] already exists", r.Key)
-	}
-	m.Relationships = append(m.Relationships, r)
-	return nil
-}
-
-func (m *Model) AddReference(r *Reference) error {
-	if r == nil {
-		return errors.New("nil reference")
-	}
-	if m.References.Get(r.Key) != nil {
-		return errors.Errorf("reference [%s] already exists", r.Key)
-	}
-	m.References = append(m.References, r)
-	return nil
 }

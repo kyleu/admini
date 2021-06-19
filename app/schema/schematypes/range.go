@@ -9,7 +9,7 @@ const KeyRange = "range"
 var _ Type = (*Range)(nil)
 
 type Range struct {
-	T *Wrapped `json:"t"`
+	V *Wrapped `json:"v"`
 }
 
 func (x *Range) Key() string {
@@ -17,11 +17,11 @@ func (x *Range) Key() string {
 }
 
 func (x *Range) String() string {
-	return fmt.Sprintf("range[%s]", x.T.String())
+	return fmt.Sprintf("range[%s]", x.V.String())
 }
 
 func (x *Range) Sortable() bool {
-	return x.T.Sortable()
+	return x.V.Sortable()
 }
 
 func (x *Range) From(v interface{}) interface{} {
@@ -33,5 +33,5 @@ func (x *Range) Default(string) interface{} {
 }
 
 func NewRange(t *Wrapped) *Wrapped {
-	return Wrap(&Range{T: t})
+	return Wrap(&Range{V: t})
 }

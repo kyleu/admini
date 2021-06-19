@@ -1,21 +1,34 @@
 package util
 
 import (
+	"github.com/pkg/errors"
 	"testing"
 )
+
+type ToTitleTest struct {
+	TestValue string
+	Expected string
+}
+
+func (t *ToTitleTest) Test() error {
+	res := ToTitle(t.TestValue)
+	if res != t.Expected {
+		return errors.Errorf("ToTitle returned [%s], not expected [%s]", res, t.Expected)
+	}
+	return nil
+}
+
+var tests = []*ToTitleTest{
+	{TestValue: "SimpleCamelCase", Expected: "Simple Camel Case"},
+	{TestValue: "CSVFilesAreCoolButTXTRules", Expected: "CSV Files Are Cool But TXT Rules"},
+	{TestValue: "MediaTypes", Expected: "Media Types"},
+}
+
 func TestToTitle(t *testing.T) {
-	one := ToTitle("SimpleCamelCase")
-	if one != "Simple Camel Case" {
-		t.Errorf("Whoops: " + one)
-	}
-
-	two := ToTitle("CSVFilesAreCoolButTXTRules")
-	if two != "CSV Files Are Cool But TXT Rules" {
-		t.Errorf("Whoops: " + two)
-	}
-
-	three := ToTitle("MediaTypes")
-	if three != "Media Types" {
-		t.Errorf("Whoops: " + three)
+	for _, test := range tests {
+		err := test.Test()
+		if err != nil {
+			t.Error(err)
+		}
 	}
 }

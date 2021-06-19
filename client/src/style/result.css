@@ -1,20 +1,13 @@
-.result-table {
-  background: linear-gradient(to right, white 30%, rgba(255, 255, 255, 0)), linear-gradient(to right, rgba(255, 255, 255, 0), white 70%) 0 100%, radial-gradient(farthest-side at 0% 50%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)), radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
-  background-repeat: no-repeat;
-  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
-  background-position: 0 0, 100%, 0 0, 100%;
-  background-attachment: local, local, scroll, scroll;
-}
-
-@media (prefers-color-scheme: dark) {
-  .result-table {
-    background: none;
-  }
-}
 
 .result-table table {
   text-align: left;
   position: relative;
+  border: var(--border);
+  margin: var(--padding);
+}
+
+.result-table tr:hover {
+  background-color: var(--color-background-muted);
 }
 
 .result-table thead th {
@@ -29,6 +22,17 @@
   position: sticky;
   left: 0;
   font-weight: normal;
+  border-right: var(--border);
+}
+
+.result-table .pkcol {
+  left: 0;
+  z-index: 2;
+  border-right: var(--border);
+}
+
+.result-table th a {
+  display: block;
 }
 
 .result-table th {
@@ -39,6 +43,9 @@
 .result-table td {
   vertical-align: top;
   white-space: nowrap;
+  max-width: 256px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .result-table .null {

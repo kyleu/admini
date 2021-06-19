@@ -6,6 +6,14 @@ import (
 
 type Pkg []string
 
+func (p Pkg) Quoted() string {
+	ret := make([]string, 0, len(p))
+	for _, x := range p {
+		ret = append(ret, `"`+x+`"`)
+	}
+	return strings.Join(ret, ".")
+}
+
 func (p Pkg) StringWith(extra ...string) string {
 	return strings.Join(append(p, extra...), "::")
 }

@@ -23,14 +23,14 @@ func typeString(typ schematypes.Type, f *Format) (string, []util.Pkg) {
 	case *schematypes.JSON:
 		return "json.RawMessage", nil
 	case *schematypes.List:
-		ts, p := typeString(t.T, f)
+		ts, p := typeString(t.V, f)
 		return "[]" + ts, p
 	case *schematypes.Map:
 		kts, kp := typeString(t.K, f)
 		vts, vp := typeString(t.V, f)
 		return fmt.Sprintf("map[%s]%s", kts, vts), append(kp, vp...)
 	case *schematypes.Option:
-		ts, p := typeString(t.T, f)
+		ts, p := typeString(t.V, f)
 		return "*" + ts, p
 	case *schematypes.String:
 		return "string", nil

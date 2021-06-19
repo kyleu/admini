@@ -14,7 +14,7 @@ func For(as *app.State) Items {
 		Separator,
 		&Item{Key: "sources", Title: "Sources", Description: "Sources of data, used as input", Icon: "database", Route: "/source", Children: sourceItems(as)},
 		Separator,
-		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "code", Route: "/sandbox", Children: sandboxItems()},
+		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "social", Route: "/sandbox", Children: sandboxItems()},
 		Separator,
 		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/settings"},
 		&Item{Key: "feedback", Title: "Feedback", Description: "Submit feedback so we can improve " + util.AppName, Icon: "mail", Route: "/feedback"},

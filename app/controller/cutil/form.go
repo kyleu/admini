@@ -41,7 +41,11 @@ func parseHTTPForm(ctx *fasthttp.RequestCtx) (util.ValueMap, error) {
 		for _, x := range xs {
 			v = append(v, string(x))
 		}
-		ret[k] = v
+		if len(v) == 1 {
+			ret[k] = v[0]
+		} else {
+			ret[k] = v
+		}
 	})
 	return ret, nil
 }

@@ -7,7 +7,7 @@ import (
 const KeySet = "set"
 
 type Set struct {
-	T *Wrapped `json:"t"`
+	V *Wrapped `json:"v"`
 }
 
 var _ Type = (*Set)(nil)
@@ -17,11 +17,11 @@ func (x *Set) Key() string {
 }
 
 func (x *Set) String() string {
-	return fmt.Sprintf("%s[%s]", x.Key(), x.T.String())
+	return fmt.Sprintf("%s[%s]", x.Key(), x.V.String())
 }
 
 func (x *Set) Sortable() bool {
-	return x.T.Sortable()
+	return x.V.Sortable()
 }
 
 func (x *Set) From(v interface{}) interface{} {

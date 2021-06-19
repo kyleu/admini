@@ -1,8 +1,6 @@
 package schematypes
 
 import (
-	"encoding/json"
-
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/util"
@@ -45,24 +43,25 @@ func (x *Wrapped) Default(key string) interface{} {
 
 type wrappedUnmarshal struct {
 	K string          `json:"k"`
-	T json.RawMessage `json:"t,omitempty"`
+	T util.RawMessage `json:"t,omitempty"`
 }
 
 func (x *Wrapped) MarshalJSON() ([]byte, error) {
-	b := util.ToJSONBytes(x.T, true)
+	b := util.ToJSONBytes(x.T, false)
+	// TODO better detection
 	if len(b) == 2 {
-		return json.Marshal(x.K)
+		return util.ToJSONBytes(x.K, false), nil
 	}
-	return json.Marshal(wrappedUnmarshal{K: x.K, T: b})
+	return util.ToJSONBytes(wrappedUnmarshal{K: x.K, T: b}, false), nil
 }
 
 // nolint
 func (x *Wrapped) UnmarshalJSON(data []byte) error {
 	var wu wrappedUnmarshal
-	err := json.Unmarshal(data, &wu)
+	err := util.FromJSON(data, &wu)
 	if err != nil {
 		str := ""
-		newErr := json.Unmarshal(data, &str)
+		newErr := util.FromJSON(data, &str)
 		if newErr != nil {
 			return err
 		}
@@ -72,103 +71,103 @@ func (x *Wrapped) UnmarshalJSON(data []byte) error {
 	switch wu.K {
 	case KeyBit:
 		tgt := &Bit{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyBool:
 		tgt := &Bool{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyByte:
 		tgt := &Byte{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyChar:
 		tgt := &Char{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyDate:
 		tgt := &Date{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyEnumValue:
 		tgt := &EnumValue{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyError:
 		tgt := &Error{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyFloat:
 		tgt := &Float{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyInt:
 		tgt := &Int{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyJSON:
 		tgt := &JSON{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyList:
 		tgt := &List{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyMap:
 		tgt := &Map{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyMethod:
 		tgt := &Method{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyNil:
 		tgt := &Nil{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyOption:
 		tgt := &Option{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyRange:
 		tgt := &Range{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyReference:
 		tgt := &Reference{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeySet:
 		tgt := &Set{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyString:
 		tgt := &String{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyTime:
 		tgt := &Time{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyTimestamp:
 		tgt := &Timestamp{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyTimestampZoned:
 		tgt := &TimestampZoned{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyUnknown:
 		tgt := &Unknown{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyUUID:
 		tgt := &UUID{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	case KeyXML:
 		tgt := &XML{}
-		err = json.Unmarshal(wu.T, &tgt)
+		err = util.FromJSON(wu.T, &tgt)
 		t = tgt
 	default:
 		t = &Unknown{X: "unmarshal:" + wu.K}

@@ -1,8 +1,9 @@
 package workspace
 
 import (
-	"github.com/valyala/fasthttp"
 	"strings"
+
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/action"
 
@@ -21,7 +22,7 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	switch additional[0] {
 	case "new":
 		if string(req.Ctx.Method()) == fasthttp.MethodPost {
-			return processModelAdd(req, act, srcKey, m)
+			return processModelAdd(req, act, srcKey, m, additional)
 		} else {
 			return processModelNew(req, act, srcKey, m)
 		}
@@ -35,6 +36,8 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 		} else {
 			return processModelEdit(req, act, srcKey, m, additional[1:])
 		}
+	case "d":
+		return processModelDelete(req, act, srcKey, m, additional[1:])
 	default:
 		return nil, errors.Errorf("unhandled model parameters [%s]", strings.Join(additional, "/"))
 	}
@@ -48,7 +51,7 @@ func getModel(m *model.Model, idStrings []string, ld loader.Loader) ([]interface
 
 	rs, err := ld.Get(m, ids)
 	if err != nil {
-		return nil, errors.Wrapf(err, "unable to retrieve model [%s] with key [%s]", m.Key, strings.Join(idStrings, "/"))
+		return nil, errors.Wrapf(err, "unable to retrieve model [%s] with key [%s]", m.Path().String(), strings.Join(idStrings, "/"))
 	}
 	switch len(rs.Data) {
 	case 0:

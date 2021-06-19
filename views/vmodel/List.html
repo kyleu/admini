@@ -29,9 +29,7 @@
     <a href="{%s p.Req.RouteAct(p.Act, 0, `export`) %}"><button type="button">Export</button></a>
   </div>
 
-  <div class="card">
-    {%= vresult.WSTable(p.Req, p.Act, p.Result, p.Model, 2, false, p.ParamSet.Get(p.Model.Key, p.Model.Fields.Names(), ps.Logger)) %}
-  </div>
+  {%= vresult.WSTable(p.Req, p.Act, p.Result, p.Model, 2, false, p.ParamSet.Get(p.Model.Key, p.Model.Fields.Names(), ps.Logger)) %}
 
   {%= components.JSONModal("model", "Model JSON", p.Model, 1) %}
   {%= components.JSONModal("result", "Result", p.Result, 1) %}

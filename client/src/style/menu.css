@@ -49,6 +49,10 @@
   margin-top: 3px;
 }
 
+.menu-container .childless svg {
+  margin-left: 19px;
+}
+
 .menu-container a {
   color: var(--color-menu-foreground);
 }

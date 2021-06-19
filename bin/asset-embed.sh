@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## Embeds assets for building into the project
+## Embeds assets for building into the project, only need for release builds. Run `asset-reset.sh` to undo before committing
 
 set -euo pipefail
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

@@ -1,3 +1,4 @@
+{% import "fmt" %}
 {% import "strings" %}
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/action" %}
@@ -23,7 +24,9 @@
       if err != nil {
         panic(err)
       }
+      confirm := fmt.Sprintf("Are you sure you wish to delete %s [%s]?", p.Model.Name(), strings.Join(rowPK, ":"))
     %}
+    <div class="right"><a href="{%s p.Req.RouteAct(p.Act, 1 + len(rowPK), append([]string{`d`}, rowPK...)...) %}" onclick="return confirm('{%s confirm %}');">Delete</a></div>
     <h3>Edit <a href="TODO">{%s strings.Join(rowPK, "/") %}</a></h3>
     <em><a href="TODO">{%s p.Model.Name() %}</a></em>
     <div class="spacer"></div>

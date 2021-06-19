@@ -1,13 +1,14 @@
 {% import "fmt" %}
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/field" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/result" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, model *model.Model, indent int, showNum bool, params *util.Params) %}{% stripspace %}
+{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, indent int, showNum bool, params *util.Params) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <div class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
@@ -20,11 +21,15 @@
             {%= vutil.Indent(true, indent + 4) %}
             <th></th>
           {% endif %}
-          {% for fIdx, field := range r.Fields %}
-            {%= vutil.Indent(true, indent + 4) %}
-            {% code tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, field.Key, fIdx, field.Type) %}
-            {% code srt := model != nil && field.Type.Sortable() %}
-            {%= components.TableHeader("x", field.Key, field.Key, params, ws.PS.URI, tooltip, srt, ws.PS) %}
+          {% for fIdx, f := range r.Fields %}
+            {% if m != nil && m.IsPK(f.Key, ws.PS.Logger) %}
+              {%= tableHeader(ws, r, m, fIdx, f, true, indent, params) %}
+            {% endif %}
+          {% endfor %}
+          {% for fIdx, f := range r.Fields %}
+            {% if m == nil || !m.IsPK(f.Key, ws.PS.Logger) %}
+              {%= tableHeader(ws, r, m, fIdx, f, false, indent, params) %}
+            {% endif %}
           {% endfor %}
         {%= vutil.Indent(true, indent + 3) %}
         </tr>
@@ -33,7 +38,7 @@
       {%= vutil.Indent(true, indent + 2) %}
       <tbody>
         {% for rIdx, row := range r.Data %}
-          {%= WSRow(ws, act, rIdx, row, r.Fields, model, indent + 3, showNum, params) %}
+          {%= WSRow(ws, act, rIdx, row, r.Fields, m, indent + 3, showNum, params) %}
         {% endfor %}
 
         {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
@@ -46,4 +51,19 @@
     </table>
   {%= vutil.Indent(true, indent) %}
   </div>
+{% endstripspace %}{% endfunc %}
+
+{% func tableHeader(ws *cutil.WorkspaceRequest, r *result.Result, m *model.Model, fIdx int, f *field.Field, pk bool, indent int, params *util.Params) %}{% stripspace %}
+  {%= vutil.Indent(true, indent + 4) %}
+  {% code
+    tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, f.Key, fIdx, f.Type)
+    srt := m != nil && f.Type.Sortable()
+    cls := ""
+    icon := ""
+    if pk {
+      cls = "pkcol"
+      icon = "lock"
+    }
+  %}
+  {%= components.TableHeader("x", f.Key, f.Key, params, icon, ws.PS.URI, tooltip, srt, cls, ws.PS) %}
 {% endstripspace %}{% endfunc %}

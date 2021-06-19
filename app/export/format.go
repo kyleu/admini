@@ -6,8 +6,10 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
-const LangGo = "go"
-const LangJSON = "json"
+const (
+	LangGo   = "go"
+	LangJSON = "json"
+)
 
 type Format struct {
 	Language string `json:"language"`

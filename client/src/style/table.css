@@ -1,17 +1,24 @@
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
 }
 
-table tbody tr {
-  border-top: var(--border);
+table tr {
+  margin: 0;
+  padding: 0;
 }
 
 table td, table th {
+  border-bottom: var(--border);
   padding: var(--padding-small);
+  margin: 0;
 }
 
 table th {
+  margin: 0;
   text-align: left;
   font-weight: bold;
 }

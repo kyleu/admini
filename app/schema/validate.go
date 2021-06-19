@@ -64,11 +64,11 @@ func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKe
 	case *schematypes.Error:
 		r.log(mType, mKey, fmt.Sprintf("field [%s] has error: %s", fKey, t.Message), LevelWarn)
 	case *schematypes.Option:
-		validateType(r, s, mType, mKey, fKey, t.T)
+		validateType(r, s, mType, mKey, fKey, t.V)
 	case *schematypes.List:
-		validateType(r, s, mType, mKey, fKey, t.T)
+		validateType(r, s, mType, mKey, fKey, t.V)
 	case *schematypes.Range:
-		validateType(r, s, mType, mKey, fKey, t.T)
+		validateType(r, s, mType, mKey, fKey, t.V)
 	case *schematypes.Map:
 		validateType(r, s, mType, mKey, fKey, t.K)
 		validateType(r, s, mType, mKey, fKey, t.V)

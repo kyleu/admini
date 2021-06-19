@@ -13,11 +13,11 @@ import (
 )
 
 type foreignKeyResult struct {
-	Ordinal      int    `db:"idx"`
-	Table        string `db:"src"`
-	Field        string `db:"src_col"`
-	TargetTable  string `db:"tgt"`
-	TargetField  string `db:"tgt_col"`
+	Ordinal     int    `db:"idx"`
+	Table       string `db:"src"`
+	Field       string `db:"src_col"`
+	TargetTable string `db:"tgt"`
+	TargetField string `db:"tgt_col"`
 }
 
 func (r *foreignKeyResult) String() string {

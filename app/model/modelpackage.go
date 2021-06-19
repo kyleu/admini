@@ -38,7 +38,7 @@ func (p *Package) GetPkg(key string, createIfMissing bool) *Package {
 		if pkgs[0] == "_root" {
 			pkgs = pkgs[1:]
 		}
-		x := &Package{Key: key, Title: util.ToTitle(key), Pkg: pkgs}
+		x := &Package{Key: key, Pkg: pkgs}
 		p.ChildPackages = append(p.ChildPackages, x)
 		return x
 	}

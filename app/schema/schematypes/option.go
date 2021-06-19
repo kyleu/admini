@@ -3,7 +3,7 @@ package schematypes
 const KeyOption = "option"
 
 type Option struct {
-	T *Wrapped `json:"t"`
+	V *Wrapped `json:"v"`
 }
 
 var _ Type = (*Option)(nil)
@@ -13,11 +13,11 @@ func (x *Option) Key() string {
 }
 
 func (x *Option) String() string {
-	return "*" + x.T.String()
+	return "*" + x.V.String()
 }
 
 func (x *Option) Sortable() bool {
-	return x.T.Sortable()
+	return x.V.Sortable()
 }
 
 func (x *Option) From(v interface{}) interface{} {
@@ -25,7 +25,7 @@ func (x *Option) From(v interface{}) interface{} {
 }
 
 func NewOption(t *Wrapped) *Wrapped {
-	return Wrap(&Option{T: t})
+	return Wrap(&Option{V: t})
 }
 
 func (x *Option) Default(string) interface{} {

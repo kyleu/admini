@@ -22,7 +22,7 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 	case lt == "datetime":
 		return schematypes.NewTimestamp()
 	case strings.HasPrefix(lt, "nvarchar"):
-		s := lt[strings.LastIndex(lt, "(") + 1:strings.LastIndex(lt, ")")]
+		s := lt[strings.LastIndex(lt, "(")+1 : strings.LastIndex(lt, ")")]
 		max, _ := strconv.Atoi(s)
 		return schematypes.NewStringArgs(0, max, "")
 	}

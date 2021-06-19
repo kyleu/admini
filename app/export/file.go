@@ -1,7 +1,6 @@
 package export
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -66,7 +65,7 @@ func (f *File) MarshalJSON() ([]byte, error) {
 	ret := make(map[string]interface{})
 	ret["path"] = strings.Join(append(f.Pkg, f.Filename), "/")
 	ret["lines"] = f.Render()
-	return json.Marshal(ret)
+	return util.ToJSONBytes(ret, false), nil
 }
 
 func (f *File) Render() []string {

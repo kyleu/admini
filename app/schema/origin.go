@@ -1,6 +1,8 @@
 package schema
 
-import "encoding/json"
+import (
+	"github.com/kyleu/admini/app/util"
+)
 
 type Origin struct {
 	Key         string `json:"key"`
@@ -51,12 +53,12 @@ func (t *Origin) String() string {
 }
 
 func (t *Origin) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.Key)
+	return util.ToJSONBytes(t.Key, false), nil
 }
 
 func (t *Origin) UnmarshalJSON(data []byte) error {
 	var s string
-	err := json.Unmarshal(data, &s)
+	err := util.FromJSON(data, &s)
 	if err != nil {
 		return err
 	}

@@ -1,7 +1,7 @@
 package export
 
 import (
-	"encoding/json"
+	"github.com/kyleu/admini/app/util"
 )
 
 type FileType struct {
@@ -34,12 +34,12 @@ func (t *FileType) String() string {
 }
 
 func (t *FileType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t.Key)
+	return util.ToJSONBytes(t.Key, false), nil
 }
 
 func (t *FileType) UnmarshalJSON(data []byte) error {
 	var s string
-	err := json.Unmarshal(data, &s)
+	err := util.FromJSON(data, &s)
 	if err != nil {
 		return err
 	}

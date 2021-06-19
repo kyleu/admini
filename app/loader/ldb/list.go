@@ -2,9 +2,10 @@ package ldb
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"strings"
 
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/util"
@@ -23,18 +24,18 @@ func List(db *database.Service, m *model.Model, params util.ParamSet, logger *za
 	q := modelListQuery(m, p)
 	rows, err := db.Query(q, nil)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error listing models for [%s]", m.Key)
+		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
 
 	count, err := Count(db, m)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.Key)
+		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.String())
 	}
 
 	var timing *result.Timing
 	ret, err := ParseResultFields(m.Name(), count, q, timing, m.Fields, rows)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.Key)
+		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.String())
 	}
 
 	return ret, nil
@@ -46,7 +47,7 @@ func Count(db *database.Service, m *model.Model) (int, error) {
 		C int `db:"c"`
 	}{}
 	if err := db.Get(&c, q, nil); err != nil {
-		return 0, errors.Wrapf(err, "error listing models for [%s]", m.Key)
+		return 0, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
 	return c.C, nil
 }
@@ -57,15 +58,7 @@ func modelListQuery(m *model.Model, params *util.Params) string {
 }
 
 func modelCountQuery(m *model.Model) string {
-	tbl := "\"" + m.Key + "\""
-	if len(m.Pkg) > 0 {
-		l := m.Pkg.Last()
-		if l != publicSchema {
-			tbl = "\"" + l + "\"." + tbl
-		}
-	}
-
-	return database.SQLSelectSimple("count(*) as c", tbl, "")
+	return database.SQLSelectSimple("count(*) as c", m.Path().Quoted(), "")
 }
 
 func forTable(m *model.Model) (string, string) {
@@ -73,12 +66,5 @@ func forTable(m *model.Model) (string, string) {
 	for _, f := range m.Fields {
 		cols = append(cols, fmt.Sprintf(`"%s"`, f.Key))
 	}
-	tbl := "\"" + m.Key + "\""
-	if len(m.Pkg) > 0 {
-		l := m.Pkg.Last()
-		if l != publicSchema {
-			tbl = "\"" + l + "\"." + tbl
-		}
-	}
-	return strings.Join(cols, ", "), tbl
+	return strings.Join(cols, ", "), m.Path().Quoted()
 }

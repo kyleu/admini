@@ -61,7 +61,7 @@ func (s *Schema) AddModel(m *model.Model) error {
 		return errors.New("nil model")
 	}
 	if s.Models.Get(m.Pkg, m.Key) != nil {
-		return errors.Errorf("model [%s] already exists", m.Key)
+		return errors.Errorf("model [%s] already exists", m.Path().String())
 	}
 	s.Models = append(s.Models, m)
 	return nil

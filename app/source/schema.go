@@ -30,9 +30,11 @@ func (s *Service) LoadSchema(key string) (*schema.Schema, error) {
 			return nil, err
 		}
 	}
-	err := ret.CreateReferences()
-	if err != nil {
-		return nil, errors.Wrap(err, "unable to calculate references")
+	if ret != nil {
+		err := ret.CreateReferences()
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to calculate references")
+		}
 	}
 
 	s.schemaCache[key] = ret

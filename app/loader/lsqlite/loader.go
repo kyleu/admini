@@ -58,12 +58,16 @@ func (l *Loader) Query(sql string) (*result.Result, error) {
 	return ldb.Query(l.db, sql, l.logger)
 }
 
-func (l *Loader) Add(*model.Model, util.ValueMap) ([]interface{}, error) {
-	return nil, errors.New("TODO: add not implemented")
+func (l *Loader) Add(m *model.Model, changes util.ValueMap) ([]interface{}, error) {
+	return ldb.Add(l.db, m, changes, l.logger)
 }
 
-func (l *Loader) Save(*model.Model, util.ValueMap) ([]interface{}, error) {
-	return nil, errors.New("TODO: save not implemented")
+func (l *Loader) Save(m *model.Model, changes util.ValueMap) ([]interface{}, error) {
+	return ldb.Save(l.db, m, changes, l.logger)
+}
+
+func (l *Loader) Remove(m *model.Model, fields []string, values []interface{}, expected int) (int, error) {
+	return ldb.Remove(l.db, m, fields, values, expected, l.logger)
 }
 
 func (l *Loader) Default(m *model.Model) ([]interface{}, error) {
