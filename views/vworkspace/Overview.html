@@ -23,7 +23,7 @@
     {% if act.Type != action.TypeSeparator %}
       {% if len(act.Children) == 0 %}
         {%= vutil.Indent(true, indent + 1) %}
-        <li><a href="{%s req.Route(act.Path()...) %}">
+        <li><a href="{%s req.RouteAct(act, 0) %}">
           {%= components.SVGRef(act.IconWithFallback(), 16, 16, "icon", ps) %}
           {%s act.Name() %}
         </a></li>
@@ -31,7 +31,7 @@
         {%= vutil.Indent(true, indent + 1) %}
         <li>
           {%= vutil.Indent(true, indent + 2) %}
-          <a href="{%s req.Route(act.Path()...) %}">
+          <a href="{%s req.RouteAct(act, 0) %}">
             {%= components.SVGRef(act.IconWithFallback(), 16, 16, "icon", ps) %}
             {%s act.Name() %}
           </a>

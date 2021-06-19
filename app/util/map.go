@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -19,6 +20,19 @@ func ValueMapFor(kvs ...interface{}) ValueMap {
 		ret[k] = kvs[i+1]
 	}
 	return ret
+}
+
+func (c ValueMap) KeysAndValues() ([]string, []interface{}) {
+	var cols []string
+	var vals []interface{}
+	for k := range c {
+		cols = append(cols, k)
+	}
+	sort.Strings(cols)
+	for _, col := range cols {
+		vals = append(vals, c[col])
+	}
+	return cols, vals
 }
 
 func (c ValueMap) GetRequired(k string) (interface{}, error) {

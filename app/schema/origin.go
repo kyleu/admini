@@ -58,8 +58,7 @@ func (t *Origin) MarshalJSON() ([]byte, error) {
 
 func (t *Origin) UnmarshalJSON(data []byte) error {
 	var s string
-	err := util.FromJSON(data, &s)
-	if err != nil {
+	if err := util.FromJSON(data, &s); err != nil {
 		return err
 	}
 	*t = OriginFromString(s)

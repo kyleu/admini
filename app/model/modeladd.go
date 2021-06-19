@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/field"

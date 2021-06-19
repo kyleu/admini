@@ -23,9 +23,8 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	case "new":
 		if string(req.Ctx.Method()) == fasthttp.MethodPost {
 			return processModelAdd(req, act, srcKey, m, additional)
-		} else {
-			return processModelNew(req, act, srcKey, m)
 		}
+		return processModelNew(req, act, srcKey, m)
 	case "export":
 		return processModelExport(req, act, m, additional[1:])
 	case "v":
@@ -33,9 +32,8 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	case "x":
 		if string(req.Ctx.Method()) == fasthttp.MethodPost {
 			return processModelSave(req, act, srcKey, m, additional[1:])
-		} else {
-			return processModelEdit(req, act, srcKey, m, additional[1:])
 		}
+		return processModelEdit(req, act, srcKey, m, additional[1:])
 	case "d":
 		return processModelDelete(req, act, srcKey, m, additional[1:])
 	default:

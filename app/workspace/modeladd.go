@@ -2,6 +2,7 @@ package workspace
 
 import (
 	"fmt"
+
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
@@ -41,6 +42,5 @@ func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 	}
 
 	msg := fmt.Sprintf("Added [%d] changes, received [%d] fields", len(changes), len(res))
-	path := append(act.Path(), additional[:len(additional) - 1]...)
-	return RedirectResult(msg, req.Route(path...)), nil
+	return RedirectResult(msg, req.RouteAct(act, 1, additional[:len(additional)-1]...)), nil
 }

@@ -38,7 +38,7 @@ func (x *List) From(v interface{}) interface{} {
 }
 
 func (x *List) Default(string) interface{} {
-	return "[]"
+	return emptyList
 }
 
 func NewList(t *Wrapped) *Wrapped {

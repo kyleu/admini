@@ -29,7 +29,7 @@ func (x *Set) From(v interface{}) interface{} {
 }
 
 func (x *Set) Default(string) interface{} {
-	return "[]"
+	return emptyList
 }
 
 func NewSet() *Wrapped {

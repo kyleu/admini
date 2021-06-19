@@ -2,11 +2,12 @@ package ldb
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/model"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"strings"
 )
 
 func Remove(db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger) (int, error) {
@@ -21,7 +22,7 @@ func Remove(db *database.Service, m *model.Model, fields []string, values []inte
 		if idx > 0 {
 			where.WriteString(" and ")
 		}
-		where.WriteString(fmt.Sprintf(`"%s" = $%d`, x, idx + 1))
+		where.WriteString(fmt.Sprintf(`"%s" = $%d`, x, idx+1))
 	}
 	q := database.SQLDelete(m.Path().Quoted(), where.String())
 
@@ -32,5 +33,3 @@ func Remove(db *database.Service, m *model.Model, fields []string, values []inte
 
 	return rowsAffected, nil
 }
-
-

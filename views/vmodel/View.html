@@ -26,8 +26,8 @@
       }
     -%}
     <div class="right"><a href="{%s p.Req.RouteAct(p.Act, 1 + len(rowPK), append([]string{`x`}, rowPK...)...) %}">Edit</a></div>
-    <h3>{%s strings.Join(rowPK, "/") %}</h3>
-    <em>{%s p.Model.Name() %}</em>
+    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s strings.Join(rowPK, "/") %}</h3>
+    <a href="{%s p.Req.RouteAct(p.Act, len(rowPK) + 1) %}"><em>{%s p.Model.Name() %}</em></a>
     <div class="spacer"></div>
     <table>
       <tbody>

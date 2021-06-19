@@ -21,7 +21,7 @@
     {%- if len(p.Pkg.ChildPackages) > 0 -%}
     <ul>
     {%- for _, pkg := range p.Pkg.ChildPackages -%}
-      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), pkg.Key)...) %}">{%s pkg.Name() %}</a></li>
+      <li><a href="{%s p.Req.RouteAct(p.Act, 0, pkg.Key) %}">{%s pkg.Name() %}</a></li>
     {%- endfor -%}
     </ul>
     {%- endif -%}
@@ -29,7 +29,7 @@
     {%- if len(p.Pkg.ChildModels) > 0 -%}
     <ul>
     {%- for _, m := range p.Pkg.ChildModels -%}
-      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), m.Key)...) %}">{%s m.Name() %}</a></li>
+      <li><a href="{%s p.Req.RouteAct(p.Act, 0, m.Key) %}">{%s m.Name() %}</a></li>
     {%- endfor -%}
     </ul>
     {%- endif -%}

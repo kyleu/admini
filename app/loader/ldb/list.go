@@ -14,8 +14,6 @@ import (
 	"github.com/kyleu/admini/app/result"
 )
 
-var publicSchema = "public"
-
 func List(db *database.Service, m *model.Model, params util.ParamSet, logger *zap.SugaredLogger) (*result.Result, error) {
 	p := params.Get(m.Key, m.Fields.Names(), logger)
 	if p != nil && p.Limit == 0 {

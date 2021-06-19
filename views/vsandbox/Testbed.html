@@ -32,8 +32,8 @@
       sort.Strings(keys)
       -%}
       {%- for _, k := range keys -%}
-      <div style="text-align: center; margin: 6px 12px 6px 0; padding: 6px; border: var(--border)">
-        <div>{%= components.SVGRef(k, 64, 64, "icon", ps) %}</div>
+      <div style="text-align: center; margin: 6px 12px 6px 0; padding: 6px; border: var(--border);">
+        <div style="color: var(--color-highlight);">{%= components.SVGRef(k, 64, 64, "icon", ps) %}</div>
         {%s k %}
       </div>
       {%- endfor -%}

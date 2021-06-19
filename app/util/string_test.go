@@ -1,18 +1,20 @@
-package util
+package util_test
 
 import (
-	"github.com/pkg/errors"
 	"testing"
+
+	"github.com/kyleu/admini/app/util"
+
+	"github.com/pkg/errors"
 )
 
 type ToTitleTest struct {
 	TestValue string
-	Expected string
+	Expected  string
 }
 
 func (t *ToTitleTest) Test() error {
-	res := ToTitle(t.TestValue)
-	if res != t.Expected {
+	if res := util.ToTitle(t.TestValue); res != t.Expected {
 		return errors.Errorf("ToTitle returned [%s], not expected [%s]", res, t.Expected)
 	}
 	return nil
@@ -25,6 +27,7 @@ var tests = []*ToTitleTest{
 }
 
 func TestToTitle(t *testing.T) {
+	t.Parallel()
 	for _, test := range tests {
 		err := test.Test()
 		if err != nil {

@@ -49,7 +49,12 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	res, err := ld.Save(m, changes)
+	ids := make([]interface{}, 0, len(idStrings))
+	for _, s := range idStrings {
+		ids = append(ids, s)
+	}
+
+	res, err := ld.Save(m, ids, changes)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -79,5 +84,5 @@ func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey 
 	}
 
 	msg := fmt.Sprintf("Deleted %s [%s]", m.Name(), strings.Join(idStrings, ":"))
-	return RedirectResult(msg, req.Route(act.Path()...)), nil
+	return RedirectResult(msg, req.RouteAct(act, len(idStrings) + 1)), nil
 }

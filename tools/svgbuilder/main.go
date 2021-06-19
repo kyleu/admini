@@ -106,7 +106,6 @@ func template(src string, svgs []*SVG) string {
 	w("}")
 	w("")
 	w("var SVGIconKeys = []string{" + strings.Join(keys, ", ") + "}")
-	w("")
 
 	return out.String()
 }

@@ -17,7 +17,7 @@
     <h3>{%s ps.Title %}</h3>
     <ul>
       {%- for _, f := range export.AllFormats -%}
-      <li><a href="{%s p.Req.Route(append(append(p.Act.Path(), p.Req.Path...), f.Language, f.Flavor)...) %}">{%s f.Language %} ({%s f.Flavor %})</a></li>
+      <li><a href="{%s p.Req.RouteAct(p.Act, 0, f.Language, f.Flavor) %}">{%s f.Language %} ({%s f.Flavor %})</a></li>
       {%- endfor -%}
     </ul>
   </div>

@@ -28,5 +28,3 @@ func Add(db *database.Service, m *model.Model, changes util.ValueMap, logger *za
 
 	return data, nil
 }
-
-

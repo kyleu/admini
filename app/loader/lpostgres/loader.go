@@ -62,8 +62,8 @@ func (l *Loader) Add(m *model.Model, changes util.ValueMap) ([]interface{}, erro
 	return ldb.Add(l.db, m, changes, l.logger)
 }
 
-func (l *Loader) Save(m *model.Model, changes util.ValueMap) ([]interface{}, error) {
-	return ldb.Save(l.db, m, changes, l.logger)
+func (l *Loader) Save(m *model.Model, ids []interface{}, changes util.ValueMap) ([]interface{}, error) {
+	return ldb.Save(l.db, m, ids, changes, l.logger)
 }
 
 func (l *Loader) Remove(m *model.Model, fields []string, values []interface{}, expected int) (int, error) {
