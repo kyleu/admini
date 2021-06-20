@@ -44,6 +44,10 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
+	if len(changes) == 0 {
+		return RedirectResult("no changes required", req.RouteAct(act, 0)), nil
+	}
+
 	_, ld, _, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
@@ -59,7 +63,13 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	return nil, errors.Errorf("Saved [%d] changes, received [%d] fields", len(changes), len(res))
+	msg := fmt.Sprintf("Added [%d] changes, received [%d] fields", len(changes), len(res))
+	path := []string{"v"}
+	for _, x := range res {
+		path = append(path, fmt.Sprintf("%v", x))
+	}
+	dest := req.RouteAct(act, len(m.GetPK(req.PS.Logger)) + 1, path...)
+	return RedirectResult(msg, dest), nil
 }
 
 func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {

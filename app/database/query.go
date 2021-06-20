@@ -16,6 +16,39 @@ func (s *Service) Query(q string, tx *sqlx.Tx, values ...interface{}) (*sqlx.Row
 	return tx.Queryx(q, values...)
 }
 
+func (s *Service) QueryRows(q string, tx *sqlx.Tx, values ...interface{}) ([]map[string]interface{}, error) {
+	rows, err := s.Query(q, tx, values...)
+	if err != nil {
+		return nil, err
+	}
+
+	ret := []map[string]interface{}{}
+	for rows.Next() {
+		x := map[string]interface{}{}
+		err = rows.MapScan(x)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to scan output row")
+		}
+		ret = append(ret, x)
+	}
+
+	return ret, nil
+}
+
+func (s *Service) QuerySingleRow(q string, tx *sqlx.Tx, values ...interface{}) (map[string]interface{}, error) {
+	rows, err := s.QueryRows(q, tx, values...)
+	if err != nil {
+		return nil, err
+	}
+	if len(rows) == 0 {
+		return nil, errors.New("no rows returned from query")
+	}
+	if len(rows) < 1 {
+		return nil, errors.New("more than one row returned from query")
+	}
+	return rows[0], nil
+}
+
 func (s *Service) Select(dest interface{}, q string, tx *sqlx.Tx, values ...interface{}) error {
 	s.logQuery(fmt.Sprintf("selecting rows of type [%T]", dest), q, values)
 	if tx == nil {

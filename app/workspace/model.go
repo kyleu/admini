@@ -22,7 +22,7 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	switch additional[0] {
 	case "new":
 		if string(req.Ctx.Method()) == fasthttp.MethodPost {
-			return processModelAdd(req, act, srcKey, m, additional)
+			return processModelAdd(req, act, srcKey, m, additional[1:])
 		}
 		return processModelNew(req, act, srcKey, m)
 	case "export":
