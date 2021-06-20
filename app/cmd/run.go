@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/loader/lsqlite"
+	"github.com/kirsle/configdir"
 
 	"github.com/valyala/fasthttp"
 
@@ -13,6 +13,7 @@ import (
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/loader/lmock"
 	"github.com/kyleu/admini/app/loader/lpostgres"
+	"github.com/kyleu/admini/app/loader/lsqlite"
 	"github.com/kyleu/admini/app/log"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
@@ -21,9 +22,10 @@ import (
 )
 
 type Flags struct {
-	Address string
-	Debug   bool
-	Profile bool
+	Address   string
+	Port      int
+	ConfigDir string
+	Debug     bool
 }
 
 func Run() error {
@@ -33,16 +35,22 @@ func Run() error {
 	}
 
 	flags := parseFlags()
+	if flags.ConfigDir == "" {
+		flags.ConfigDir = configdir.LocalConfig(util.AppName)
+		_ = configdir.MakePath(flags.ConfigDir) // Ensure it exists.
+	}
+
+	println(flags.ConfigDir)
 
 	logger.With(
 		zap.Bool("debug", flags.Debug),
 		zap.String("address", flags.Address),
-		zap.Int("port", util.AppPort),
+		zap.Int("port", flags.Port),
 	).Infof("[%s]", util.AppName)
 
 	r := controller.BuildRouter()
 
-	f := filesystem.NewFileSystem("data", logger)
+	f := filesystem.NewFileSystem(flags.ConfigDir, logger)
 	ls := loader.NewService()
 	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(logger))
 	ls.Set(schema.OriginSQLite, lsqlite.NewLoader(logger))
@@ -60,8 +68,10 @@ func Run() error {
 
 func parseFlags() *Flags {
 	ret := &Flags{}
-	pflag.StringVar(&ret.Address, "addr", "127.0.0.1", "address to listen on, defaults to [127.0.0.1]")
-	pflag.BoolVar(&ret.Debug, "debug", false, "enables verbose logging and additional checks")
+	pflag.StringVarP(&ret.Address, "addr", "a", "127.0.0.1", "address to listen on, defaults to [127.0.0.1]")
+	pflag.IntVarP(&ret.Port, "port", "p", util.AppPort, fmt.Sprintf("port to listen on, defaults to [%d]", util.AppPort))
+	pflag.StringVarP(&ret.ConfigDir, "dir", "d", "", "directory for configuration, defaults to [~/???]")
+	pflag.BoolVarP(&ret.Debug, "verbose", "v", false, "enables verbose logging and additional checks")
 	pflag.Parse()
 	return ret
 }
