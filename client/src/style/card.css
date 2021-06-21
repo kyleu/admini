@@ -3,3 +3,8 @@
   padding: var(--padding);
   margin: var(--padding);
 }
+
+.card-sticky {
+  position: sticky;
+  left: var(--padding);
+}

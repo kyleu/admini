@@ -41,7 +41,7 @@
         }
         link := append([]string{`v`}, rowPK...)
       %}
-      <a href="{%s ws.RouteAct(act, 0, link...) %}">
+      <a href="{%s ws.RouteAct(act, 0, link...) %}" class="pklink">
         {%= fieldview.Any(col, f.Type) %}
       </a>
     {% else %}
@@ -67,7 +67,7 @@
         %}
         {% for _, q := range quals %}
           {% space %}
-          <a href="{%s ws.Route(q.Link()...) %}" title="{%s q.String() %}">{%= components.SVGRef(q.Icon, 16, 16, "", ws.PS) %}</a>
+          <a href="{%s ws.Route(q.Link()...) %}" title="{%s q.String() %}" class="rel">{%= components.SVGRef(q.Icon, 16, 16, "", ws.PS) %}</a>
         {% endfor %}
       {% endfor %}
     {% endif %}

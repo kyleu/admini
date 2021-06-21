@@ -1,8 +1,7 @@
-
 .result-table table {
+  min-width: calc(100% - (var(--padding) * 2));
   text-align: left;
   position: relative;
-  border: var(--border);
   margin: var(--padding);
 }
 
@@ -31,8 +30,14 @@
   border-right: var(--border);
 }
 
-.result-table th a {
+.result-table .pklink, .result-table .val {
   display: block;
+  width: calc(100% - 16px);
+  float: left;
+}
+
+.result-table .rel {
+  float: right;
 }
 
 .result-table th {
