@@ -4,6 +4,10 @@
   margin: var(--padding);
 }
 
+.card table {
+  width: 100%;
+}
+
 .card-sticky {
   position: sticky;
   left: var(--padding);

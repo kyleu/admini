@@ -1,10 +1,9 @@
 package source
 
 import (
+	"encoding/json"
 	"sort"
 	"strings"
-
-	jsoniter "github.com/json-iterator/go"
 
 	"github.com/pkg/errors"
 
@@ -12,13 +11,13 @@ import (
 )
 
 type Source struct {
-	Key         string              `json:"-"`
-	Title       string              `json:"title,omitempty"`
-	Icon        string              `json:"icon,omitempty"`
-	Description string              `json:"description,omitempty"`
-	Paths       []string            `json:"paths,omitempty"`
-	Type        schema.Origin       `json:"type,omitempty"`
-	Config      jsoniter.RawMessage `json:"config,omitempty"`
+	Key         string          `json:"-"`
+	Title       string          `json:"title,omitempty"`
+	Icon        string          `json:"icon,omitempty"`
+	Description string          `json:"description,omitempty"`
+	Paths       []string        `json:"paths,omitempty"`
+	Type        schema.Origin   `json:"type,omitempty"`
+	Config      json.RawMessage `json:"config,omitempty"`
 }
 
 func (s *Source) Name() string {

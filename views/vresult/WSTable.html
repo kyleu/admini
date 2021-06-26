@@ -10,51 +10,49 @@
 
 {% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, indent int, showNum bool, params *util.Params) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
-  <div class="result-table">
+  <table class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
-    <table>
+    <thead>
       {%= vutil.Indent(true, indent + 2) %}
-      <thead>
-        {%= vutil.Indent(true, indent + 3) %}
-        <tr>
-          {% if showNum %}
-            {%= vutil.Indent(true, indent + 4) %}
-            <th></th>
-          {% endif %}
-          {% for fIdx, f := range r.Fields %}
-            {% if m != nil && m.IsPK(f.Key, ws.PS.Logger) %}
-              {%= tableHeader(ws, r, m, fIdx, f, true, indent, params) %}
-            {% endif %}
-          {% endfor %}
-          {% for fIdx, f := range r.Fields %}
-            {% if m == nil || !m.IsPK(f.Key, ws.PS.Logger) %}
-              {%= tableHeader(ws, r, m, fIdx, f, false, indent, params) %}
-            {% endif %}
-          {% endfor %}
-        {%= vutil.Indent(true, indent + 3) %}
-        </tr>
-      {%= vutil.Indent(true, indent + 2) %}
-      </thead>
-      {%= vutil.Indent(true, indent + 2) %}
-      <tbody>
-        {% for rIdx, row := range r.Data %}
-          {%= WSRow(ws, act, rIdx, row, r.Fields, m, indent + 3, showNum, params) %}
-        {% endfor %}
-
-        {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
+      <tr>
+        {% if showNum %}
           {%= vutil.Indent(true, indent + 3) %}
-          <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ws.PS.URI) %}</td></tr>
+          <th class="no-padding"><div class="resize"></div></th>
         {% endif %}
+        {% for fIdx, f := range r.Fields %}
+          {% if m != nil && m.IsPK(f.Key, ws.PS.Logger) %}
+            {%= tableHeader(ws, r, m, fIdx, f, true, indent + 3, params) %}
+          {% endif %}
+        {% endfor %}
+        {% for fIdx, f := range r.Fields %}
+          {% if m == nil || !m.IsPK(f.Key, ws.PS.Logger) %}
+            {%= tableHeader(ws, r, m, fIdx, f, false, indent + 3, params) %}
+          {% endif %}
+        {% endfor %}
+        {%= vutil.Indent(true, indent + 3) %}
+        <th class="tfill"></th>
       {%= vutil.Indent(true, indent + 2) %}
-      </tbody>
+      </tr>
     {%= vutil.Indent(true, indent + 1) %}
-    </table>
+    </thead>
+    {%= vutil.Indent(true, indent + 1) %}
+    <tbody>
+      {% for rIdx, row := range r.Data %}
+        {%= WSRow(ws, act, rIdx, row, r.Fields, m, indent + 2, showNum, params) %}
+      {% endfor %}
+
+      {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
+        {%= vutil.Indent(true, indent + 2) %}
+        <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ws.PS.URI) %}</td></tr>
+      {% endif %}
+    {%= vutil.Indent(true, indent + 1) %}
+    </tbody>
   {%= vutil.Indent(true, indent) %}
-  </div>
+  </table>
 {% endstripspace %}{% endfunc %}
 
 {% func tableHeader(ws *cutil.WorkspaceRequest, r *result.Result, m *model.Model, fIdx int, f *field.Field, pk bool, indent int, params *util.Params) %}{% stripspace %}
-  {%= vutil.Indent(true, indent + 4) %}
+  {%= vutil.Indent(true, indent) %}
   {% code
     tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, f.Key, fIdx, f.Type)
     srt := m != nil && f.Type.Sortable()

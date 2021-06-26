@@ -2,9 +2,8 @@ package util
 
 import (
 	"bytes"
+	"encoding/json"
 	"io"
-
-	jsoniter "github.com/json-iterator/go"
 )
 
 func ToJSON(x interface{}) string {
@@ -17,23 +16,23 @@ func ToJSONCompact(x interface{}) string {
 
 func ToJSONBytes(x interface{}, indent bool) []byte {
 	if indent {
-		b, _ := jsoniter.MarshalIndent(x, "", "  ")
+		b, _ := json.MarshalIndent(x, "", "  ")
 		return b
 	}
-	b, _ := jsoniter.Marshal(x)
+	b, _ := json.Marshal(x)
 	return b
 }
 
-func FromJSON(msg jsoniter.RawMessage, tgt interface{}) error {
-	return jsoniter.Unmarshal(msg, tgt)
+func FromJSON(msg json.RawMessage, tgt interface{}) error {
+	return json.Unmarshal(msg, tgt)
 }
 
 func FromJSONReader(r io.Reader, tgt interface{}) error {
-	return jsoniter.NewDecoder(r).Decode(tgt)
+	return json.NewDecoder(r).Decode(tgt)
 }
 
-func FromJSONStrict(msg jsoniter.RawMessage, tgt interface{}) error {
-	dec := jsoniter.NewDecoder(bytes.NewReader(msg))
+func FromJSONStrict(msg json.RawMessage, tgt interface{}) error {
+	dec := json.NewDecoder(bytes.NewReader(msg))
 	dec.DisallowUnknownFields()
 	return dec.Decode(tgt)
 }

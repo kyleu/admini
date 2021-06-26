@@ -2,12 +2,13 @@ package ldb
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-	"strings"
 )
 
 func Save(db *database.Service, m *model.Model, ids []interface{}, changes util.ValueMap, logger *zap.SugaredLogger) ([]interface{}, error) {
@@ -17,7 +18,7 @@ func Save(db *database.Service, m *model.Model, ids []interface{}, changes util.
 
 	var where []string
 	for idx, x := range pk {
-		where = append(where, fmt.Sprintf("%s = $%d", x, len(vals) + idx + 1))
+		where = append(where, fmt.Sprintf("%s = $%d", x, len(vals)+idx+1))
 	}
 
 	q := database.SQLUpdateReturning(m.Key, cols, strings.Join(where, " and "), pk)

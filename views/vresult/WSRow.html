@@ -25,7 +25,9 @@
         {%= row(ws, act, idx, row, fields, m, fIdx, f, indent, showNum, false, params) %}
       {% endif %}
     {% endfor %}
-    {%= vutil.Indent(true, indent) %}
+    {%= vutil.Indent(true, indent + 1) %}
+    <td class="tfill"></td>
+  {%= vutil.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}
 

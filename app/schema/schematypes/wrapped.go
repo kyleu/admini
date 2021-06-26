@@ -1,7 +1,7 @@
 package schematypes
 
 import (
-	jsoniter "github.com/json-iterator/go"
+	"encoding/json"
 
 	"github.com/pkg/errors"
 
@@ -44,8 +44,8 @@ func (x *Wrapped) Default(key string) interface{} {
 }
 
 type wrappedUnmarshal struct {
-	K string              `json:"k"`
-	T jsoniter.RawMessage `json:"t,omitempty"`
+	K string          `json:"k"`
+	T json.RawMessage `json:"t,omitempty"`
 }
 
 func (x *Wrapped) MarshalJSON() ([]byte, error) {

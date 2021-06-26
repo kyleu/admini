@@ -68,7 +68,7 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	for _, x := range res {
 		path = append(path, fmt.Sprintf("%v", x))
 	}
-	dest := req.RouteAct(act, len(m.GetPK(req.PS.Logger)) + 1, path...)
+	dest := req.RouteAct(act, len(m.GetPK(req.PS.Logger))+1, path...)
 	return RedirectResult(msg, dest), nil
 }
 
@@ -94,5 +94,5 @@ func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey 
 	}
 
 	msg := fmt.Sprintf("Deleted %s [%s]", m.Name(), strings.Join(idStrings, ":"))
-	return RedirectResult(msg, req.RouteAct(act, len(idStrings) + 1)), nil
+	return RedirectResult(msg, req.RouteAct(act, len(idStrings)+1)), nil
 }

@@ -1,11 +1,9 @@
 table {
-  border-top: var(--border);
-  border-left: var(--border);
   border-collapse: separate;
   border-spacing: 0;
   margin: 0;
   padding: 0;
-  width: 100%;
+  text-align: left;
 }
 
 table tr {
@@ -14,13 +12,17 @@ table tr {
 }
 
 table td, table th {
-  border-bottom: var(--border);
-  border-right: var(--border);
   padding: var(--padding-small);
+  border-bottom: var(--border);
   margin: 0;
+  min-width: 1px;
 }
 
-table th {
+table tbody tr:last-child td, table tbody tr:last-child th {
+  border-bottom: none;
+}
+
+table thead th {
   margin: 0;
   text-align: left;
   font-weight: bold;
@@ -31,9 +33,14 @@ table .shrink {
   white-space: nowrap;
 }
 
-td.overflow {
-  text-overflow: ellipsis;
+table .resize {
+  padding: var(--padding-small);
+  resize: horizontal;
   overflow: hidden;
-  max-width: 0;
+  min-width: 100%;
   width: 100%;
+}
+
+table .tfill {
+  width: 99%;
 }

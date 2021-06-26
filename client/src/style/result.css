@@ -1,27 +1,32 @@
-.result-table table {
-  min-width: calc(100% - (var(--padding) * 2));
-  text-align: left;
+.result-table {
+  border-bottom: var(--border);
+  border-top: var(--border);
+  border-left: var(--border);
   position: relative;
   margin: var(--padding);
 }
 
-.result-table tr:hover {
+.result-table tbody tr:hover, .result-table tbody th:hover {
   background-color: var(--color-background-muted);
 }
 
-.result-table thead th {
+.result-table th, .result-table td {
+  border-right: var(--border);
+}
+
+.result-table th {
   background-color: var(--color-background);
   position: sticky;
-  top: 0;
+  font-weight: normal;
   z-index: 1;
 }
 
+.result-table thead th {
+  top: 0;
+}
+
 .result-table tbody th {
-  background-color: var(--color-background);
-  position: sticky;
   left: 0;
-  font-weight: normal;
-  border-right: var(--border);
 }
 
 .result-table .pkcol {

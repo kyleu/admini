@@ -41,10 +41,11 @@
 
 {% func TableHeader(section string, key string, title string, params *util.Params, icon string, u *fasthttp.URI, tooltip string, sortable bool, cls string, ps *cutil.PageState) %}{% stripspace %}
   {% if cls != "" %}
-    <th class="{%s cls %}" scope="col">
+    <th class="{%s cls %}{% space %}no-padding" scope="col">
   {% else %}
-    <th scope="col">
+    <th class="no-padding" scope="col">
   {% endif %}
+  <div class="resize">
     {% if !sortable %}
       <div title="{%s tooltip %}">
         {% if icon != "" %}
@@ -63,7 +64,7 @@
         {%= thSorted(o.Asc, section, key, title, params, icon, u, tooltip, ps) %}
       {% endif %}
     {% endif %}
-  </th>
+  </div></th>
 {% endstripspace %}{% endfunc %}
 
 {% func TableInput(key string, title string, value string, indent int) %}{% stripspace %}
