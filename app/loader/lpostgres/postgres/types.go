@@ -140,7 +140,7 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 	case "year":
 		// return schematypes.NewYear()
 	}
-	logger.Warn("unhandled type: " + t)
+	logger.Warn("unhandled PostgreSQL type: " + t)
 	return schematypes.NewUnknown(t)
 }
 

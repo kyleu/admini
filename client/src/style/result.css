@@ -41,8 +41,14 @@
   float: left;
 }
 
-.result-table .rel {
-  float: right;
+.result-table .rel-container {
+  display: flex;
+}
+.result-table .rel-container .l {
+  flex-grow: 1;
+}
+.result-table .rel-container .r {
+  padding-left: var(--padding-small);
 }
 
 .result-table th {

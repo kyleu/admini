@@ -36,7 +36,7 @@
           {%- for idx, f := range p.Model.Fields -%}
           <tr>
             <th class="shrink"><label><input type="checkbox" value="true" name="{%s f.Key %}--selected" /> {%s f.Key %}</label></th>
-            <td>{%= fieldedit.Any(p.Result[idx], f.Type, f.Nullable(), f.Key) %}</td>
+            <td>{%= fieldedit.Any(p.Result[idx], f.Type, f.Key) %}</td>
           </tr>
           {%- endfor -%}
         </tbody>

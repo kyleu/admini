@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/qualify"
 
 	"github.com/kyleu/admini/app/action"
 
@@ -54,9 +55,9 @@ func ProjectTest(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
 
-		req := action.NewRequest(action.TypeModel.Key, "list", action.TypeSource.Key, "admini_test", action.TypeModel.Key, "public/simple")
+		req := qualify.NewRequest(action.TypeModel.Key, "list", action.TypeSource.Key, "admini_test", action.TypeModel.Key, "public/simple")
 
-		q, err := action.Qualify(req, v.Project.Actions, v.Schemata)
+		q, err := qualify.Qualify(req, v.Project.Actions, v.Schemata)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to qualify project [%s]", key)
 		}

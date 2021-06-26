@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func getSource(act *Action, schemata schema.Schemata) (*model.Package, error) {
+func GetSource(act *Action, schemata schema.Schemata) (*model.Package, error) {
 	k, err := act.Config.GetString("source", false)
 	if err != nil {
 		return nil, errors.Wrap(err, "config key [source] must be provided")
@@ -19,8 +19,8 @@ func getSource(act *Action, schemata schema.Schemata) (*model.Package, error) {
 	return sch.ModelsByPackage(), nil
 }
 
-func getItem(act *Action, schemata schema.Schemata, key string) (interface{}, []string, error) {
-	sch, err := getSource(act, schemata)
+func GetItem(act *Action, schemata schema.Schemata, key string) (interface{}, []string, error) {
+	sch, err := GetSource(act, schemata)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -36,8 +36,8 @@ func getItem(act *Action, schemata schema.Schemata, key string) (interface{}, []
 	return i, remaining, nil
 }
 
-func getPackage(act *Action, schemata schema.Schemata) (*model.Package, []string, error) {
-	i, remaining, err := getItem(act, schemata, TypePackage.Key)
+func GetPackage(act *Action, schemata schema.Schemata) (*model.Package, []string, error) {
+	i, remaining, err := GetItem(act, schemata, TypePackage.Key)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -49,8 +49,8 @@ func getPackage(act *Action, schemata schema.Schemata) (*model.Package, []string
 	}
 }
 
-func getModel(act *Action, schemata schema.Schemata) (*model.Model, []string, error) {
-	i, remaining, err := getItem(act, schemata, TypeModel.Key)
+func GetModel(act *Action, schemata schema.Schemata) (*model.Model, []string, error) {
+	i, remaining, err := GetItem(act, schemata, TypeModel.Key)
 	if err != nil {
 		return nil, nil, err
 	}

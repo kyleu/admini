@@ -3,6 +3,7 @@
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/qualify" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
@@ -47,8 +48,8 @@
               if p.Act.Type == action.TypeAll {
                 src = p.Req.Path[0]
               }
-              req := action.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
-              quals, err := action.Qualify(req, p.Req.Project.Actions, p.Req.Schemata)
+              req := qualify.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
+              quals, err := qualify.Qualify(req, p.Req.Project.Actions, p.Req.Schemata)
               if err != nil {
                 panic(err)
               }

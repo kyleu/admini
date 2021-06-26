@@ -2,19 +2,35 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func FormInput(key string, id string, value string) %}{% stripspace %}
-  <input id="{%s id %}" name="{%s key %}" value="{%s value %}" />
+  {% if id == "" %}
+    <input name="{%s key %}" value="{%s value %}" />
+  {% else %}
+    <input id="{%s id %}" name="{%s key %}" value="{%s value %}" />
+  {% endif %}
 {% endstripspace %}{% endfunc %}
 
 {% func FormInputNumber(key string, id string, value int) %}{% stripspace %}
-  <input id="{%s id %}" name="{%s key %}" type="number" value="{%d value %}" />
+  {% if id == "" %}
+    <input name="{%s key %}" type="number" value="{%d value %}" />
+  {% else %}
+    <input id="{%s id %}" name="{%s key %}" type="number" value="{%d value %}" />
+  {% endif %}
 {% endstripspace %}{% endfunc %}
 
 {% func FormTextarea(key string, id string, value string) %}{% stripspace %}
-  <textarea id="{%s id %}" name="{%s key %}">{%s value %}</textarea>
+  {% if id == "" %}
+    <textarea name="{%s key %}">{%s value %}</textarea>
+  {% else %}
+    <textarea id="{%s id %}" name="{%s key %}">{%s value %}</textarea>
+  {% endif %}
 {% endstripspace %}{% endfunc %}
 
 {% func FormSelect(key string, id string, value string, opts []string, titles []string, indent int) %}{% stripspace %}
-  <select name="{%s key %}" id="{%s id %}">
+  {% if id == "" %}
+    <select name="{%s key %}">
+  {% else %}
+    <select name="{%s key %}" id="{%s id %}">
+  {% endif %}
     {% for idx, opt := range opts %}
       {% code
         title := opt

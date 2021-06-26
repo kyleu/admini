@@ -2,6 +2,7 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/field" %}
 {% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/qualify" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
@@ -35,43 +36,61 @@
   {%code col := row[fIdx] %}
   {%= vutil.Indent(true, indent + 1) %}
   {% if header %}<th>{% else %}<td>{% endif %}
-    {% if m != nil && m.IsPK(f.Key, ws.PS.Logger) %}
-      {% code
-        rowPK, err := model.GetStrings(fields, m.GetPK(ws.PS.Logger), row)
-        if err != nil {
-          panic(err)
-        }
-        link := append([]string{`v`}, rowPK...)
-      %}
-      <a href="{%s ws.RouteAct(act, 0, link...) %}" class="pklink">
-        {%= fieldview.Any(col, f.Type) %}
-      </a>
-    {% else %}
+    {% if m == nil %}
       {%= fieldview.Any(col, f.Type) %}
-    {% endif %}
-
-    {% if m != nil %}
-      {% for _, rel := range m.ApplicableRelations(f.Key) %}
-        {% code
-          rowFK, err := model.GetStrings(fields, rel.SourceFields, row)
-          if err != nil {
-            panic(err)
-          }
-          src := act.Config["source"]
-          if act.Type == action.TypeAll {
-            src = ws.Path[0]
-          }
-          req := action.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
-          quals, err := action.Qualify(req, ws.Project.Actions, ws.Schemata)
-          if err != nil {
-            panic(err)
-          }
-        %}
-        {% for _, q := range quals %}
-          {% space %}
-          <a href="{%s ws.Route(q.Link()...) %}" title="{%s q.String() %}" class="rel">{%= components.SVGRef(q.Icon, 16, 16, "", ws.PS) %}</a>
+    {% else %}
+      {% code rels := m.ApplicableRelations(f.Key) %}
+      {% if len(rels) == 0 %}
+        {%= cell(ws, act, row, fields, m, f, col) %}
+      {% else %}
+        {% for _, rel := range rels %}
+          {% code
+            rowFK, err := model.GetStrings(fields, rel.SourceFields, row)
+            if err != nil {
+              panic(err)
+            }
+            src := act.Config["source"]
+            if act.Type == action.TypeAll {
+              src = ws.Path[0]
+            }
+            req := qualify.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
+            quals, err := qualify.Qualify(req, ws.Project.Actions, ws.Schemata)
+            if err != nil {
+              panic(err)
+            }
+          %}
+          {% if len(quals) == 0 %}
+            {%= cell(ws, act, row, fields, m, f, col) %}
+          {% else %}
+            <div class="rel-container">
+              <div class="l">{%= cell(ws, act, row, fields, m, f, col) %}</div>
+              <div class="r">
+                {% for _, q := range quals %}
+                  {% space %}
+                  <a href="{%s ws.Route(q.Link()...) %}" title="{%s q.String() %}" class="rel">{%= components.SVGRef(q.Icon, 16, 16, "", ws.PS) %}</a>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
         {% endfor %}
-      {% endfor %}
+      {% endif %}
     {% endif %}
   {% if !header %}</td>{% else %}</th>{% endif %}
+{% endstripspace %}{% endfunc %}
+
+{% func cell(ws *cutil.WorkspaceRequest, act *action.Action, row []interface{}, fields field.Fields, m *model.Model, f *field.Field, col interface{}) %}{% stripspace %}
+  {% if m.IsPK(f.Key, ws.PS.Logger) %}
+    {% code
+      rowPK, err := model.GetStrings(fields, m.GetPK(ws.PS.Logger), row)
+      if err != nil {
+        panic(err)
+      }
+      link := append([]string{`v`}, rowPK...)
+    %}
+    <a href="{%s ws.RouteAct(act, 0, link...) %}" class="pklink">
+      {%= fieldview.Any(col, f.Type) %}
+    </a>
+  {% else %}
+    {%= fieldview.Any(col, f.Type) %}
+  {% endif %}
 {% endstripspace %}{% endfunc %}

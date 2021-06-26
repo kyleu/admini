@@ -1,17 +1,21 @@
 {% import "fmt" %}
 {% import "github.com/kyleu/admini/app/schema/schematypes" %}
 
-{% func Any(x interface{}, t schematypes.Type) %}{% stripspace %}
-  {% code k := t.Key() %}
-  {% if x == nil %}
-    <span class="null" title="null value">∅</span>
-  {% elseif k == "string" %}
+{% func Any(x interface{}, t *schematypes.Wrapped) %}{% stripspace %}
+  {% switch t.Key() %}
+  {% case "option" %}
+    {%= Option(x, t.T.(*schematypes.Option)) %}
+  {% case "string" %}
     {%= String(x.(string)) %}
-  {% elseif k == "bool" %}
+  {% case "int" %}
+    {%= Int(x) %}
+  {% case "float" %}
+    {%= Float(x) %}
+  {% case "bool" %}
     {%= Boolean(x.(bool)) %}
-  {% else %}
+  {% default %}
     {%= Default(x, t.String()) %}
-  {% endif %}
+  {% endswitch %}
 {% endstripspace %}{% endfunc %}
 
 {% func Default(x interface{}, t string) %}{% stripspace %}

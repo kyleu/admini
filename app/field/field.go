@@ -25,10 +25,6 @@ func (f *Field) Description() string {
 	return f.Metadata.Description
 }
 
-func (f *Field) Nullable() bool {
-	return f.Type.IsOption()
-}
-
 func (f *Field) DefaultClean() interface{} {
 	switch f.Default {
 	case nil:

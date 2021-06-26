@@ -1,0 +1,9 @@
+{% import "github.com/kyleu/admini/app/schema/schematypes" %}
+
+{% func Option(x interface{}, t *schematypes.Option) %}{% stripspace %}
+  {% if x == nil %}
+    <em>∅</em>
+  {% else %}
+    {%= Any(x, t.V) %}
+  {% endif %}
+{% endstripspace %}{% endfunc %}

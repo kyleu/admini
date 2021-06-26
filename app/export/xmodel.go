@@ -52,7 +52,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) *Result 
 			logger.Warn("imports...")
 		}
 		omit := ""
-		if fld.Nullable() {
+		if fld.Type.IsOption() {
 			omit = ",omitempty"
 		}
 		suffix := ""

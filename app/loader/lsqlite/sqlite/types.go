@@ -26,6 +26,6 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		max, _ := strconv.Atoi(s)
 		return schematypes.NewStringArgs(0, max, "")
 	}
-	logger.Warn("unhandled type: " + t)
+	logger.Warn("unhandled SQLite type: " + t)
 	return schematypes.NewUnknown(t)
 }
