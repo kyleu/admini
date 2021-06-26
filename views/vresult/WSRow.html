@@ -62,7 +62,7 @@
           {% if len(quals) == 0 %}
             {%= cell(ws, act, row, fields, m, f, col) %}
           {% else %}
-            <div class="rel-container">
+            <div class="two-pane">
               <div class="l">{%= cell(ws, act, row, fields, m, f, col) %}</div>
               <div class="r">
                 {% for _, q := range quals %}

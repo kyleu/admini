@@ -5,6 +5,9 @@
   {% case "bool" %}
     {%= Boolean(x, true, k) %}
   {% default %}
-    {%= Any(x, t.V, k) %}
+    <div class="two-pane">
+      <div class="l">{%= Any(x, t.V, k) %}</div>
+      <div class="r"><button title="click to set field to null" type="button" onclick="admini.setSiblingToNull(this);">∅</button></div>
+    </div>
   {% endswitch %}
 {% endstripspace %}{% endfunc %}

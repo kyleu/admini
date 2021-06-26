@@ -7,6 +7,8 @@
     {%= Option(x, t.T.(*schematypes.Option), k) %}
   {% case "string" %}
     {%= String(x, k) %}
+  {% case "int" %}
+    {%= Int(x, k) %}
   {% case "bool" %}
     {%= Boolean(x, false, k) %}
   {% default %}

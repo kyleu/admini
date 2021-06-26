@@ -5,11 +5,13 @@ import {editorInit} from "./editor";
 import {sortableEdit, sortableInit} from "./sortable";
 import {linkInit} from "./link";
 import {themeInit, themeReset} from "./theme";
+import {setSiblingToNull} from "./form";
 
 export function init(): void {
   (window as any).admini = {
     "sortableEdit": sortableEdit,
-    "themeReset": themeReset
+    "themeReset": themeReset,
+    "setSiblingToNull": setSiblingToNull
   };
   menuInit();
   flashInit();

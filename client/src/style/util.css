@@ -26,6 +26,16 @@
   margin: var(--padding);
 }
 
+.two-pane {
+  display: flex;
+}
+.two-pane .l {
+  flex-grow: 1;
+}
+.two-pane .r {
+  padding-left: var(--padding-small);
+}
+
 .pre {
   font-family: monospace, monospace;
   white-space: pre;
