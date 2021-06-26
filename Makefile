@@ -1,7 +1,8 @@
 .PHONY: clean
 clean: ## Clean builds
-	rm -rf tmp
+	rm -rf tmp/*.hashcode
 	rm -rf out
+	find ./views -type f -name '*.html.go' -exec rm {} +
 
 .PHONY: dev
 dev: ## Start the project, reloading on changes
