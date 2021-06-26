@@ -40,6 +40,12 @@ table .resize {
   width: 100%;
 }
 
+@-moz-document url-prefix() {
+  table .resize {
+    min-width: 100%;
+  }
+}
+
 table .tfill {
   width: 99%;
 }
