@@ -6,7 +6,7 @@
   margin: var(--padding);
 }
 
-.result-table tbody tr:hover, .result-table tbody th:hover {
+.result-table tbody tr:hover, .result-table tbody tr:hover th {
   background-color: var(--color-background-muted);
 }
 

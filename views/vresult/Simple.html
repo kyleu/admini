@@ -9,14 +9,10 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func Simple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
-  <div class="card">
-    {%= vutil.Indent(true, indent) %}
-    <div class="right">{%s util.Plural(len(r.Data), `row`, `rows`) %}</div>
-    {%= vutil.Indent(true, indent) %}
-    <h3>{%s r.Title %}</h3>
-    {%= simpleTable(r, indent, false, nil, as, ps) %}
-  {%= vutil.Indent(true, indent - 1) %}
-  </div>
+  <div class="right">{%s util.Plural(len(r.Data), `row`, `rows`) %}</div>
+  {%= vutil.Indent(true, indent) %}
+  <h3>{%s r.Title %}</h3>
+  {%= simpleTable(r, indent, false, nil, as, ps) %}
 {% endstripspace %}{% endfunc %}
 
 {% func simpleTable(r *result.Result, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
@@ -33,8 +29,10 @@
         {% for fIdx, field := range r.Fields %}
           {%= vutil.Indent(true, indent + 3) %}
           {% code tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, field.Key, fIdx, field.Type) %}
-          {%= components.TableHeader("x", field.Key, field.Key, params, "", ps.URI, tooltip, false, "", ps) %}
+          {%= components.TableHeader("x", field.Key, field.Key, nil, params, "", ps.URI, tooltip, false, "", ps) %}
         {% endfor %}
+        {%= vutil.Indent(true, indent + 3) %}
+        <th class="tfill"></th>
       {%= vutil.Indent(true, indent + 2) %}
       </tr>
     {%= vutil.Indent(true, indent + 1) %}
@@ -68,6 +66,8 @@
       {%= vutil.Indent(true, indent + 1) %}
       <td>{%= fieldview.Any(col, f.Type) %}</td>
     {% endfor %}
-    {%= vutil.Indent(true, indent) %}
+    {%= vutil.Indent(true, indent + 1) %}
+    <td class="tfill"></td>
+  {%= vutil.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}

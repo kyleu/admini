@@ -39,7 +39,7 @@
   </a>
 {% endstripspace %}{% endfunc %}
 
-{% func TableHeader(section string, key string, title string, params *util.Params, icon string, u *fasthttp.URI, tooltip string, sortable bool, cls string, ps *cutil.PageState) %}{% stripspace %}
+{% func TableHeader(section string, key string, title string, locs cutil.Locations, params *util.Params, icon string, u *fasthttp.URI, tooltip string, sortable bool, cls string, ps *cutil.PageState) %}{% stripspace %}
   {% if cls != "" %}
     <th class="{%s cls %}{% space %}no-padding" scope="col">
   {% else %}
