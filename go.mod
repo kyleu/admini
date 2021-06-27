@@ -6,6 +6,7 @@ require (
 	github.com/alecthomas/chroma v0.8.2
 	github.com/fasthttp/router v1.3.14
 	github.com/fsnotify/fsnotify v1.4.7
+	github.com/gertd/go-pluralize v0.1.7
 	github.com/go-gem/sessions v0.0.0-20170522023159-6f6fd65f2530
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/iancoleman/strcase v0.1.3

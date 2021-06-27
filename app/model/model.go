@@ -38,7 +38,7 @@ func (m *Model) String() string {
 
 func (m *Model) Name() string {
 	if m.Title == "" {
-		return util.ToTitle(m.Key)
+		return util.ToSingular(util.ToTitle(m.Key))
 	}
 	return m.Title
 }
@@ -49,7 +49,7 @@ func (m *Model) PluralName() string {
 		if strings.HasSuffix(ret, "s") {
 			return ret
 		}
-		return ret + "s"
+		return util.ToPlural(ret)
 	}
 	return m.Plural
 }

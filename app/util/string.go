@@ -5,6 +5,7 @@ import (
 	"strings"
 	"unicode"
 
+	pluralize "github.com/gertd/go-pluralize"
 	"github.com/iancoleman/strcase"
 )
 
@@ -66,6 +67,33 @@ func ToTitle(s string) string {
 
 func ToLowerCamel(s string) string {
 	return acr(strcase.ToLowerCamel(s))
+}
+
+var plrl *pluralize.Client
+
+func ToPlural(s string) string {
+	if plrl == nil {
+		plrl = pluralize.NewClient()
+	}
+	return plrl.Plural(s)
+}
+
+func ToSingular(s string) string {
+	if plrl == nil {
+		plrl = pluralize.NewClient()
+	}
+	return plrl.Singular(s)
+}
+
+func StringForms(s string) (string, string) {
+	if plrl == nil {
+		plrl = pluralize.NewClient()
+	}
+	if plrl.IsSingular(s) {
+		return s, plrl.Plural(s)
+	} else {
+		return plrl.Singular(s), s
+	}
 }
 
 func Plural(count int, sing string, plur string) string {

@@ -1,9 +1,12 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
 
 {% code type Detail struct {
   layout.Basic
@@ -36,12 +39,7 @@
       <tbody>
       {%- if p.Schema != nil && len(p.Schema.Models) > 0 -%}
       {%- for _, m := range p.Schema.Models -%}
-        <tr>
-          <td><a href="/source/{%s p.Source.Key %}/model/{%s m.String() %}">{%s m.Key %}</a></td>
-          <td>{%s m.Name() %}</td>
-          <td>{%s m.PluralName() %}</td>
-          <td>{%s m.Pkg.ToPath() %}</td>
-        </tr>
+        {%= modelRow(p.Source.Key, m, 4, as, ps) %}
       {%- endfor -%}
       {%- else -%}
         <tr><td colspan="3"><em>no models</em></td></tr>
@@ -50,3 +48,31 @@
     </table>
   </div>
 {% endfunc %}
+
+{% func modelRow(srcKey string, m *model.Model, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td><a href="/source/{%s srcKey %}/model/{%s m.String() %}">{%s m.Key %}</a></td>
+    {%= vutil.Indent(true, indent + 1) %}
+
+    {% code sing, plur := util.StringForms(util.ToTitle(m.Key)) %}
+    <td>
+      {% if m.Name() == sing %}
+        <em>{%s m.Name() %}</em>
+      {% else %}
+        {%s m.Name() %}
+      {% endif %}
+    </td>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>
+      {% if m.PluralName() == plur %}
+        <em>{%s m.PluralName() %}</em>
+      {% else %}
+        {%s m.PluralName() %}
+      {% endif %}
+    </td>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td>{%s m.Pkg.ToPath() %}</td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}
