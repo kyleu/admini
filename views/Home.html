@@ -21,18 +21,20 @@
   </div>
 
   <div class="card">
+    <div class="right"><a href="/project/_new" title="add new project">{%= components.SVGRef(`plus`, 20, 20, `icon`, ps) %}</a></div>
     <h3><a href="/project">Projects</a></h3>
     {%- if len(p.Sources) == 0 -%}
-    <p>no projects available, why not <a href="/project/_new">add one</a></p>
+    <p>no projects available, why not <a href="/project/_new" title="add new project">add one</a></p>
     {%- else -%}
     {%-= vproject.Table(p.Projects, as, ps) -%}
     {%- endif -%}
   </div>
 
   <div class="card">
+    <div class="right"><a href="/source/_new" title="add new source">{%= components.SVGRef(`plus`, 20, 20, `icon`, ps) %}</a></div>
     <h3><a href="/source">Sources</a></h3>
     {%- if len(p.Sources) == 0 -%}
-    <p>no sources available, why not <a href="/source/_new">add one</a></p>
+    <p>no sources available, why not <a href="/source/_new" title="add new source">add one</a></p>
     {%- else -%}
     {%-= vsource.Table(p.Sources, as, ps) -%}
     {%- endif -%}

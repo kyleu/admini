@@ -1,6 +1,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type List struct {
@@ -10,7 +11,7 @@
 
 {% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="/source/_new">add new</a></div>
+    <div class="right"><a href="/source/_new" title="add new source">{%= components.SVGRef(`plus`, 20, 20, `icon`, ps) %}</a></div>
     <h3>Sources</h3>
     {%= Table(p.Sources, as, ps) %}
   </div>
