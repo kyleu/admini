@@ -1,14 +1,14 @@
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/field" %}
+{% import "github.com/kyleu/admini/app/filter" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/qualify" %}
-{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool, params *util.Params) %}{% stripspace %}
+{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool, params *filter.Params) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <tr>
     {% if showNum %}
@@ -32,7 +32,7 @@
   </tr>
 {% endstripspace %}{% endfunc %}
 
-{% func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool, params *util.Params) %}{% stripspace %}
+{% func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool, params *filter.Params) %}{% stripspace %}
   {%code col := row[fIdx] %}
   {%= vutil.Indent(true, indent + 1) %}
   {% if header %}<th>{% else %}<td>{% endif %}

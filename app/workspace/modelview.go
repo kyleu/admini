@@ -12,16 +12,18 @@ import (
 func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
 	switch m.Type {
 	case model.TypeStruct:
-		_, ld, params, err := loaderFor(req, srcKey)
+		_, ld, err := loaderFor(req, srcKey)
 		if err != nil {
 			return ErrResult(req, act, err)
 		}
 
-		rs, err := ld.List(m, params)
+		opts := optionsFor(req)
+
+		rs, err := ld.List(m, opts)
 		if err != nil {
 			return ErrResult(req, act, errors.Wrapf(err, "unable to list model [%s]", m.Key))
 		}
-		page := &vmodel.List{Req: req, Act: act, Model: m, ParamSet: params, Result: rs}
+		page := &vmodel.List{Req: req, Act: act, Model: m, Options: opts, Result: rs}
 		return NewResult("", nil, req, act, rs, page), nil
 	case model.TypeEnum:
 		page := &vmodel.Enum{Req: req, Act: act, Model: m}
@@ -32,7 +34,7 @@ func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 }
 
 func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
-	_, ld, params, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -42,7 +44,7 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	page := &vmodel.View{Req: req, Act: act, Model: m, ParamSet: params, Result: data}
+	page := &vmodel.View{Req: req, Act: act, Model: m, Result: data}
 	idx := len(req.Path) - len(idStrings) - 1
 	if idx < 0 {
 		idx = 0

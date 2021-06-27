@@ -11,7 +11,7 @@ import (
 )
 
 func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
-	_, ld, _, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -31,7 +31,7 @@ func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 		return ErrResult(req, act, err)
 	}
 
-	_, ld, _, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}

@@ -2,6 +2,7 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/field" %}
+{% import "github.com/kyleu/admini/app/filter" %}
 {% import "github.com/kyleu/admini/app/result" %}
 {% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
@@ -15,7 +16,7 @@
   {%= simpleTable(r, indent, false, nil, as, ps) %}
 {% endstripspace %}{% endfunc %}
 
-{% func simpleTable(r *result.Result, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func simpleTable(r *result.Result, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <table class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
@@ -53,7 +54,7 @@
   </table>
 {% endstripspace %}{% endfunc %}
 
-{% func simpleRow(idx int, row []interface{}, fields field.Fields, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func simpleRow(idx int, row []interface{}, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <tr>
     {% if showNum %}

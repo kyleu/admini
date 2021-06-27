@@ -1,7 +1,7 @@
 {% import "github.com/valyala/fasthttp" %}
-{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/app/filter" %}
 
-{% func Pagination(section string, count int, params *util.Params, u *fasthttp.URI) %}{% stripspace %}
+{% func Pagination(section string, count int, params *filter.Params, u *fasthttp.URI) %}{% stripspace %}
   {% if params != nil %}
     {% if params.HasNextPage(count) %}
       <div class="right">

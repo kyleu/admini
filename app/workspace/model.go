@@ -1,6 +1,7 @@
 package workspace
 
 import (
+	"github.com/kyleu/admini/app/filter"
 	"strings"
 
 	"github.com/valyala/fasthttp"
@@ -11,7 +12,6 @@ import (
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 )
 
@@ -61,16 +61,20 @@ func getModel(m *model.Model, idStrings []string, ld loader.Loader) ([]interface
 	}
 }
 
-func loaderFor(req *cutil.WorkspaceRequest, srcKey string) (*source.Source, loader.Loader, util.ParamSet, error) {
+func loaderFor(req *cutil.WorkspaceRequest, srcKey string) (*source.Source, loader.Loader, error) {
 	s, err := req.Sources.GetWithError(srcKey)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, err
 	}
 
 	l, err := req.AS.Loaders.Get(s.Type, s.Key, s.Config)
 	if err != nil {
-		return nil, nil, nil, errors.Wrap(err, "no loader available")
+		return nil, nil, errors.Wrap(err, "no loader available")
 	}
+	return s, l, nil
+}
+
+func optionsFor(req *cutil.WorkspaceRequest) *filter.Options {
 	p := cutil.ParamSetFromRequest(req.Ctx)
-	return s, l, p, nil
+	return &filter.Options{Sort: nil, Filter: nil, Group: nil, Max: 0, Params: p}
 }

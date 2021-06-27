@@ -2,13 +2,13 @@
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/field" %}
+{% import "github.com/kyleu/admini/app/filter" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/result" %}
-{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, params *util.Params) %}{% stripspace %}
+{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, params *filter.Params) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <table class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
@@ -51,7 +51,7 @@
   </table>
 {% endstripspace %}{% endfunc %}
 
-{% func tableHeader(ws *cutil.WorkspaceRequest, r *result.Result, m *model.Model, fIdx int, f *field.Field, locs cutil.Locations, pk bool, indent int, params *util.Params) %}{% stripspace %}
+{% func tableHeader(ws *cutil.WorkspaceRequest, r *result.Result, m *model.Model, fIdx int, f *field.Field, locs cutil.Locations, pk bool, indent int, params *filter.Params) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   {% code
     tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, f.Key, fIdx, f.Type)

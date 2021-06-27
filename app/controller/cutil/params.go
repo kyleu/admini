@@ -1,16 +1,15 @@
 package cutil
 
 import (
+	"github.com/kyleu/admini/app/filter"
 	"strconv"
 	"strings"
 
 	"github.com/valyala/fasthttp"
-
-	"github.com/kyleu/admini/app/util"
 )
 
-func ParamSetFromRequest(ctx *fasthttp.RequestCtx) util.ParamSet {
-	ret := util.ParamSet{}
+func ParamSetFromRequest(ctx *fasthttp.RequestCtx) filter.ParamSet {
+	ret := filter.ParamSet{}
 	args := ctx.URI().QueryArgs()
 	args.VisitAll(func(key []byte, value []byte) {
 		qk := string(key)
@@ -21,7 +20,7 @@ func ParamSetFromRequest(ctx *fasthttp.RequestCtx) util.ParamSet {
 	return ret
 }
 
-func apply(ps util.ParamSet, qk string, qv string) util.ParamSet {
+func apply(ps filter.ParamSet, qk string, qv string) filter.ParamSet {
 	switch {
 	case strings.HasSuffix(qk, ".o"):
 		curr := getCurr(ps, strings.TrimSuffix(qk, ".o"))
@@ -30,7 +29,7 @@ func apply(ps util.ParamSet, qk string, qv string) util.ParamSet {
 			asc = false
 			qv = qv[0 : len(qv)-2]
 		}
-		curr.Orderings = append(curr.Orderings, &util.Ordering{Column: qv, Asc: asc})
+		curr.Orderings = append(curr.Orderings, &filter.Ordering{Column: qv, Asc: asc})
 	case strings.HasSuffix(qk, ".l"):
 		curr := getCurr(ps, strings.TrimSuffix(qk, ".l"))
 		li, err := strconv.ParseInt(qv, 10, 64)
@@ -51,10 +50,10 @@ func apply(ps util.ParamSet, qk string, qv string) util.ParamSet {
 	return ps
 }
 
-func getCurr(q util.ParamSet, key string) *util.Params {
+func getCurr(q filter.ParamSet, key string) *filter.Params {
 	curr, ok := q[key]
 	if !ok {
-		curr = &util.Params{Key: key}
+		curr = &filter.Params{Key: key}
 		q[key] = curr
 	}
 	return curr

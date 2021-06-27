@@ -1,6 +1,7 @@
 package loader
 
 import (
+	"github.com/kyleu/admini/app/filter"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
 	"github.com/kyleu/admini/app/schema"
@@ -11,7 +12,7 @@ type Loader interface {
 	Schema() (*schema.Schema, error)
 
 	Connection() (interface{}, error)
-	List(m *model.Model, params util.ParamSet) (*result.Result, error)
+	List(m *model.Model, opts *filter.Options) (*result.Result, error)
 	Count(m *model.Model) (int, error)
 	Get(m *model.Model, ids []interface{}) (*result.Result, error)
 	Query(sql string) (*result.Result, error)

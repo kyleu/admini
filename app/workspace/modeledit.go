@@ -13,7 +13,7 @@ import (
 )
 
 func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
-	_, ld, params, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -23,7 +23,7 @@ func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	page := &vmodel.Edit{Req: req, Act: act, Model: m, ParamSet: params, Result: data}
+	page := &vmodel.Edit{Req: req, Act: act, Model: m, Result: data}
 	idx := len(req.Path) - len(idStrings) - 1
 	if idx < 0 {
 		idx = 0
@@ -48,7 +48,7 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return RedirectResult("no changes required", req.RouteAct(act, 0)), nil
 	}
 
-	_, ld, _, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -75,7 +75,7 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
 	pk := m.GetPK(req.PS.Logger)
 
-	_, ld, _, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}

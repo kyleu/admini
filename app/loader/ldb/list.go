@@ -2,20 +2,19 @@ package ldb
 
 import (
 	"fmt"
+	"github.com/kyleu/admini/app/filter"
 	"strings"
 
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/model"
-	"github.com/kyleu/admini/app/util"
-
 	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
 )
 
-func List(db *database.Service, m *model.Model, params util.ParamSet, logger *zap.SugaredLogger) (*result.Result, error) {
-	p := params.Get(m.Key, m.Fields.Names(), logger)
+func List(db *database.Service, m *model.Model, opts *filter.Options, logger *zap.SugaredLogger) (*result.Result, error) {
+	p := opts.Params.Get(m.Key, m.Fields.Names(), logger)
 	if p != nil && p.Limit == 0 {
 		p.Limit = 100
 	}
@@ -50,7 +49,7 @@ func Count(db *database.Service, m *model.Model) (int, error) {
 	return c.C, nil
 }
 
-func modelListQuery(m *model.Model, params *util.Params) string {
+func modelListQuery(m *model.Model, params *filter.Params) string {
 	cols, tbl := forTable(m)
 	return database.SQLSelect(cols, tbl, "", params.OrderByString(), params.Limit, params.Offset)
 }

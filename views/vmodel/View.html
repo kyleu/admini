@@ -4,7 +4,6 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/qualify" %}
-{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
@@ -14,7 +13,6 @@
   Req *cutil.WorkspaceRequest
   Act *action.Action
   Model *model.Model
-  ParamSet util.ParamSet
   Result []interface{}
 } %}
 

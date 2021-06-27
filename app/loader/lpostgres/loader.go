@@ -1,6 +1,7 @@
 package lpostgres
 
 import (
+	"github.com/kyleu/admini/app/filter"
 	"github.com/kyleu/admini/app/loader/ldb"
 	"github.com/kyleu/admini/app/loader/lpostgres/postgres"
 	"github.com/kyleu/admini/app/result"
@@ -42,8 +43,8 @@ func (l *Loader) Connection() (interface{}, error) {
 	return l.db, nil
 }
 
-func (l *Loader) List(m *model.Model, params util.ParamSet) (*result.Result, error) {
-	return ldb.List(l.db, m, params, l.logger)
+func (l *Loader) List(m *model.Model, opts *filter.Options) (*result.Result, error) {
+	return ldb.List(l.db, m, opts, l.logger)
 }
 
 func (l *Loader) Count(m *model.Model) (int, error) {

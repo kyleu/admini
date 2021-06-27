@@ -1,12 +1,12 @@
 {% import "fmt" %}
 {% import "github.com/valyala/fasthttp" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/app/filter" %}
 {% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func thNormal(section string, key string, title string, params *util.Params, icon string, u *fasthttp.URI, tooltip string, ps *cutil.PageState) %}{% stripspace %}
-  <a class="sort-hover" href="?{%s= params.CloneOrdering(&util.Ordering{Column: key, Asc: true}).ToQueryString(u) %}" title="{%s tooltip %}">
+{% func thNormal(section string, key string, title string, params *filter.Params, icon string, u *fasthttp.URI, tooltip string, ps *cutil.PageState) %}{% stripspace %}
+  <a class="sort-hover" href="?{%s= params.CloneOrdering(&filter.Ordering{Column: key, Asc: true}).ToQueryString(u) %}" title="{%s tooltip %}">
     <div class="sort-icon" title="click to sort by this column, ascending">{%= SVGRef(`down`, 0, 0, ``, ps) %}</div>
     <div class="sort-title">
       {% if icon != "" %}
@@ -18,7 +18,7 @@
   </a>
 {% endstripspace %}{% endfunc %}
 
-{% func thSorted(asc bool, section string, key string, title string, params *util.Params, icon string, u *fasthttp.URI, tooltip string, ps *cutil.PageState) %}{% stripspace %}
+{% func thSorted(asc bool, section string, key string, title string, params *filter.Params, icon string, u *fasthttp.URI, tooltip string, ps *cutil.PageState) %}{% stripspace %}
   {% code
     ascStr := "ascending"
     dirStr := "up"
@@ -27,7 +27,7 @@
       dirStr = "down"
     }
   %}
-  <a href="?{%s= params.CloneOrdering(&util.Ordering{Column: key, Asc: !asc}).ToQueryString(u) %}" title="{%s tooltip %}">
+  <a href="?{%s= params.CloneOrdering(&filter.Ordering{Column: key, Asc: !asc}).ToQueryString(u) %}" title="{%s tooltip %}">
     <div class="sort-icon" title="click to sort by this column,{% space %}{%s ascStr %}">{%= SVGRef(dirStr, 0, 0, ``, ps) %}</div>
     <div class="sort-title">
       {% if icon != "" %}
@@ -39,7 +39,7 @@
   </a>
 {% endstripspace %}{% endfunc %}
 
-{% func TableHeader(section string, key string, title string, locs cutil.Locations, params *util.Params, icon string, u *fasthttp.URI, tooltip string, sortable bool, cls string, ps *cutil.PageState) %}{% stripspace %}
+{% func TableHeader(section string, key string, title string, locs cutil.Locations, params *filter.Params, icon string, u *fasthttp.URI, tooltip string, sortable bool, cls string, ps *cutil.PageState) %}{% stripspace %}
   {% if cls != "" %}
     <th class="{%s cls %}{% space %}no-padding" scope="col">
   {% else %}

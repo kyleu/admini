@@ -1,9 +1,9 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/filter" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/result" %}
-{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vaction" %}
@@ -14,7 +14,7 @@
   Req *cutil.WorkspaceRequest
   Act *action.Action
   Model *model.Model
-  ParamSet util.ParamSet
+  Options *filter.Options
   Result *result.Result
 } %}
 
@@ -29,7 +29,7 @@
     <a href="{%s p.Req.RouteAct(p.Act, 0, `export`) %}"><button type="button">Export</button></a>
   </div>
 
-  {%- code params := p.ParamSet.Get(p.Model.Key, p.Model.Fields.Names(), ps.Logger) -%}
+  {%- code params := p.Options.Params.Get(p.Model.Key, p.Model.Fields.Names(), ps.Logger) -%}
   <div class="card card-sticky">
     {%= vresult.WSOptions(p.Req, p.Act, p.Result, p.Model, nil, 2, false, params, as, ps) %}
   </div>

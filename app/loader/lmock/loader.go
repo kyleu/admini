@@ -1,6 +1,7 @@
 package lmock
 
 import (
+	"github.com/kyleu/admini/app/filter"
 	"github.com/kyleu/admini/app/model"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
@@ -42,7 +43,7 @@ func (l *Loader) Connection() (interface{}, error) {
 	return nil, nil
 }
 
-func (l *Loader) List(m *model.Model, _ util.ParamSet) (*result.Result, error) {
+func (l *Loader) List(m *model.Model, _ *filter.Options) (*result.Result, error) {
 	o, ok := mockData[l.key]
 	if !ok {
 		return nil, errors.Errorf("no mock data for [%s]", l.key)

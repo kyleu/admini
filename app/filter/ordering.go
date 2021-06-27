@@ -1,4 +1,4 @@
-package util
+package filter
 
 type Ordering struct {
 	Column string `json:"column"`

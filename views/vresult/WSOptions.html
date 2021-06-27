@@ -1,13 +1,13 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/filter" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/result" %}
-{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSOptions(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func WSOptions(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   <div class="result-options">
     {%= vutil.Indent(true, indent + 1) %}
     <form action="???" class="search" title="search" style="float: right; margin-top: -3px;">
