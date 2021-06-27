@@ -1,6 +1,7 @@
 package field
 
 import (
+	"github.com/kyleu/admini/app/util"
 	"time"
 
 	"github.com/kyleu/admini/app/schema/schematypes"
@@ -8,10 +9,18 @@ import (
 
 type Field struct {
 	Key      string               `json:"key"`
+	Title    string               `json:"-"`
 	Type     *schematypes.Wrapped `json:"type"`
 	Default  interface{}          `json:"default,omitempty"`
 	ReadOnly bool                 `json:"readOnly,omitempty"`
 	Metadata *Metadata            `json:"metadata,omitempty"`
+}
+
+func (f *Field) Name() string {
+	if f.Title == "" {
+		return util.ToTitle(f.Key)
+	}
+	return f.Title
 }
 
 func (f *Field) String() string {

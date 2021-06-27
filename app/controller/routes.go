@@ -26,6 +26,8 @@ func BuildRouter() *router.Router {
 	r.POST("/source/{key}", w(SourceSave))
 	r.GET("/source/{key}/refresh", w(SourceRefresh))
 	r.GET("/source/{key}/delete", w(SourceDelete))
+	r.GET("/source/{key}/model/{path:*}", w(SourceModelDetail))
+	r.POST("/source/{key}/model/{path:*}", w(SourceModelSave))
 
 	r.GET("/project", w(ProjectList))
 	r.POST("/project", w(ProjectInsert))
@@ -34,8 +36,8 @@ func BuildRouter() *router.Router {
 	r.POST("/project/{key}", w(ProjectSave))
 	r.GET("/project/{key}/edit", w(ProjectEdit))
 	r.POST("/project/{key}/actions", w(ActionOrdering))
-	r.GET("/project/{key}/action/{_:*}", w(ActionEdit))
-	r.POST("/project/{key}/action/{_:*}", w(ActionSave))
+	r.GET("/project/{key}/action/{path:*}", w(ActionEdit))
+	r.POST("/project/{key}/action/{path:*}", w(ActionSave))
 	r.GET("/project/{key}/test", w(ProjectTest))
 	r.GET("/project/{key}/delete", w(ProjectDelete))
 

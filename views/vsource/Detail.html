@@ -23,14 +23,30 @@
   </div>
 
   <div class="card">
-    <ul class="accordion">
-    {%- if p.Schema != nil && len(p.Schema.Models) > 0 -%}
-      {%- for idx, model := range p.Schema.Models -%}
-      {%= ModelSummary(p.Source.Key, idx, model, as, ps) %}
+    <h3>Models</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Title</th>
+          <th>Plural</th>
+          <th>Path</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- if p.Schema != nil && len(p.Schema.Models) > 0 -%}
+      {%- for _, m := range p.Schema.Models -%}
+        <tr>
+          <td><a href="/source/{%s p.Source.Key %}/model/{%s m.String() %}">{%s m.Key %}</a></td>
+          <td>{%s m.Name() %}</td>
+          <td>{%s m.PluralName() %}</td>
+          <td>{%s m.Pkg.ToPath() %}</td>
+        </tr>
       {%- endfor -%}
-    {%- else -%}
-      <li><em>no models</em></li>
-    {%- endif -%}
-    </ul>
+      {%- else -%}
+        <tr><td colspan="3"><em>no models</em></td></tr>
+      {%- endif -%}
+      </tbody>
+    </table>
   </div>
 {% endfunc %}

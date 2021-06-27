@@ -24,9 +24,9 @@ type Service struct {
 	logger      *zap.SugaredLogger
 }
 
-func NewService(root string, files filesystem.FileLoader, ld *loader.Service, logger *zap.SugaredLogger) *Service {
+func NewService(files filesystem.FileLoader, ld *loader.Service, logger *zap.SugaredLogger) *Service {
 	log := logger.With(zap.String("service", "source"))
-	return &Service{root: root, schemaCache: map[string]*schema.Schema{}, files: files, loaders: ld, logger: log}
+	return &Service{root: "source", schemaCache: map[string]*schema.Schema{}, files: files, loaders: ld, logger: log}
 }
 
 func (s *Service) List() (Sources, error) {
@@ -129,5 +129,31 @@ func (s *Service) reloadSourceCache() error {
 		ret = append(ret, src)
 	}
 	s.cache = ret
+	return nil
+}
+
+func (s *Service) loadOverrides(key string, ret *schema.Schema) error {
+	op := filepath.Join(s.root, key, "overrides.json")
+
+	if s.files.Exists(op) {
+		out, err := s.files.ReadFile(op)
+		if err != nil {
+			return errors.Wrap(err, "unable to read schema overrides")
+		}
+
+		overrides := schema.Overrides{}
+		err = util.FromJSON(out, &overrides)
+		if err != nil {
+			return err
+		}
+
+		for _, o := range overrides {
+			err = o.ApplyTo(ret)
+			if err != nil {
+				return errors.Wrapf(err, "unable to apply override [%s]", o.String())
+			}
+		}
+	}
+
 	return nil
 }

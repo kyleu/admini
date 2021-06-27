@@ -31,7 +31,12 @@ func (s *Service) LoadSchema(key string) (*schema.Schema, error) {
 		}
 	}
 	if ret != nil {
-		err := ret.CreateReferences()
+		err := s.loadOverrides(key, ret)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to calulate overrides")
+		}
+
+		err = ret.CreateReferences()
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to calculate references")
 		}
@@ -76,6 +81,10 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 		return nil, 0, errors.Wrapf(err, "can't save source with key [%s]", key)
 	}
 
+	err = s.loadOverrides(key, sch)
+	if err != nil {
+		return nil, 0, errors.Wrap(err, "unable to calulate overrides")
+	}
 	err = sch.CreateReferences()
 	if err != nil {
 		return nil, 0, err

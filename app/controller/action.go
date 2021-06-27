@@ -138,14 +138,15 @@ func loadAction(ctx *fasthttp.RequestCtx, as *app.State) (*project.Project, *act
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}
 
-	pkgString := string(ctx.URI().Path())
-	pkgIdx := strings.Index(pkgString, "/action")
-	pkgString = pkgString[pkgIdx+7:]
-	pkg := util.SplitAndTrim(pkgString, "/")
+	path, err := ctxRequiredString(ctx, "path", false)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	pkg := util.SplitAndTrim(path, "/")
 
 	a, remaining := p.Actions.Get(pkg)
 	if a == nil {
-		return nil, nil, nil, errors.Errorf("no action available at [%s]", pkgString)
+		return nil, nil, nil, errors.Errorf("no action available at [%s]", path)
 	}
 
 	return p, a, remaining, nil

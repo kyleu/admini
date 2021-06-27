@@ -1,0 +1,21 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/schema" %}
+{% import "github.com/kyleu/admini/app/source" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+
+{% code type ModelDetail struct {
+  layout.Basic
+  Source *source.Source
+  Schema *schema.Schema
+  Model  *model.Model
+} %}
+
+{% func (p *ModelDetail) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>{%s p.Model.Name() %}</h3>
+    <em>{%s p.Source.Key %}@{%s p.Model.Pkg.ToPath() %}</em>
+    {%= ModelSummary(p.Source.Key, 0, p.Model, as, ps) %}
+  </div>
+{% endfunc %}

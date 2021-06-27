@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/kyleu/admini/app/field"
 
@@ -11,7 +12,8 @@ import (
 
 type Model struct {
 	Key           string        `json:"key"`
-	Title         string        `json:"title,omitempty"`
+	Title         string        `json:"-"`
+	Plural        string        `json:"-"`
 	Pkg           util.Pkg      `json:"pkg,omitempty"`
 	Type          Type          `json:"type"`
 	Interfaces    []string      `json:"interfaces,omitempty"`
@@ -36,9 +38,20 @@ func (m *Model) String() string {
 
 func (m *Model) Name() string {
 	if m.Title == "" {
-		return m.Key
+		return util.ToTitle(m.Key)
 	}
 	return m.Title
+}
+
+func (m *Model) PluralName() string {
+	if m.Plural == "" {
+		ret := m.Name()
+		if strings.HasSuffix(ret, "s") {
+			return ret
+		}
+		return ret + "s"
+	}
+	return m.Plural
 }
 
 func (m *Model) Description() string {

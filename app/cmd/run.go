@@ -37,10 +37,8 @@ func Run() error {
 	flags := parseFlags()
 	if flags.ConfigDir == "" {
 		flags.ConfigDir = configdir.LocalConfig(util.AppName)
-		_ = configdir.MakePath(flags.ConfigDir) // Ensure it exists.
+		_ = configdir.MakePath(flags.ConfigDir)
 	}
-
-	println(flags.ConfigDir)
 
 	logger.With(
 		zap.Bool("debug", flags.Debug),
