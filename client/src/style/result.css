@@ -57,3 +57,8 @@
 .result-table .null {
   color: var(--color-foreground-muted);
 }
+
+.result-options .opt {
+  float: left;
+  margin-right: var(--padding);
+}

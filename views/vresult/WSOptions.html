@@ -1,0 +1,29 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/action" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/result" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func WSOptions(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, params *util.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+  <div class="result-options">
+    {%= vutil.Indent(true, indent + 1) %}
+    <form action="???" class="search" title="search" style="float: right; margin-top: -3px;">
+      <input type="search" name="q" placeholder=" " />
+      <div class="search-image"><svg><use xlink:href="#svg-search" /></svg></div>
+    </form>
+    {%= vutil.Indent(true, indent + 1) %}
+    <div class="opt">{%= components.SVGRef(`sort`, 16, 16, `icon`, ps) %}Sort</div>
+    {%= vutil.Indent(true, indent + 1) %}
+    <div class="opt">{%= components.SVGRef(`settings`, 16, 16, `icon`, ps) %}Filter</div>
+    {%= vutil.Indent(true, indent + 1) %}
+    <div class="opt">{%= components.SVGRef(`folder`, 16, 16, `icon`, ps) %}Group</div>
+    {%= vutil.Indent(true, indent + 1) %}
+    <div class="opt">{%= components.SVGRef(`download`, 16, 16, `icon`, ps) %}Download</div>
+    {%= vutil.Indent(true, indent + 1) %}
+    <div class="clear"></div>
+  {%= vutil.Indent(true, indent) %}
+  </div>
+{% endstripspace %}{% endfunc %}

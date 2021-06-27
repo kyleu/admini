@@ -41,7 +41,7 @@ table .resize {
   width: 100%;
 }
 
-@-moz-document url-prefix() {
+@supports (-moz-appearance:none) {
   table .resize {
     min-width: 100%;
   }
