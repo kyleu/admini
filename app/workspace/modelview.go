@@ -17,8 +17,8 @@ func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 			return ErrResult(req, act, err)
 		}
 
-		opts := optionsFor(req)
-
+		optsMap := optionsFor(req)
+		opts := optsMap.Get(m.Key)
 		rs, err := ld.List(m, opts)
 		if err != nil {
 			return ErrResult(req, act, errors.Wrapf(err, "unable to list model [%s]", m.Key))

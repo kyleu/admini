@@ -5,18 +5,16 @@ import (
 	"github.com/kyleu/admini/app/filter"
 	"strings"
 
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
-
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
+	"github.com/pkg/errors"
 )
 
-func List(db *database.Service, m *model.Model, opts *filter.Options, logger *zap.SugaredLogger) (*result.Result, error) {
-	p := opts.Params.Get(m.Key, m.Fields.Names(), logger)
+func List(db *database.Service, m *model.Model, opts *filter.Options) (*result.Result, error) {
+	p := opts.Params
 	if p != nil && p.Limit == 0 {
-		p.Limit = 100
+		p.Limit = filter.MaxRowsDefault
 	}
 	q := modelListQuery(m, p)
 	rows, err := db.Query(q, nil)

@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
+const MaxRowsDefault = 100
 var AllowedColumns = map[string][]string{}
 
 type Params struct {
@@ -35,7 +36,7 @@ func (p *Params) HasNextPage(count int) bool {
 func (p *Params) NextPage() *Params {
 	limit := p.Limit
 	if limit == 0 {
-		limit = 100
+		limit = MaxRowsDefault
 	}
 	offset := p.Offset + limit
 	if offset < 0 {
@@ -51,7 +52,7 @@ func (p *Params) HasPreviousPage() bool {
 func (p *Params) PreviousPage() *Params {
 	limit := p.Limit
 	if limit == 0 {
-		limit = 100
+		limit = MaxRowsDefault
 	}
 	offset := p.Offset - limit
 	if offset < 0 {

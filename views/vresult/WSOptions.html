@@ -1,4 +1,3 @@
-{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/filter" %}
@@ -7,23 +6,74 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSOptions(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func WSOptions(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, indent int, opts *filter.Options) %}{% stripspace %}
   <div class="result-options">
     {%= vutil.Indent(true, indent + 1) %}
-    <form action="???" class="search" title="search" style="float: right; margin-top: -3px;">
+    <form action="???" class="search" title="search">
       <input type="search" name="q" placeholder=" " />
       <div class="search-image"><svg><use xlink:href="#svg-search" /></svg></div>
     </form>
     {%= vutil.Indent(true, indent + 1) %}
-    <div class="opt">{%= components.SVGRef(`sort`, 16, 16, `icon`, ps) %}Sort</div>
+    <a href="#modal-sort" class="opt">{%= components.SVGRef(`sort`, 16, 16, `icon`, ws.PS) %}Sort</a>
     {%= vutil.Indent(true, indent + 1) %}
-    <div class="opt">{%= components.SVGRef(`settings`, 16, 16, `icon`, ps) %}Filter</div>
+    <a href="#modal-filter" class="opt">{%= components.SVGRef(`settings`, 16, 16, `icon`, ws.PS) %}Filter</a>
     {%= vutil.Indent(true, indent + 1) %}
-    <div class="opt">{%= components.SVGRef(`folder`, 16, 16, `icon`, ps) %}Group</div>
+    <a href="#modal-group" class="opt">{%= components.SVGRef(`folder`, 16, 16, `icon`, ws.PS) %}Group</a>
     {%= vutil.Indent(true, indent + 1) %}
-    <div class="opt">{%= components.SVGRef(`download`, 16, 16, `icon`, ps) %}Download</div>
+    <div><a href="#modal-download" class="opt">{%= components.SVGRef(`download`, 16, 16, `icon`, ws.PS) %}Download</a></div>
     {%= vutil.Indent(true, indent + 1) %}
     <div class="clear"></div>
   {%= vutil.Indent(true, indent) %}
+  </div>
+{% endstripspace %}{% endfunc %}
+
+{% func WSModals(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, indent int, opts *filter.Options) %}{% stripspace %}
+  <div id="modal-sort" class="modal" style="display: none;">
+    <a class="backdrop" href="#"></a>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="modal-close">×</a>
+        <h2>Sort Options</h2>
+      </div>
+      <div class="modal-body">
+        TODO: Sorting...
+      </div>
+    </div>
+  </div>
+  <div id="modal-filter" class="modal" style="display: none;">
+    <a class="backdrop" href="#"></a>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="modal-close">×</a>
+        <h2>Filters</h2>
+      </div>
+      <div class="modal-body">
+        TODO: Filters...
+      </div>
+    </div>
+  </div>
+  <div id="modal-group" class="modal" style="display: none;">
+    <a class="backdrop" href="#"></a>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="modal-close">×</a>
+        <h2>Grouping Options</h2>
+      </div>
+      <div class="modal-body">
+        TODO: Grouping...
+      </div>
+    </div>
+  </div>
+  <div id="modal-download" class="modal" style="display: none;">
+    <a class="backdrop" href="#"></a>
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="modal-close">×</a>
+        <h2>Download</h2>
+      </div>
+      <div class="modal-body">
+        TODO: Downloads...
+      </div>
+    </div>
   </div>
 {% endstripspace %}{% endfunc %}

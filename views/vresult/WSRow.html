@@ -1,14 +1,13 @@
 {% import "github.com/kyleu/admini/app/action" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/field" %}
-{% import "github.com/kyleu/admini/app/filter" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/qualify" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool, params *filter.Params) %}{% stripspace %}
+{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <tr>
     {% if showNum %}
@@ -18,12 +17,12 @@
 
     {% for fIdx, f := range fields %}
       {% if m != nil && m.IsPK(f.Key, ws.PS.Logger) %}
-        {%= row(ws, act, idx, row, fields, m, fIdx, f, indent, showNum, true, params) %}
+        {%= row(ws, act, idx, row, fields, m, fIdx, f, indent, showNum, true) %}
       {% endif %}
     {% endfor %}
     {% for fIdx, f := range fields %}
       {% if m == nil || !m.IsPK(f.Key, ws.PS.Logger) %}
-        {%= row(ws, act, idx, row, fields, m, fIdx, f, indent, showNum, false, params) %}
+        {%= row(ws, act, idx, row, fields, m, fIdx, f, indent, showNum, false) %}
       {% endif %}
     {% endfor %}
     {%= vutil.Indent(true, indent + 1) %}
@@ -32,7 +31,7 @@
   </tr>
 {% endstripspace %}{% endfunc %}
 
-{% func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool, params *filter.Params) %}{% stripspace %}
+{% func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) %}{% stripspace %}
   {%code col := row[fIdx] %}
   {%= vutil.Indent(true, indent + 1) %}
   {% if header %}<th>{% else %}<td>{% endif %}

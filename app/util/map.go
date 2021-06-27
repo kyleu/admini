@@ -104,6 +104,8 @@ func (c ValueMap) GetStringArray(k string, allowMissing bool) ([]string, error) 
 	switch t := v.(type) {
 	case []string:
 		return t, nil
+	case string:
+		return []string{t}, nil
 	default:
 		return nil, errors.Errorf("expected array of strings, encountered %T: %v", t, t)
 	}

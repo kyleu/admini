@@ -40,3 +40,7 @@ a:hover {
 a:visited {
   color: var(--color-link-visited);
 }
+
+em {
+  color: var(--color-foreground-muted);
+}

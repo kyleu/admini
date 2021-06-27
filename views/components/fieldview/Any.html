@@ -7,6 +7,8 @@
     {%= Option(x, t.T.(*schematypes.Option)) %}
   {% case "string" %}
     {%= String(x.(string)) %}
+  {% case "json" %}
+    {%= JSONInline(x) %}
   {% case "int" %}
     {%= Int(x) %}
   {% case "float" %}

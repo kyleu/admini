@@ -44,7 +44,7 @@ func (l *Loader) Connection() (interface{}, error) {
 }
 
 func (l *Loader) List(m *model.Model, opts *filter.Options) (*result.Result, error) {
-	return ldb.List(l.db, m, opts, l.logger)
+	return ldb.List(l.db, m, opts)
 }
 
 func (l *Loader) Count(m *model.Model) (int, error) {

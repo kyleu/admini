@@ -8,7 +8,7 @@
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, params *filter.Params) %}{% stripspace %}
+{% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, opts *filter.Options) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <table class="result-table">
     {%= vutil.Indent(true, indent + 1) %}
@@ -21,12 +21,12 @@
         {% endif %}
         {% for fIdx, f := range r.Fields %}
           {% if m != nil && m.IsPK(f.Key, ws.PS.Logger) %}
-            {%= tableHeader(ws, r, m, fIdx, f, locs[f.Key], true, indent + 3, params) %}
+            {%= tableHeader(ws, r, m, fIdx, f, locs[f.Key], true, indent + 3, opts.Params) %}
           {% endif %}
         {% endfor %}
         {% for fIdx, f := range r.Fields %}
           {% if m == nil || !m.IsPK(f.Key, ws.PS.Logger) %}
-            {%= tableHeader(ws, r, m, fIdx, f, locs[f.Key], false, indent + 3, params) %}
+            {%= tableHeader(ws, r, m, fIdx, f, locs[f.Key], false, indent + 3, opts.Params) %}
           {% endif %}
         {% endfor %}
         {%= vutil.Indent(true, indent + 3) %}
@@ -38,12 +38,12 @@
     {%= vutil.Indent(true, indent + 1) %}
     <tbody>
       {% for rIdx, row := range r.Data %}
-        {%= WSRow(ws, act, rIdx, row, r.Fields, m, indent + 2, showNum, params) %}
+        {%= WSRow(ws, act, rIdx, row, r.Fields, m, indent + 2, showNum) %}
       {% endfor %}
 
-      {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
+      {% if opts.Params.HasNextPage(r.Count) || opts.Params.HasPreviousPage() %}
         {%= vutil.Indent(true, indent + 2) %}
-        <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ws.PS.URI) %}</td></tr>
+        <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, opts.Params, ws.PS.URI) %}</td></tr>
       {% endif %}
     {%= vutil.Indent(true, indent + 1) %}
     </tbody>
