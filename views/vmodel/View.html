@@ -40,22 +40,18 @@
             {%= fieldview.Any(p.Result[idx], f.Type) %}
             {%- for _, rel := range p.Model.ApplicableRelations(f.Key) -%}
             {%- code
-              rowFK, err := model.GetStrings(p.Model.Fields, rel.SourceFields, p.Result)
-              if err != nil {
-                panic(err)
-              }
-              src := p.Act.Config["source"]
-              if p.Act.Type == action.TypeAll {
-                src = p.Req.Path[0]
-              }
-              req := qualify.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
-              quals, err := qualify.Qualify(req, p.Req.Project.Actions, p.Req.Schemata)
+              quals, err := qualify.Handle(rel, p.Act, p.Req, p.Model, p.Result)
               if err != nil {
                 panic(err)
               }
             -%}
             {%- for _, q := range quals -%}
-            <a href="{%s p.Req.Route(q.Link()...) %}" title="{%s rel.String() %}">{%= components.SVGRef(q.Icon, 16, 16, "", ps) %}</a>
+            <div>
+              {%- code
+
+              -%}
+              {%s p.Req.Route(q.Link()...) %}
+            </div>
             {%- endfor -%}
             {%- endfor -%}
           </td>

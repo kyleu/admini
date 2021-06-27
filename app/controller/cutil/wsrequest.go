@@ -41,3 +41,10 @@ func (r *WorkspaceRequest) RouteAct(act *action.Action, drop int, path ...string
 	}
 	return r.Route(append(append(act.Path(), r.Path[:end]...), path...)...)
 }
+
+func (r *WorkspaceRequest) Clone() *WorkspaceRequest {
+	return &WorkspaceRequest{
+		T: r.T, K: r.K, Ctx: r.Ctx, AS: r.AS, PS: r.PS,
+		Item: r.Item, Path: r.Path, Project: r.Project, Sources: r.Sources, Schemata: r.Schemata,
+	}
+}

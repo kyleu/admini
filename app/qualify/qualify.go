@@ -1,47 +1,16 @@
 package qualify
 
 import (
-	"fmt"
 	"github.com/kyleu/admini/app/action"
-	"strings"
-
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 )
 
-type Request struct {
-	Type   string        `json:"type"`
-	Action string        `json:"action,omitempty"`
-	Params util.ValueMap `json:"params,omitempty"`
-}
-
-func NewRequest(t string, a string, params ...interface{}) *Request {
-	return &Request{Type: t, Action: a, Params: util.ValueMapFor(params...)}
-}
-
-type Result struct {
-	Action []string `json:"act"`
-	Icon   string   `json:"icon,omitempty"`
-	Path   []string `json:"path"`
-	Debug  string   `json:"debug,omitempty"`
-}
-
-func (r *Result) String() string {
-	if r.Debug == "" {
-		return strings.Join(r.Link(), "/")
-	}
-	return fmt.Sprintf("%s (%s)", strings.Join(r.Link(), "/"), r.Debug)
-}
-
-func (r *Result) Link() []string {
-	return append(r.Action, r.Path...)
-}
-
-type Results []*Result
-
-func Qualify(req *Request, acts action.Actions, schemata schema.Schemata) (Results, error) {
-	var ret Results
+func Qualify(req *Request, acts action.Actions, schemata schema.Schemata) (Qualifications, error) {
+	var ret Qualifications
 	for _, act := range acts {
 		childResult, err := qualifyAct(req, act, schemata)
 		if err != nil {
@@ -52,8 +21,22 @@ func Qualify(req *Request, acts action.Actions, schemata schema.Schemata) (Resul
 	return ret, nil
 }
 
-func qualifyAct(req *Request, act *action.Action, schemata schema.Schemata) (Results, error) {
-	var ret Results
+func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequest, m *model.Model, result []interface{}) (Qualifications, error) {
+	rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, result)
+	if err != nil {
+		return nil, err
+	}
+	src := act.Config["source"]
+	if act.Type == action.TypeAll {
+		src = wr.Path[0]
+	}
+	req := NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
+
+	return Qualify(req, wr.Project.Actions, wr.Schemata)
+}
+
+func qualifyAct(req *Request, act *action.Action, schemata schema.Schemata) (Qualifications, error) {
+	var ret Qualifications
 
 	switch req.Type {
 	case action.TypeModel.Key:

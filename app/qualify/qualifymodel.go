@@ -7,7 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath util.Pkg, schemata schema.Schemata) (Results, error) {
+func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath util.Pkg, schemata schema.Schemata) (Qualifications, error) {
 	if act.Type == action.TypeAll {
 		sch, err := schemata.GetWithError(srcKey)
 		if err != nil {
@@ -16,7 +16,7 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath uti
 		src := sch.ModelsByPackage()
 		m, _ := src.Get(modelPath)
 		if m != nil {
-			return modelResults(req, act.Path(), act.IconWithFallback(), append([]string{srcKey}, modelPath...), "all")
+			return modelResults(req, act, act.IconWithFallback(), append([]string{srcKey}, modelPath...), "all")
 		}
 		return nil, nil
 	}
@@ -32,7 +32,7 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath uti
 		}
 		m, _ := src.Get(modelPath)
 		if m != nil {
-			return modelResults(req, act.Path(), act.IconWithFallback(), modelPath, "src")
+			return modelResults(req, act, act.IconWithFallback(), modelPath, "src")
 		}
 	case action.TypePackage:
 		pkg, remaining, err := action.GetPackage(act, schemata)
@@ -42,7 +42,7 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath uti
 		if modelPath.StartsWith(pkg.Path()) {
 			m, _ := pkg.Get(remaining)
 			if m != nil {
-				return modelResults(req, act.Path(), act.IconWithFallback(), modelPath[len(pkg.Path()):], "pkg")
+				return modelResults(req, act, act.IconWithFallback(), modelPath[len(pkg.Path()):], "pkg")
 			}
 		}
 	case action.TypeModel:
@@ -52,13 +52,13 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath uti
 		}
 
 		if modelPath.StartsWith(model.Path()) {
-			return modelResults(req, act.Path(), act.IconWithFallback(), remaining, "model")
+			return modelResults(req, act, act.IconWithFallback(), remaining, "model")
 		}
 	}
 	return nil, nil
 }
 
-func modelResults(req *Request, actPath []string, icon string, remaining []string, dbg string) (Results, error) {
+func modelResults(req *Request, act *action.Action, icon string, remaining []string, dbg string) (Qualifications, error) {
 	path := append([]string{}, remaining...)
 	if req.Action == "view" {
 		keys, err := req.Params.GetStringArray("keys", false)
@@ -67,7 +67,7 @@ func modelResults(req *Request, actPath []string, icon string, remaining []strin
 		}
 		path = append(append(path, "v"), keys...)
 	}
-	return Results{&Result{Action: actPath, Icon: icon, Path: path, Debug: dbg}}, nil
+	return Qualifications{&Qualification{Action: act, Icon: icon, Path: path, Debug: dbg}}, nil
 }
 
 func checkSource(act *action.Action, key string) bool {
