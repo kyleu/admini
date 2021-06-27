@@ -40,17 +40,17 @@
             {%= fieldview.Any(p.Result[idx], f.Type) %}
             {%- for _, rel := range p.Model.ApplicableRelations(f.Key) -%}
             {%- code
-              quals, err := qualify.Handle(rel, p.Act, p.Req, p.Model, p.Result)
+              results, err := qualify.Handle(rel, p.Act, p.Req, p.Model, p.Result)
               if err != nil {
                 panic(err)
               }
             -%}
-            {%- for _, q := range quals -%}
+            {%- for _, r := range results -%}
             <div>
               {%- code
-
+                // TODO: Replace with actual table, you've already got the model and data
               -%}
-              {%s p.Req.Route(q.Link()...) %}
+              {%s r.String() %}
             </div>
             {%- endfor -%}
             {%- endfor -%}
