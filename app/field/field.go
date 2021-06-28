@@ -10,6 +10,7 @@ import (
 type Field struct {
 	Key      string               `json:"key"`
 	Title    string               `json:"-"`
+	Plural   string               `json:"-"`
 	Type     *schematypes.Wrapped `json:"type"`
 	Default  interface{}          `json:"default,omitempty"`
 	ReadOnly bool                 `json:"readOnly,omitempty"`
@@ -18,9 +19,17 @@ type Field struct {
 
 func (f *Field) Name() string {
 	if f.Title == "" {
-		return util.ToTitle(f.Key)
+		return util.ToSingular(util.ToTitle(f.Key))
 	}
 	return f.Title
+}
+
+func (f *Field) PluralName() string {
+	if f.Plural == "" {
+		ret := f.Name()
+		return util.ToPlural(ret)
+	}
+	return f.Plural
 }
 
 func (f *Field) String() string {

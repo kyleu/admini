@@ -2,10 +2,8 @@ package model
 
 import (
 	"fmt"
-	"sort"
-	"strings"
-
 	"github.com/kyleu/admini/app/field"
+	"sort"
 
 	"github.com/kyleu/admini/app/util"
 )
@@ -46,9 +44,6 @@ func (m *Model) Name() string {
 func (m *Model) PluralName() string {
 	if m.Plural == "" {
 		ret := m.Name()
-		if strings.HasSuffix(ret, "s") {
-			return ret
-		}
 		return util.ToPlural(ret)
 	}
 	return m.Plural

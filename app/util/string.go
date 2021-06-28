@@ -96,10 +96,12 @@ func StringForms(s string) (string, string) {
 	}
 }
 
-func Plural(count int, sing string, plur string) string {
-	x := sing
-	if count != 1 {
-		x = plur
+func Plural(count int, s string) string {
+	var x string
+	if count == 1 {
+		x = ToSingular(s)
+	} else {
+		x = ToPlural(s)
 	}
 	return fmt.Sprintf("%d %s", count, x)
 }

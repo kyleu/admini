@@ -30,7 +30,7 @@ func (a *Action) ConfigString() string {
 	if len(a.Children) == 0 {
 		return ret
 	}
-	kids := util.Plural(len(a.Children), "child", "children")
+	kids := util.Plural(len(a.Children), "child")
 	if ret == "" {
 		return kids
 	}

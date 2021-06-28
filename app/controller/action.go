@@ -58,7 +58,7 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.Plural(count, "action", "actions"), elapsedMillis)
+		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.Plural(count, "action"), elapsedMillis)
 		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), ctx, ps)
 	})
 }

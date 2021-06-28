@@ -10,7 +10,7 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func Simple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
-  <div class="right">{%s util.Plural(len(r.Data), `row`, `rows`) %}</div>
+  <div class="right">{%s util.Plural(len(r.Data), `row`) %}</div>
   {%= vutil.Indent(true, indent) %}
   <h3>{%s r.Title %}</h3>
   {%= simpleTable(r, indent, false, nil, as, ps) %}
