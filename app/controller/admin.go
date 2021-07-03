@@ -18,6 +18,7 @@ func Admin(ctx *fasthttp.RequestCtx) {
 	act("admin", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		path := util.SplitAndTrim(strings.TrimPrefix(string(ctx.URI().Path()), "/admin"), "/")
 		if len(path) == 0 {
+			ps.Title = "Administration"
 			return render(ctx, as, &vadmin.List{}, ps)
 		}
 		switch path[0] {
@@ -46,6 +47,7 @@ func Admin(ctx *fasthttp.RequestCtx) {
 			if err != nil {
 				return "", err
 			}
+			ps.Title = "Session Debug"
 			return render(ctx, as, &vadmin.Session{}, ps)
 		default:
 			return "", errors.Errorf("unhandled admin action [%s]", path[0])

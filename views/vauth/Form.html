@@ -16,9 +16,13 @@
         <a href="/auth/{%s prv.ID %}?refer={%u referrer %}">{%s prv.Title %}</a>
         {%- endif -%}
         {%- code as := ps.Auth.GetByProvider(prv.ID) -%}
+        {%- if len(as) > 0 -%}
+        <ul>
         {%- for _, a := range as -%}
-        (signed in as {%s a.Email %})
+          <li>{%s a.Email %} (<a href="/auth/{%u a.Provider %}/logout?email={%u a.Email %}">sign out</a>)</li>
         {%- endfor -%}
+        </ul>
+        {%- endif -%}
       </li>
       {%- endfor -%}
     </ul>

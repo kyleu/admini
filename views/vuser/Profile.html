@@ -1,36 +1,79 @@
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/auth" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/theme" %}
 {% import "github.com/kyleu/admini/app/user" %}
 {% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 {% import "github.com/kyleu/admini/views/vauth" %}
+{% import "github.com/kyleu/admini/views/vtheme" %}
 
 {% code type Profile struct {
   layout.Basic
   Profile *user.Profile
-  Theme *user.Theme
+  Theme *theme.Theme
   Providers auth.Providers
   Referrer string
 } %}
 
 {% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
-  <div class="card">
-    <div class="right">
-      <a href="#modal-profile"><button type="button">JSON</button></a>
-    </div>
-    <h3>Profile</h3>
-    <p>Name: {%s p.Profile.Name %}</p>
-  </div>
   {%= vauth.SigninTable(p.Providers, p.Referrer, as, ps) %}
-  <div class="card">
-    <h3>Colors!</h3>
-    <div class="spacer"></div>
-    <form>
-      {%= components.ThemeEditor(p.Theme.Light, 3) %}
-      <div class="spacer"></div>
-      <button type="reset" onclick="admini.themeReset(); return true;">Reset</button>
-    </form>
-  </div>
+  <form class="editor" action="" method="post">
+    <div class="card">
+      <div class="right">
+        <a href="#modal-profile"><button type="button">Profile</button></a>
+        <a href="#modal-theme"><button type="button">Theme</button></a>
+      </div>
+      <h3>Profile</h3>
+      <table class="mt">
+        <tbody>
+          <tr>
+            <th class="shrink"><label for="input-name">Name</label></th>
+            <td>{%= fieldedit.FormInput("name", "input-name", p.Profile.Name) %}</td>
+          </tr>
+          <tr>
+            <th class="shrink"><label>Mode</label></th>
+            <td>
+              <label>
+                {%- if p.Profile.Mode == "" -%}
+                <input type="radio" name="mode" value="" checked="checked" />
+                {%- else -%}
+                <input type="radio" name="mode" value="" />
+                {%- endif -%}
+                System Default
+              </label>
+              <label>
+                {%- if p.Profile.Mode == "light" -%}
+                <input type="radio" name="mode" value="light" checked="checked" />
+                {%- else -%}
+                <input type="radio" name="mode" value="light" />
+                {%- endif -%}
+                Light
+              </label>
+              <label>
+                {%- if p.Profile.Mode == "dark" -%}
+                <input type="radio" name="mode" value="dark" checked="checked" />
+                {%- else -%}
+                <input type="radio" name="mode" value="dark" />
+                {%- endif -%}
+                Dark
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Themes!</h3>
+      {%= vtheme.List(as.Themes.All(), ps.Profile.Theme, 3, ps) %}
+    </div>
+    <div class="card">
+      <button type="submit">Save All Changes</button>
+      <button type="reset">Reset</button>
+    </div>
+  </form>
+
   {%= components.JSONModal("profile", "Profile JSON", p.Profile, 1) %}
+  {%= components.JSONModal("theme", "Theme JSON", p.Theme, 1) %}
 {% endfunc %}

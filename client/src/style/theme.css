@@ -1,0 +1,20 @@
+.mockup {
+  cursor: pointer;
+  width: 166px;
+  height: 126px;
+  font-size: 80%;
+}
+
+.mockup .mock-nav {
+  height: 18px;
+}
+
+.mockup .mock-menu {
+  float: left;
+  width: 30px;
+  height: 102px;
+  padding-left: 4px;
+}
+.mockup .mock-main {
+  padding: 4px;
+}

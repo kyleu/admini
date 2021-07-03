@@ -14,8 +14,8 @@
   opacity: 0;
 }
 
-.spacer {
-  height: 16px;
+.mt {
+  margin-top: var(--padding);
 }
 
 .no-padding {
@@ -93,18 +93,17 @@
   margin-right: 4px;
 }
 
-.icon-choice {
+.choice {
   /*display: flex;*/
 }
 
-.icon-choice input {
+.choice input {
   display: none;
 }
 
-.icon-choice input:checked ~ * {
-  border: 3px solid var(--color-highlight);
+.choice input ~ * {
+  border: 3px solid transparent;
 }
-
-.scroll-x {
-  overflow-x: auto;
+.choice input:checked ~ * {
+  border: 3px solid var(--color-highlight);
 }

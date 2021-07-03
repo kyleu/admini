@@ -17,8 +17,7 @@
       <a class="link-confirm" data-message="Are you sure you want to delete project [{%s p.Project.Key %}]?" href="/project/{%s p.Project.Key %}/delete">Delete Project</a>
     </div>
     <h3>Edit [{%s p.Project.Key %}]</h3>
-    <div class="spacer"></div>
-    <form class="editor" action="/project/{%s p.Project.Key %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor mt" action="/project/{%s p.Project.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%= components.TableInput("title", "Title", p.Project.Title, 5) %}
@@ -27,9 +26,10 @@
           {%= components.TableCheckbox("sources", "Sources", p.Project.Sources, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5) %}
         </tbody>
       </table>
-      <div class="spacer"></div>
-      <button type="submit">Save Changes</button>
-      <button type="reset">Reset</button>
+      <div class="mt">
+        <button type="submit">Save Changes</button>
+        <button type="reset">Reset</button>
+      </div>
     </form>
   </div>
 {% endfunc %}

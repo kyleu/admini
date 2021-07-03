@@ -13,6 +13,7 @@ func BuildRouter() *router.Router {
 
 	r.GET(defaultSearchPath, w(Search))
 	r.GET(defaultProfilePath, w(Profile))
+	r.POST(defaultProfilePath, w(ProfileSave))
 	r.GET("/settings", w(Settings))
 	r.GET("/refresh", w(Refresh))
 

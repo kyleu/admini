@@ -4,7 +4,7 @@
 {% func About(as *app.State) %}
   <div class="card">
     {%- if util.AppSource != "" -%}
-    <div class="right"><a href="{%s util.AppSource %}">Github</a></div>
+    <div class="right"><a href="{%s util.AppSource %}"><button>Github</button></a></div>
     {%- endif -%}
     <h3>{%s util.AppName %} v{%s as.BuildInfo.Version %}</h3>
     {%- if as.BuildInfo.Date != "unknown" -%}

@@ -4,24 +4,25 @@ import (
 	"github.com/go-gem/sessions"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
+	"go.uber.org/zap"
 )
 
 const SessKey = "auth"
 
-func addToSession(provider string, email string, ctx *fasthttp.RequestCtx, websess *sessions.Session) (Sessions, error) {
+func addToSession(provider string, email string, ctx *fasthttp.RequestCtx, websess *sessions.Session) (*Session, Sessions, error) {
 	ret := getCurrentAuths(websess)
 	s := &Session{Provider: provider, Email: email}
 	for _, x := range ret {
 		if x.Provider == s.Provider && x.Email == s.Email {
-			return ret, nil
+			return s, ret, nil
 		}
 	}
 	ret = append(ret, s)
 	err := setCurrentAuths(websess, ret, ctx)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return ret, nil
+	return s, ret, nil
 }
 
 func getFromSession(key string, websess *sessions.Session) (string, error) {
@@ -41,9 +42,25 @@ func storeInSession(k string, v string, ctx *fasthttp.RequestCtx, websess *sessi
 	return websess.Save(ctx)
 }
 
-func removeProviderData(ctx *fasthttp.RequestCtx, websess *sessions.Session, prvKeys ...string) error {
-	for _, k := range prvKeys {
-		delete(websess.Values, k)
+func removeProviderData(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
+	for k := range websess.Values {
+		s, ok := k.(string)
+		if !ok {
+			logger.Error("unable to parse session key [%s] of type [%T]", k, k)
+		}
+		if isProvider(s) {
+			logger.Debug("removing auth info for provider [" + s + "]")
+			delete(websess.Values, k)
+		}
 	}
 	return websess.Save(ctx)
+}
+
+func isProvider(k string) bool {
+	for _, x := range AvailableProviderKeys {
+		if x == k {
+			return true
+		}
+	}
+	return false
 }

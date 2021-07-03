@@ -12,8 +12,7 @@
 {% func (p *New) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>New Source</h3>
-    <div class="spacer"></div>
-    <form class="editor" action="/source" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor mt" action="/source" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%= components.TableInput("key", "Key", "", 5) %}
@@ -23,8 +22,7 @@
           {%= components.TableRadio("type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5) %}
         </tbody>
       </table>
-      <div class="spacer"></div>
-      <button type="submit">Save Changes</button>
+      <button class="mt" type="submit">Save Changes</button>
       <a href="/source"><button type="button">Cancel</button></a>
     </form>
   </div>

@@ -5,10 +5,7 @@ import (
 	"time"
 
 	"github.com/go-gem/sessions"
-	"github.com/gorilla/securecookie"
 	"github.com/kyleu/admini/app/auth"
-	"github.com/kyleu/admini/app/user"
-
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/menu"
@@ -81,21 +78,6 @@ func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 		Icons:   initialIcons,
 		Logger:  logger,
 	}
-}
-
-func initStore(keyPairs ...[]byte) *sessions.CookieStore {
-	ret := sessions.NewCookieStore([]byte(sessionKey))
-	for _, x := range ret.Codecs {
-		c, ok := x.(*securecookie.SecureCookie)
-		if ok {
-			c.MaxLength(65536)
-		}
-	}
-	return ret
-}
-
-func loadProfile(session *sessions.Session) (*user.Profile, error) {
-	return &user.Profile{Name: "Test"}, nil
 }
 
 func actComplete(key string, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {

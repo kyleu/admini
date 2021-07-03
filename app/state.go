@@ -9,6 +9,7 @@ import (
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/source"
+	"github.com/kyleu/admini/app/theme"
 	"github.com/kyleu/admini/app/util"
 	"go.uber.org/zap"
 )
@@ -29,6 +30,7 @@ type State struct {
 	Router       *router.Router
 	Files        filesystem.FileLoader
 	Auth         *auth.Service
+	Themes       *theme.Service
 	Sources      *source.Service
 	Projects     *project.Service
 	Loaders      *loader.Service
@@ -38,18 +40,16 @@ type State struct {
 
 func NewState(debug bool, bi *BuildInfo, r *router.Router, f filesystem.FileLoader, ls *loader.Service, log *zap.SugaredLogger) (*State, error) {
 	rl := log.With(zap.String("service", "router"))
-	as := auth.NewService("", log)
 	ss := source.NewService(f, ls, log)
-	ps := project.NewService(f, ss, ls, log)
-
 	ret := &State{
 		Debug:        debug,
 		BuildInfo:    bi,
 		Router:       r,
 		Files:        f,
-		Auth:         as,
+		Auth:         auth.NewService("", log),
+		Themes:       theme.NewService(f, log),
 		Sources:      ss,
-		Projects:     ps,
+		Projects:     project.NewService(f, ss, ls, log),
 		Loaders:      ls,
 		RootLogger:   log,
 		routerLogger: rl,

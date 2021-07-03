@@ -17,8 +17,7 @@
     <div class="right"><em>{%s p.Act.Type.Title %}</em></div>
     <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
     <em>{%s p.Act.ConfigString() %}</em>
-    <div class="spacer"></div>
-    <form class="editor" action="/project/{%s p.Project.Key %}/action/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor mt" action="/project/{%s p.Project.Key %}/action/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%= components.TableInput("key", "Key", p.Act.Key, 5) %}
@@ -38,9 +37,10 @@
           {%- endswitch -%}
         </tbody>
       </table>
-      <div class="spacer"></div>
-      <button type="submit">Save Changes</button>
-      <a href="/project/{%s p.Project.Key %}"><button type="button">Cancel</button></a>
+      <div class="mt">
+        <button type="submit">Save Changes</button>
+        <a href="/project/{%s p.Project.Key %}"><button type="button">Cancel</button></a>
+      </div>
     </form>
   </div>
   <div class="card">

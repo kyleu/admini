@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/kyleu/admini/app/auth"
 	"github.com/kyleu/admini/views/vauth"
 	"github.com/pkg/errors"
@@ -17,11 +19,11 @@ func AuthDetail(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		u, err := auth.CompleteUserAuth(prv, ctx, ps.Session)
-		if err != nil {
-			return auth.BeginAuthHandler(prv, ctx, ps.Session)
+		u, _, err := auth.CompleteUserAuth(prv, ctx, ps.Session, ps.Logger)
+		if err == nil {
+			return render(ctx, as, &vauth.Detail{Provider: prv, Session: u}, ps)
 		}
-		return render(ctx, as, &vauth.Detail{Provider: prv, Session: u}, ps)
+		return auth.BeginAuthHandler(prv, ctx, ps.Session)
 	})
 }
 
@@ -31,7 +33,7 @@ func AuthCallback(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		u, err := auth.CompleteUserAuth(prv, ctx, ps.Session)
+		u, _, err := auth.CompleteUserAuth(prv, ctx, ps.Session, ps.Logger)
 		if err != nil {
 			return "", err
 		}
@@ -39,7 +41,10 @@ func AuthCallback(ctx *fasthttp.RequestCtx) {
 		if ok {
 			refer, ok := referX.(string)
 			if ok && refer != "" {
-				return refer, nil
+				msg := fmt.Sprintf("signed in to %s as [%s]", auth.AvailableProviderNames[prv.ID], u.Email)
+				delete(ps.Session.Values, "auth-refer")
+				_ = ps.Session.Save(ctx)
+				return flashAndRedir(true, msg, refer, ctx, ps)
 			}
 		}
 		return render(ctx, as, &vauth.Detail{Provider: prv, Session: u}, ps)
@@ -64,6 +69,15 @@ func getProvider(ctx *fasthttp.RequestCtx) (*auth.Provider, error) {
 
 func AuthLogout(ctx *fasthttp.RequestCtx) {
 	act("auth.logout", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := ctxRequiredString(ctx, "key", false)
+		if err != nil {
+			return "", err
+		}
+		err = auth.Logout(ctx, ps.Session, key)
+		if err != nil {
+			return "", err
+		}
+
 		return "/profile", nil
 	})
 }

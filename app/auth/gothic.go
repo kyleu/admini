@@ -3,6 +3,7 @@ package auth
 import (
 	"github.com/go-gem/sessions"
 	"github.com/valyala/fasthttp"
+	"go.uber.org/zap"
 )
 
 func BeginAuthHandler(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session) (string, error) {
@@ -18,24 +19,24 @@ func BeginAuthHandler(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 	return u, nil
 }
 
-func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session) (Sessions, error) {
+func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) (*Session, Sessions, error) {
 	value, err := getFromSession(prv.ID, websess)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	defer func() {
-		_ = removeProviderData(ctx, websess, prv.ID)
+		_ = removeProviderData(ctx, websess, logger)
 	}()
 
 	sess, err := prv.goth.UnmarshalSession(value)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	err = validateState(ctx, sess)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	user, err := prv.goth.FetchUser(sess)
@@ -45,17 +46,17 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 
 	_, err = sess.Authorize(prv.goth, &params{q: ctx.Request.URI().QueryArgs()})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	err = storeInSession(prv.ID, sess.Marshal(), ctx, websess)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	gu, err := prv.goth.FetchUser(sess)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	return addToSession(gu.Provider, gu.Email, ctx, websess)
@@ -64,6 +65,10 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 func Logout(ctx *fasthttp.RequestCtx, websess *sessions.Session, prvKeys ...string) error {
 	a := getCurrentAuths(websess)
 	a = a.Purge(prvKeys...)
+	err := setCurrentAuths(websess, a, ctx)
+	if err != nil {
+		return err
+	}
 	for _, k := range prvKeys {
 		delete(websess.Values, k)
 	}

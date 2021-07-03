@@ -14,8 +14,7 @@
 {% func (p *New) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>New Project</h3>
-    <div class="spacer"></div>
-    <form class="editor" action="/project" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="editor mt" action="/project" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%= components.TableInput("key", "Key", "", 5) %}
@@ -25,9 +24,10 @@
           {%= components.TableCheckbox("sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5) %}
         </tbody>
       </table>
-      <div class="spacer"></div>
-      <button type="submit">Save Changes</button>
-      <a href="/project"><button type="button">Cancel</button></a>
+      <div class="mt">
+        <button type="submit">Save Changes</button>
+        <a href="/project"><button type="button">Cancel</button></a>
+      </div>
     </form>
   </div>
 {% endfunc %}

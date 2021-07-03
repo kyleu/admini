@@ -1,0 +1,34 @@
+{% import "fmt" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/theme" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% func Render(t *theme.Theme, indent int, ps *cutil.PageState) %}{% stripspace %}
+  {% code
+    navStyle := fmt.Sprintf("color: %s; background-color: %s;", t.Light.NavForeground, t.Light.NavBackground)
+    menuStyle := fmt.Sprintf("color: %s; background-color: %s;", t.Light.MenuForeground, t.Light.MenuBackground)
+  %}
+  {%= vutil.Indent(true, indent) %}
+  <div class="mockup">
+    <div class="mock-nav" style="{%s navStyle %}">{%= components.SVGRef(`app`, 12, 12, `icon`, ps) %}{%s util.AppName %}</div>
+    <div class="mock-menu" style="{%s menuStyle %}">
+      <div><a href="#">A</a></div>
+      <div><a href="#">B</a></div>
+      <div><a href="#">C</a></div>
+      <div><a href="#">D</a></div>
+    </div>
+    <div class="mock-main" style="">
+      <div>Welcome!</div>
+      <div>
+        Here's some links:
+        <ul>
+          <li><a href="#">Link 1</a></li>
+          <li><a href="#">Link 2</a></li>
+        </ul>
+      </div>
+    </div>
+  {%= vutil.Indent(true, indent) %}
+  </div>
+{% endstripspace %}{% endfunc %}

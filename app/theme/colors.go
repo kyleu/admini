@@ -1,4 +1,4 @@
-package user
+package theme
 
 import (
 	"fmt"
@@ -6,44 +6,44 @@ import (
 )
 
 type Colors struct {
-	Foreground      string
-	ForegroundMuted string
-	Background      string
-	BackgroundMuted string
+	Foreground      string `json:"fg"`
+	ForegroundMuted string `json:"fgm"`
+	Background      string `json:"bg"`
+	BackgroundMuted string `json:"bgm"`
 
-	Highlight   string
-	Link        string
-	LinkVisited string
+	Highlight   string `json:"h"`
+	Link        string `json:"l"`
+	LinkVisited string `json:"lv"`
 
-	NavForeground string
-	NavBackground string
+	NavForeground string `json:"nf"`
+	NavBackground string `json:"nb"`
 
-	MenuForeground         string
-	MenuBackground         string
-	MenuBackgroundSelected string
+	MenuForeground         string `json:"mf"`
+	MenuBackground         string `json:"mb"`
+	MenuBackgroundSelected string `json:"mbs"`
 }
 
 func (c *Colors) CSS(indent int) string {
 	sb := &strings.Builder{}
-	add(sb, ":root {", indent)
+	addLine(sb, ":root {", indent)
 	prop := func(k string, v string) {
-		add(sb, fmt.Sprintf("--color-%s: %s;", k, v), indent+1)
+		addLine(sb, fmt.Sprintf("--color-%s: %s;", k, v), indent+1)
 	}
 	prop("foreground", c.Foreground)
 	prop("foreground-muted", c.ForegroundMuted)
 	prop("background", c.Background)
 	prop("background-muted", c.BackgroundMuted)
-	add(sb, "", 0)
+	addLine(sb, "", 0)
 	prop("highlight", c.Highlight)
 	prop("link", c.Link)
 	prop("link-visited", c.LinkVisited)
-	add(sb, "", 0)
+	addLine(sb, "", 0)
 	prop("nav-foreground", c.NavForeground)
 	prop("nav-background", c.NavBackground)
-	add(sb, "", 0)
+	addLine(sb, "", 0)
 	prop("menu-foreground", c.MenuForeground)
 	prop("menu-background", c.MenuBackground)
 	prop("menu-background-selected", c.MenuBackgroundSelected)
-	add(sb, "}", indent)
+	addLine(sb, "}", indent)
 	return sb.String()
 }

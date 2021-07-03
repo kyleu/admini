@@ -1,8 +1,8 @@
-{% import "github.com/kyleu/admini/app/user" %}
+{% import "github.com/kyleu/admini/app/theme" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func ThemeEditor(t user.Colors, indent int) %}{% stripspace %}
-  <table>
+{% func Editor(t theme.Colors, indent int) %}{% stripspace %}
+  <table class="mt">
     {%= vutil.Indent(true, indent + 1) %}
     <tbody>
       {%= colorInput("foreground", t.Foreground, indent + 2) %}

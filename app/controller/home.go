@@ -40,6 +40,7 @@ func Refresh(ctx *fasthttp.RequestCtx) {
 				redir = u.Path
 			}
 		}
+		currentApp.Themes.Clear()
 		currentApp.Loaders.Clear()
 		currentApp.Sources.Clear()
 		currentApp.Projects.Clear()
