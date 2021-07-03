@@ -4,8 +4,7 @@
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/app/source" %}
-{% import "github.com/kyleu/admini/app/util" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type ModelDetail struct {
@@ -16,116 +15,35 @@
 } %}
 
 {% func (p *ModelDetail) Body(as *app.State, ps *cutil.PageState) %}
-  <div class="card">
-    <div class="right">
-      <a href="/s/{%s p.Source.Key %}/{%s filepath.Join(p.Model.Path()...) %}"><button type="button">View</button></a>
+  <form class="editor" action="" method="post" enctype="application/x-www-form-urlencoded">
+    <div class="card">
+      <div class="right">
+        <a href="/s/{%s p.Source.Key %}/{%s filepath.Join(p.Model.Path()...) %}"><button type="button">View</button></a>
+      </div>
+      <h3>{%s p.Model.Name() %}</h3>
+      <em><a href="/source/{%s p.Source.Key %}">{%s p.Source.Key %}</a>{% if len(p.Model.Pkg) > 0 %}@{%s p.Model.Pkg.ToPath() %}{% endif %}</em>
     </div>
-    <h3>{%s p.Model.Name() %}</h3>
-    <em><a href="/source/{%s p.Source.Key %}">{%s p.Source.Key %}</a>@{%s p.Model.Pkg.ToPath() %}</em>
-  </div>
-  {%- code m := p.Model -%}
-  {%- if len(m.Fields) > 0 -%}
-  <div class="card">
-    <h3>{%s util.Plural(len(m.Fields), `field`) %}</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Key</th>
-          <th>Type</th>
-          <th title="read-only">RO</th>
-          <th>Metadata</th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for _, f := range m.Fields -%}
-        <tr>
-          <td>{%= fieldview.String(f.Key) %}</td>
-          <td>{%= fieldview.Type(f.Type) %}</td>
-          <td>{%= fieldview.Boolean(f.ReadOnly) %}</td>
-          <td><div class="pre">{%s util.ToJSON(f.Metadata) %}</div></td>
-        </tr>
-      {%- endfor -%}
-      </tbody>
-    </table>
-  </div>
-  {%- endif -%}
-  {%- if len(m.Indexes) > 0 -%}
-  <div class="card">
-    <h3>{%s util.Plural(len(m.Indexes), `index`) %}</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Key</th>
-          <th>Fields</th>
-          <th>Unique</th>
-          <th title="Primary Key">PK</th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for _, idx := range m.Indexes -%}
-        <tr>
-          <td>{%= fieldview.String(idx.Key) %}</td>
-          <td>{%= fieldview.ArrayString(idx.Fields) %}</td>
-          <td>{%= fieldview.Boolean(idx.Unique) %}</td>
-          <td>{%= fieldview.Boolean(idx.Primary) %}</td>
-        </tr>
-      {%- endfor -%}
-      </tbody>
-    </table>
-  </div>
-  {%- endif -%}
-  {%- if len(m.Relationships) > 0 -%}
-  <div class="card">
-    <h3>{%s util.Plural(len(m.Relationships), `relationship`) %}</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Key</th>
-          <th>Fields</th>
-          <th>Target Package</th>
-          <th>Target Model</th>
-          <th>Target Fields</th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for _, rel := range m.Relationships -%}
-        <tr>
-          <td>{%= fieldview.String(rel.Key) %}</td>
-          <td>{%= fieldview.ArrayString(rel.SourceFields) %}</td>
-          <td>{%= fieldview.Package(rel.TargetPkg) %}</td>
-          <td>{%= fieldview.String(rel.TargetModel) %}</td>
-          <td>{%= fieldview.ArrayString(rel.TargetFields) %}</td>
-        </tr>
-      {%- endfor -%}
-      </tbody>
-    </table>
-  </div>
-  {%- endif -%}
-  {%- if len(m.References) > 0 -%}
-  <div class="card">
-    <h3>{%s util.Plural(len(m.References), `reference`) %}</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Key</th>
-          <th>Fields</th>
-          <th>Source Package</th>
-          <th>Source Model</th>
-          <th>Source Fields</th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for _, ref := range m.References -%}
-        <tr>
-          <td>{%= fieldview.String(ref.Key) %}</td>
-          <td>{%= fieldview.ArrayString(ref.TargetFields) %}</td>
-          <td>{%= fieldview.Package(ref.SourcePkg) %}</td>
-          <td>{%= fieldview.String(ref.SourceModel) %}</td>
-          <td>{%= fieldview.ArrayString(ref.SourceFields) %}</td>
-        </tr>
-      {%- endfor -%}
-      </tbody>
-    </table>
-  </div>
-  {%- endif -%}
+    {%- code m := p.Model -%}
+    <div class="card">
+      <table>
+        <tbody>
+          <tr>
+            <th class="shrink"><label for="input-{%s schema.KeyTitle %}">Title</label></th>
+            <td>{%= fieldedit.FormInput("title", "input-" + schema.KeyTitle, m.Name()) %}</td>
+          </tr>
+          <tr>
+            <th class="shrink"><label for="input-{%s schema.KeyPlural %}">Plural</label></th>
+            <td>{%= fieldedit.FormInput("plural", "input-" + schema.KeyPlural, m.PluralName()) %}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="spacer"></div>
+      <button type="submit">Save All Changes</button>
+      <button type="reset">Reset</button>
+    </div>
+    {%-= ModelFieldList(m, as, ps) -%}
+    {%-= ModelIndexList(m, as, ps) -%}
+    {%-= ModelRelationshipList(m, as, ps) -%}
+    {%-= ModelReferenceList(m, as, ps) -%}
+  </form>
 {% endfunc %}

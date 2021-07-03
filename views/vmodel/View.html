@@ -4,6 +4,7 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/qualify" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
 {% import "github.com/kyleu/admini/views/layout" %}
@@ -33,7 +34,7 @@
       <tbody>
         {%- for idx, f := range p.Model.Fields -%}
         <tr>
-          <th class="shrink">{%s f.Key %}</th>
+          <th class="shrink">{%s f.Name() %}</th>
           <td>
             {%= fieldview.Any(p.Result[idx], f.Type) %}
             {%- for _, rel := range p.Model.ApplicableRelations(f.Key) -%}
@@ -48,7 +49,8 @@
               {%- code
                 // TODO: Replace with actual table, you've already got the model and data
               -%}
-              {%s r.String() %}
+              <a href="{%s p.Req.Route(r.String()) %}">{%s r.String() %}</a>
+              <pre>{%s util.ToJSON(r) %}</pre>
             </div>
             {%- endfor -%}
             {%- endfor -%}

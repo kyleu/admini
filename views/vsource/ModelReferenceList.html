@@ -1,0 +1,33 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+
+{% func ModelReferenceList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.References) > 0 -%}
+    <div class="card">
+      <h3>{%s util.Plural(len(m.References), `reference`) %}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Fields</th>
+            <th>Source Package</th>
+            <th>Source Model</th>
+            <th>Source Fields</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%- for _, ref := range m.References -%}
+          <tr>
+            <td>{%= fieldview.String(ref.Key) %}</td>
+            <td>{%= fieldview.ArrayString(ref.TargetFields) %}</td>
+            <td>{%= fieldview.Package(ref.SourcePkg) %}</td>
+            <td>{%= fieldview.String(ref.SourceModel) %}</td>
+            <td>{%= fieldview.ArrayString(ref.SourceFields) %}</td>
+          </tr>
+        {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+{%- endif -%}{% endfunc %}

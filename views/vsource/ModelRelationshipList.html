@@ -1,0 +1,33 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+
+{% func ModelRelationshipList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Relationships) > 0 -%}
+    <div class="card">
+      <h3>{%s util.Plural(len(m.Relationships), `relationship`) %}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Fields</th>
+            <th>Target Package</th>
+            <th>Target Model</th>
+            <th>Target Fields</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%- for _, rel := range m.Relationships -%}
+          <tr>
+            <td>{%= fieldview.String(rel.Key) %}</td>
+            <td>{%= fieldview.ArrayString(rel.SourceFields) %}</td>
+            <td>{%= fieldview.Package(rel.TargetPkg) %}</td>
+            <td>{%= fieldview.String(rel.TargetModel) %}</td>
+            <td>{%= fieldview.ArrayString(rel.TargetFields) %}</td>
+          </tr>
+        {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+{%- endif -%}{% endfunc %}

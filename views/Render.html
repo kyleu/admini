@@ -1,4 +1,5 @@
 {% import "fmt" %}
+{% import "sort" %}
 {% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/util" %}
@@ -21,6 +22,7 @@
 {%- if len(ps.Flashes) > 0 -%}{%= renderFlashes(ps.Flashes) %}{%- endif -%}
 {%= page.Nav(ps) %}
 <main id="content">{%= page.Body(as, ps) %}</main>
+{%- code sort.Strings(ps.Icons) -%}
 {% if len(ps.Icons) > 0 %}<div class="icon-list" style="display: none;">{% for _, icon := range ps.Icons %}
   {%= components.SVG(icon) %}{% endfor %}
 </div>

@@ -1,0 +1,31 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+
+{% func ModelIndexList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Indexes) > 0 -%}
+    <div class="card">
+      <h3>{%s util.Plural(len(m.Indexes), `index`) %}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Fields</th>
+            <th>Unique</th>
+            <th title="Primary Key">PK</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%- for _, idx := range m.Indexes -%}
+          <tr>
+            <td>{%= fieldview.String(idx.Key) %}</td>
+            <td>{%= fieldview.ArrayString(idx.Fields) %}</td>
+            <td>{%= fieldview.Boolean(idx.Unique) %}</td>
+            <td>{%= fieldview.Boolean(idx.Primary) %}</td>
+          </tr>
+        {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+{%- endif -%}{% endfunc %}

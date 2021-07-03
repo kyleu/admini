@@ -1,0 +1,65 @@
+{% import "fmt" %}
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/model" %}
+{% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/views/components/fieldedit" %}
+
+{% func ModelFieldList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Fields) > 0 -%}
+    <div class="card">
+      <h3>{%s util.Plural(len(m.Fields), `field`) %}</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Title</th>
+            <th>Plural</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%- for _, f := range m.Fields -%}
+          {%- code sing, plur := util.StringForms(util.ToTitle(f.Key)) -%}
+          <tr>
+            <td>{%= fieldview.String(f.Key) %}</td>
+            <td>
+              <div class="toggle">
+                <input id="toggle-{%s f.Key %}-title" type="checkbox" hidden />
+                <label for="toggle-{%s f.Key %}-title">
+                  {%- if f.Name() == sing -%}
+                  <em>{%s f.Name() %}</em>
+                  {%- else -%}
+                  {%s f.Name() %}
+                  {%- endif -%}
+                </label>
+                <div class="x">
+                  {%= fieldedit.FormInput(fmt.Sprintf("f.%s.title", f.Key), f.Key + "-title", f.Name()) %}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="toggle">
+                <input id="toggle-{%s f.Key %}-plural" type="checkbox" hidden />
+                <label for="toggle-{%s f.Key %}-plural">
+                  {%- if f.PluralName() == plur -%}
+                  <em>{%s f.PluralName() %}</em>
+                  {%- else -%}
+                  {%s f.PluralName() %}
+                  {%- endif -%}
+                </label>
+                <div class="x">
+                  {%= fieldedit.FormInput(fmt.Sprintf("f.%s.plural", f.Key), f.Key + "-plural", f.PluralName()) %}
+                </div>
+              </div>
+            </td>
+            <td>{%= fieldview.Type(f.Type) %}</td>
+          </tr>
+        {%- endfor -%}
+        </tbody>
+      </table>
+      <div class="spacer"></div>
+      <button type="submit">Save All Changes</button>
+      <button type="reset">Reset</button>
+    </div>
+{%- endif -%}{% endfunc %}
