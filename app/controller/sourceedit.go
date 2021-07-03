@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/kyleu/admini/app/database/postgres"
+	"github.com/kyleu/admini/app/database/sqlite"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
@@ -99,7 +100,7 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 		switch src.Type {
 		case schema.OriginPostgres:
 			ps := frm.GetStringOpt("port")
-			params := &database.PostgresParams{}
+			params := &postgres.PostgresParams{}
 			params.Host = frm.GetStringOpt("host")
 			if ps != "" {
 				params.Port, _ = strconv.Atoi(ps)
@@ -112,7 +113,7 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 
 			src.Config = util.ToJSONBytes(params, true)
 		case schema.OriginSQLite:
-			params := &database.SQLiteParams{}
+			params := &sqlite.SQLiteParams{}
 			params.File = frm.GetStringOpt("file")
 			params.Schema = frm.GetStringOpt("schema")
 			params.Debug, _ = frm.GetBool("debug")
