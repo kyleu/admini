@@ -132,28 +132,54 @@ func (s *Service) reloadSourceCache() error {
 	return nil
 }
 
-func (s *Service) loadOverrides(key string, ret *schema.Schema) error {
+func (s *Service) GetOverrides(key string) (schema.Overrides, error) {
 	op := filepath.Join(s.root, key, "overrides.json")
 
-	if s.files.Exists(op) {
-		out, err := s.files.ReadFile(op)
-		if err != nil {
-			return errors.Wrap(err, "unable to read schema overrides")
-		}
+	if !s.files.Exists(op) {
+		return nil, nil
+	}
 
-		overrides := schema.Overrides{}
-		err = util.FromJSON(out, &overrides)
-		if err != nil {
-			return err
-		}
+	out, err := s.files.ReadFile(op)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to read schema overrides")
+	}
 
-		for _, o := range overrides {
-			err = o.ApplyTo(ret)
-			if err != nil {
-				return errors.Wrapf(err, "unable to apply override [%s]", o.String())
-			}
+	overrides := schema.Overrides{}
+	err = util.FromJSON(out, &overrides)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to parse schema overrides")
+	}
+	return overrides, nil
+}
+
+func (s *Service) SaveOverrides(key string, os schema.Overrides) error {
+	op := filepath.Join(s.root, key, "overrides.json")
+	os.Sort()
+	bytes := util.ToJSONBytes(os, true)
+	err := s.files.WriteFile(op, bytes, true)
+	if err != nil {
+		return errors.Wrap(err, "unable to write schema overrides")
+	}
+	return nil
+}
+
+func (s *Service) loadOverrides(key string, ret *schema.Schema) error {
+	overrides, err := s.GetOverrides(key)
+	if err != nil {
+		return errors.Wrap(err, "unable to read schema overrides")
+	}
+
+	for _, o := range overrides {
+		err = o.ApplyTo(ret)
+		if err != nil {
+			return errors.Wrapf(err, "unable to apply override [%s]", o.String())
 		}
 	}
 
 	return nil
+}
+
+func (s *Service) Clear() {
+	s.cache = nil
+	s.schemaCache = map[string]*schema.Schema{}
 }

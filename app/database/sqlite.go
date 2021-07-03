@@ -1,4 +1,4 @@
-package sqlite
+package database
 
 type SQLiteParams struct {
 	File   string `json:"file"`

@@ -11,17 +11,17 @@ import (
 
 type Model struct {
 	Key           string        `json:"key"`
-	Title         string        `json:"-"`
-	Plural        string        `json:"-"`
 	Pkg           util.Pkg      `json:"pkg,omitempty"`
 	Type          Type          `json:"type"`
+	Title         string        `json:"-"` // override only
+	Plural        string        `json:"-"` // override only
 	Interfaces    []string      `json:"interfaces,omitempty"`
 	Fields        field.Fields  `json:"fields,omitempty"`
 	Indexes       Indexes       `json:"indexes,omitempty"`
 	Relationships Relationships `json:"relationships,omitempty"`
-	References    References    `json:"-"`
+	References    References    `json:"-"` // internal cache
 	Metadata      *Metadata     `json:"metadata,omitempty"`
-	pk            []string
+	pk            []string      // internal cache
 }
 
 func NewModel(pkg util.Pkg, key string) *Model {

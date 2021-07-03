@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/schema/schematypes"
@@ -84,4 +86,23 @@ func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKe
 			r.log(mType, mKey, "field has an empty key", LevelError)
 		}
 	}
+}
+
+func (s *Schema) CreateReferences() error {
+	for _, src := range s.Models {
+		if src.References != nil {
+			return errors.New("double call of CreateReferences")
+		}
+		for _, tgt := range s.Models {
+			for _, rel := range tgt.Relationships {
+				if rel.TargetPkg.Equals(src.Pkg) && rel.TargetModel == src.Key {
+					err := src.AddReference(model.ReferenceFromRelation(rel, tgt))
+					if err != nil {
+						return errors.Wrapf(err, "unable to add reference to [%s]", src.String())
+					}
+				}
+			}
+		}
+	}
+	return nil
 }

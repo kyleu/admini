@@ -172,3 +172,7 @@ func (s *Service) DeleteAction(key string, act *action.Action) error {
 	}
 	return nil
 }
+
+func (s *Service) Clear() {
+	s.cache = nil
+}

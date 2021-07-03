@@ -1,9 +1,8 @@
-package postgres
+package database
 
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/database"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
@@ -24,7 +23,7 @@ type PostgresParams struct {
 	Debug    bool   `json:"debug,omitempty"`
 }
 
-func OpenPostgresDatabase(params *PostgresParams, logger *zap.SugaredLogger) (*database.Service, error) {
+func OpenPostgresDatabase(params *PostgresParams, logger *zap.SugaredLogger) (*Service, error) {
 	host := params.Host
 	if host == "" {
 		host = "localhost"
@@ -47,7 +46,7 @@ func OpenPostgresDatabase(params *PostgresParams, logger *zap.SugaredLogger) (*d
 		log = logger
 	}
 
-	svc := database.NewService(params.Database, params.Schema, log, db)
+	svc := NewService(params.Database, params.Schema, log, db)
 
 	return svc, nil
 }

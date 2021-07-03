@@ -38,3 +38,7 @@ func (s *Service) Get(origin schema.Origin, key string, cfg []byte) (Loader, err
 	s.cache[check] = l
 	return l, nil
 }
+
+func (s *Service) Clear() {
+	s.cache = map[string]Loader{}
+}

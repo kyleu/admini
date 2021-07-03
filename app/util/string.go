@@ -53,7 +53,7 @@ func ToTitle(s string) string {
 	ret := strings.Builder{}
 	runes := []rune(ToCamel(s))
 	for idx, c := range runes {
-		if idx > 0 && idx < len(runes) && unicode.IsUpper(c) {
+		if idx > 0 && idx < len(runes)-1 && unicode.IsUpper(c) {
 			if !unicode.IsUpper(runes[idx+1]) {
 				ret.WriteRune(' ')
 			} else if !unicode.IsUpper(runes[idx-1]) {
@@ -71,29 +71,37 @@ func ToLowerCamel(s string) string {
 
 var plrl *pluralize.Client
 
-func ToPlural(s string) string {
+func plrlSvc() {
 	if plrl == nil {
 		plrl = pluralize.NewClient()
 	}
-	return plrl.Plural(s)
+}
+
+func ToPlural(s string) string {
+	plrlSvc()
+	ret := plrl.Plural(s)
+	if len(ret) < 3 {
+		return ret
+	}
+	if ret[len(ret)-1] == 'S' {
+		runes := []rune(ret)
+		c2 := runes[len(runes)-2]
+		c3 := runes[len(runes)-3]
+		if unicode.IsUpper(c2) && unicode.IsUpper(c3) {
+			runes[len(runes)-1] = 's'
+			ret = string(runes)
+		}
+	}
+	return ret
 }
 
 func ToSingular(s string) string {
-	if plrl == nil {
-		plrl = pluralize.NewClient()
-	}
+	plrlSvc()
 	return plrl.Singular(s)
 }
 
 func StringForms(s string) (string, string) {
-	if plrl == nil {
-		plrl = pluralize.NewClient()
-	}
-	if plrl.IsSingular(s) {
-		return s, plrl.Plural(s)
-	} else {
-		return plrl.Singular(s), s
-	}
+	return ToSingular(s), ToPlural(s)
 }
 
 func Plural(count int, s string) string {

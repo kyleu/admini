@@ -24,10 +24,16 @@ func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequ
 
 	ret := make(Results, 0, len(quals))
 	for _, q := range quals {
-		// pull and fill `m` && `d`
-		var m *model.Model
-		var d []interface{}
-		x := &Result{Action: q.Action, Icon: q.Icon, Path: q.Path, Model: m, Data: d}
+		// TODO: pull and fill `m` && `d`
+		mdl := m
+		d := []interface{}{q}
+		x := &Result{
+			Action: q.Action,
+			Icon:   q.Icon,
+			Path:   q.Path,
+			Model:  mdl,
+			Data:   d,
+		}
 		ret = append(ret, x)
 	}
 

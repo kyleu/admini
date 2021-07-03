@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"runtime"
 
-	"github.com/kyleu/admini/app/database/sqlite"
+	"github.com/kyleu/admini/app/database"
 	"github.com/pkg/errors"
 
 	"github.com/kirsle/configdir"
@@ -61,7 +61,7 @@ func Run() (*zap.SugaredLogger, error) {
 	f := filesystem.NewFileSystem(flags.ConfigDir, logger)
 	ls := loader.NewService()
 	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(logger))
-	if sqlite.SQLiteEnabled {
+	if database.SQLiteEnabled {
 		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(logger))
 	}
 	ls.Set(schema.OriginMock, lmock.NewLoader(logger))
