@@ -1,6 +1,8 @@
 {% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/auth" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/project" %}
+{% import "github.com/kyleu/admini/app/util" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
@@ -15,5 +17,41 @@
     <h3>Settings</h3>
     <p>Test: {%s p.Settings.Test %}</p>
   </div>
+  <div class="card">
+    <h3>Authentication</h3>
+    <ul>
+      {%- code
+        prv, err := as.Auth.Providers()
+        if err != nil {
+          panic(err)
+        }
+      -%}
+      {%- for _, x := range auth.AvailableProviderKeys -%}
+      <li>
+        {%- if prv.Contains(x) -%}
+        {%s auth.AvailableProviderNames[x] %}
+        {%- else -%}
+        <em>{%s auth.AvailableProviderNames[x] %}</em>
+        {%- endif -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%= About(as) %}
   {%= components.JSONModal("settings", "Settings JSON", p.Settings, 1) %}
+{% endfunc %}
+
+{% func About(as *app.State) %}
+  <div class="card">
+    {%- if util.AppSource != "" -%}
+    <div class="right"><a href="{%s util.AppSource %}">Github</a></div>
+    {%- endif -%}
+    <h3>{%s util.AppName %} v{%s as.BuildInfo.Version %}</h3>
+    {%- if as.BuildInfo.Date != "unknown" -%}
+    <em>built on {%s as.BuildInfo.Date %}</em>
+    {%- endif -%}
+    {%- if util.AppLegal != "" -%}
+    <div>{%s= util.AppLegal %}</div>
+    {%- endif -%}
+  </div>
 {% endfunc %}

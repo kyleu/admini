@@ -1,9 +1,10 @@
 package cutil
 
 import (
-	"github.com/kyleu/admini/app/filter"
 	"strconv"
 	"strings"
+
+	"github.com/kyleu/admini/app/filter"
 
 	"github.com/valyala/fasthttp"
 )

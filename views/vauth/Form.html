@@ -1,0 +1,23 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/auth" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/util" %}
+
+{% func SigninTable(prvs auth.Providers, as *app.State, ps *cutil.PageState) %}
+  {%- if len(prvs) > 0 -%}
+  <div class="card">
+    <h3>Sign in to {%s util.AppName %}</h3>
+    <ul>
+      {%- for _, prv := range prvs -%}
+      <li>
+        <a href="/auth/{%s prv.ID %}">{%s prv.Title %}</a>
+        {%- code as := ps.Auth.GetByProvider(prv.ID) -%}
+        {%- for _, a := range as -%}
+        (signed in as {%s a.Email %})
+        {%- endfor -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%- endif -%}
+{% endfunc %}

@@ -1,21 +1,27 @@
 {% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/auth" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/user" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vauth" %}
 
 {% code type Profile struct {
   layout.Basic
   Profile *user.Profile
   Theme *user.Theme
+  Providers auth.Providers
 } %}
 
 {% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="#modal-profile"><button type="button">JSON</button></a></div>
+    <div class="right">
+      <a href="#modal-profile"><button type="button">JSON</button></a>
+    </div>
     <h3>Profile</h3>
     <p>Name: {%s p.Profile.Name %}</p>
   </div>
+  {%= vauth.SigninTable(p.Providers, as, ps) %}
   <div class="card">
     <h3>Colors!</h3>
     <div class="spacer"></div>

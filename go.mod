@@ -8,15 +8,19 @@ require (
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/gertd/go-pluralize v0.1.7
 	github.com/go-gem/sessions v0.0.0-20170522023159-6f6fd65f2530
-	github.com/gorilla/securecookie v1.1.1 // indirect
+	github.com/gorilla/pat v1.0.1 // indirect
+	github.com/gorilla/securecookie v1.1.1
 	github.com/iancoleman/strcase v0.1.3
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/jmoiron/sqlx v1.3.3
 	github.com/kirsle/configdir v0.0.0-20170128060238-e45d2f54772f
+	github.com/markbates/going v1.0.0
+	github.com/markbates/goth v1.67.1
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/pflag v1.0.1
 	github.com/valyala/fasthttp v1.26.0
 	github.com/valyala/quicktemplate v1.6.3
 	go.uber.org/zap v1.16.0
-	modernc.org/sqlite v1.10.8
+	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
+	modernc.org/sqlite v1.11.2
 )

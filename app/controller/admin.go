@@ -41,6 +41,12 @@ func Admin(ctx *fasthttp.RequestCtx) {
 				return "", err
 			}
 			return flashAndRedir(true, "wrote heap profile", "/admin", ctx, ps)
+		case "session":
+			err := takeHeapProfile()
+			if err != nil {
+				return "", err
+			}
+			return render(ctx, as, &vadmin.Session{}, ps)
 		default:
 			return "", errors.Errorf("unhandled admin action [%s]", path[0])
 		}

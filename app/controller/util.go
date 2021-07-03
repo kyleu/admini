@@ -32,7 +32,7 @@ var sessionKey = func() string {
 	return x
 }()
 
-var store = sessions.NewCookieStore([]byte(sessionKey))
+var store *sessions.CookieStore
 
 func SetState(a *app.State) {
 	currentApp = a

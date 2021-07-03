@@ -3,6 +3,9 @@ package cutil
 import (
 	"fmt"
 
+	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/user"
+
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
@@ -20,6 +23,8 @@ type PageState struct {
 	Breadcrumbs   Breadcrumbs        `json:"breadcrumbs"`
 	Flashes       []string           `json:"flashes"`
 	Session       *sessions.Session  `json:"-"`
+	Profile       *user.Profile      `json:"profile"`
+	Auth          auth.Sessions      `json:"auth"`
 	Icons         []string           `json:"icons"`
 	RootIcon      string             `json:"rootIcon"`
 	RootPath      string             `json:"rootPath"`

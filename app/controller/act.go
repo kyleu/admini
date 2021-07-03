@@ -4,6 +4,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/go-gem/sessions"
+	"github.com/gorilla/securecookie"
+	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/user"
+
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/menu"
@@ -12,7 +17,6 @@ import (
 
 	"github.com/kyleu/admini/views/verror"
 
-	"github.com/go-gem/sessions"
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/util"
@@ -37,27 +41,61 @@ func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps
 func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 	logger := currentApp.RootLogger.With(zap.String("path", string(ctx.Request.URI().Path())))
 
+	if store == nil {
+		store = initStore()
+	}
 	session, err := store.Get(ctx, util.AppKey)
 	if err != nil {
 		logger.Warnf("error retrieving session: %+v", err)
 	}
-	session.Options = &sessions.Options{Path: "/", HttpOnly: true /* , SameSite: http.SameSiteStrictMode */}
-	if session.IsNew {
+	flashes := util.StringArrayFromInterfaces(session.Flashes())
+	if session.IsNew || len(flashes) > 0 {
+		session.Options = &sessions.Options{Path: "/", HttpOnly: true /* , SameSite: http.SameSiteStrictMode */}
 		err = session.Save(ctx)
 		if err != nil {
 			logger.Warnf("can't save session: %+v", err)
 		}
 	}
 
-	flashes := util.StringArrayFromInterfaces(session.Flashes())
-	if len(flashes) > 0 {
-		err = session.Save(ctx)
-		if err != nil {
-			logger.Warnf("can't save session without flashes: %+v", err)
+	prof, err := loadProfile(session)
+	if err != nil {
+		logger.Warnf("can't load profile: %+v", err)
+	}
+
+	var a auth.Sessions
+	authX, ok := session.Values["auth"]
+	if ok {
+		authS, ok := authX.(string)
+		if ok {
+			a = auth.SessionsFromString(authS)
 		}
 	}
 
-	return &cutil.PageState{Method: string(ctx.Method()), URI: ctx.Request.URI(), Flashes: flashes, Session: session, Icons: initialIcons, Logger: logger}
+	return &cutil.PageState{
+		Method:  string(ctx.Method()),
+		URI:     ctx.Request.URI(),
+		Flashes: flashes,
+		Session: session,
+		Profile: prof,
+		Auth:    a,
+		Icons:   initialIcons,
+		Logger:  logger,
+	}
+}
+
+func initStore(keyPairs ...[]byte) *sessions.CookieStore {
+	ret := sessions.NewCookieStore([]byte(sessionKey))
+	for _, x := range ret.Codecs {
+		c, ok := x.(*securecookie.SecureCookie)
+		if ok {
+			c.MaxLength(65536)
+		}
+	}
+	return ret
+}
+
+func loadProfile(session *sessions.Session) (*user.Profile, error) {
+	return &user.Profile{Name: "Test"}, nil
 }
 
 func actComplete(key string, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
