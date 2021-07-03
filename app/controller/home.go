@@ -27,3 +27,13 @@ func Home(ctx *fasthttp.RequestCtx) {
 		return render(ctx, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
 }
+
+func Refresh(ctx *fasthttp.RequestCtx) {
+	act("refresh", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		currentApp.Loaders.Clear()
+		currentApp.Sources.Clear()
+		currentApp.Projects.Clear()
+		msg := "Cleared all caches"
+		return flashAndRedir(true, msg, "/", ctx, ps)
+	})
+}

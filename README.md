@@ -1,4 +1,4 @@
-# admini
+# ![image info](./assets/favicon.png) admini
 
 [admini](https://admini.dev) is fun.
 

@@ -14,7 +14,7 @@ type Action struct {
 	Icon        string        `json:"icon,omitempty"`
 	Ordinal     int           `json:"ordinal,omitempty"`
 	Children    Actions       `json:"children,omitempty"` // stored in subdirs
-	Pkg         util.Pkg      `json:"-"`
+	Pkg         util.Pkg      `json:"-"`                  // injected
 	Config      util.ValueMap `json:"config,omitempty"`
 }
 
@@ -76,7 +76,7 @@ type dto struct {
 	Icon        string        `json:"icon,omitempty"`
 	Ordinal     int           `json:"ordinal,omitempty"`
 	Children    Actions       `json:"-"` // excluded for saving
-	Pkg         util.Pkg      `json:"-"`
+	Pkg         util.Pkg      `json:"-"` // excluded for saving
 	Config      util.ValueMap `json:"config,omitempty"`
 }
 

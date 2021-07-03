@@ -2,6 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"runtime"
+
+	"github.com/kyleu/admini/app/database/sqlite"
+	"github.com/pkg/errors"
 
 	"github.com/kirsle/configdir"
 
@@ -26,12 +30,14 @@ type Flags struct {
 	Port      int
 	ConfigDir string
 	Debug     bool
+	JSON      bool
 }
 
-func Run() error {
-	logger, err := log.InitLogging(true)
-	if err != nil {
-		return err
+var AppBuildInfo *app.BuildInfo
+
+func Run() (*zap.SugaredLogger, error) {
+	if AppBuildInfo == nil {
+		return nil, errors.New("no build info")
 	}
 
 	flags := parseFlags()
@@ -40,28 +46,34 @@ func Run() error {
 		_ = configdir.MakePath(flags.ConfigDir)
 	}
 
-	logger.With(
-		zap.Bool("debug", flags.Debug),
-		zap.String("address", flags.Address),
-		zap.Int("port", flags.Port),
-	).Infof("[%s]", util.AppName)
+	logger, err := log.InitLogging(flags.Debug, flags.JSON)
+	if err != nil {
+		return logger, err
+	}
+
+	addr := fmt.Sprintf("%s:%d", flags.Address, util.AppPort)
+	startLog := logger.With(zap.Bool("debug", flags.Debug), zap.String("address", flags.Address), zap.Int("port", flags.Port))
+	startLog.Infof("[%s v%s] %s", util.AppName, AppBuildInfo.Version, util.AppURL)
+	startLog.Infof("starting using address [%s] on %s:%s", addr, runtime.GOOS, runtime.GOARCH)
 
 	r := controller.BuildRouter()
 
 	f := filesystem.NewFileSystem(flags.ConfigDir, logger)
 	ls := loader.NewService()
 	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(logger))
-	ls.Set(schema.OriginSQLite, lsqlite.NewLoader(logger))
+	if sqlite.SQLiteEnabled {
+		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(logger))
+	}
 	ls.Set(schema.OriginMock, lmock.NewLoader(logger))
 
-	st, err := app.NewState(flags.Debug, r, f, ls, logger)
+	st, err := app.NewState(flags.Debug, AppBuildInfo, r, f, ls, logger)
 	if err != nil {
-		return err
+		return logger, err
 	}
 	controller.SetState(st)
 
 	s := &fasthttp.Server{Handler: r.Handler, Name: util.AppName, ReadBufferSize: 32768}
-	return s.ListenAndServe(fmt.Sprintf("%s:%d", flags.Address, util.AppPort))
+	return logger, s.ListenAndServe(addr)
 }
 
 func parseFlags() *Flags {
@@ -70,6 +82,7 @@ func parseFlags() *Flags {
 	pflag.IntVarP(&ret.Port, "port", "p", util.AppPort, fmt.Sprintf("port to listen on, defaults to [%d]", util.AppPort))
 	pflag.StringVarP(&ret.ConfigDir, "dir", "d", "", "directory for configuration, defaults to [~/???]")
 	pflag.BoolVarP(&ret.Debug, "verbose", "v", false, "enables verbose logging and additional checks")
+	pflag.BoolVarP(&ret.JSON, "json", "j", false, "enables json logging")
 	pflag.Parse()
 	return ret
 }

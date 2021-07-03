@@ -1,0 +1,207 @@
+# http://goreleaser.com
+env:
+  - XORG=kyleu
+  - XNAME=Kyle U
+  - XEMAIL=kyle@kyleu.com
+  - XHOMEPAGE=https://admini.dev
+  - XLICENSE=TODO
+  - XSUMMARY=TODO
+  - XDESCRIPTION=TODO
+
+snapshot:
+  name_template: "{{ .Tag }}-SNAPSHOT"
+
+release:
+  draft: true
+
+changelog:
+  skip: false
+
+signs:
+  - artifacts: checksum
+
+checksum:
+  name_template: 'checksums.txt'
+
+builds:
+  - id: "aix"
+    goos:
+      - aix
+    goarch:
+      - ppc64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "darwin-arm64"
+    goos:
+      - darwin
+    goarch:
+      - arm64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "darwin-amd64"
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+#     hooks:
+#       post: gon gon.json
+
+  - id: "dragonfly"
+    goos:
+      - dragonfly
+    goarch:
+      - amd64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "illumos"
+    goos:
+      - illumos
+    goarch:
+      - amd64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "linux"
+    goos:
+      - linux
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+      - mips
+      - mips64
+      - ppc64
+      - riscv64
+      - s390x
+      - wasm
+    goarm:
+      - 7
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "netbsd"
+    goos:
+      - netbsd
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "openbsd"
+    goos:
+      - openbsd
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "plan9"
+    goos:
+      - plan9
+    goarch:
+      - 386
+      - amd64
+      - arm
+    goarm:
+      - 7
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "solaris"
+    goos:
+      - solaris
+    goarch:
+      - amd64
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "windows"
+    goos:
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+  - id: "js"
+    goos:
+      - js
+    goarch:
+      - wasm
+    mod_timestamp: '{{ .CommitTimestamp }}'
+
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
+    wrap_in_directory: false
+    replacements: &replacements
+      darwin: macos
+      386: i386
+      amd64: x86_64
+    files:
+      - none*
+
+dockers:
+  - image_templates:
+    - "{{ .Env.XORG }}/{{.ProjectName}}"
+
+brews:
+  -
+    tap:
+      owner: "{{ .Env.XORG }}"
+      name: "homebrew-{{ .Env.XORG }}"
+    commit_author:
+      name: "{{ .Env.XNAME }}"
+      email: "{{ .Env.XEMAIL }}"
+    folder: Formula
+    homepage: "{{ .Env.XHOMEPAGE }}"
+    description: "{{ .Env.XDESCRIPTION }}"
+    license: "{{ .Env.XLICENSE }}"
+    skip_upload: true
+
+nfpms:
+  -
+    vendor: "{{ .Env.XNAME }}"
+    homepage: "{{ .Env.XHOMEPAGE }}"
+    maintainer: "{{ .Env.XNAME }} <{{ .Env.XEMAIL }}>"
+    description: "{{ .Env.XDESCRIPTION }}"
+    license: "{{ .Env.XLICENSE }}"
+    replacements: *replacements
+    formats:
+      - apk
+      - deb
+      - rpm
+
+scoop:
+  bucket:
+    owner: "{{ .Env.XORG }}"
+    name: "{{ .ProjectName }}"
+  commit_author:
+    name: "{{ .Env.XNAME }}"
+    email: "{{ .Env.XEMAIL }}"
+  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+  homepage: "https://example.com/"
+  description: "Software to create fast and easy drum rolls."
+  license: MIT
+  skip_upload: true
+
+snapcrafts:
+  -
+    publish: false
+    replacements: *replacements
+    summary: "{{ .Env.XSUMMARY }}"
+    description: "{{ .Env.XDESCRIPTION }}"
+    grade: stable
+    confinement: strict
+    license: "MIT"
+

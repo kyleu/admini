@@ -13,7 +13,7 @@ function tmpl {
   if test -f "$ftgt"; then
     mv "$ftgt" "$fsrc"
   fi
-  qtc -ext $2 -dir "$1"
+  qtc -ext $2 -dir "$1" &> /dev/null
 }
 
 function check {

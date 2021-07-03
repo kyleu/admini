@@ -5,6 +5,7 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+//nolint
 func BuildRouter() *router.Router {
 	w := fasthttp.CompressHandler
 	r := router.New()
@@ -13,7 +14,14 @@ func BuildRouter() *router.Router {
 	r.GET(defaultSearchPath, w(Search))
 	r.GET(defaultProfilePath, w(Profile))
 	r.GET("/settings", w(Settings))
+	r.GET("/refresh", w(Refresh))
+
+	r.GET("/auth/{key}", w(AuthDetail))
+	r.GET("/auth/{key}/callback", w(AuthCallback))
+	r.GET("/auth/{key}/logout", w(AuthLogout))
+
 	r.GET("/admin", w(Admin))
+	r.GET("/admin/{path:*}", w(Admin))
 
 	r.GET("/help", w(Help))
 	r.GET("/feedback", w(Feedback))
