@@ -21,6 +21,9 @@ func (s *Service) QueryRows(q string, tx *sqlx.Tx, values ...interface{}) ([]map
 	if err != nil {
 		return nil, err
 	}
+	defer func() {
+		_ = rows.Close()
+	}()
 
 	ret := []map[string]interface{}{}
 	for rows.Next() {

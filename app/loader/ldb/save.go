@@ -16,7 +16,7 @@ func Save(db *database.Service, m *model.Model, ids []interface{}, changes util.
 
 	pk := m.GetPK(logger)
 
-	var where []string
+	where := make([]string, 0, len(pk))
 	for idx, x := range pk {
 		where = append(where, fmt.Sprintf("%s = $%d", x, len(vals)+idx+1))
 	}

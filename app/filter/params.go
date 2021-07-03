@@ -10,6 +10,7 @@ import (
 )
 
 const MaxRowsDefault = 100
+
 var AllowedColumns = map[string][]string{}
 
 type Params struct {

@@ -33,7 +33,7 @@ func (s *Service) LoadSchema(key string) (*schema.Schema, error) {
 	if ret != nil {
 		err := s.loadOverrides(key, ret)
 		if err != nil {
-			return nil, errors.Wrap(err, "unable to calulate overrides")
+			return nil, errors.Wrap(err, "unable to calculate overrides")
 		}
 
 		err = ret.CreateReferences()
@@ -83,7 +83,7 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 
 	err = s.loadOverrides(key, sch)
 	if err != nil {
-		return nil, 0, errors.Wrap(err, "unable to calulate overrides")
+		return nil, 0, errors.Wrap(err, "unable to calculate overrides")
 	}
 	err = sch.CreateReferences()
 	if err != nil {

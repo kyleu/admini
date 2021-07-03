@@ -1,9 +1,10 @@
 package filter
 
 import (
+	"strings"
+
 	"github.com/kyleu/admini/app/database"
 	"go.uber.org/zap"
-	"strings"
 )
 
 type Options struct {

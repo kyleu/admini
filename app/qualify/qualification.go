@@ -2,8 +2,9 @@ package qualify
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/action"
 	"strings"
+
+	"github.com/kyleu/admini/app/action"
 )
 
 type Qualification struct {

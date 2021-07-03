@@ -30,12 +30,7 @@ func (p Pkg) Equals(other Pkg) bool {
 	if len(p) != len(other) {
 		return false
 	}
-	for idx, v := range p {
-		if v != other[idx] {
-			return false
-		}
-	}
-	return true
+	return p.StartsWith(other)
 }
 
 func (p Pkg) Trim(src Pkg) Pkg {

@@ -1,9 +1,9 @@
 package cutil
 
 type Location struct {
-	URL string `json:"url"`
+	URL   string `json:"url"`
 	Title string `json:"title"`
-	Icon string `json:"icon,omitempty"`
+	Icon  string `json:"icon,omitempty"`
 }
 
 type Locations []*Location

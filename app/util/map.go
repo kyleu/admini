@@ -23,8 +23,8 @@ func ValueMapFor(kvs ...interface{}) ValueMap {
 }
 
 func (c ValueMap) KeysAndValues() ([]string, []interface{}) {
-	var cols []string
-	var vals []interface{}
+	cols := make([]string, 0, len(c))
+	vals := make([]interface{}, 0, len(c))
 	for k := range c {
 		cols = append(cols, k)
 	}

@@ -2,8 +2,9 @@ package ldb
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/filter"
 	"strings"
+
+	"github.com/kyleu/admini/app/filter"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/model"

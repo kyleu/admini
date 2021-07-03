@@ -2,8 +2,9 @@ package model
 
 import (
 	"fmt"
-	"github.com/kyleu/admini/app/field"
 	"sort"
+
+	"github.com/kyleu/admini/app/field"
 
 	"github.com/kyleu/admini/app/util"
 )

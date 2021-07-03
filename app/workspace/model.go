@@ -1,8 +1,9 @@
 package workspace
 
 import (
-	"github.com/kyleu/admini/app/filter"
 	"strings"
+
+	"github.com/kyleu/admini/app/filter"
 
 	"github.com/valyala/fasthttp"
 

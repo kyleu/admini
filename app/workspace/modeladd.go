@@ -44,7 +44,7 @@ func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 	msg := fmt.Sprintf("Added [%d] changes, received [%d] fields", len(changes), len(res))
 	end := len(additional)
 	if end > 0 {
-		end -= 1
+		end--
 	}
 	path := append(additional[:end], "v")
 	for _, x := range res {
