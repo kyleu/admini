@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"fmt"
-
 	"github.com/kyleu/admini/app/util"
 	"github.com/valyala/fasthttp"
 
@@ -17,14 +15,6 @@ var helpContent = util.ValueMap{
 	"urls": map[string]string{
 		"home": "/",
 	},
-}
-
-func Feedback(ctx *fasthttp.RequestCtx) {
-	act("feedback", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		ps.Title = "Feedback"
-		ps.Data = fmt.Sprintf("to submit feedback, email %s", util.AppContact)
-		return render(ctx, as, &vhelp.Feedback{}, ps, "feedback")
-	})
 }
 
 func Help(ctx *fasthttp.RequestCtx) {

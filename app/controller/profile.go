@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/url"
+
 	"github.com/kyleu/admini/app/user"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
@@ -22,6 +24,15 @@ func Profile(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "can't load providers")
 		}
 
-		return render(ctx, as, &vuser.Profile{Profile: ps.Profile, Theme: theme, Providers: prvs}, ps, "Profile")
+		redir := "/"
+		ref := string(ctx.Request.Header.Peek("Referer"))
+		if ref != "" {
+			u, err := url.Parse(ref)
+			if err == nil && u != nil {
+				redir = u.Path
+			}
+		}
+
+		return render(ctx, as, &vuser.Profile{Profile: ps.Profile, Theme: theme, Providers: prvs, Referrer: redir}, ps, "Profile")
 	})
 }

@@ -18,8 +18,7 @@ func For(as *app.State) Items {
 		Separator,
 		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/settings"},
 		&Item{Key: "refresh", Title: "Refresh", Description: "Reload all cached in " + util.AppName, Icon: "refresh", Route: "/refresh"},
-		&Item{Key: "feedback", Title: "Feedback", Description: "Submit feedback so we can improve " + util.AppName, Icon: "mail", Route: "/feedback"},
-		&Item{Key: "help", Title: "Help", Description: "Get assistance and advice for using " + util.AppName, Icon: "comment", Route: "/help"},
+		&Item{Key: "help", Title: "About", Description: "Get assistance and advice for using " + util.AppName, Icon: "question", Route: "/help"},
 	}
 }
 

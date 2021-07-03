@@ -24,7 +24,7 @@ func BuildRouter() *router.Router {
 	r.GET("/admin/{path:*}", w(Admin))
 
 	r.GET("/help", w(Help))
-	r.GET("/feedback", w(Feedback))
+	r.GET("/help/{path:*}", w(Help))
 
 	r.GET("/source", w(SourceList))
 	r.POST("/source", w(SourceInsert))

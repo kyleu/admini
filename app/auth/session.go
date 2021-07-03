@@ -52,6 +52,22 @@ func (s Sessions) GetByProvider(p string) Sessions {
 	return ret
 }
 
+func (s Sessions) Purge(keys ...string) Sessions {
+	ret := make(Sessions, 0, len(s))
+	for _, ss := range s {
+		hit := false
+		for _, key := range keys {
+			if ss.Provider == key {
+				hit = true
+			}
+		}
+		if !hit {
+			ret = append(ret, ss)
+		}
+	}
+	return ret
+}
+
 func SessionsFromString(s string) Sessions {
 	split := util.SplitAndTrim(s, ",")
 	ret := make(Sessions, 0, len(split))

@@ -18,6 +18,11 @@ func BeginAuthHandler(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 	if err != nil {
 		return "", err
 	}
+	refer := string(ctx.Request.URI().QueryArgs().Peek("refer"))
+	if refer != "" {
+		websess.Values["auth-refer"] = refer
+		_ = websess.Save(ctx)
+	}
 	return u, nil
 }
 
@@ -59,7 +64,7 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 	}
 
 	defer func() {
-		_ = Logout(ctx, websess, prv.ID)
+		_ = removeProviderData(ctx, websess, prv.ID)
 	}()
 
 	sess, err := prv.goth.UnmarshalSession(value)
@@ -74,7 +79,7 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 
 	user, err := prv.goth.FetchUser(sess)
 	if err == nil {
-		return addToSession(websess, user.Provider, user.Email, ctx)
+		return addToSession(user.Provider, user.Email, ctx, websess)
 	}
 
 	_, err = sess.Authorize(prv.goth, &Params{q: ctx.Request.URI().QueryArgs()})
@@ -92,15 +97,11 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 		return nil, err
 	}
 
-	return addToSession(websess, gu.Provider, gu.Email, ctx)
+	return addToSession(gu.Provider, gu.Email, ctx, websess)
 }
 
-func addToSession(websess *sessions.Session, provider string, email string, ctx *fasthttp.RequestCtx) (Sessions, error) {
-	authS, err := GetFromSession(SessKey, websess)
-	var ret Sessions
-	if err == nil && authS != "" {
-		ret = SessionsFromString(authS)
-	}
+func addToSession(provider string, email string, ctx *fasthttp.RequestCtx, websess *sessions.Session) (Sessions, error) {
+	ret := getCurrentAuths(websess)
 	s := &Session{Provider: provider, Email: email}
 	for _, x := range ret {
 		if x.Provider == s.Provider && x.Email == s.Email {
@@ -108,12 +109,25 @@ func addToSession(websess *sessions.Session, provider string, email string, ctx 
 		}
 	}
 	ret = append(ret, s)
-	ret.Sort()
-	err = StoreInSession(SessKey, ret.String(), ctx, websess)
+	err := setCurrentAuths(websess, ret, ctx)
 	if err != nil {
 		return nil, err
 	}
 	return ret, nil
+}
+
+func getCurrentAuths(websess *sessions.Session) Sessions {
+	authS, err := GetFromSession(SessKey, websess)
+	var ret Sessions
+	if err == nil && authS != "" {
+		ret = SessionsFromString(authS)
+	}
+	return ret
+}
+
+func setCurrentAuths(websess *sessions.Session, s Sessions, ctx *fasthttp.RequestCtx) error {
+	s.Sort()
+	return StoreInSession(SessKey, s.String(), ctx, websess)
 }
 
 func GetFromSession(key string, websess *sessions.Session) (string, error) {
@@ -163,8 +177,17 @@ func validateState(ctx *fasthttp.RequestCtx, sess goth.Session) error {
 	return nil
 }
 
-func Logout(ctx *fasthttp.RequestCtx, websess *sessions.Session, keys ...string) error {
-	for _, k := range keys {
+func removeProviderData(ctx *fasthttp.RequestCtx, websess *sessions.Session, prvKeys ...string) error {
+	for _, k := range prvKeys {
+		delete(websess.Values, k)
+	}
+	return websess.Save(ctx)
+}
+
+func Logout(ctx *fasthttp.RequestCtx, websess *sessions.Session, prvKeys ...string) error {
+	a := getCurrentAuths(websess)
+	a = a.Purge(prvKeys...)
+	for _, k := range prvKeys {
 		delete(websess.Values, k)
 	}
 	return websess.Save(ctx)

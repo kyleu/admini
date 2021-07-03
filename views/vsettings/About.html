@@ -13,5 +13,8 @@
     {%- if util.AppLegal != "" -%}
     <div>{%s= util.AppLegal %}</div>
     {%- endif -%}
+    {%- if util.AppURL != "" -%}
+    <p><a href="{%s= util.AppURL %}">{%s= util.AppURL %}</a></p>
+    {%- endif -%}
   </div>
 {% endfunc %}

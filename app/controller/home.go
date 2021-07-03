@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/url"
+
 	"github.com/kyleu/admini/app/util"
 	"github.com/valyala/fasthttp"
 
@@ -30,10 +32,18 @@ func Home(ctx *fasthttp.RequestCtx) {
 
 func Refresh(ctx *fasthttp.RequestCtx) {
 	act("refresh", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		redir := "/"
+		ref := string(ctx.Request.Header.Peek("Referer"))
+		if ref != "" {
+			u, err := url.Parse(ref)
+			if err == nil && u != nil {
+				redir = u.Path
+			}
+		}
 		currentApp.Loaders.Clear()
 		currentApp.Sources.Clear()
 		currentApp.Projects.Clear()
 		msg := "Cleared all caches"
-		return flashAndRedir(true, msg, "/", ctx, ps)
+		return flashAndRedir(true, msg, redir, ctx, ps)
 	})
 }

@@ -10,12 +10,12 @@
 } %}
 
 {% func (p *Settings) Body(as *app.State, ps *cutil.PageState) %}
+  {%= About(as) %}
   <div class="card">
     <div class="right"><a href="#modal-settings"><button type="button">JSON</button></a></div>
     <h3>Settings</h3>
     <p>Test: {%s p.Settings.Test %}</p>
   </div>
   {%= Authentication(as) %}
-  {%= About(as) %}
   {%= components.JSONModal("settings", "Settings JSON", p.Settings, 1) %}
 {% endfunc %}

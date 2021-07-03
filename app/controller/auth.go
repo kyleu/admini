@@ -35,6 +35,13 @@ func AuthCallback(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
+		referX, ok := ps.Session.Values["auth-refer"]
+		if ok {
+			refer, ok := referX.(string)
+			if ok && refer != "" {
+				return refer, nil
+			}
+		}
 		return render(ctx, as, &vauth.Detail{Provider: prv, Session: u}, ps)
 	})
 }
