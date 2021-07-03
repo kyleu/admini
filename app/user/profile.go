@@ -14,11 +14,15 @@ type Profile struct {
 
 var DefaultProfile = &Profile{Name: "Guest"}
 
-func (p Profile) String() string {
+func (p *Profile) String() string {
 	if p.Theme == "" {
 		return p.Name
 	}
 	return fmt.Sprintf("%s (%s)", p.Name, p.Theme)
+}
+
+func (p *Profile) Clone() *Profile {
+	return &Profile{Name:  p.Name, Mode:  p.Mode, Theme: p.Theme}
 }
 
 func (p *Profile) AuthString(a auth.Sessions) string {

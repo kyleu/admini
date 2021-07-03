@@ -6,9 +6,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gorilla/securecookie"
+	"github.com/kyleu/admini/app/auth"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/verror"
 	"github.com/valyala/fasthttp"
+	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
@@ -20,22 +23,24 @@ import (
 )
 
 var (
-	currentApp   *app.State
+	_currentApp  *app.State
+	_rootLogger  *zap.SugaredLogger
 	initialIcons = []string{"search"}
 )
 
 var sessionKey = func() string {
 	x := os.Getenv("SESSION_KEY")
 	if x == "" {
-		x = "random_secret_key"
+		x = util.AppKey + "_random_secret_key"
 	}
 	return x
 }()
 
 var store *sessions.CookieStore
 
-func SetState(a *app.State) {
-	currentApp = a
+func SetState(a *app.State, l *zap.SugaredLogger) {
+	_currentApp = a
+	_rootLogger = l
 }
 
 func ctxRequiredString(ctx *fasthttp.RequestCtx, key string, allowEmpty bool) (string, error) {
@@ -46,7 +51,7 @@ func ctxRequiredString(ctx *fasthttp.RequestCtx, key string, allowEmpty bool) (s
 	return v, nil
 }
 
-func render(ctx *fasthttp.RequestCtx, appState *app.State, page layout.Page, ps *cutil.PageState, breadcrumbs ...string) (string, error) {
+func render(ctx *fasthttp.RequestCtx, as *app.State, page layout.Page, ps *cutil.PageState, breadcrumbs ...string) (string, error) {
 	defer func() {
 		x := recover()
 		if x != nil {
@@ -54,10 +59,10 @@ func render(ctx *fasthttp.RequestCtx, appState *app.State, page layout.Page, ps 
 			switch t := x.(type) {
 			case error:
 				ed := util.GetErrorDetail(t)
-				verror.WriteDetail(ctx, ed, currentApp, ps)
+				verror.WriteDetail(ctx, ed, as, ps)
 			default:
 				ed := &util.ErrorDetail{Message: fmt.Sprintf("%v", t)}
-				verror.WriteDetail(ctx, ed, currentApp, ps)
+				verror.WriteDetail(ctx, ed, as, ps)
 			}
 		}
 	}()
@@ -72,7 +77,7 @@ func render(ctx *fasthttp.RequestCtx, appState *app.State, page layout.Page, ps 
 	}
 	startNanos := time.Now().UnixNano()
 	ctx.Response.Header.SetContentType("text/html; charset=UTF-8")
-	views.WriteRender(ctx, page, appState, ps)
+	views.WriteRender(ctx, page, as, ps)
 	ps.RenderElapsed = float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 	return "", nil
 }
@@ -91,7 +96,7 @@ func flashAndRedir(success bool, msg string, redir string, ctx *fasthttp.Request
 		status = "success"
 	}
 	ps.Session.AddFlash(fmt.Sprintf("%s:%s", status, msg))
-	if err := ps.Session.Save(ctx); err != nil {
+	if err := auth.SaveSession(ctx, ps.Session, ps.Logger); err != nil {
 		return "", errors.Wrap(err, "unable to save flash session")
 	}
 
@@ -107,4 +112,15 @@ func flashAndRedir(success bool, msg string, redir string, ctx *fasthttp.Request
 
 func flashError(err error, redir string, ctx *fasthttp.RequestCtx, ps *cutil.PageState) (string, error) {
 	return flashAndRedir(false, err.Error(), redir, ctx, ps)
+}
+
+func initStore(keyPairs ...[]byte) *sessions.CookieStore {
+	ret := sessions.NewCookieStore(keyPairs...)
+	for _, x := range ret.Codecs {
+		c, ok := x.(*securecookie.SecureCookie)
+		if ok {
+			c.MaxLength(65536)
+		}
+	}
+	return ret
 }

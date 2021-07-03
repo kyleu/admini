@@ -10,9 +10,14 @@ type Theme struct {
 	Key   string `json:"key"`
 	Light Colors `json:"light"`
 	Dark  Colors `json:"dark"`
+	css   string
 }
 
-func (t *Theme) CSS(indent int) string {
+func (t *Theme) CSS() string {
+	indent := 1
+	if t.css != "" {
+		return t.css
+	}
 	sb := &strings.Builder{}
 	addLine(sb, "", indent)
 	sb.WriteString(t.Light.CSS(indent))
@@ -20,7 +25,8 @@ func (t *Theme) CSS(indent int) string {
 	addLine(sb, "@media (prefers-color-scheme: dark) {", indent)
 	sb.WriteString(t.Dark.CSS(indent + 1))
 	addLine(sb, "}", indent)
-	return sb.String()
+	t.css = sb.String()
+	return t.css
 }
 
 type Themes []*Theme

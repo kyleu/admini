@@ -29,7 +29,7 @@ func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 			return ersp("provided path [%s] is not part of the project workspace", string(ctx.Path()))
 		}
 
-		pv, err := currentApp.Projects.LoadView(projectKey)
+		pv, err := as.Projects.LoadView(projectKey)
 		if err != nil {
 			return "", errors.Wrapf(err, "error loading project [%s]", projectKey)
 		}
@@ -43,7 +43,7 @@ func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 		ps.SearchPath = defaultSearchPath
 		ps.ProfilePath = defaultProfilePath
 
-		m, err := workspace.ProjectMenu(currentApp, pv)
+		m, err := workspace.ProjectMenu(as, pv)
 		if err != nil {
 			return "", errors.Wrapf(err, "error creating menu for project [%s]", pv.Project.Key)
 		}

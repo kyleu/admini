@@ -5,6 +5,10 @@
   font-size: 80%;
 }
 
+.mockup .mock-link:hover {
+  text-decoration: underline;
+}
+
 .mockup .mock-nav {
   height: 18px;
 }
@@ -17,4 +21,8 @@
 }
 .mockup .mock-main {
   padding: 4px;
+  height: 102px;
+}
+.mockup .mock-main ul {
+  margin-top: var(--padding-small);
 }

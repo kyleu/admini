@@ -16,7 +16,6 @@
   --color-background: #ffffff;
   --color-background-muted: #eeeeee;
 
-  --color-highlight: #008000;
   --color-link: #2d414e;
   --color-link-visited: #406379;
 
@@ -33,9 +32,17 @@
   --color-error: red;
 }
 
+@media (prefers-color-scheme: light) {
+  :root {
+    --mode: light;
+  }
+}
+
 /* dark theme */
 @media (prefers-color-scheme: dark) {
   :root {
+    --mode: dark;
+
     --border: 1px solid #666666;
     --box-shadow: 0 4px 4px 0 rgba(255,255,255,0.12),0 1px 12px 0 rgba(255,255,255,0.12),0 4px 4px -1px rgba(255,255,255,0.12);
     --link-text-decoration: none;
@@ -45,7 +52,6 @@
     --color-background: #121212;
     --color-background-muted: #333333;
 
-    --color-highlight: #008000;
     --color-link: #dddddd;
     --color-link-visited: #aaaaaa;
 

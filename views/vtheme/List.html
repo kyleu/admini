@@ -13,7 +13,7 @@
         {% else %}
           <input type="radio" name="theme" value="{%s t.Key %}" />
         {% endif %}
-        {%= Render(t, indent + 2, ps) %}
+        {%= Mockup(t, indent + 2, ps) %}
       </label>
     {% endfor %}
   {%= vutil.Indent(true, indent) %}

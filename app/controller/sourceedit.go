@@ -43,8 +43,8 @@ func SourceInsert(ctx *fasthttp.RequestCtx) {
 		icon := frm.GetStringOpt("icon")
 		description := frm.GetStringOpt("description")
 		typ := frm.GetStringOpt("type")
-		ret := currentApp.Sources.NewSource(key, title, icon, description, schema.OriginFromString(typ))
-		err = currentApp.Sources.Save(ret, false)
+		ret := as.Sources.NewSource(key, title, icon, description, schema.OriginFromString(typ))
+		err = as.Sources.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
@@ -122,7 +122,7 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 			return "", errors.Errorf("unable to parse config for source type [%s]", src.Type.String())
 		}
 
-		err = currentApp.Sources.Save(src, true)
+		err = as.Sources.Save(src, true)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to save source [%s]", key)
 		}

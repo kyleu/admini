@@ -51,7 +51,7 @@ func SourceModelSave(ctx *fasthttp.RequestCtx) {
 		}
 
 		if len(todo) > 0 {
-			curr, err := currentApp.Sources.GetOverrides(src.Key)
+			curr, err := as.Sources.GetOverrides(src.Key)
 			if err != nil {
 				return "", errors.Wrap(err, "unable to load current overrides")
 			}
@@ -59,7 +59,7 @@ func SourceModelSave(ctx *fasthttp.RequestCtx) {
 			purged := curr.Purge(m.Path())
 			final := append(purged, todo...)
 
-			err = currentApp.Sources.SaveOverrides(src.Key, final)
+			err = as.Sources.SaveOverrides(src.Key, final)
 			if err != nil {
 				return "", errors.Wrapf(err, "unable to save [%d] overrides", len(curr))
 			}

@@ -15,7 +15,7 @@ import (
 
 func AuthDetail(ctx *fasthttp.RequestCtx) {
 	act("auth.detail", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		prv, err := getProvider(ctx)
+		prv, err := getProvider(as, ctx)
 		if err != nil {
 			return "", err
 		}
@@ -23,13 +23,13 @@ func AuthDetail(ctx *fasthttp.RequestCtx) {
 		if err == nil {
 			return render(ctx, as, &vauth.Detail{Provider: prv, Session: u}, ps)
 		}
-		return auth.BeginAuthHandler(prv, ctx, ps.Session)
+		return auth.BeginAuthHandler(prv, ctx, ps.Session, ps.Logger)
 	})
 }
 
 func AuthCallback(ctx *fasthttp.RequestCtx) {
 	act("auth.callback", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		prv, err := getProvider(ctx)
+		prv, err := getProvider(as, ctx)
 		if err != nil {
 			return "", err
 		}
@@ -43,7 +43,7 @@ func AuthCallback(ctx *fasthttp.RequestCtx) {
 			if ok && refer != "" {
 				msg := fmt.Sprintf("signed in to %s as [%s]", auth.AvailableProviderNames[prv.ID], u.Email)
 				delete(ps.Session.Values, "auth-refer")
-				_ = ps.Session.Save(ctx)
+				_ = auth.SaveSession(ctx, ps.Session, ps.Logger)
 				return flashAndRedir(true, msg, refer, ctx, ps)
 			}
 		}
@@ -51,12 +51,12 @@ func AuthCallback(ctx *fasthttp.RequestCtx) {
 	})
 }
 
-func getProvider(ctx *fasthttp.RequestCtx) (*auth.Provider, error) {
+func getProvider(as *app.State, ctx *fasthttp.RequestCtx) (*auth.Provider, error) {
 	key, err := ctxRequiredString(ctx, "key", false)
 	if err != nil {
 		return nil, err
 	}
-	prvs, err := currentApp.Auth.Providers()
+	prvs, err := as.Auth.Providers()
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load providers")
 	}
@@ -73,7 +73,7 @@ func AuthLogout(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		err = auth.Logout(ctx, ps.Session, key)
+		err = auth.Logout(ctx, ps.Session, ps.Logger, key)
 		if err != nil {
 			return "", err
 		}

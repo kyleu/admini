@@ -3,9 +3,10 @@ package auth
 import (
 	"github.com/go-gem/sessions"
 	"github.com/valyala/fasthttp"
+	"go.uber.org/zap"
 )
 
-func getAuthURL(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session) (string, error) {
+func getAuthURL(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) (string, error) {
 	sess, err := prv.goth.BeginAuth(setState(ctx))
 	if err != nil {
 		return "", err
@@ -16,7 +17,7 @@ func getAuthURL(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Sessi
 		return "", err
 	}
 
-	err = storeInSession(prv.ID, sess.Marshal(), ctx, websess)
+	err = StoreInSession(prv.ID, sess.Marshal(), ctx, websess, logger)
 	if err != nil {
 		return "", err
 	}
@@ -25,7 +26,7 @@ func getAuthURL(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Sessi
 }
 
 func getCurrentAuths(websess *sessions.Session) Sessions {
-	authS, err := getFromSession(SessKey, websess)
+	authS, err := getFromSession(WebSessKey, websess)
 	var ret Sessions
 	if err == nil && authS != "" {
 		ret = SessionsFromString(authS)
@@ -33,7 +34,11 @@ func getCurrentAuths(websess *sessions.Session) Sessions {
 	return ret
 }
 
-func setCurrentAuths(websess *sessions.Session, s Sessions, ctx *fasthttp.RequestCtx) error {
+func setCurrentAuths(s Sessions, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
 	s.Sort()
-	return storeInSession(SessKey, s.String(), ctx, websess)
+	if len(s) > 0 {
+		return StoreInSession(WebSessKey, s.String(), ctx, websess, logger)
+	}
+	delete(websess.Values, WebSessKey)
+	return SaveSession(ctx, websess, logger)
 }

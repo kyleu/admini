@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-gem/sessions"
 	"github.com/kyleu/admini/app/auth"
 	"github.com/valyala/fasthttp"
 
@@ -25,30 +24,33 @@ const (
 )
 
 func act(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	ps := actPrepare(ctx)
-	clean(ps)
-	actComplete(key, ps, ctx, f)
+	as, ps := actPrepare(ctx)
+	clean(as, ps)
+	actComplete(key, as, ps, ctx, f)
 }
 
 func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	ps := actPrepare(ctx)
-	actComplete(key, ps, ctx, f)
+	as, ps := actPrepare(ctx)
+	actComplete(key, as, ps, ctx, f)
 }
 
-func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
-	logger := currentApp.RootLogger.With(zap.String("path", string(ctx.Request.URI().Path())))
+func actPrepare(ctx *fasthttp.RequestCtx) (*app.State, *cutil.PageState) {
+	logger := _rootLogger.With(zap.String("path", string(ctx.Request.URI().Path())))
 
 	if store == nil {
-		store = initStore()
+		store = initStore([]byte(sessionKey))
 	}
 	session, err := store.Get(ctx, util.AppKey)
 	if err != nil {
 		logger.Warnf("error retrieving session: %+v", err)
+		session, err = store.New(ctx, util.AppKey)
+		if err != nil {
+			logger.Warnf("error creating new session: %+v", err)
+		}
 	}
 	flashes := util.StringArrayFromInterfaces(session.Flashes())
-	if session.IsNew || len(flashes) > 0 {
-		session.Options = &sessions.Options{Path: "/", HttpOnly: true /* , SameSite: http.SameSiteStrictMode */}
-		err = session.Save(ctx)
+	if len(flashes) > 0 {
+		err = auth.SaveSession(ctx, session, logger)
 		if err != nil {
 			logger.Warnf("can't save session: %+v", err)
 		}
@@ -68,7 +70,7 @@ func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 		}
 	}
 
-	return &cutil.PageState{
+	return _currentApp, &cutil.PageState{
 		Method:  string(ctx.Method()),
 		URI:     ctx.Request.URI(),
 		Flashes: flashes,
@@ -80,11 +82,11 @@ func actPrepare(ctx *fasthttp.RequestCtx) *cutil.PageState {
 	}
 }
 
-func actComplete(key string, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
+func actComplete(key string, as *app.State, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	status := fasthttp.StatusOK
 	cutil.WriteCORS(ctx)
 	startNanos := time.Now().UnixNano()
-	redir, err := f(currentApp, ps)
+	redir, err := f(as, ps)
 	if err != nil {
 		status = fasthttp.StatusInternalServerError
 		ctx.SetStatusCode(status)
@@ -97,8 +99,8 @@ func actComplete(key string, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f fu
 		errDetail := util.GetErrorDetail(err)
 		page := &verror.Error{Err: errDetail}
 
-		clean(ps)
-		redir, err = render(ctx, currentApp, page, ps)
+		clean(as, ps)
+		redir, err = render(ctx, as, page, ps)
 		if err != nil {
 			_, _ = ctx.Write([]byte(fmt.Sprintf("error while running error handler: %+v", err)))
 		}
@@ -113,7 +115,7 @@ func actComplete(key string, ps *cutil.PageState, ctx *fasthttp.RequestCtx, f fu
 	l.Debugf("processed request in [%.3fms] (render: %.3fms)", elapsedMillis, ps.RenderElapsed)
 }
 
-func clean(ps *cutil.PageState) {
+func clean(as *app.State, ps *cutil.PageState) {
 	if ps.RootIcon == "" {
 		ps.RootIcon = "app"
 	}
@@ -130,6 +132,6 @@ func clean(ps *cutil.PageState) {
 		ps.ProfilePath = defaultProfilePath
 	}
 	if len(ps.Menu) == 0 {
-		ps.Menu = menu.For(currentApp)
+		ps.Menu = menu.For(as)
 	}
 }

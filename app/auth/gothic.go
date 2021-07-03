@@ -6,15 +6,14 @@ import (
 	"go.uber.org/zap"
 )
 
-func BeginAuthHandler(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session) (string, error) {
-	u, err := getAuthURL(prv, ctx, websess)
+func BeginAuthHandler(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) (string, error) {
+	u, err := getAuthURL(prv, ctx, websess, logger)
 	if err != nil {
 		return "", err
 	}
 	refer := string(ctx.Request.URI().QueryArgs().Peek("refer"))
 	if refer != "" {
-		websess.Values["auth-refer"] = refer
-		_ = websess.Save(ctx)
+		_ = StoreInSession("auth-refer", refer, ctx, websess, logger)
 	}
 	return u, nil
 }
@@ -41,7 +40,7 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 
 	user, err := prv.goth.FetchUser(sess)
 	if err == nil {
-		return addToSession(user.Provider, user.Email, ctx, websess)
+		return addToSession(user.Provider, user.Email, ctx, websess, logger)
 	}
 
 	_, err = sess.Authorize(prv.goth, &params{q: ctx.Request.URI().QueryArgs()})
@@ -49,7 +48,7 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 		return nil, nil, err
 	}
 
-	err = storeInSession(prv.ID, sess.Marshal(), ctx, websess)
+	err = StoreInSession(prv.ID, sess.Marshal(), ctx, websess, logger)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -59,19 +58,27 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 		return nil, nil, err
 	}
 
-	return addToSession(gu.Provider, gu.Email, ctx, websess)
+	return addToSession(gu.Provider, gu.Email, ctx, websess, logger)
 }
 
-func Logout(ctx *fasthttp.RequestCtx, websess *sessions.Session, prvKeys ...string) error {
+func Logout(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger, prvKeys ...string) error {
 	a := getCurrentAuths(websess)
-	a = a.Purge(prvKeys...)
-	err := setCurrentAuths(websess, a, ctx)
-	if err != nil {
-		return err
+	n := a.Purge(prvKeys...)
+	dirty := false
+	if len(a) != len(n) {
+		dirty = true
+		err := setCurrentAuths(n, ctx, websess, logger)
+		if err != nil {
+			return err
+		}
 	}
 	for _, k := range prvKeys {
+		dirty = true
 		delete(websess.Values, k)
 	}
-	return websess.Save(ctx)
+	if dirty {
+		return SaveSession(ctx, websess, logger)
+	}
+	return nil
 }
 

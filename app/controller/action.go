@@ -48,7 +48,7 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		count, err := action.SaveAll(prj.Key, newActs, currentApp.Files)
+		count, err := action.SaveAll(prj.Key, newActs, as.Files)
 		if err != nil {
 			return "", err
 		}
@@ -112,13 +112,13 @@ func ActionSave(ctx *fasthttp.RequestCtx) {
 			}
 		}
 		actPath := filepath.Join("project", p.Key, "actions", strings.Join(a.Pkg, "/"))
-		_, err = action.Save(actPath, a, currentApp.Files)
+		_, err = action.Save(actPath, a, as.Files)
 		if err != nil {
 			return "", err
 		}
 
 		if shouldReload {
-			err = currentApp.Projects.ReloadProject(p.Key)
+			err = as.Projects.ReloadProject(p.Key)
 			if err != nil {
 				return "", err
 			}

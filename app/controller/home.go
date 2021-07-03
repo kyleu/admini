@@ -40,10 +40,10 @@ func Refresh(ctx *fasthttp.RequestCtx) {
 				redir = u.Path
 			}
 		}
-		currentApp.Themes.Clear()
-		currentApp.Loaders.Clear()
-		currentApp.Sources.Clear()
-		currentApp.Projects.Clear()
+		as.Themes.Clear()
+		as.Loaders.Clear()
+		as.Sources.Clear()
+		as.Projects.Clear()
 		msg := "Cleared all caches"
 		return flashAndRedir(true, msg, redir, ctx, ps)
 	})

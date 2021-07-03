@@ -61,16 +61,18 @@
               </label>
             </td>
           </tr>
+          <tr>
+            <th class="shrink"><label>Theme</label></th>
+            <td>
+              {%= vtheme.List(as.Themes.All(), ps.Profile.Theme, 3, ps) %}
+            </td>
+          </tr>
         </tbody>
       </table>
-    </div>
-    <div class="card">
-      <h3>Themes!</h3>
-      {%= vtheme.List(as.Themes.All(), ps.Profile.Theme, 3, ps) %}
-    </div>
-    <div class="card">
-      <button type="submit">Save All Changes</button>
-      <button type="reset">Reset</button>
+      <div class="mt">
+        <button type="submit">Save All Changes</button>
+        <button type="reset">Reset</button>
+      </div>
     </div>
   </form>
 

@@ -19,14 +19,18 @@ func (s *Service) All() Themes {
 	s.loadIfNeeded()
 	return s.cache
 }
+func (s *Service) Clear() {
+	s.cache = nil
+}
+
+func (s *Service) Get(theme string) *Theme {
+	return ThemeDefault
+}
 
 func (s *Service) loadIfNeeded() {
 	if s.cache == nil {
-		s.cache = Themes{ThemeDefault}
+		s.cache = Themes{ThemeDefault, ThemeInverse}
 		s.cache.Sort()
 	}
 }
 
-func (s *Service) Clear() {
-	s.cache = nil
-}

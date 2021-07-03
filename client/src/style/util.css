@@ -94,16 +94,22 @@
 }
 
 .choice {
-  /*display: flex;*/
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .choice input {
   display: none;
 }
 
+.choice .title {
+  text-align: center;
+  cursor: pointer;
+}
+
 .choice input ~ * {
   border: 3px solid transparent;
 }
 .choice input:checked ~ * {
-  border: 3px solid var(--color-highlight);
+  border: 3px solid var(--color-foreground);
 }

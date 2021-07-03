@@ -7,9 +7,22 @@ import (
 	"go.uber.org/zap"
 )
 
-const SessKey = "auth"
+const WebSessKey = "auth"
 
-func addToSession(provider string, email string, ctx *fasthttp.RequestCtx, websess *sessions.Session) (*Session, Sessions, error) {
+var webSessOpts = &sessions.Options{Path: "/", HttpOnly: true, MaxAge: 365 * 24 * 60 * 60 /* , SameSite: http.SameSiteStrictMode */}
+
+func StoreInSession(k string, v string, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
+	websess.Values[k] = v
+	return SaveSession(ctx, websess, logger)
+}
+
+func SaveSession(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
+	logger.Infof("saving session with [%d] keys", len(websess.Values))
+	websess.Options = webSessOpts
+	return websess.Save(ctx)
+}
+
+func addToSession(provider string, email string, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) (*Session, Sessions, error) {
 	ret := getCurrentAuths(websess)
 	s := &Session{Provider: provider, Email: email}
 	for _, x := range ret {
@@ -18,7 +31,7 @@ func addToSession(provider string, email string, ctx *fasthttp.RequestCtx, webse
 		}
 	}
 	ret = append(ret, s)
-	err := setCurrentAuths(websess, ret, ctx)
+	err := setCurrentAuths(ret, ctx, websess, logger)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -37,12 +50,8 @@ func getFromSession(key string, websess *sessions.Session) (string, error) {
 	return s, nil
 }
 
-func storeInSession(k string, v string, ctx *fasthttp.RequestCtx, websess *sessions.Session) error {
-	websess.Values[k] = v
-	return websess.Save(ctx)
-}
-
 func removeProviderData(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
+	dirty := false
 	for k := range websess.Values {
 		s, ok := k.(string)
 		if !ok {
@@ -50,10 +59,14 @@ func removeProviderData(ctx *fasthttp.RequestCtx, websess *sessions.Session, log
 		}
 		if isProvider(s) {
 			logger.Debug("removing auth info for provider [" + s + "]")
+			dirty = true
 			delete(websess.Values, k)
 		}
 	}
-	return websess.Save(ctx)
+	if dirty {
+		return SaveSession(ctx, websess, logger)
+	}
+	return nil
 }
 
 func isProvider(k string) bool {

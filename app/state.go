@@ -34,7 +34,6 @@ type State struct {
 	Sources      *source.Service
 	Projects     *project.Service
 	Loaders      *loader.Service
-	RootLogger   *zap.SugaredLogger
 	routerLogger *zap.SugaredLogger
 }
 
@@ -51,7 +50,6 @@ func NewState(debug bool, bi *BuildInfo, r *router.Router, f filesystem.FileLoad
 		Sources:      ss,
 		Projects:     project.NewService(f, ss, ls, log),
 		Loaders:      ls,
-		RootLogger:   log,
 		routerLogger: rl,
 	}
 	return ret, nil

@@ -11,7 +11,6 @@ type Colors struct {
 	Background      string `json:"bg"`
 	BackgroundMuted string `json:"bgm"`
 
-	Highlight   string `json:"h"`
 	Link        string `json:"l"`
 	LinkVisited string `json:"lv"`
 
@@ -34,7 +33,6 @@ func (c *Colors) CSS(indent int) string {
 	prop("background", c.Background)
 	prop("background-muted", c.BackgroundMuted)
 	addLine(sb, "", 0)
-	prop("highlight", c.Highlight)
 	prop("link", c.Link)
 	prop("link-visited", c.LinkVisited)
 	addLine(sb, "", 0)

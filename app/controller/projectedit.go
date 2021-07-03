@@ -16,7 +16,7 @@ func ProjectNew(ctx *fasthttp.RequestCtx) {
 		ps.Title = "New Project"
 		p := &project.Project{}
 		ps.Data = p
-		avail, err := currentApp.Sources.List()
+		avail, err := as.Sources.List()
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
@@ -42,7 +42,7 @@ func ProjectInsert(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 		ret := &project.Project{Key: key, Title: title, Icon: icon, Description: description, Sources: sources}
-		err = currentApp.Projects.Save(ret, false)
+		err = as.Projects.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
@@ -63,7 +63,7 @@ func ProjectEdit(ctx *fasthttp.RequestCtx) {
 		ps.Title = fmt.Sprintf("Edit [%s]", prj.Name())
 		ps.Data = prj
 
-		avail, err := currentApp.Sources.List()
+		avail, err := as.Sources.List()
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
@@ -96,7 +96,7 @@ func ProjectSave(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		err = currentApp.Projects.Save(prj, true)
+		err = as.Projects.Save(prj, true)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to save project [%s]", key)
 		}

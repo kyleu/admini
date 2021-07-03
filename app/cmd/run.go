@@ -70,7 +70,7 @@ func Run() (*zap.SugaredLogger, error) {
 	if err != nil {
 		return logger, err
 	}
-	controller.SetState(st)
+	controller.SetState(st, logger)
 
 	s := &fasthttp.Server{Handler: r.Handler, Name: util.AppName, ReadBufferSize: 32768}
 	return logger, s.ListenAndServe(addr)

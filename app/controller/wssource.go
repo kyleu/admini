@@ -29,7 +29,7 @@ func WorkspaceSource(ctx *fasthttp.RequestCtx) {
 			return ersp("provided path [%s] is not part of the source workspace", path)
 		}
 
-		pv, err := currentApp.Projects.LoadSourceProject(sourceKey)
+		pv, err := as.Projects.LoadSourceProject(sourceKey)
 		if err != nil {
 			return "", errors.Wrapf(err, "error loading source and schema info [%s]", path)
 		}
@@ -43,7 +43,7 @@ func WorkspaceSource(ctx *fasthttp.RequestCtx) {
 		ps.SearchPath = defaultSearchPath
 		ps.ProfilePath = defaultProfilePath
 
-		m, err := workspace.ProjectMenu(currentApp, pv)
+		m, err := workspace.ProjectMenu(as, pv)
 		if err != nil {
 			return "", errors.Wrapf(err, "error creating menu for project [%s]", pv.Project.Key)
 		}
