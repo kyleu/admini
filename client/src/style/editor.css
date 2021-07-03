@@ -28,7 +28,24 @@
 }
 
 .sql.editor textarea {
-  height: 240px;
   margin-top: var(--padding);
   margin-bottom: var(--padding);
+}
+
+.toggle label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.toggle .x {
+  display: none;
+}
+
+.toggle input[type=checkbox]:checked ~ label {
+  display: none;
+}
+
+.toggle input[type=checkbox]:checked ~ .x {
+  display: block;
 }

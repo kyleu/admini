@@ -41,14 +41,12 @@
   float: left;
 }
 
-.result-table th {
+.result-table th, .result-table td {
   vertical-align: top;
   white-space: nowrap;
 }
 
 .result-table td {
-  vertical-align: top;
-  white-space: nowrap;
   max-width: 352px;
   text-overflow: ellipsis;
   overflow: hidden;
