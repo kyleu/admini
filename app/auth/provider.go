@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/kyleu/admini/app/util"
 	"github.com/markbates/goth"
 	"github.com/pkg/errors"
 )
@@ -80,10 +81,9 @@ func (s *Service) load() error {
 
 	ret := Providers{}
 	for _, k := range AvailableProviderKeys {
-		u := strings.ToUpper(k)
-		envKey := os.Getenv(u + "_KEY")
+		envKey := os.Getenv(k + "_key")
 		if envKey != "" {
-			envSecret := os.Getenv(u + "_SECRET")
+			envSecret := os.Getenv(k + "_secret")
 			cb := fmt.Sprintf("%s/auth/%s/callback", s.baseURL, k)
 			gothPrv, err := toGoth(k, envKey, envSecret, cb)
 			if err != nil {
@@ -103,7 +103,7 @@ func (s *Service) load() error {
 	if len(ret) == 0 {
 		s.logger.Debug("authentication disabled, no providers configured in environment")
 	} else {
-		s.logger.Debugf("authentication enabled for [%s]", strings.Join(ret.Titles(), ", "))
+		s.logger.Debugf("authentication enabled for [%s]", util.OxfordComma(ret.Titles()))
 	}
 
 	return nil

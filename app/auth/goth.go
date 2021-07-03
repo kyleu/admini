@@ -70,7 +70,7 @@ func toGoth(id string, k string, s string, c string) (goth.Provider, error) {
 	case "apple":
 		return apple.New(k, s, c, nil, apple.ScopeName, apple.ScopeEmail), nil
 	case "auth0":
-		return auth0.New(k, s, c, os.Getenv("AUTH0_DOMAIN")), nil
+		return auth0.New(k, s, c, os.Getenv("auth0_domain")), nil
 	case "azuread":
 		return azuread.New(k, s, c, nil), nil
 	case "battlenet":
@@ -124,13 +124,13 @@ func toGoth(id string, k string, s string, c string) (goth.Provider, error) {
 	case "meetup":
 		return meetup.New(k, s, c), nil
 	case "microsoft":
-		return msfix.New(k, s, c, os.Getenv("MICROSOFT_TENANT")), nil
+		return msfix.New(k, s, c, os.Getenv("microsoft_tenant")), nil
 	case "microsoftonline":
 		return microsoftonline.New(k, s, c), nil
 	case "naver":
 		return naver.New(k, s, c), nil
 	case "nextcloud":
-		return nextcloud.NewCustomisedDNS(k, s, c, os.Getenv("NEXTCLOUD_URL")), nil
+		return nextcloud.NewCustomisedDNS(k, s, c, os.Getenv("nextcloud_url")), nil
 	case "okta":
 		return okta.New(k, s, c, "openid", "profile", "email"), nil
 	case "onedrive":

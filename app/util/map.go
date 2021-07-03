@@ -39,7 +39,7 @@ func (c ValueMap) GetRequired(k string) (interface{}, error) {
 	v, ok := c[k]
 	if !ok {
 		msg := "no value [%s] among candidates [%s]"
-		return nil, errors.Errorf(msg, k, strings.Join(c.Keys(), ", "))
+		return nil, errors.Errorf(msg, k, OxfordComma(c.Keys()))
 	}
 	return v, nil
 }

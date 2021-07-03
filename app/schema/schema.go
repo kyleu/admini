@@ -1,8 +1,7 @@
 package schema
 
 import (
-	"strings"
-
+	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
@@ -31,7 +30,7 @@ func (s Schemata) GetWithError(key string) (*Schema, error) {
 	for k := range s {
 		keys = append(keys, k)
 	}
-	return nil, errors.Errorf("no schema [%s] available among candidates [%s]", key, strings.Join(keys, ", "))
+	return nil, errors.Errorf("no schema [%s] available among candidates [%s]", key, util.OxfordComma(keys))
 }
 
 func (s *Schema) AddPath(path string) bool {

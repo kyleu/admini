@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/kyleu/admini/app/util"
 	"github.com/valyala/fasthttp"
 
 	"go.uber.org/zap"
@@ -107,7 +108,7 @@ func (p *Params) Filtered(available []string, logger *zap.SugaredLogger) *Params
 				allowed = append(allowed, o)
 			} else {
 				const msg = "no column [%s] for [%s] available in allowed columns [%s]"
-				logger.Warnf(msg, o.Column, p.Key, strings.Join(available, ", "))
+				logger.Warnf(msg, o.Column, p.Key, util.OxfordComma(available))
 			}
 		}
 		return &Params{Key: p.Key, Orderings: allowed, Limit: p.Limit, Offset: p.Offset}

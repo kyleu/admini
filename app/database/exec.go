@@ -3,7 +3,9 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"strings"
 
+	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 
 	"github.com/jmoiron/sqlx"
@@ -82,4 +84,9 @@ func (s *Service) process(key string, past string, q string, tx *sqlx.Tx, expect
 		return aff, errors.Errorf(msg, expected, past, aff, q, valueStrings(values))
 	}
 	return aff, nil
+}
+
+func valueStrings(values []interface{}) string {
+	ret := util.StringArrayFromInterfaces(values)
+	return strings.Join(ret, ", ")
 }

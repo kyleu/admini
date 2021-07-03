@@ -1,6 +1,11 @@
 package auth
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+
+	"github.com/kyleu/admini/app/util"
+)
 
 var (
 	AvailableProviderNames map[string]string
@@ -39,5 +44,26 @@ func initAvailable() {
 			AvailableProviderKeys = append(AvailableProviderKeys, k)
 		}
 		sort.Strings(AvailableProviderKeys)
+	}
+}
+
+func ProviderUsage(id string, enabled bool) string {
+	n, ok := AvailableProviderNames[id]
+	if !ok {
+		return "INVALID PROVIDER [" + id + "]"
+	}
+	if enabled {
+		return n + " is already configured"
+	} else {
+		keys := []string{"\"" + id + "_key\"", "\"" + id + "_secret\""}
+		switch id {
+		case "auth0":
+			keys = append(keys, "\"auth0_domain\"")
+		case "microsoft":
+			keys = append(keys, "\"microsoft_tenant\"")
+		case "nextcloud":
+			keys = append(keys, "\"nextcloud_url\"")
+		}
+		return fmt.Sprintf("To enable %s, set %s as environment variables", n, util.OxfordComma(keys))
 	}
 }
