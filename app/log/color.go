@@ -25,7 +25,7 @@ func (c Color) Add(s string) string {
 
 var levelToColor = map[zapcore.Level]Color{
 	zapcore.DebugLevel:  Magenta,
-	zapcore.InfoLevel:   Blue,
+	zapcore.InfoLevel:   Cyan,
 	zapcore.WarnLevel:   Yellow,
 	zapcore.ErrorLevel:  Red,
 	zapcore.DPanicLevel: Red,

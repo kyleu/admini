@@ -74,6 +74,10 @@ func (e *customEncoder) EncodeEntry(entry zapcore.Entry, fields []zapcore.Field)
 	if entry.Caller.Function != "" {
 		caller += " (" + entry.Caller.Function + ")"
 	}
+	// idx := strings.Index(caller, "github.com/")
+	// if idx > 0 {
+	// 	caller = caller[idx:]
+	// }
 	addLine("  " + caller)
 
 	if entry.Stack != "" {
