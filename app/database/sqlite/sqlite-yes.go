@@ -1,6 +1,9 @@
-package database
+// +build darwin linux,386 linux,amd64 linux,arm linux,arm64 windows,386 windows,amd64
+
+package sqlite
 
 import (
+	"github.com/kyleu/admini/app/database"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
@@ -11,13 +14,9 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type SQLiteParams struct {
-	File   string `json:"file"`
-	Schema string `json:"schema,omitempty"`
-	Debug  bool   `json:"debug,omitempty"`
-}
+const SQLiteEnabled = true
 
-func OpenSQLiteDatabase(params *SQLiteParams, logger *zap.SugaredLogger) (*Service, error) {
+func OpenSQLiteDatabase(params *SQLiteParams, logger *zap.SugaredLogger) (*database.Service, error) {
 	if params.File == "" {
 		return nil, errors.New("need filename for SQLite database")
 	}
@@ -31,7 +30,7 @@ func OpenSQLiteDatabase(params *SQLiteParams, logger *zap.SugaredLogger) (*Servi
 		log = logger
 	}
 
-	svc := NewService(params.File, params.Schema, log, db)
+	svc := database.NewService(params.File, params.Schema, log, db)
 
 	return svc, nil
 }
