@@ -169,8 +169,12 @@ archives:
       - none*
 
 dockers:
-  - image_templates:
-    - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}"
+  -
+    image_templates:
+      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:{{ .Tag }}"
+      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:v{{ .Major }}"
+      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:v{{ .Major }}.{{ .Minor }}"
+      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:latest"
 
 nfpms:
   -
