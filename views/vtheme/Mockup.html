@@ -17,18 +17,19 @@
 
     menuStyle := fmt.Sprintf("color: %s; background-color: %s;", c.MenuForeground, c.MenuBackground)
     menuLinkStyle := fmt.Sprintf("color: %s;", c.MenuForeground)
+    menuLinkSelectedStyle := fmt.Sprintf("color: %s; background-color: %s;", c.MenuSelectedForeground, c.MenuSelectedBackground)
 
     mainStyle := fmt.Sprintf("color: %s; background-color: %s;", c.Foreground, c.Background)
     mutedStyle := fmt.Sprintf("color: %s;", c.ForegroundMuted)
-    linkStyle := fmt.Sprintf("color: %s;", c.Link)
-    linkVisitedStyle := fmt.Sprintf("color: %s;", c.LinkVisited)
+    linkStyle := fmt.Sprintf("color: %s;", c.LinkForeground)
+    linkVisitedStyle := fmt.Sprintf("color: %s;", c.LinkVisitedForeground)
   %}
   {%= vutil.Indent(true, indent) %}
   <div class="mockup only-{%s mode %}">
     <div class="mock-nav" style="{%s navStyle %}">{%= components.SVGRef(`app`, 12, 12, `icon`, ps) %}{%s util.AppName %}</div>
     <div class="mock-menu" style="{%s menuStyle %}">
       <div class="mock-link" style="{%s menuLinkStyle %}">A</div>
-      <div class="mock-link" style="{%s menuLinkStyle %}">B</div>
+      <div class="mock-link" style="{%s menuLinkStyle %} {%s menuLinkSelectedStyle %}">B</div>
       <div class="mock-link" style="{%s menuLinkStyle %}">C</div>
       <div class="mock-link" style="{%s menuLinkStyle %}">D</div>
     </div>

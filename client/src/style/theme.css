@@ -17,8 +17,11 @@
   float: left;
   width: 30px;
   height: 102px;
+}
+.mockup .mock-menu .mock-link {
   padding-left: 4px;
 }
+
 .mockup .mock-main {
   padding: 4px;
   height: 102px;
@@ -26,3 +29,4 @@
 .mockup .mock-main ul {
   margin-top: var(--padding-small);
 }
+

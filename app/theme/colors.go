@@ -16,15 +16,16 @@ type Colors struct {
 	Background      string `json:"bg"`
 	BackgroundMuted string `json:"bgm"`
 
-	Link        string `json:"l"`
-	LinkVisited string `json:"lv"`
+	LinkForeground        string `json:"lf"`
+	LinkVisitedForeground string `json:"lvf"`
 
 	NavForeground string `json:"nf"`
 	NavBackground string `json:"nb"`
 
 	MenuForeground         string `json:"mf"`
 	MenuBackground         string `json:"mb"`
-	MenuBackgroundSelected string `json:"mbs"`
+	MenuSelectedForeground string `json:"msf"`
+	MenuSelectedBackground string `json:"msb"`
 
 	ModalBackdrop string `json:"mbd"`
 	Success       string `json:"ok"`
@@ -43,13 +44,14 @@ func (c *Colors) CSS(key string, indent int) string {
 	prop("color-foreground-muted", c.ForegroundMuted)
 	prop("color-background", c.Background)
 	prop("color-background-muted", c.BackgroundMuted)
-	prop("color-link", c.Link)
-	prop("color-link-visited", c.LinkVisited)
+	prop("color-link-foreground", c.LinkForeground)
+	prop("color-link-visited-foreground", c.LinkVisitedForeground)
 	prop("color-nav-foreground", c.NavForeground)
 	prop("color-nav-background", c.NavBackground)
 	prop("color-menu-foreground", c.MenuForeground)
 	prop("color-menu-background", c.MenuBackground)
-	prop("color-menu-background-selected", c.MenuBackgroundSelected)
+	prop("color-menu-selected-foreground", c.MenuSelectedForeground)
+	prop("color-menu-selected-background", c.MenuSelectedBackground)
 	prop("color-modal-backdrop", c.ModalBackdrop)
 	prop("color-success", c.Success)
 	prop("color-error", c.Error)
@@ -67,13 +69,14 @@ func (c *Colors) Clone() *Colors {
 		ForegroundMuted:        c.ForegroundMuted,
 		Background:             c.Background,
 		BackgroundMuted:        c.BackgroundMuted,
-		Link:                   c.Link,
-		LinkVisited:            c.LinkVisited,
+		LinkForeground:         c.LinkForeground,
+		LinkVisitedForeground:  c.LinkVisitedForeground,
 		NavForeground:          c.NavForeground,
 		NavBackground:          c.NavBackground,
 		MenuForeground:         c.MenuForeground,
 		MenuBackground:         c.MenuBackground,
-		MenuBackgroundSelected: c.MenuBackgroundSelected,
+		MenuSelectedForeground: c.MenuSelectedForeground,
+		MenuSelectedBackground: c.MenuSelectedBackground,
 		ModalBackdrop:          c.ModalBackdrop,
 		Success:                c.Success,
 		Error:                  c.Error,
@@ -94,13 +97,14 @@ func (c *Colors) ApplyMap(m util.ValueMap, prefix string) *Colors {
 	c.ForegroundMuted = get("foreground-muted", c.ForegroundMuted)
 	c.Background = get("background", c.Background)
 	c.BackgroundMuted = get("background-muted", c.BackgroundMuted)
-	c.Link = get("link", c.Link)
-	c.LinkVisited = get("link-visited", c.LinkVisited)
+	c.LinkForeground = get("link-foreground", c.LinkForeground)
+	c.LinkVisitedForeground = get("link-visited-foreground", c.LinkVisitedForeground)
 	c.NavForeground = get("nav-foreground", c.NavForeground)
 	c.NavBackground = get("nav-background", c.NavBackground)
 	c.MenuForeground = get("menu-foreground", c.MenuForeground)
 	c.MenuBackground = get("menu-background", c.MenuBackground)
-	c.MenuBackgroundSelected = get("menu-background-selected", c.MenuBackgroundSelected)
+	c.MenuSelectedForeground = get("menu-selected-foreground", c.MenuSelectedForeground)
+	c.MenuSelectedBackground = get("menu-selected-background", c.MenuSelectedBackground)
 	c.ModalBackdrop = get("modal-backdrop", c.ModalBackdrop)
 	c.Success = get("success", c.Success)
 	c.Error = get("error", c.Error)

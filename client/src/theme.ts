@@ -6,11 +6,14 @@ export function themeInit() {
     for (const el of Array.from(x)) {
       const i = (el as HTMLInputElement)
       const v = i.dataset["var"] as string;
+      const m = i.dataset["mode"] as string;
       keys.push(v);
+      console.log(v);
       if (!v || v.length === 0) {
         continue;
       }
       i.oninput = function () {
+        console.log(m + "/" + v + "!!!");
         document.documentElement.style.setProperty("--" + v, i.value);
       }
     }
