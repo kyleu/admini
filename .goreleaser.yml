@@ -1,8 +1,9 @@
 # http://goreleaser.com
 env:
-  - XORG=kyleu
   - XNAME=Kyle U
   - XEMAIL=kyle@kyleu.com
+  - XGITHUBORG=kyleu
+  - XDOCKERORG=kyleunv
   - XHOMEPAGE=https://admini.dev
   - XLICENSE=TODO
   - XSUMMARY=TODO
@@ -169,7 +170,7 @@ archives:
 
 dockers:
   - image_templates:
-    - "{{ .Env.XORG }}/{{.ProjectName}}"
+    - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}"
     skip_push: false
 nfpms:
   -
@@ -186,7 +187,7 @@ nfpms:
 
 scoop:
   bucket:
-    owner: "{{ .Env.XORG }}"
+    owner: "{{ .Env.XGITHUBORG }}"
     name: "{{ .ProjectName }}"
   commit_author:
     name: "{{ .Env.XNAME }}"
