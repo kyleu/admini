@@ -21,7 +21,6 @@ brews:
     description: "{{ .Env.XDESCRIPTION }}"
     license: "{{ .Env.XLICENSE }}"
     skip_upload: false
-    download_strategy: GitHubPrivateRepositoryReleaseDownloadStrategy
 
 # Everything below this line is generic
 
@@ -169,10 +168,9 @@ archives:
       - none*
 
 dockers:
-  - skip_push: true
-    image_templates:
+  - image_templates:
     - "{{ .Env.XORG }}/{{.ProjectName}}"
-
+    skip_push: false
 nfpms:
   -
     vendor: "{{ .Env.XNAME }}"
