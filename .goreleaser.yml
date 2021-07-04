@@ -159,8 +159,8 @@ dockers:
 brews:
   -
     tap:
-      owner: "{{ .Env.XORG }}"
-      name: "homebrew-{{ .Env.XORG }}"
+      owner: "kyleu"
+      name: "homebrew-kyleu"
     commit_author:
       name: "{{ .Env.XNAME }}"
       email: "{{ .Env.XEMAIL }}"
