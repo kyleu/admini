@@ -1,7 +1,6 @@
 /.vscode
 /.idea
 /.scannerwork
-/app/assets/assets.go
 /build
 /data
 /dist
