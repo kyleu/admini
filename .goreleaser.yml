@@ -21,6 +21,7 @@ brews:
     description: "{{ .Env.XDESCRIPTION }}"
     license: "{{ .Env.XLICENSE }}"
     skip_upload: false
+    download_strategy: GitHubPrivateRepositoryReleaseDownloadStrategy
 
 # Everything below this line is generic
 
