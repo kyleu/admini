@@ -14,16 +14,20 @@ type Theme struct {
 }
 
 func (t *Theme) CSS() string {
-	indent := 1
+	indent := 0
 	if t.css != "" {
 		return t.css
 	}
 	sb := &strings.Builder{}
-	addLine(sb, "", indent)
-	sb.WriteString(t.Light.CSS(indent))
+	sb.WriteString("/* Theme [" + t.Key + "] */\n")
+	sb.WriteString(t.Light.CSS(":root", indent))
+	sb.WriteString(t.Light.CSS(".mode-light", indent))
+	sb.WriteString(t.Dark.CSS(".mode-dark", indent))
 	addLine(sb, "", indent)
 	addLine(sb, "@media (prefers-color-scheme: dark) {", indent)
-	sb.WriteString(t.Dark.CSS(indent + 1))
+	sb.WriteString(t.Dark.CSS(":root", indent + 1))
+	sb.WriteString(t.Light.CSS(".mode-light", indent + 1))
+	sb.WriteString(t.Dark.CSS(".mode-dark", indent + 1))
 	addLine(sb, "}", indent)
 	t.css = sb.String()
 	return t.css

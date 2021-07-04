@@ -36,9 +36,8 @@ func getCurrentAuths(websess *sessions.Session) Sessions {
 
 func setCurrentAuths(s Sessions, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
 	s.Sort()
-	if len(s) > 0 {
-		return StoreInSession(WebSessKey, s.String(), ctx, websess, logger)
+	if len(s) == 0 {
+		return RemoveFromSession(WebSessKey, ctx, websess, logger)
 	}
-	delete(websess.Values, WebSessKey)
-	return SaveSession(ctx, websess, logger)
+	return StoreInSession(WebSessKey, s.String(), ctx, websess, logger)
 }

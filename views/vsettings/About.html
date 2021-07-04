@@ -6,10 +6,7 @@
     {%- if util.AppSource != "" -%}
     <div class="right"><a href="{%s util.AppSource %}"><button>Github</button></a></div>
     {%- endif -%}
-    <h3>{%s util.AppName %} v{%s as.BuildInfo.Version %}</h3>
-    {%- if as.BuildInfo.Date != "unknown" -%}
-    <em>built on {%s as.BuildInfo.Date %}</em>
-    {%- endif -%}
+    <h3 title="github:{%s as.BuildInfo.Commit %}">{%s util.AppName %} {%s as.BuildInfo.String() %}</h3>
     {%- if util.AppLegal != "" -%}
     <div>{%s= util.AppLegal %}</div>
     {%- endif -%}

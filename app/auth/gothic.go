@@ -6,14 +6,16 @@ import (
 	"go.uber.org/zap"
 )
 
+const ReferKey = "auth-refer"
+
 func BeginAuthHandler(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) (string, error) {
 	u, err := getAuthURL(prv, ctx, websess, logger)
 	if err != nil {
 		return "", err
 	}
 	refer := string(ctx.Request.URI().QueryArgs().Peek("refer"))
-	if refer != "" {
-		_ = StoreInSession("auth-refer", refer, ctx, websess, logger)
+	if refer != "" && refer != "/profile" {
+		_ = StoreInSession(ReferKey, refer, ctx, websess, logger)
 	}
 	return u, nil
 }
@@ -64,21 +66,6 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 func Logout(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger, prvKeys ...string) error {
 	a := getCurrentAuths(websess)
 	n := a.Purge(prvKeys...)
-	dirty := false
-	if len(a) != len(n) {
-		dirty = true
-		err := setCurrentAuths(n, ctx, websess, logger)
-		if err != nil {
-			return err
-		}
-	}
-	for _, k := range prvKeys {
-		dirty = true
-		delete(websess.Values, k)
-	}
-	if dirty {
-		return SaveSession(ctx, websess, logger)
-	}
-	return nil
+	return setCurrentAuths(n, ctx, websess, logger)
 }
 

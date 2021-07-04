@@ -37,25 +37,25 @@
             <td>
               <label>
                 {%- if p.Profile.Mode == "" -%}
-                <input type="radio" name="mode" value="" checked="checked" />
+                <input type="radio" class="mode-input" name="mode" value="" checked="checked" />
                 {%- else -%}
-                <input type="radio" name="mode" value="" />
+                <input type="radio" class="mode-input" name="mode" value="" />
                 {%- endif -%}
                 System Default
               </label>
               <label>
                 {%- if p.Profile.Mode == "light" -%}
-                <input type="radio" name="mode" value="light" checked="checked" />
+                <input type="radio" class="mode-input" name="mode" value="light" checked="checked" />
                 {%- else -%}
-                <input type="radio" name="mode" value="light" />
+                <input type="radio" class="mode-input" name="mode" value="light" />
                 {%- endif -%}
                 Light
               </label>
               <label>
                 {%- if p.Profile.Mode == "dark" -%}
-                <input type="radio" name="mode" value="dark" checked="checked" />
+                <input type="radio" class="mode-input" name="mode" value="dark" checked="checked" />
                 {%- else -%}
-                <input type="radio" name="mode" value="dark" />
+                <input type="radio" class="mode-input" name="mode" value="dark" />
                 {%- endif -%}
                 Dark
               </label>
@@ -64,7 +64,13 @@
           <tr>
             <th class="shrink"><label>Theme</label></th>
             <td>
-              {%= vtheme.List(as.Themes.All(), ps.Profile.Theme, 3, ps) %}
+              {%- code
+                sel := ps.Profile.Theme
+                if sel == "" {
+                  sel = "default"
+                }
+              -%}
+              {%= vtheme.List(as.Themes.All(), sel, 3, ps) %}
             </td>
           </tr>
         </tbody>

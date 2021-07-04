@@ -6,7 +6,7 @@ This is the base page interface. All pages implement this interface.
 {% interface
   Page {
     Head(ps *cutil.PageState)
-    Nav(ps *cutil.PageState)
+    Nav(as *app.State, ps *cutil.PageState)
     Menu(ps *cutil.PageState)
     Body(as *app.State, ps *cutil.PageState)
   }

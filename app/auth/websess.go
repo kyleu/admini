@@ -16,6 +16,11 @@ func StoreInSession(k string, v string, ctx *fasthttp.RequestCtx, websess *sessi
 	return SaveSession(ctx, websess, logger)
 }
 
+func RemoveFromSession(k string, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
+	delete(websess.Values, k)
+	return SaveSession(ctx, websess, logger)
+}
+
 func SaveSession(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
 	logger.Infof("saving session with [%d] keys", len(websess.Values))
 	websess.Options = webSessOpts

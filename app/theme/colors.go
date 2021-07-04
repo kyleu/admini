@@ -6,6 +6,9 @@ import (
 )
 
 type Colors struct {
+	Border         string `json:"brd"`
+	LinkDecoration string `json:"ld"`
+
 	Foreground      string `json:"fg"`
 	ForegroundMuted string `json:"fgm"`
 	Background      string `json:"bg"`
@@ -20,28 +23,39 @@ type Colors struct {
 	MenuForeground         string `json:"mf"`
 	MenuBackground         string `json:"mb"`
 	MenuBackgroundSelected string `json:"mbs"`
+
+	ModalBackdrop string `json:"mbd"`
+	Success       string `json:"ok"`
+	Error         string `json:"err"`
 }
 
-func (c *Colors) CSS(indent int) string {
+func (c *Colors) CSS(key string, indent int) string {
 	sb := &strings.Builder{}
-	addLine(sb, ":root {", indent)
+	addLine(sb, key+" {", indent)
 	prop := func(k string, v string) {
-		addLine(sb, fmt.Sprintf("--color-%s: %s;", k, v), indent+1)
+		addLine(sb, fmt.Sprintf("--%s: %s;", k, v), indent+1)
 	}
-	prop("foreground", c.Foreground)
-	prop("foreground-muted", c.ForegroundMuted)
-	prop("background", c.Background)
-	prop("background-muted", c.BackgroundMuted)
+	prop("border", c.Border)
+	prop("link-text-decoration", c.LinkDecoration)
 	addLine(sb, "", 0)
-	prop("link", c.Link)
-	prop("link-visited", c.LinkVisited)
+	prop("color-foreground", c.Foreground)
+	prop("color-foreground-muted", c.ForegroundMuted)
+	prop("color-background", c.Background)
+	prop("color-background-muted", c.BackgroundMuted)
 	addLine(sb, "", 0)
-	prop("nav-foreground", c.NavForeground)
-	prop("nav-background", c.NavBackground)
+	prop("color-link", c.Link)
+	prop("color-link-visited", c.LinkVisited)
 	addLine(sb, "", 0)
-	prop("menu-foreground", c.MenuForeground)
-	prop("menu-background", c.MenuBackground)
-	prop("menu-background-selected", c.MenuBackgroundSelected)
+	prop("color-nav-foreground", c.NavForeground)
+	prop("color-nav-background", c.NavBackground)
+	addLine(sb, "", 0)
+	prop("color-menu-foreground", c.MenuForeground)
+	prop("color-menu-background", c.MenuBackground)
+	prop("color-menu-background-selected", c.MenuBackgroundSelected)
+	addLine(sb, "", 0)
+	prop("modal-backdrop", c.ModalBackdrop)
+	prop("color-success", c.Success)
+	prop("color-error", c.Error)
 	addLine(sb, "}", indent)
 	return sb.String()
 }

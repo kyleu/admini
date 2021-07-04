@@ -15,19 +15,6 @@ body {
   color: var(--color-foreground);
 }
 
-#content {
-  margin-left: 256px;
-  overflow: auto;
-  transition: margin-left 250ms ease-in-out;
-  min-height: calc(100% - var(--nav-height));
-}
-
-@media (max-width: 800px) {
-  #content {
-    margin-left: 0;
-  }
-}
-
 a {
   color: var(--color-link);
   text-decoration: var(--link-text-decoration);
@@ -43,4 +30,23 @@ a:visited {
 
 em {
   color: var(--color-foreground-muted);
+}
+
+input, button {
+  border: var(--border);
+  color: var(--color-link);
+  background-color: var(--color-background);
+}
+
+#content {
+  margin-left: 256px;
+  overflow: auto;
+  transition: margin-left 250ms ease-in-out;
+  min-height: calc(100% - var(--nav-height));
+}
+
+@media (max-width: 800px) {
+  #content {
+    margin-left: 0;
+  }
 }

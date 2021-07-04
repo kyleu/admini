@@ -6,6 +6,7 @@ import {sortableEdit, sortableInit} from "./sortable";
 import {linkInit} from "./link";
 import {themeInit, themeReset} from "./theme";
 import {setSiblingToNull} from "./form";
+import {modeInit} from "./mode";
 
 export function init(): void {
   (window as any).admini = {
@@ -14,6 +15,7 @@ export function init(): void {
     "setSiblingToNull": setSiblingToNull
   };
   menuInit();
+  modeInit();
   flashInit();
   linkInit();
   editorInit();

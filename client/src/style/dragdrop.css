@@ -1,6 +1,5 @@
 .drag-container .item {
   border: var(--border);
-  /*box-shadow: var(--box-shadow);*/
   margin-top: 12px;
   padding: 12px;
 }

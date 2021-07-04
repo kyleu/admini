@@ -24,6 +24,11 @@ func (s *Service) Clear() {
 }
 
 func (s *Service) Get(theme string) *Theme {
+	for _, t := range s.All() {
+		if t.Key == theme {
+			return t
+		}
+	}
 	return ThemeDefault
 }
 

@@ -21,7 +21,12 @@ type BuildInfo struct {
 }
 
 func (b *BuildInfo) String() string {
-	return fmt.Sprintf("%s v%s: commit %s on %s", util.AppName, b.Version, b.Commit, b.Date)
+	if b.Date == "unknown" {
+	} else {
+		d, _ := util.TimeFromJS(b.Date)
+		return fmt.Sprintf("%s (%s)", b.Version, util.TimeToYMD(d))
+	}
+	return b.Version
 }
 
 type State struct {

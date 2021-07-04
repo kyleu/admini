@@ -41,6 +41,14 @@ func Profile(ctx *fasthttp.RequestCtx) {
 	})
 }
 
+func ProfileCSS(ctx *fasthttp.RequestCtx) {
+	act("profile.css", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		thm := as.Themes.Get(ps.Profile.Theme)
+		css := thm.CSS()
+		return cutil.RespondMIME("", "text/css", "css", []byte(css), ctx)
+	})
+}
+
 func ProfileSave(ctx *fasthttp.RequestCtx) {
 	act("profile.save", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(ctx)
@@ -48,31 +56,21 @@ func ProfileSave(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		dirty := false
-
-		def := user.DefaultProfile.Clone()
 		n := ps.Profile.Clone()
 
-		name, _ := frm.GetString("name", true)
-		n.Name = name
-		if name != def.Name {
-			dirty = true
-		}
-		mode, _ := frm.GetString("mode", true)
-		n.Mode = mode
-		if mode != def.Mode {
-			dirty = true
-		}
-		theme, _ := frm.GetString("theme", true)
-		if theme == "default" {
-			theme = ""
-		}
-		n.Theme = theme
-		if theme != def.Theme {
-			dirty = true
+		n.Name, _ = frm.GetString("name", true)
+		n.Mode, _ = frm.GetString("mode", true)
+		n.Theme, _ = frm.GetString("theme", true)
+		if n.Theme == "default" {
+			n.Theme = ""
 		}
 
-		if dirty {
+		if n.Equals(user.DefaultProfile) {
+			err := auth.RemoveFromSession("profile", ctx, ps.Session, ps.Logger)
+			if err != nil {
+				return "", errors.Wrap(err, "unable to remove profile from session")
+			}
+		} else {
 			err := auth.StoreInSession("profile", util.ToJSON(n), ctx, ps.Session, ps.Logger)
 			if err != nil {
 				return "", errors.Wrap(err, "unable to save profile in session")

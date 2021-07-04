@@ -22,6 +22,13 @@ func (p *Profile) Clone() *Profile {
 	return &Profile{Name:  p.Name, Mode:  p.Mode, Theme: p.Theme}
 }
 
+func (p *Profile) ModeClass() string {
+	if p.Mode == "" {
+		return ""
+	}
+	return "mode-" + p.Mode
+}
+
 func (p *Profile) AuthString(a auth.Sessions) string {
 	msg := fmt.Sprintf("signed in as %s", p.String())
 	if len(a) == 0 {
@@ -31,4 +38,8 @@ func (p *Profile) AuthString(a auth.Sessions) string {
 		return msg
 	}
 	return fmt.Sprintf("%s using [%s]", msg, a.String())
+}
+
+func (p *Profile) Equals(x *Profile) bool {
+	return p.Name == x.Name && p.Mode == x.Mode && p.Theme == x.Theme
 }

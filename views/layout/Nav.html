@@ -1,11 +1,12 @@
 {% import "strings" %}
+{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/menu" %}
 {% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
-{% func Nav(ps *cutil.PageState) %}<nav id="navbar">
-  <a class="logo" href="{%s ps.RootPath %}">{%= components.SVGRef(ps.RootIcon, 32, 32, ``, ps) %}</a>
+{% func Nav(as *app.State, ps *cutil.PageState) %}<nav id="navbar">
+  <a class="logo" href="{%s ps.RootPath %}" title="{%s ps.RootTitle %} {%s as.BuildInfo.String() %}">{%= components.SVGRef(ps.RootIcon, 32, 32, ``, ps) %}</a>
   <div class="breadcrumbs">
     <a class="link" href="{%s ps.RootPath %}">{%s ps.RootTitle %}</a>{%= NavItems(ps.Menu, ps.Breadcrumbs) %}
   </div>
