@@ -17,7 +17,7 @@
 %}<!DOCTYPE html>
 <html lang="en">
 <!-- {%s cutil.PageComment %} -->
-<head>{%= page.Head(ps) %}</head>
+<head>{%= page.Head(as, ps) %}</head>
 {%- if ps.Profile.Mode != "" -%}<body class="{%s ps.Profile.ModeClass() %}">{%- else -%}<body>{%- endif -%}
 {%- if len(ps.Flashes) > 0 -%}{%= renderFlashes(ps.Flashes) %}{%- endif -%}
 {%= page.Nav(as, ps) %}

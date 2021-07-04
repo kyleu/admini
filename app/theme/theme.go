@@ -13,13 +13,12 @@ type Theme struct {
 	css   string
 }
 
-func (t *Theme) CSS() string {
-	indent := 0
+func (t *Theme) CSS(indent int) string {
 	if t.css != "" {
 		return t.css
 	}
 	sb := &strings.Builder{}
-	sb.WriteString("/* Theme [" + t.Key + "] */\n")
+	sb.WriteString("/* theme: " + t.Key + " */\n")
 	sb.WriteString(t.Light.CSS(":root", indent))
 	sb.WriteString(t.Light.CSS(".mode-light", indent))
 	sb.WriteString(t.Dark.CSS(".mode-dark", indent))

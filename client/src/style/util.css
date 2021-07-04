@@ -111,5 +111,5 @@
   border: 3px solid transparent;
 }
 .choice input:checked ~ * {
-  border: 3px solid var(--color-foreground);
+  border: 3px solid var(--color-foreground-muted);
 }

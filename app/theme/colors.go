@@ -27,35 +27,38 @@ type Colors struct {
 	ModalBackdrop string `json:"mbd"`
 	Success       string `json:"ok"`
 	Error         string `json:"err"`
+
+	css   string
 }
 
 func (c *Colors) CSS(key string, indent int) string {
+	if c.css != "" {
+		return c.css
+	}
 	sb := &strings.Builder{}
-	addLine(sb, key+" {", indent)
+	sb.WriteString(key+" {")
 	prop := func(k string, v string) {
-		addLine(sb, fmt.Sprintf("--%s: %s;", k, v), indent+1)
+		sb.WriteString(fmt.Sprintf(" --%s: %s;", k, v))
 	}
 	prop("border", c.Border)
 	prop("link-text-decoration", c.LinkDecoration)
-	addLine(sb, "", 0)
 	prop("color-foreground", c.Foreground)
 	prop("color-foreground-muted", c.ForegroundMuted)
 	prop("color-background", c.Background)
 	prop("color-background-muted", c.BackgroundMuted)
-	addLine(sb, "", 0)
 	prop("color-link", c.Link)
 	prop("color-link-visited", c.LinkVisited)
-	addLine(sb, "", 0)
 	prop("color-nav-foreground", c.NavForeground)
 	prop("color-nav-background", c.NavBackground)
-	addLine(sb, "", 0)
 	prop("color-menu-foreground", c.MenuForeground)
 	prop("color-menu-background", c.MenuBackground)
 	prop("color-menu-background-selected", c.MenuBackgroundSelected)
-	addLine(sb, "", 0)
-	prop("modal-backdrop", c.ModalBackdrop)
+	prop("color-modal-backdrop", c.ModalBackdrop)
 	prop("color-success", c.Success)
 	prop("color-error", c.Error)
-	addLine(sb, "}", indent)
-	return sb.String()
+	sb.WriteString("}")
+	ret := &strings.Builder{}
+	addLine(ret, sb.String(), indent)
+	c.css = ret.String()
+	return c.css
 }

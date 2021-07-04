@@ -41,14 +41,6 @@ func Profile(ctx *fasthttp.RequestCtx) {
 	})
 }
 
-func ProfileCSS(ctx *fasthttp.RequestCtx) {
-	act("profile.css", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		thm := as.Themes.Get(ps.Profile.Theme)
-		css := thm.CSS()
-		return cutil.RespondMIME("", "text/css", "css", []byte(css), ctx)
-	})
-}
-
 func ProfileSave(ctx *fasthttp.RequestCtx) {
 	act("profile.save", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(ctx)

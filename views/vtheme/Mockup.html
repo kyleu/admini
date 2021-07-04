@@ -6,19 +6,25 @@
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func Mockup(t *theme.Theme, indent int, ps *cutil.PageState) %}{% stripspace %}
+  {%= mockup("light", t.Light, indent, ps) %}
+  {%= mockup("dark", t.Dark, indent, ps) %}
+  <div class="title">{%s t.Key %}</div>
+{% endstripspace %}{% endfunc %}
+
+{% func mockup(mode string, c theme.Colors, indent int, ps *cutil.PageState) %}{% stripspace %}
   {% code
-    navStyle := fmt.Sprintf("color: %s; background-color: %s;", t.Light.NavForeground, t.Light.NavBackground)
+    navStyle := fmt.Sprintf("color: %s; background-color: %s;", c.NavForeground, c.NavBackground)
 
-    menuStyle := fmt.Sprintf("color: %s; background-color: %s;", t.Light.MenuForeground, t.Light.MenuBackground)
-    menuLinkStyle := fmt.Sprintf("color: %s;", t.Light.MenuForeground)
+    menuStyle := fmt.Sprintf("color: %s; background-color: %s;", c.MenuForeground, c.MenuBackground)
+    menuLinkStyle := fmt.Sprintf("color: %s;", c.MenuForeground)
 
-    mainStyle := fmt.Sprintf("color: %s; background-color: %s;", t.Light.Foreground, t.Light.Background)
-    mutedStyle := fmt.Sprintf("color: %s;", t.Light.ForegroundMuted)
-    linkStyle := fmt.Sprintf("color: %s;", t.Light.Link)
-    linkVisitedStyle := fmt.Sprintf("color: %s;", t.Light.LinkVisited)
+    mainStyle := fmt.Sprintf("color: %s; background-color: %s;", c.Foreground, c.Background)
+    mutedStyle := fmt.Sprintf("color: %s;", c.ForegroundMuted)
+    linkStyle := fmt.Sprintf("color: %s;", c.Link)
+    linkVisitedStyle := fmt.Sprintf("color: %s;", c.LinkVisited)
   %}
   {%= vutil.Indent(true, indent) %}
-  <div class="mockup">
+  <div class="mockup only-{%s mode %}">
     <div class="mock-nav" style="{%s navStyle %}">{%= components.SVGRef(`app`, 12, 12, `icon`, ps) %}{%s util.AppName %}</div>
     <div class="mock-menu" style="{%s menuStyle %}">
       <div class="mock-link" style="{%s menuLinkStyle %}">A</div>
@@ -39,5 +45,4 @@
     </div>
   {%= vutil.Indent(true, indent) %}
   </div>
-  <div class="title">{%s t.Key %}</div>
 {% endstripspace %}{% endfunc %}

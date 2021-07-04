@@ -1,11 +1,13 @@
+{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/util" %}
 
-{% func Head(ps *cutil.PageState) %}
+{% func Head(as *app.State, ps *cutil.PageState) %}
   <meta charset="UTF-8">
   <title>{%s ps.TitleString() %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <link rel="stylesheet" media="screen" href="/profile/theme.css">
+  <style>
+    {%s= as.Themes.Get(ps.Profile.Theme).CSS(2) %}  </style>
   <link rel="stylesheet" media="screen" href="/assets/client.css">
   <script type="text/javascript" src="/assets/client.js"></script>
   {% if ps.Description != "" %}<meta property="description" content="{%s ps.Description %}">
