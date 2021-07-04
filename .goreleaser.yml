@@ -45,7 +45,7 @@ builds:
       - amd64
     mod_timestamp: '{{ .CommitTimestamp }}'
 #     hooks:
-#       post: gon gon.json
+#       post: gon ./tools/gon.json
 
   - id: "dragonfly"
     goos:
@@ -151,9 +151,10 @@ archives:
     files:
       - none*
 
-#dockers:
-#  - image_templates:
-#    - "{{ .Env.XORG }}/{{.ProjectName}}"
+dockers:
+  - skip_push: true
+    image_templates:
+    - "{{ .Env.XORG }}/{{.ProjectName}}"
 
 brews:
   -
@@ -167,7 +168,7 @@ brews:
     homepage: "{{ .Env.XHOMEPAGE }}"
     description: "{{ .Env.XDESCRIPTION }}"
     license: "{{ .Env.XLICENSE }}"
-    skip_upload: true
+    skip_upload: false
 
 nfpms:
   -
