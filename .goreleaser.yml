@@ -151,9 +151,9 @@ archives:
     files:
       - none*
 
-dockers:
-  - image_templates:
-    - "{{ .Env.XORG }}/{{.ProjectName}}"
+#dockers:
+#  - image_templates:
+#    - "{{ .Env.XORG }}/{{.ProjectName}}"
 
 brews:
   -
