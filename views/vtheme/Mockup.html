@@ -11,7 +11,7 @@
   <div class="title">{%s t.Key %}</div>
 {% endstripspace %}{% endfunc %}
 
-{% func mockup(mode string, c theme.Colors, indent int, ps *cutil.PageState) %}{% stripspace %}
+{% func mockup(mode string, c *theme.Colors, indent int, ps *cutil.PageState) %}{% stripspace %}
   {% code
     navStyle := fmt.Sprintf("color: %s; background-color: %s;", c.NavForeground, c.NavBackground)
 

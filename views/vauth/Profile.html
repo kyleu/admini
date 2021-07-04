@@ -4,9 +4,7 @@
 {% import "github.com/kyleu/admini/app/theme" %}
 {% import "github.com/kyleu/admini/app/user" %}
 {% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vauth" %}
 {% import "github.com/kyleu/admini/views/vtheme" %}
 
 {% code type Profile struct {
@@ -18,7 +16,7 @@
 } %}
 
 {% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
-  {%= vauth.SigninTable(p.Providers, p.Referrer, as, ps) %}
+  {%= SigninTable(p.Providers, p.Referrer, as, ps) %}
   <form class="editor" action="" method="post">
     <div class="card">
       <div class="right">
@@ -28,10 +26,7 @@
       <h3>Profile</h3>
       <table class="mt">
         <tbody>
-          <tr>
-            <th class="shrink"><label for="input-name">Name</label></th>
-            <td>{%= fieldedit.FormInput("name", "input-name", p.Profile.Name) %}</td>
-          </tr>
+          {%= components.TableInput("name", "Name", p.Profile.Name, 5) %}
           <tr>
             <th class="shrink"><label>Mode</label></th>
             <td>

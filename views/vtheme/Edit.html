@@ -1,0 +1,60 @@
+{% import "github.com/kyleu/admini/app" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/theme" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/layout" %}
+{% import "github.com/kyleu/admini/views/vutil" %}
+
+{% code type Edit struct {
+  layout.Basic
+  Theme *theme.Theme
+} %}
+
+{% func (p *Edit) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right"><a href="#modal-settings"><button type="button">JSON</button></a></div>
+    <h3>{% if p.Theme.Key == "new" %}New Theme{% else %}Theme Edit{% endif %}</h3>
+    <form class="editor" action="" method="post">
+      <table class="mt">
+        <tbody>
+          {%= components.TableInput("key", "Key", p.Theme.Key, 5) %}
+          {%= colorsEditor(p.Theme.Light, "light-", 5) %}
+          {%= colorsEditor(p.Theme.Dark, "dark-", 5) %}
+        </tbody>
+      </table>
+      <div class="mt">
+        <button type="submit">Save All Changes</button>
+        <button type="reset">Reset</button>
+      </div>
+    </form>
+  </div>
+  {%= components.JSONModal("theme", "Theme JSON", p.Theme, 1) %}
+{% endfunc %}
+
+{% func colorsEditor(t *theme.Colors, prefix string, indent int) %}{% stripspace %}
+  {%= colorInput(prefix, "foreground", t.Foreground, indent) %}
+  {%= colorInput(prefix, "foreground-muted", t.ForegroundMuted, indent) %}
+  {%= colorInput(prefix, "background", t.Background, indent) %}
+  {%= colorInput(prefix, "background-muted", t.BackgroundMuted, indent) %}
+
+  {%= colorInput(prefix, "link", t.Link, indent) %}
+  {%= colorInput(prefix, "link-visited", t.LinkVisited, indent) %}
+
+  {%= colorInput(prefix, "nav-foreground", t.NavForeground, indent) %}
+  {%= colorInput(prefix, "nav-background", t.NavBackground, indent) %}
+
+  {%= colorInput(prefix, "menu-foreground", t.MenuForeground, indent) %}
+  {%= colorInput(prefix, "menu-background", t.MenuBackground, indent) %}
+  {%= colorInput(prefix, "menu-background-selected", t.MenuBackgroundSelected, indent) %}
+{% endstripspace %}{% endfunc %}
+
+{% func colorInput(prefix string, k string, v string, indent int) %}{% stripspace %}
+  {%= vutil.Indent(true, indent) %}
+  <tr>
+    {%= vutil.Indent(true, indent + 1) %}
+    <th class="shrink"><label for="{%s prefix %}{%s k %}">{%s k %}</label></th>
+    {%= vutil.Indent(true, indent + 1) %}
+    <td><input class="color-var" data-var="color-{%s k %}" type="color" id="{%s prefix %}{%s k %}" name="{%s prefix %}{%s k %}" value="{%s v %}" /></td>
+  {%= vutil.Indent(true, indent) %}
+  </tr>
+{% endstripspace %}{% endfunc %}

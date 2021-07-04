@@ -34,8 +34,12 @@ em {
 
 input, button {
   border: var(--border);
-  color: var(--color-link);
+  color: var(--color-foreground);
   background-color: var(--color-background);
+}
+
+button {
+  padding: 3px var(--padding-small);
 }
 
 #content {

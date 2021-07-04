@@ -13,7 +13,7 @@ import (
 	"github.com/kyleu/admini/app/controller/cutil"
 
 	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/views/vuser"
+	"github.com/kyleu/admini/views/vauth"
 )
 
 func Profile(ctx *fasthttp.RequestCtx) {
@@ -36,7 +36,7 @@ func Profile(ctx *fasthttp.RequestCtx) {
 			}
 		}
 
-		page := &vuser.Profile{Profile: ps.Profile, Theme: thm, Providers: prvs, Referrer: redir}
+		page := &vauth.Profile{Profile: ps.Profile, Theme: thm, Providers: prvs, Referrer: redir}
 		return render(ctx, as, page, ps, "Profile")
 	})
 }

@@ -1,18 +1,25 @@
 package theme
 
 import (
+	"path/filepath"
+
 	"github.com/kyleu/admini/app/filesystem"
+	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
 
+const themeMsg = "can't load theme [%s]"
+
 type Service struct {
+	root   string
 	files  filesystem.FileLoader
 	cache  Themes
 	logger *zap.SugaredLogger
 }
 
 func NewService(files filesystem.FileLoader, logger *zap.SugaredLogger) *Service {
-	return &Service{files: files, logger: logger}
+	return &Service{root: "themes", files: files, logger: logger}
 }
 
 func (s *Service) All() Themes {
@@ -32,10 +39,38 @@ func (s *Service) Get(theme string) *Theme {
 	return ThemeDefault
 }
 
+func (s *Service) Save(t *Theme) error {
+	if t.Key == "default" {
+		return errors.New("can't overwrite default theme")
+	}
+	if t.Key == "" || t.Key == "new" {
+		t.Key = util.RandomString(12)
+	}
+	b := util.ToJSONBytes(t, true)
+	err := s.files.WriteFile(filepath.Join(s.root, t.Key+ ".json"), b, true)
+	if err != nil {
+		s.logger.Warnf("can't save theme [%s]: %+v", t.Key, err)
+	}
+	s.cache.Replace(t)
+  return nil
+}
+
 func (s *Service) loadIfNeeded() {
 	if s.cache == nil {
-		s.cache = Themes{ThemeDefault, ThemeInverse}
+		s.cache = Themes{ThemeDefault}
+		for _, key := range s.files.ListJSON(s.root) {
+			t := &Theme{}
+			b, err := s.files.ReadFile(filepath.Join(s.root, key+ ".json"))
+			if err != nil {
+				s.logger.Warnf("can't load theme [%s]: %+v", key, err)
+			}
+			err = util.FromJSON(b, t)
+			if err != nil {
+				s.logger.Warnf("can't load theme [%s]: %+v", key, err)
+			}
+			t.Key = key
+			s.cache = append(s.cache, t)
+		}
 		s.cache.Sort()
 	}
 }
-
