@@ -8,6 +8,22 @@ env:
   - XSUMMARY=TODO
   - XDESCRIPTION=TODO
 
+brews:
+  -
+    tap:
+      owner: "kyleu"
+      name: "homebrew-kyleu"
+    commit_author:
+      name: "kyleu"
+      email: "kyle@kyleu.com"
+    folder: Formula
+    homepage: "{{ .Env.XHOMEPAGE }}"
+    description: "{{ .Env.XDESCRIPTION }}"
+    license: "{{ .Env.XLICENSE }}"
+    skip_upload: false
+
+# Everything below this line is generic
+
 snapshot:
   name_template: "{{ .Tag }}-SNAPSHOT"
 
@@ -155,20 +171,6 @@ dockers:
   - skip_push: true
     image_templates:
     - "{{ .Env.XORG }}/{{.ProjectName}}"
-
-brews:
-  -
-    tap:
-      owner: "kyleu"
-      name: "homebrew-kyleu"
-    commit_author:
-      name: "{{ .Env.XNAME }}"
-      email: "{{ .Env.XEMAIL }}"
-    folder: Formula
-    homepage: "{{ .Env.XHOMEPAGE }}"
-    description: "{{ .Env.XDESCRIPTION }}"
-    license: "{{ .Env.XLICENSE }}"
-    skip_upload: false
 
 nfpms:
   -
