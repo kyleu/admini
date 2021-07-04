@@ -50,7 +50,7 @@ func ProfileSave(ctx *fasthttp.RequestCtx) {
 
 		dirty := false
 
-		def := user.DefaultProfile
+		def := user.DefaultProfile.Clone()
 		n := ps.Profile.Clone()
 
 		name, _ := frm.GetString("name", true)
@@ -86,11 +86,11 @@ func ProfileSave(ctx *fasthttp.RequestCtx) {
 func loadProfile(session *sessions.Session) (*user.Profile, error) {
 	x, ok := session.Values["profile"]
 	if !ok {
-		return user.DefaultProfile, nil
+		return user.DefaultProfile.Clone(), nil
 	}
 	s, ok := x.(string)
 	if !ok {
-		return user.DefaultProfile, nil
+		return user.DefaultProfile.Clone(), nil
 	}
 	p := &user.Profile{}
 	err := util.FromJSON([]byte(s), p)
