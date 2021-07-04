@@ -13,7 +13,7 @@ TGT=$1
 make build
 
 git add .
-git commit -m "v${TGT}"
+git commit -m "v${TGT}" || true
 
 git tag "v${TGT}"
 
