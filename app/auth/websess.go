@@ -22,7 +22,7 @@ func RemoveFromSession(k string, ctx *fasthttp.RequestCtx, websess *sessions.Ses
 }
 
 func SaveSession(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) error {
-	logger.Infof("saving session with [%d] keys", len(websess.Values))
+	// logger.Debugf("saving session with [%d] keys", len(websess.Values))
 	websess.Options = webSessOpts
 	return websess.Save(ctx)
 }
