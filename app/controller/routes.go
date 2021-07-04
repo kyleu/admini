@@ -16,9 +16,10 @@ func BuildRouter() *router.Router {
 	r.POST(defaultProfilePath, w(ProfileSave))
 
 	r.GET("/settings", w(Settings))
-	r.GET("/settings/theme/{key}", w(ThemeEdit))
-	r.POST("/settings/theme/{key}", w(ThemeSave))
-	r.GET("/settings/refresh", w(Refresh))
+	r.GET("/theme", w(ThemeList))
+	r.GET("/theme/{key}", w(ThemeEdit))
+	r.POST("/theme/{key}", w(ThemeSave))
+	r.GET("/refresh", w(Refresh))
 
 	r.GET("/auth/{key}", w(AuthDetail))
 	r.GET("/auth/{key}/callback", w(AuthCallback))

@@ -17,7 +17,7 @@ func For(as *app.State) Items {
 		&Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "social", Route: "/sandbox", Children: sandboxItems()},
 		Separator,
 		&Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/settings"},
-		&Item{Key: "refresh", Title: "Refresh", Description: "Reload all cached in " + util.AppName, Icon: "refresh", Route: "/settings/refresh"},
+		&Item{Key: "refresh", Title: "Refresh", Description: "Reload all cached in " + util.AppName, Icon: "refresh", Route: "/refresh"},
 		&Item{Key: "help", Title: "About", Description: "Get assistance and advice for using " + util.AppName, Icon: "question", Route: "/help"},
 	}
 }

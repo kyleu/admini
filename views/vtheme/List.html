@@ -1,21 +1,22 @@
+{% import "github.com/kyleu/admini/app" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/theme" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import "github.com/kyleu/admini/views/components" %}
+{% import "github.com/kyleu/admini/views/layout" %}
 
-{% func List(themes theme.Themes, selected string, indent int, ps *cutil.PageState) %}{% stripspace %}
-  {%= vutil.Indent(true, indent) %}
-  <div class="choice mt">
-    {% for _, t := range themes %}
-      {%= vutil.Indent(true, indent + 1) %}
-      <label title="{%s t.Key %}">
-        {% if t.Key == selected %}
-          <input type="radio" name="theme" value="{%s t.Key %}" checked="checked" />
-        {% else %}
-          <input type="radio" name="theme" value="{%s t.Key %}" />
-        {% endif %}
-        {%= Mockup(t, indent + 2, ps) %}
-      </label>
-    {% endfor %}
-  {%= vutil.Indent(true, indent) %}
+{% code type List struct {
+  layout.Basic
+  Themes theme.Themes
+} %}
+
+{% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <div class="right"><a href="/theme/new" title="add new theme">{%= components.SVGRef(`plus`, 20, 20, `icon`, ps) %}</a></div>
+    <h3>Themes</h3>
+    <div class="mt">
+      {%- for _, t := range p.Themes -%}
+      <a href="/theme/{%s t.Key %}">{%= Mockup(t, 3, ps) %}</a>
+      {%- endfor -%}
+    </div>
   </div>
-{% endstripspace %}{% endfunc %}
+{% endfunc %}
