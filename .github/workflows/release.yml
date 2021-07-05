@@ -36,7 +36,7 @@ jobs:
         run: "sudo apt install snapd"
       -
         name: "Snapcraft"
-        run: "sudo snap install snapcraft --classic"
+        run: "sudo snap install snapcraft"
       -
         name: "nfpms"
         run: "go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest"
