@@ -26,7 +26,7 @@ brews:
 
 source:
   enabled: true
-  name_template: "{{ .ProjectName }}-{{ .Version }"
+  name_template: "{{ .ProjectName }}-{{ .Version }}-source"
   format: "zip"
 
 snapshot:
@@ -175,10 +175,10 @@ archives:
 dockers:
   -
     image_templates:
-      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:{{ .Tag }}"
-      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:v{{ .Major }}"
-      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:v{{ .Major }}.{{ .Minor }}"
-      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:latest"
+      - "ghcr.io/{{ .Env.XORG }}/{{.ProjectName}}:{{ .Tag }}"
+      - "ghcr.io/{{ .Env.XORG }}/{{.ProjectName}}:v{{ .Major }}"
+      - "ghcr.io/{{ .Env.XORG }}/{{.ProjectName}}:v{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/{{ .Env.XORG }}/{{.ProjectName}}:latest"
 
 nfpms:
   -
