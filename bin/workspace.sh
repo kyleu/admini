@@ -5,7 +5,6 @@ tell application "iTerm2"
         write text "clear"
         write text "bin/dev.sh"
         split vertically with default profile
-        set columns to 175
     end tell
     tell second session of current tab of current window
         write text "cd ~/go/src/github.com/kyleu/admini/client"

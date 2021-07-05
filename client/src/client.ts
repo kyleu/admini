@@ -4,14 +4,13 @@ import {flashInit} from "./flash";
 import {editorInit} from "./editor";
 import {sortableEdit, sortableInit} from "./sortable";
 import {linkInit} from "./link";
-import {themeInit, themeReset} from "./theme";
+import {themeInit} from "./theme";
 import {setSiblingToNull} from "./form";
 import {modeInit} from "./mode";
 
 export function init(): void {
   (window as any).admini = {
     "sortableEdit": sortableEdit,
-    "themeReset": themeReset,
     "setSiblingToNull": setSiblingToNull
   };
   menuInit();

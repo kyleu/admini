@@ -51,7 +51,7 @@ func (s *Service) Save(t *Theme) error {
 	if err != nil {
 		s.logger.Warnf("can't save theme [%s]: %+v", t.Key, err)
 	}
-	s.cache.Replace(t)
+	s.cache = s.cache.Replace(t)
   return nil
 }
 
