@@ -32,9 +32,6 @@ jobs:
         name: "Dependencies"
         run: "bin/bootstrap.sh"
       -
-        name: "Snap"
-        run: "sudo apt install snapd"
-      -
         name: "Snapcraft"
         run: "sudo snap install snapcraft"
       -
