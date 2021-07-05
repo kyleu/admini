@@ -1,6 +1,6 @@
 # ![image info](./assets/favicon.png) admini
 
-[admini](https://admini.dev) is fun.
+Use [admini](https://admini.dev) to explore and manage your data as fast and easily as possible 
 
 ## Download
 
