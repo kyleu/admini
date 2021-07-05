@@ -39,7 +39,7 @@ changelog:
   skip: false
 
 signs:
-  - artifacts: checksum
+  #- artifacts: checksum
 
 checksum:
   name_template: "checksums.txt"
