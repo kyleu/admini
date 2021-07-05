@@ -33,7 +33,7 @@ jobs:
         run: "bin/bootstrap.sh"
       -
         name: "Snapcraft"
-        run: "sudo snap install snapcraft"
+        run: "sudo snap install snapcraft --classic"
       -
         name: "nfpms"
         run: "go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest"
