@@ -28,9 +28,10 @@ jobs:
           version: "latest"
           install-only: true
       -
+        name: "Dependencies"
+        run: "go get -u github.com/pyros2097/go-embed"
+      -
         name: "Assets"
-        run:
-          "go get -u github.com/pyros2097/go-embed"
-          "bin/asset-embed.sh"
+        run: "bin/asset-embed.sh"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
