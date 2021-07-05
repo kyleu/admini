@@ -22,7 +22,7 @@ jobs:
           go-version: "1.16"
       -
         name: "Dependencies"
-        run: "go get -u github.com/pyros2097/go-embed;go get -u github.com/valyala/quicktemplate"
+        run: "bin/bootstrap.sh"
       -
         name: "Git"
         env:
