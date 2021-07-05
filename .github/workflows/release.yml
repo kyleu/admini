@@ -49,6 +49,15 @@ jobs:
         with:
           gpg-private-key: "${{ secrets.GPG_PRIVATE_KEY }}"
       -
+        name: "GPG fix"
+        id: "gpgfix"
+        run: "echo '::set-output name=tty::$(tty)'"
+      -
+        name: "GPG Test"
+        run: "echo $GPG_TTY"
+        env:
+          GPG_TTY: ${{ steps.gpgfix.outputs.tty }}
+      -
         name: "Config"
         env:
           OWNER: "${{ secrets.REPO_OWNER }}"
@@ -69,11 +78,6 @@ jobs:
         name: "Assets"
         run: "bin/asset-embed.sh"
       -
-        name: "TEMPTEST"
-        run: "echo $GPG_TTY"
-        env:
-          GPG_TTY: "$(tty)"
-      -
         name: "Release"
         uses: "goreleaser/goreleaser-action@v2"
         with:
@@ -81,7 +85,7 @@ jobs:
           version: "latest"
           args: "--snapshot --skip-publish --rm-dist"
         env:
-          GPG_TTY: "$(tty)"
+          GPG_TTY: ${{ steps.gpgfix.outputs.fingerprint }}
           GPG_FINGERPRINT: ${{ steps.gpg.outputs.fingerprint }}
           GOPRIVATE: "github.com/${{ secrets.REPO_OWNER }}"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
