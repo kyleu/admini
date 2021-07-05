@@ -36,7 +36,7 @@ snapcrafts:
     license: "Proprietary"
 
 signs:
-#  - artifacts: checksum
+  - artifacts: checksum
 
 # Everything below this line is generic
 
