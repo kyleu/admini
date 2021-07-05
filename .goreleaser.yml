@@ -2,8 +2,7 @@
 env:
   - XNAME=Kyle U
   - XEMAIL=kyle@kyleu.com
-  - XGITHUBORG=kyleu
-  - XDOCKERORG=kyleunv
+  - XORG=kyleu
   - XHOMEPAGE=https://admini.dev
   - XLICENSE=TODO
   - XSUMMARY=TODO
@@ -25,6 +24,11 @@ brews:
 
 # Everything below this line is generic
 
+source:
+  enabled: true
+  name_template: "{{ .ProjectName }}-{{ .Version }"
+  format: "zip"
+
 snapshot:
   name_template: "{{ .Tag }}-SNAPSHOT"
 
@@ -38,7 +42,7 @@ signs:
   - artifacts: checksum
 
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 
 builds:
   - id: "aix"
@@ -46,21 +50,21 @@ builds:
       - aix
     goarch:
       - ppc64
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "darwin-arm64"
     goos:
       - darwin
     goarch:
       - arm64
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "darwin-amd64"
     goos:
       - darwin
     goarch:
       - amd64
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 #     hooks:
 #       post: gon ./tools/gon.json
 
@@ -69,14 +73,14 @@ builds:
       - dragonfly
     goarch:
       - amd64
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "illumos"
     goos:
       - illumos
     goarch:
       - amd64
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "linux"
     goos:
@@ -94,7 +98,7 @@ builds:
       - wasm
     goarm:
       - 7
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "netbsd"
     goos:
@@ -106,7 +110,7 @@ builds:
       - arm64
     goarm:
       - 7
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "openbsd"
     goos:
@@ -118,7 +122,7 @@ builds:
       - arm64
     goarm:
       - 7
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "plan9"
     goos:
@@ -129,14 +133,14 @@ builds:
       - arm
     goarm:
       - 7
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "solaris"
     goos:
       - solaris
     goarch:
       - amd64
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "windows"
     goos:
@@ -148,14 +152,14 @@ builds:
       - arm64
     goarm:
       - 7
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
   - id: "js"
     goos:
       - js
     goarch:
       - wasm
-    mod_timestamp: '{{ .CommitTimestamp }}'
+    mod_timestamp: "{{ .CommitTimestamp }}"
 
 archives:
   - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
@@ -171,10 +175,10 @@ archives:
 dockers:
   -
     image_templates:
-      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:{{ .Tag }}"
-      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:v{{ .Major }}"
-      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:v{{ .Major }}.{{ .Minor }}"
-      - "{{ .Env.XDOCKERORG }}/{{.ProjectName}}:latest"
+      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:{{ .Tag }}"
+      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:v{{ .Major }}"
+      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:v{{ .Major }}.{{ .Minor }}"
+      - "gcr.io/{{ .Env.XORG }}/{{.ProjectName}}:latest"
 
 nfpms:
   -
@@ -191,7 +195,7 @@ nfpms:
 
 scoop:
   bucket:
-    owner: "{{ .Env.XGITHUBORG }}"
+    owner: "{{ .Env.XORG }}"
     name: "{{ .ProjectName }}"
   commit_author:
     name: "{{ .Env.XNAME }}"
