@@ -30,14 +30,6 @@ jobs:
           TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
         run: git config --global url."https://${OWNER}:${TOKEN}@github.com".insteadOf "https://github.com"
       -
-        name: "Tidy"
-        run: "go mod tidy"
-        env:
-          GOPRIVATE: "github.com/kyleu"
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          OWNER: "${{ secrets.REPO_OWNER }}"
-          TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
-      -
         name: "Assets"
         run: "bin/asset-embed.sh"
       -
