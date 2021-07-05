@@ -24,6 +24,11 @@ jobs:
         name: "Dependencies"
         run: "go get -u github.com/pyros2097/go-embed"
       -
+        name: "Git"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        run: git config --global url."https://kyleu:${GITHUB_TOKEN}@github.com".insteadOf "https://github.com"
+      -
         name: "Tidy"
         run: "go mod tidy"
         env:
