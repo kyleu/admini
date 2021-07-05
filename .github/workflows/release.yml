@@ -27,9 +27,5 @@ jobs:
           distribution: "goreleaser"
           version: "latest"
           install-only: true
-      -
-        name: "Prepare for build"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: "Done"
