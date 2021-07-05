@@ -24,7 +24,13 @@ jobs:
         name: "Dependencies"
         run: "bin/bootstrap.sh"
       -
-        name: "Git"
+        name: "GPG"
+        id: "gpg"
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+      -
+        name: "Config"
         env:
           OWNER: "${{ secrets.REPO_OWNER }}"
           TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
@@ -51,6 +57,7 @@ jobs:
           version: "latest"
           args: "--snapshot --skip-publish --rm-dist"
         env:
+          GPG_FINGERPRINT: ${{ steps.gpg.outputs.fingerprint }}
           GOPRIVATE: "github.com/kyleu"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           OWNER: "${{ secrets.REPO_OWNER }}"
