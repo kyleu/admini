@@ -26,14 +26,12 @@ jobs:
       -
         name: "Tidy"
         run: "go mod tidy"
-      -
-        name: "Modules"
-        run: "go mod download"
+        env:
+          GOPRIVATE: "github.com/kyleu"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       -
         name: "Assets"
         run: "bin/asset-embed.sh"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       -
         name: "Release"
         uses: "goreleaser/goreleaser-action@v2"
@@ -41,3 +39,5 @@ jobs:
           distribution: "goreleaser"
           version: "latest"
           args: "--snapshot --skip-publish --rm-dist"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
