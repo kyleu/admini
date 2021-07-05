@@ -4,9 +4,9 @@ env:
   - XEMAIL=kyle@kyleu.com
   - XORG=kyleu
   - XHOMEPAGE=https://admini.dev
-  - XLICENSE=TODO
-  - XSUMMARY=TODO
-  - XDESCRIPTION=TODO
+  - XLICENSE=Proprietary
+  - XSUMMARY=Explore and manage your data as fast and easily as possible
+  - XDESCRIPTION=Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface.
 
 brews:
   -
@@ -202,8 +202,8 @@ scoop:
     email: "{{ .Env.XEMAIL }}"
   commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
   homepage: "https://example.com/"
-  description: "Software to create fast and easy drum rolls."
-  license: MIT
+  description: "{{ .Env.XSUMMARY }}"
+  license: "{{ .Env.XLICENSE }}"
   skip_upload: true
 
 snapcrafts:
