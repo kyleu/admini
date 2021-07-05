@@ -26,14 +26,17 @@ jobs:
       -
         name: "Git"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: git config --global url."https://kyleu:${GITHUB_TOKEN}@github.com".insteadOf "https://github.com"
+          OWNER: "${{ secrets.REPO_OWNER }}"
+          TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
+        run: git config --global url."https://${OWNER}:${TOKEN}@github.com".insteadOf "https://github.com"
       -
         name: "Tidy"
         run: "go mod tidy"
         env:
           GOPRIVATE: "github.com/kyleu"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          OWNER: "${{ secrets.REPO_OWNER }}"
+          TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
       -
         name: "Assets"
         run: "bin/asset-embed.sh"
@@ -46,3 +49,5 @@ jobs:
           args: "--snapshot --skip-publish --rm-dist"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          OWNER: "${{ secrets.REPO_OWNER }}"
+          TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
