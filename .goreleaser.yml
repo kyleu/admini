@@ -201,10 +201,10 @@ scoop:
     name: "{{ .Env.XNAME }}"
     email: "{{ .Env.XEMAIL }}"
   commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
-  homepage: "https://example.com/"
+  homepage: "{{ .Env.XHOMEPAGE }}"
   description: "{{ .Env.XSUMMARY }}"
   license: "{{ .Env.XLICENSE }}"
-  skip_upload: true
+  skip_upload: false
 
 snapcrafts:
   -
@@ -214,5 +214,5 @@ snapcrafts:
     description: "{{ .Env.XDESCRIPTION }}"
     grade: stable
     confinement: strict
-    license: "MIT"
+    license: "{{ .Env.XLICENSE }}"
 
