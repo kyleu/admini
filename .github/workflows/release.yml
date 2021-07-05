@@ -24,6 +24,9 @@ jobs:
         name: "Dependencies"
         run: "go get -u github.com/pyros2097/go-embed"
       -
+        name: "Modules"
+        run: "go mod download"
+      -
         name: "Assets"
         run: "bin/asset-embed.sh"
         env:
