@@ -2,6 +2,8 @@ name: ci
 
 on:
   push:
+#    tags:
+#      - 'v*'
 
 permissions:
   contents: write
@@ -34,6 +36,9 @@ jobs:
       -
         name: "Snapcraft"
         run: "sudo snap install snapcraft --classic"
+      -
+        name: "Snapcraft Fix"
+        run: "mkdir -p /home/runner/.cache/snapcraft/download; mkdir -p /home/runner/.cache/snapcraft/stage-packages"
       -
         name: "nfpms"
         run: "go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest"
