@@ -70,7 +70,7 @@ jobs:
         run: "bin/asset-embed.sh"
       -
         name: "TEMPTEST"
-        run: "echo GPG_TTY"
+        run: "echo $GPG_TTY"
         env:
           GPG_TTY: "$(tty)"
       -
