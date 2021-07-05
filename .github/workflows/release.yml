@@ -24,6 +24,9 @@ jobs:
         name: "Dependencies"
         run: "go get -u github.com/pyros2097/go-embed"
       -
+        name: "Tidy"
+        run: "go mod tidy"
+      -
         name: "Modules"
         run: "go mod download"
       -
