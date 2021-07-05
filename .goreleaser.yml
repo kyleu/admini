@@ -5,8 +5,8 @@ env:
   - XORG=kyleu
   - XHOMEPAGE=https://admini.dev
   - XLICENSE=Proprietary
-  - XSUMMARY=TODO
-  - XDESCRIPTION=TODO
+  - XSUMMARY=Explore and manage your data as fast and easily as possible
+  - XDESCRIPTION=Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface.
 
 brews:
   -
@@ -21,6 +21,22 @@ brews:
     description: "{{ .Env.XDESCRIPTION }}"
     license: "{{ .Env.XLICENSE }}"
     skip_upload: false
+
+snapcrafts:
+  -
+    publish: false
+    replacements: &replacements
+      darwin: macos
+      386: i386
+      amd64: x86_64
+    summary: "{{ .Env.XSUMMARY }}"
+    description: "{{ .Env.XDESCRIPTION }}"
+    grade: stable
+    confinement: strict
+    license: "Proprietary"
+
+signs:
+  - artifacts: checksum
 
 # Everything below this line is generic
 
@@ -37,9 +53,6 @@ release:
 
 changelog:
   skip: false
-
-signs:
-  - artifacts: checksum
 
 checksum:
   name_template: "checksums.txt"
@@ -165,10 +178,7 @@ archives:
   - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format: zip
     wrap_in_directory: false
-    replacements: &replacements
-      darwin: macos
-      386: i386
-      amd64: x86_64
+    replacements: *replacements
     files:
       - none*
 
@@ -201,18 +211,7 @@ scoop:
     name: "{{ .Env.XNAME }}"
     email: "{{ .Env.XEMAIL }}"
   commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
-  homepage: "https://example.com/"
-  description: "Software to create fast and easy drum rolls."
-  license: MIT
-  skip_upload: true
-
-snapcrafts:
-  -
-    publish: false
-    replacements: *replacements
-    summary: "{{ .Env.XSUMMARY }}"
-    description: "{{ .Env.XDESCRIPTION }}"
-    grade: stable
-    confinement: strict
-    license: "MIT"
-
+  homepage: "{{ .Env.XHOMEPAGE }}"
+  description: "{{ .Env.XSUMMARY }}"
+  license: "{{ .Env.XLICENSE }}"
+  skip_upload: false
