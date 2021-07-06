@@ -20,4 +20,4 @@ For full stack development, you'll need some tools installed:
 - For TypeScript changes, use `bin/build-client.sh`; you'll need `node` installed
 - For a developer environment, run `bin/workspace.sh`, which will watch all files and hot-reload (iTerm2 required)
 
-For macOS, you can install all dependencies with `brew install md5sha1sum`
+For macOS, you can install all dependencies with `brew install coreutils`
