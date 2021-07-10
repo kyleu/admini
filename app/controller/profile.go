@@ -4,13 +4,12 @@ import (
 	"net/url"
 
 	"github.com/go-gem/sessions"
-	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/theme"
 	"github.com/kyleu/admini/app/user"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
-
-	"github.com/kyleu/admini/app/controller/cutil"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/views/vauth"
@@ -18,27 +17,37 @@ import (
 
 func Profile(ctx *fasthttp.RequestCtx) {
 	act("profile", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		ps.Title = "Profile"
-		ps.Data = ps.Profile
-		thm := as.Themes.Get(ps.Profile.Theme)
-
-		prvs, err := as.Auth.Providers()
-		if err != nil {
-			return "", errors.Wrap(err, "can't load providers")
-		}
-
-		redir := "/"
-		ref := string(ctx.Request.Header.Peek("Referer"))
-		if ref != "" {
-			u, err := url.Parse(ref)
-			if err == nil && u != nil {
-				redir = u.Path
-			}
-		}
-
-		page := &vauth.Profile{Profile: ps.Profile, Theme: thm, Providers: prvs, Referrer: redir}
-		return render(ctx, as, page, ps, "Profile")
+		return profileAction(ctx, as, ps)
 	})
+}
+
+func ProfileSite(ctx *fasthttp.RequestCtx) {
+	actSite("profile", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+		return profileAction(ctx, as, ps)
+	})
+}
+
+func profileAction(ctx *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) (string, error) {
+	ps.Title = "Profile"
+	ps.Data = ps.Profile
+	thm := as.Themes.Get(ps.Profile.Theme)
+
+	prvs, err := as.Auth.Providers()
+	if err != nil {
+		return "", errors.Wrap(err, "can't load providers")
+	}
+
+	redir := "/"
+	ref := string(ctx.Request.Header.Peek("Referer"))
+	if ref != "" {
+		u, err := url.Parse(ref)
+		if err == nil && u != nil {
+			redir = u.Path
+		}
+	}
+
+	page := &vauth.Profile{Profile: ps.Profile, Theme: thm, Providers: prvs, Referrer: redir}
+	return render(ctx, as, page, ps, "Profile")
 }
 
 func ProfileSave(ctx *fasthttp.RequestCtx) {
@@ -53,23 +62,17 @@ func ProfileSave(ctx *fasthttp.RequestCtx) {
 		n.Name, _ = frm.GetString("name", true)
 		n.Mode, _ = frm.GetString("mode", true)
 		n.Theme, _ = frm.GetString("theme", true)
-		if n.Theme == "default" {
+		if n.Theme == theme.ThemeDefault.Key {
 			n.Theme = ""
 		}
 
-		if n.Equals(user.DefaultProfile) {
-			err := auth.RemoveFromSession("profile", ctx, ps.Session, ps.Logger)
-			if err != nil {
-				return "", errors.Wrap(err, "unable to remove profile from session")
-			}
-		} else {
-			err := auth.StoreInSession("profile", util.ToJSON(n), ctx, ps.Session, ps.Logger)
-			if err != nil {
-				return "", errors.Wrap(err, "unable to save profile in session")
-			}
+		err = user.SaveProfile(n, ctx, ps.Session, ps.Logger)
+		if err != nil {
+			return "", err
 		}
 
-		return flashAndRedir(true, "profile saved", "/profile", ctx, ps)
+		msg := "profile save"
+		return returnToReferrer(msg, "/profile", ctx, ps)
 	})
 }
 

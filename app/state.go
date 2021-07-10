@@ -42,9 +42,8 @@ type State struct {
 	routerLogger *zap.SugaredLogger
 }
 
-func NewState(debug bool, bi *BuildInfo, r *router.Router, f filesystem.FileLoader, ls *loader.Service, log *zap.SugaredLogger) (*State, error) {
+func NewState(debug bool, bi *BuildInfo, r *router.Router, f filesystem.FileLoader, log *zap.SugaredLogger) (*State, error) {
 	rl := log.With(zap.String("service", "router"))
-	ss := source.NewService(f, ls, log)
 	ret := &State{
 		Debug:        debug,
 		BuildInfo:    bi,
@@ -52,9 +51,6 @@ func NewState(debug bool, bi *BuildInfo, r *router.Router, f filesystem.FileLoad
 		Files:        f,
 		Auth:         auth.NewService("", log),
 		Themes:       theme.NewService(f, log),
-		Sources:      ss,
-		Projects:     project.NewService(f, ss, ls, log),
-		Loaders:      ls,
 		routerLogger: rl,
 	}
 	return ret, nil

@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/site"
+	"github.com/kyleu/admini/app/theme"
 	"github.com/valyala/fasthttp"
-
-	"github.com/kyleu/admini/app/menu"
 
 	"go.uber.org/zap"
 
@@ -24,17 +24,32 @@ const (
 )
 
 func act(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	as, ps := actPrepare(ctx)
+	mode := "app" // TODO
+	as, ps := actPrepare(mode, ctx)
+	clean(as, ps)
+	actComplete(key, as, ps, ctx, f)
+}
+
+func actSite(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
+	as, ps := actPrepare("site", ctx)
+	ps.Menu = site.SiteMenu(ps.Profile, ps.Auth)
 	clean(as, ps)
 	actComplete(key, as, ps, ctx, f)
 }
 
 func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	as, ps := actPrepare(ctx)
+	as, ps := actPrepare("workspace", ctx)
 	actComplete(key, as, ps, ctx, f)
 }
 
-func actPrepare(ctx *fasthttp.RequestCtx) (*app.State, *cutil.PageState) {
+func actPrepare(mode string, ctx *fasthttp.RequestCtx) (*app.State, *cutil.PageState) {
+	if mode == "site" {
+		return _currentSiteState, loadPageState(ctx)
+	}
+	return _currentAppState, loadPageState(ctx)
+}
+
+func loadPageState(ctx *fasthttp.RequestCtx) *cutil.PageState {
 	logger := _rootLogger.With(zap.String("path", string(ctx.Request.URI().Path())))
 
 	if store == nil {
@@ -70,7 +85,7 @@ func actPrepare(ctx *fasthttp.RequestCtx) (*app.State, *cutil.PageState) {
 		}
 	}
 
-	return _currentApp, &cutil.PageState{
+	return &cutil.PageState{
 		Method:  string(ctx.Method()),
 		URI:     ctx.Request.URI(),
 		Flashes: flashes,
@@ -94,7 +109,7 @@ func actComplete(key string, as *app.State, ps *cutil.PageState, ctx *fasthttp.R
 		ps.Logger.Errorf("error running action [%s]: %+v", key, err)
 
 		if len(ps.Breadcrumbs) == 0 {
-			ps.Breadcrumbs = []string{"Error"}
+			ps.Breadcrumbs = cutil.Breadcrumbs{"Error"}
 		}
 		errDetail := util.GetErrorDetail(err)
 		page := &verror.Error{Err: errDetail}
@@ -116,6 +131,9 @@ func actComplete(key string, as *app.State, ps *cutil.PageState, ctx *fasthttp.R
 }
 
 func clean(as *app.State, ps *cutil.PageState) {
+	if ps.Profile != nil && ps.Profile.Theme == "" {
+		ps.Profile.Theme = theme.ThemeDefault.Key
+	}
 	if ps.RootIcon == "" {
 		ps.RootIcon = "app"
 	}
@@ -132,6 +150,6 @@ func clean(as *app.State, ps *cutil.PageState) {
 		ps.ProfilePath = defaultProfilePath
 	}
 	if len(ps.Menu) == 0 {
-		ps.Menu = menu.For(as)
+		ps.Menu = MenuFor(as)
 	}
 }

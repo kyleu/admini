@@ -12,6 +12,8 @@ import (
 	"github.com/kyleu/admini/app"
 )
 
+const signinMsg = "signed in to %s as [%s]"
+
 func AuthDetail(ctx *fasthttp.RequestCtx) {
 	act("auth.detail", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		prv, err := getProvider(as, ctx)
@@ -20,7 +22,8 @@ func AuthDetail(ctx *fasthttp.RequestCtx) {
 		}
 		u, _, err := auth.CompleteUserAuth(prv, ctx, ps.Session, ps.Logger)
 		if err == nil {
-			return signInReturn(prv, u, ctx, as, ps)
+			msg := fmt.Sprintf(signinMsg, auth.AvailableProviderNames[prv.ID], u.Email)
+			return returnToReferrer(msg, "/profile", ctx, ps)
 		}
 		return auth.BeginAuthHandler(prv, ctx, ps.Session, ps.Logger)
 	})
@@ -36,7 +39,8 @@ func AuthCallback(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		return signInReturn(prv, u, ctx, as, ps)
+		msg := fmt.Sprintf(signinMsg, auth.AvailableProviderNames[prv.ID], u.Email)
+		return returnToReferrer(msg, "/profile", ctx, ps)
 	})
 }
 
@@ -51,11 +55,11 @@ func AuthLogout(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		return "/profile", nil
+		return defaultProfilePath, nil
 	})
 }
 
-func signInReturn(prv *auth.Provider, u *auth.Session, ctx *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) (string, error) {
+func returnToReferrer(msg string, dflt string, ctx *fasthttp.RequestCtx, ps *cutil.PageState) (string, error) {
 	refer := ""
 	referX, ok := ps.Session.Values[auth.ReferKey]
 	if ok {
@@ -65,9 +69,8 @@ func signInReturn(prv *auth.Provider, u *auth.Session, ctx *fasthttp.RequestCtx,
 		}
 	}
 	if refer == "" {
-		refer = "/profile"
+		refer = dflt
 	}
-	msg := fmt.Sprintf("signed in to %s as [%s]", auth.AvailableProviderNames[prv.ID], u.Email)
 	return flashAndRedir(true, msg, refer, ctx, ps)
 }
 

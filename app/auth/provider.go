@@ -11,23 +11,31 @@ import (
 )
 
 type Provider struct {
-	ID       string `json:"id"`
-	Title    string `json:"title"`
-	Key      string `json:"-"`
-	Secret   string `json:"-"`
-	Callback string `json:"callback"`
-	goth     goth.Provider
+	ID     string `json:"id"`
+	Title  string `json:"title"`
+	Key    string `json:"-"`
+	Secret string `json:"-"`
+	cache  map[string]goth.Provider
+}
+
+func (p *Provider) Goth(proto string, host string) (goth.Provider, error) {
+	if proto == "" {
+		proto = "http"
+	}
+	cb := fmt.Sprintf("%s://%s/auth/%s/callback", proto, host, p.ID)
+	if g, ok := p.cache[cb]; ok {
+		return g, nil
+	}
+	gothPrv, err := toGoth(p.ID, p.Key, p.Secret, cb)
+	if err != nil {
+		return nil, err
+	}
+	goth.UseProviders(gothPrv)
+	p.cache[cb] = gothPrv
+	return gothPrv, nil
 }
 
 type Providers []*Provider
-
-func (p Providers) toGoth() ([]goth.Provider, error) {
-	ret := make([]goth.Provider, 0, len(p))
-	for _, x := range p {
-		ret = append(ret, x.goth)
-	}
-	return ret, nil
-}
 
 func (p Providers) Get(id string) *Provider {
 	for _, x := range p {
@@ -82,22 +90,12 @@ func (s *Service) load() error {
 	ret := Providers{}
 	for _, k := range AvailableProviderKeys {
 		envKey := os.Getenv(k + "_key")
+		envSecret := os.Getenv(k + "_secret")
 		if envKey != "" {
-			envSecret := os.Getenv(k + "_secret")
-			cb := fmt.Sprintf("%s/auth/%s/callback", s.baseURL, k)
-			gothPrv, err := toGoth(k, envKey, envSecret, cb)
-			if err != nil {
-				return err
-			}
-			ret = append(ret, &Provider{ID: k, Title: AvailableProviderNames[k], Key: envKey, Secret: envSecret, Callback: cb, goth: gothPrv})
+			ret = append(ret, &Provider{ID: k, Title: AvailableProviderNames[k], Key: envKey, Secret: envSecret, cache: map[string]goth.Provider{}})
 		}
 	}
 
-	gps, err := ret.toGoth()
-	if err != nil {
-		return err
-	}
-	goth.UseProviders(gps...)
 	s.providers = ret
 
 	if len(ret) == 0 {

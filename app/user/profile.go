@@ -3,7 +3,12 @@ package user
 import (
 	"fmt"
 
+	"github.com/go-gem/sessions"
 	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
+	"github.com/valyala/fasthttp"
+	"go.uber.org/zap"
 )
 
 type Profile struct {
@@ -19,7 +24,7 @@ func (p *Profile) String() string {
 }
 
 func (p *Profile) Clone() *Profile {
-	return &Profile{Name:  p.Name, Mode:  p.Mode, Theme: p.Theme}
+	return &Profile{Name: p.Name, Mode: p.Mode, Theme: p.Theme}
 }
 
 func (p *Profile) ModeClass() string {
@@ -42,4 +47,19 @@ func (p *Profile) AuthString(a auth.Sessions) string {
 
 func (p *Profile) Equals(x *Profile) bool {
 	return p.Name == x.Name && p.Mode == x.Mode && p.Theme == x.Theme
+}
+
+func SaveProfile(n *Profile, ctx *fasthttp.RequestCtx, sess *sessions.Session, logger *zap.SugaredLogger) error {
+	if n == nil || n.Equals(DefaultProfile) {
+		err := auth.RemoveFromSession("profile", ctx, sess, logger)
+		if err != nil {
+			return errors.Wrap(err, "unable to remove profile from session")
+		}
+		return nil
+	}
+	err := auth.StoreInSession("profile", util.ToJSON(n), ctx, sess, logger)
+	if err != nil {
+		return errors.Wrap(err, "unable to save profile in session")
+	}
+	return nil
 }

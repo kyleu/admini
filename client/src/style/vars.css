@@ -3,6 +3,7 @@
   --padding-small: 6px;
   --menu-padding: 8px;
   --nav-height: 48px;
+  --menu-width: 256px;
 }
 
 .only-light { display: inline-block; }

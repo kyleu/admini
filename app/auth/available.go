@@ -12,10 +12,16 @@ var (
 	AvailableProviderKeys  []string
 )
 
+const (
+	auth0Key     = "auth0"
+	microsoftKey = "microsoft"
+	nextcloudKey = "nextcloud"
+)
+
 func initAvailable() {
 	if AvailableProviderNames == nil {
 		AvailableProviderNames = map[string]string{
-			"amazon": "Amazon", "apple": "Apple", "auth0": "Auth0", "azuread": "Azure AD",
+			"amazon": "Amazon", "apple": "Apple", auth0Key: "Auth0", "azuread": "Azure AD",
 			"battlenet": "Battlenet", "bitbucket": "Bitbucket", "box": "Box",
 			"dailymotion": "Dailymotion", "deezer": "Deezer", "digitalocean": "Digital Ocean", "discord": "Discord", "dropbox": "Dropbox",
 			"eveonline": "Eve Online",
@@ -25,8 +31,8 @@ func initAvailable() {
 			"instagram": "Instagram", "intercom": "Intercom",
 			"kakao":  "Kakao",
 			"lastfm": "Last FM", "line": "LINE", "linkedin": "Linkedin",
-			"mastodon": "Mastodon", "meetup": "Meetup.com", "microsoft": "Microsoft", "microsoftonline": "Microsoft Online",
-			"naver": "Naver", "nextcloud": "NextCloud",
+			"mastodon": "Mastodon", "meetup": "Meetup.com", microsoftKey: "Microsoft", "microsoftonline": "Microsoft Online",
+			"naver": "Naver", nextcloudKey: "NextCloud",
 			"okta": "Okta", "onedrive": "Onedrive", "openid-connect": "OpenID Connect",
 			"paypal":     "Paypal",
 			"salesforce": "Salesforce", "seatalk": "SeaTalk", "shopify": "Shopify", "slack": "Slack",
@@ -54,16 +60,15 @@ func ProviderUsage(id string, enabled bool) string {
 	}
 	if enabled {
 		return n + " is already configured"
-	} else {
-		keys := []string{"\"" + id + "_key\"", "\"" + id + "_secret\""}
-		switch id {
-		case "auth0":
-			keys = append(keys, "\"auth0_domain\"")
-		case "microsoft":
-			keys = append(keys, "\"microsoft_tenant\"")
-		case "nextcloud":
-			keys = append(keys, "\"nextcloud_url\"")
-		}
-		return fmt.Sprintf("To enable %s, set %s as environment variables", n, util.OxfordComma(keys))
 	}
+	keys := []string{"\"" + id + "_key\"", "\"" + id + "_secret\""}
+	switch id {
+	case auth0Key:
+		keys = append(keys, "\"auth0_domain\"")
+	case microsoftKey:
+		keys = append(keys, "\"microsoft_tenant\"")
+	case nextcloudKey:
+		keys = append(keys, "\"nextcloud_url\"")
+	}
+	return fmt.Sprintf("To enable %s, set %s as environment variables", n, util.OxfordComma(keys))
 }

@@ -43,7 +43,7 @@ button {
 }
 
 #content {
-  margin-left: 256px;
+  margin-left: var(--menu-width);
   overflow: auto;
   transition: margin-left 250ms ease-in-out;
   min-height: calc(100% - var(--nav-height));

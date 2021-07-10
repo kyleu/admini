@@ -23,9 +23,10 @@ import (
 )
 
 var (
-	_currentApp  *app.State
-	_rootLogger  *zap.SugaredLogger
-	initialIcons = []string{"search"}
+	_currentAppState  *app.State
+	_currentSiteState *app.State
+	_rootLogger       *zap.SugaredLogger
+	initialIcons      = []string{"search"}
 )
 
 var sessionKey = func() string {
@@ -38,8 +39,13 @@ var sessionKey = func() string {
 
 var store *sessions.CookieStore
 
-func SetState(a *app.State, l *zap.SugaredLogger) {
-	_currentApp = a
+func SetAppState(a *app.State, l *zap.SugaredLogger) {
+	_currentAppState = a
+	_rootLogger = l
+}
+
+func SetSiteState(a *app.State, l *zap.SugaredLogger) {
+	_currentSiteState = a
 	_rootLogger = l
 }
 

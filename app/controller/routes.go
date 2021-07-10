@@ -11,16 +11,15 @@ func BuildRouter() *router.Router {
 	r := router.New()
 	r.GET("/", w(Home))
 
-	r.GET(defaultSearchPath, w(Search))
-	r.GET(defaultProfilePath, w(Profile))
-	r.POST(defaultProfilePath, w(ProfileSave))
-
 	r.GET("/settings", w(Settings))
 	r.GET("/theme", w(ThemeList))
 	r.GET("/theme/{key}", w(ThemeEdit))
 	r.POST("/theme/{key}", w(ThemeSave))
 	r.GET("/refresh", w(Refresh))
+	r.GET(defaultSearchPath, w(Search))
 
+	r.GET(defaultProfilePath, w(Profile))
+	r.POST(defaultProfilePath, w(ProfileSave))
 	r.GET("/auth/{key}", w(AuthDetail))
 	r.GET("/auth/{key}/callback", w(AuthCallback))
 	r.GET("/auth/{key}/logout", w(AuthLogout))

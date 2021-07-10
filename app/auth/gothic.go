@@ -2,6 +2,8 @@ package auth
 
 import (
 	"github.com/go-gem/sessions"
+	"github.com/markbates/goth"
+	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 )
@@ -30,7 +32,12 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 		_ = removeProviderData(ctx, websess, logger)
 	}()
 
-	sess, err := prv.goth.UnmarshalSession(value)
+	g, err := gothFor(ctx, prv)
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "unable to create oauth provider")
+	}
+
+	sess, err := g.UnmarshalSession(value)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -40,12 +47,12 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 		return nil, nil, err
 	}
 
-	user, err := prv.goth.FetchUser(sess)
+	user, err := g.FetchUser(sess)
 	if err == nil {
 		return addToSession(user.Provider, user.Email, ctx, websess, logger)
 	}
 
-	_, err = sess.Authorize(prv.goth, &params{q: ctx.Request.URI().QueryArgs()})
+	_, err = sess.Authorize(g, &params{q: ctx.Request.URI().QueryArgs()})
 	if err != nil {
 		return nil, nil, err
 	}
@@ -55,7 +62,7 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 		return nil, nil, err
 	}
 
-	gu, err := prv.goth.FetchUser(sess)
+	gu, err := g.FetchUser(sess)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -63,9 +70,17 @@ func CompleteUserAuth(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions
 	return addToSession(gu.Provider, gu.Email, ctx, websess, logger)
 }
 
+func gothFor(ctx *fasthttp.RequestCtx, prv *Provider) (goth.Provider, error) {
+	proto := string(ctx.URI().Scheme())
+	host := string(ctx.URI().Host())
+	if host == "" {
+		host = "localhost"
+	}
+	return prv.Goth(proto, host)
+}
+
 func Logout(ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger, prvKeys ...string) error {
 	a := getCurrentAuths(websess)
 	n := a.Purge(prvKeys...)
 	return setCurrentAuths(n, ctx, websess, logger)
 }
-

@@ -7,7 +7,12 @@ import (
 )
 
 func getAuthURL(prv *Provider, ctx *fasthttp.RequestCtx, websess *sessions.Session, logger *zap.SugaredLogger) (string, error) {
-	sess, err := prv.goth.BeginAuth(setState(ctx))
+	g, err := gothFor(ctx, prv)
+	if err != nil {
+		return "", err
+	}
+
+	sess, err := g.BeginAuth(setState(ctx))
 	if err != nil {
 		return "", err
 	}

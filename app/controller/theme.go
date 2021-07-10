@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/kyleu/admini/app/theme"
+	"github.com/kyleu/admini/app/user"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/vtheme"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
@@ -29,7 +29,7 @@ func ThemeEdit(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 		var t *theme.Theme
-		if key == "new" {
+		if key == theme.KeyNew {
 			t = theme.ThemeDefault.Clone(key)
 		} else {
 			t = as.Themes.Get(key)
@@ -38,7 +38,7 @@ func ThemeEdit(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "no theme found with key ["+key+"]")
 		}
 		ps.Data = t
-		ps.Title = "Edit theme"
+		ps.Title = "Edit theme [" + t.Key + "]"
 		page := &vtheme.Edit{Theme: t}
 		return render(ctx, as, page, ps, "settings", "Themes||/theme", t.Key)
 	})
@@ -61,7 +61,7 @@ func ThemeSave(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		if newKey == "new" {
+		if newKey == theme.KeyNew {
 			newKey = util.RandomString(12)
 		}
 
@@ -75,9 +75,13 @@ func ThemeSave(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "unable to save theme")
 		}
 
-		ps.Data = map[string]interface{}{"key": newKey, "new": t, "orig": orig, "form": frm}
-		ps.Title = "Edit theme"
-		page := &views.Debug{}
-		return render(ctx, as, page, ps)
+		ps.Profile.Theme = newKey
+		err = user.SaveProfile(ps.Profile, ctx, ps.Session, ps.Logger)
+		if err != nil {
+			return "", err
+		}
+
+		msg := "saved changes to theme [" + newKey + "]"
+		return returnToReferrer(msg, "/", ctx, ps)
 	})
 }
