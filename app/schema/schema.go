@@ -8,7 +8,7 @@ import (
 )
 
 type Schema struct {
-	Paths           Paths        `json:"paths,omitempty"`
+	Paths           []string     `json:"paths,omitempty"`
 	Scalars         Scalars      `json:"scalars,omitempty"`
 	Models          model.Models `json:"models,omitempty"`
 	Metadata        *Metadata    `json:"metadata,omitempty"`
@@ -37,7 +37,7 @@ func (s *Schema) AddPath(path string) bool {
 	if path == "" {
 		return false
 	}
-	if s.Paths.Exists(path) {
+	if util.StringArrayContains(s.Paths, path) {
 		return false
 	}
 	s.Paths = append(s.Paths, path)

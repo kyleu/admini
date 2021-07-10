@@ -46,7 +46,9 @@ func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 	if end > 0 {
 		end--
 	}
-	path := append(additional[:end], "v")
+	path := make([]string, 0, end+len(res))
+	path = append(path, additional[:end]...)
+	path = append(path, "v")
 	for _, x := range res {
 		path = append(path, fmt.Sprintf("%v", x))
 	}

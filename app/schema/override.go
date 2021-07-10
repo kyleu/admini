@@ -23,7 +23,7 @@ type Override struct {
 	Val  interface{} `json:"val,omitempty"`
 }
 
-func NewOverride(typ string, path []string, prop string, val interface{}) *Override {
+func NewOverride(typ string, path util.Pkg, prop string, val interface{}) *Override {
 	return &Override{Type: typ, Path: path, Prop: prop, Val: val}
 }
 

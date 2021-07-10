@@ -7,7 +7,7 @@ import (
 )
 
 type Theme struct {
-	Key   string `json:"-"`
+	Key   string  `json:"-"`
 	Light *Colors `json:"light"`
 	Dark  *Colors `json:"dark"`
 	css   string
@@ -40,10 +40,10 @@ type Themes []*Theme
 
 func (t Themes) Sort() {
 	sort.Slice(t, func(i, j int) bool {
-		if t[i].Key == "default" {
+		if t[i].Key == ThemeDefault.Key {
 			return true
 		}
-		if t[j].Key == "default" {
+		if t[j].Key == ThemeDefault.Key {
 			return false
 		}
 		return t[i].Key < t[j].Key
@@ -57,7 +57,8 @@ func (t Themes) Replace(n *Theme) Themes {
 			return t
 		}
 	}
-	ret := append(t, n)
+	ret := append(Themes{}, t...)
+	ret = append(ret, n)
 	ret.Sort()
 	return ret
 }

@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-const themeMsg = "can't load theme [%s]"
+const KeyNew = "new"
 
 type Service struct {
 	root   string
@@ -26,6 +26,7 @@ func (s *Service) All() Themes {
 	s.loadIfNeeded()
 	return s.cache
 }
+
 func (s *Service) Clear() {
 	s.cache = nil
 }
@@ -40,19 +41,19 @@ func (s *Service) Get(theme string) *Theme {
 }
 
 func (s *Service) Save(t *Theme) error {
-	if t.Key == "default" {
+	if t.Key == ThemeDefault.Key {
 		return errors.New("can't overwrite default theme")
 	}
-	if t.Key == "" || t.Key == "new" {
+	if t.Key == "" || t.Key == KeyNew {
 		t.Key = util.RandomString(12)
 	}
 	b := util.ToJSONBytes(t, true)
-	err := s.files.WriteFile(filepath.Join(s.root, t.Key+ ".json"), b, true)
+	err := s.files.WriteFile(filepath.Join(s.root, t.Key+".json"), b, true)
 	if err != nil {
 		s.logger.Warnf("can't save theme [%s]: %+v", t.Key, err)
 	}
 	s.cache = s.cache.Replace(t)
-  return nil
+	return nil
 }
 
 func (s *Service) loadIfNeeded() {
@@ -60,7 +61,7 @@ func (s *Service) loadIfNeeded() {
 		s.cache = Themes{ThemeDefault}
 		for _, key := range s.files.ListJSON(s.root) {
 			t := &Theme{}
-			b, err := s.files.ReadFile(filepath.Join(s.root, key+ ".json"))
+			b, err := s.files.ReadFile(filepath.Join(s.root, key+".json"))
 			if err != nil {
 				s.logger.Warnf("can't load theme [%s]: %+v", key, err)
 			}

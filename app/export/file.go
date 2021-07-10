@@ -84,7 +84,9 @@ func (f *File) Render() []string {
 		header = append(header, line{})
 		indent = "\t"
 	}
-	lines := append(header, append(f.output, footer...)...)
+	lines = append([]line{}, header...)
+	lines = append(lines, append(f.output, footer...)...)
+
 	ret := make([]string, 0, len(lines))
 	for _, l := range lines {
 		indention := ""

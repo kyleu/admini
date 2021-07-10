@@ -9,7 +9,7 @@ import (
 const KeyReference = "reference"
 
 type Reference struct {
-	Pkg []string `json:"pkg,omitempty"`
+	Pkg util.Pkg `json:"pkg,omitempty"`
 	K   string   `json:"k"`
 }
 
@@ -29,7 +29,7 @@ func (x *Reference) From(v interface{}) interface{} {
 	return invalidInput(x.Key(), x)
 }
 
-func (x *Reference) Path() []string {
+func (x *Reference) Path() util.Pkg {
 	ret := util.StringArrayCopy(x.Pkg)
 	return append(ret, x.K)
 }

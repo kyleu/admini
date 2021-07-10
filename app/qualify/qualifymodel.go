@@ -7,7 +7,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath util.Pkg, schemata schema.Schemata) (Qualifications, error) {
+func qualifyModel(req *Request, act *action.Action, srcKey string, modelPkg util.Pkg, schemata schema.Schemata) (Qualifications, error) {
+	modelPath := modelPkg
 	if act.Type == action.TypeAll {
 		sch, err := schemata.GetWithError(srcKey)
 		if err != nil {
@@ -39,7 +40,7 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath uti
 		if err != nil {
 			return nil, err
 		}
-		if modelPath.StartsWith(pkg.Path()) {
+		if modelPkg.StartsWith(pkg.Path()) {
 			m, _ := pkg.Get(remaining)
 			if m != nil {
 				return modelResults(req, act, act.IconWithFallback(), modelPath[len(pkg.Path()):], "pkg")
@@ -51,7 +52,7 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPath uti
 			return nil, err
 		}
 
-		if modelPath.StartsWith(model.Path()) {
+		if modelPkg.StartsWith(model.Path()) {
 			return modelResults(req, act, act.IconWithFallback(), remaining, "model")
 		}
 	}
