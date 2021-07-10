@@ -51,8 +51,8 @@ then
   zip "admini_desktop_${TGT}_windows_amd64.zip" "./admini.exe"
 
   mkdir -p "../../build/dist"
-  mv "./admini_desktop_${TGT}_macos_amd64.dmg" "../../build/dist"
-  mv "./admini_desktop_${TGT}_macos_amd64.zip" "../../build/dist"
+  mv "./admini_desktop_${TGT}_macos_x86_64.dmg" "../../build/dist"
+  mv "./admini_desktop_${TGT}_macos_x86_64.zip" "../../build/dist"
   mv "./admini_desktop_${TGT}_linux_amd64.zip" "../../build/dist"
   mv "./admini_desktop_${TGT}_windows_amd64.zip" "../../build/dist"
 fi
