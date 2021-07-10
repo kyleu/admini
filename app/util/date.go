@@ -6,9 +6,11 @@ import (
 	"github.com/pkg/errors"
 )
 
-const dateFmtYMD = "2006-01-02"
-const dateFmtFull = "2006-01-02 15:04:05"
-const dateFmtJS = "2006-01-02T15:04:05Z"
+const (
+	dateFmtYMD  = "2006-01-02"
+	dateFmtFull = "2006-01-02 15:04:05"
+	dateFmtJS   = "2006-01-02T15:04:05Z"
+)
 
 func TimeToYMD(d *time.Time) string {
 	if d == nil {
@@ -37,12 +39,12 @@ func TimeFromJS(s string) (*time.Time, error) {
 }
 
 func load(s string, f string) (*time.Time, error) {
-	if len(s) == 0 {
+	if s == "" {
 		return nil, nil
 	}
 	ret, err := time.Parse(f, s)
 	if err != nil {
-		return nil, errors.New("invalid date [" + s + "] (expected 2020-01-15)")
+		return nil, errors.New("invalid date string [" + s + "], expected [" + f + "]")
 	}
 	return &ret, nil
 }

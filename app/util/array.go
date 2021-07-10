@@ -1,6 +1,21 @@
 package util
 
-import "fmt"
+import (
+	"fmt"
+)
+
+func StringArrayContains(a []string, str string) bool {
+	return StringArrayIndexOf(a, str) >= 0
+}
+
+func StringArrayIndexOf(a []string, str string) int {
+	for idx, x := range a {
+		if x == str {
+			return idx
+		}
+	}
+	return -1
+}
 
 func StringArrayCopy(a []string) []string {
 	ret := make([]string, 0, len(a))
@@ -13,17 +28,4 @@ func StringArrayFromInterfaces(a []interface{}) []string {
 		ret = append(ret, fmt.Sprint(x))
 	}
 	return ret
-}
-
-func StringArrayContains(a []string, s string) bool {
-	return StringArrayIndex(a, s) > -1
-}
-
-func StringArrayIndex(a []string, s string) int {
-	for i, x := range a {
-		if x == s {
-			return i
-		}
-	}
-	return -1
 }

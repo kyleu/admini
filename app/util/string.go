@@ -84,7 +84,7 @@ func OxfordComma(names []string) string {
 	ret := ""
 	for idx, name := range names {
 		if idx > 0 {
-			if idx == (len(names)-1) {
+			if idx == (len(names) - 1) {
 				if idx > 1 {
 					ret += ","
 				}
