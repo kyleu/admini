@@ -91,7 +91,6 @@ linters:
     - gofumpt
     - goheader
     - goimports
-    - golint
     # - gomnd
     - gomoddirectives
     - gomodguard

@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyleu/admini/app/filter"
-
 	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/filter"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
 	"github.com/pkg/errors"

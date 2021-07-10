@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/kyleu/admini/app/action"
-
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
