@@ -62,6 +62,7 @@ release:
   extra_files:
     - glob: "./build/dist/*_notarized.zip"
     - glob: "./build/dist/*.dmg"
+    - glob: "./build/dist/*_desktop_*.zip"
     - glob: "./build/dist/*_mobile_*.zip"
 
 archives:
