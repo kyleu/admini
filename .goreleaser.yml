@@ -1,6 +1,7 @@
 # http://goreleaser.com
 env:
   - XSKIP_EXTRA=false
+  - XSKIP_NOTARIZE=true
   - XNAME=Kyle U
   - XEMAIL=kyle@kyleu.com
   - XORG=kyleu
