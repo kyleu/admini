@@ -84,7 +84,7 @@ func (f *File) Render() []string {
 		header = append(header, line{})
 		indent = "\t"
 	}
-	lines = append([]line{}, header...)
+	lines := append([]line{}, header...)
 	lines = append(lines, append(f.output, footer...)...)
 
 	ret := make([]string, 0, len(lines))
