@@ -38,9 +38,9 @@ then
 
   cp "admini.macos" "./Admini.app/Contents/MacOS/admini"
 
-#  echo "signing desktop binary..."
-#  codesign  -f --options=runtime -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
-#  codesign  -f --options=runtime -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
+  echo "signing desktop binary..."
+  codesign  -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
+  codesign  -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
 
   cp "./template/macos/appdmg.config.json" "./appdmg.config.json"
 

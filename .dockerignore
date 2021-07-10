@@ -6,3 +6,5 @@ build
 client/node_modules
 data
 tmp
+tools/bin
+tools/notarize
