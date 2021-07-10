@@ -121,6 +121,7 @@ builds:
     mod_timestamp: "{{ .CommitTimestamp }}"
     hooks:
       post:
+        - "./tools/bin/release-desktop.sh {{ .Version }}"
         - "./tools/bin/notarize-amd64.sh {{ .Version }}"
 
   - id: "darwin_arm64"
@@ -133,21 +134,12 @@ builds:
       post:
         - "./tools/bin/notarize-arm64.sh {{ .Version }}"
 
-  - id: "linux_amd64"
-    goos:
-      - linux
-    goarch:
-      - amd64
-    mod_timestamp: "{{ .CommitTimestamp }}"
-    hooks:
-      post:
-        - "./tools/bin/release-desktop.sh {{ .Version }}"
-
   - id: "linux"
     goos:
       - linux
     goarch:
       - 386
+      - amd64
       - arm
       - arm64
       - mips

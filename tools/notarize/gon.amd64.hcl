@@ -1,6 +1,11 @@
 source = ["./build/dist/darwin_amd64_darwin_amd64/admini"]
 bundle_id = "com.kyleu.admini"
 
+notarize {
+  path = "./build/dist/admini_desktop_v0.1.4-SNAPSHOT_macos_x86_64.zip"
+  bundle_id = "com.kyleu.admini"
+}
+
 apple_id {
   username = "kyle@kyleu.com"
   password = "@env:APPLE_PASSWORD"
@@ -11,10 +16,10 @@ sign {
 }
 
 dmg {
-  output_path = "./build/dist/admini_0.1.5_macos_x86_64.dmg"
+  output_path = "./build/dist/admini_v0.1.4-SNAPSHOT_macos_x86_64.dmg"
   volume_name = "Admini"
 }
 
 zip {
-  output_path = "./build/dist/admini_0.1.5_macos_x86_64_notarized.zip"
+  output_path = "./build/dist/admini_v0.1.4-SNAPSHOT_macos_x86_64_notarized.zip"
 }

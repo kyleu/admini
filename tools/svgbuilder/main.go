@@ -20,11 +20,11 @@ type SVG struct {
 }
 
 func main() {
-	src := os.Args[1]
 	if len(os.Args) != 3 {
 		panic("pass two arguments, source directory and target directory")
 	}
 
+	src := os.Args[1]
 	svgs, err := loadSVGs(src)
 	if err != nil {
 		panic(err)

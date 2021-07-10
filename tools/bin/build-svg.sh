@@ -11,4 +11,4 @@ cd tools/svgbuilder
 make build
 
 cd $dir/../..
-build/debug/svgbuilder client/src/svg app/util/svg.go
+tmp/svgbuilder client/src/svg app/util/svg.go
