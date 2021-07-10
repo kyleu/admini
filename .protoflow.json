@@ -1,0 +1,13 @@
+{
+  "type": "https://github.com/kyleu/protoflow",
+  "version": "v0.0.0",
+  "project": "admini",
+  "org": "kyleu",
+  "author_name": "Kyle U",
+  "author_email": "kyle@kyleu.com",
+  "license": "Proprietary",
+  "homepage": "https://admini.dev",
+  "sourcecode": "https://github.com/kyleu/admini",
+  "summary": "Explore and manage your data as fast and easily as possible",
+  "description": "Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface."
+}
