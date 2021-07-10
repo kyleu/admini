@@ -42,17 +42,17 @@ then
 
   cp "./template/macos/appdmg.config.json" "./appdmg.config.json"
 
-  appdmg "appdmg.config.json" "./admini_desktop_${TGT}_macos_amd64.dmg"
-  zip -r "admini_desktop_${TGT}_macos_amd64.zip" "./Admini.app"
+  appdmg "appdmg.config.json" "./admini_desktop_${TGT}_macos_x86_64.dmg"
+  zip -r "admini_desktop_${TGT}_macos_x86_64.zip" "./Admini.app"
 
   # Linux
-  zip "admini_desktop_${TGT}_linux_amd64.zip" "./admini"
+  zip "admini_desktop_${TGT}_linux_x86_64.zip" "./admini"
   # Windows
-  zip "admini_desktop_${TGT}_windows_amd64.zip" "./admini.exe"
+  zip "admini_desktop_${TGT}_windows_x86_64.zip" "./admini.exe"
 
   mkdir -p "../../build/dist"
   mv "./admini_desktop_${TGT}_macos_x86_64.dmg" "../../build/dist"
   mv "./admini_desktop_${TGT}_macos_x86_64.zip" "../../build/dist"
-  mv "./admini_desktop_${TGT}_linux_amd64.zip" "../../build/dist"
-  mv "./admini_desktop_${TGT}_windows_amd64.zip" "../../build/dist"
+  mv "./admini_desktop_${TGT}_linux_x86_64.zip" "../../build/dist"
+  mv "./admini_desktop_${TGT}_windows_x86_64.zip" "../../build/dist"
 fi
