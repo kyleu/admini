@@ -19,8 +19,8 @@ import (
 	"go.uber.org/zap"
 )
 
-func startApp(flags *Flags, logger *zap.SugaredLogger) (*zap.SugaredLogger, error) {
-	r, logger, err := loadApp(flags, logger)
+func startServer(flags *Flags, logger *zap.SugaredLogger) (*zap.SugaredLogger, error) {
+	r, logger, err := loadServer(flags, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func startApp(flags *Flags, logger *zap.SugaredLogger) (*zap.SugaredLogger, erro
 	return logger, nil
 }
 
-func loadApp(flags *Flags, logger *zap.SugaredLogger) (*router.Router, *zap.SugaredLogger, error) {
+func loadServer(flags *Flags, logger *zap.SugaredLogger) (*router.Router, *zap.SugaredLogger, error) {
 	r := controller.BuildRouter()
 
 	f := filesystem.NewFileSystem(flags.ConfigDir, logger)

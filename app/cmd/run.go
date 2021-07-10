@@ -34,8 +34,8 @@ func Start(flags *Flags) (*zap.SugaredLogger, error) {
 	startLog.Infof("[%s v%s] %s", util.AppName, AppBuildInfo.Version, util.AppURL)
 
 	switch flags.Mode {
-	case "app":
-		return startApp(flags, l)
+	case "server":
+		return startServer(flags, l)
 	case "site":
 		return startSite(flags, l)
 	case "all":
@@ -46,7 +46,7 @@ func Start(flags *Flags) (*zap.SugaredLogger, error) {
 				l.Errorf("can't start marketing site: %+v", err)
 			}
 		}()
-		return startApp(flags, l)
+		return startServer(flags, l)
 	default:
 		return nil, errors.New("invalid mode [" + flags.Mode + "]")
 	}

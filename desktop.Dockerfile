@@ -64,13 +64,17 @@ ENV CGO_ENABLED=1
 
 WORKDIR /src
 
-ADD ./go.mod /src/go.mod
-ADD ./go.sum /src/go.sum
+RUN git init
+
+RUN go get -u github.com/pyros2097/go-embed
+
+ADD "./go.mod" "/src/go.mod"
+ADD "./go.sum" "/src/go.sum"
 
 RUN go mod download
 
 ADD . /src/
-RUN "/src/tools/bin/package-desktop.sh"
+RUN /src/tools/desktop/package.sh
 
 FROM ubuntu:bionic
 COPY --from=builder /src/dist /dist

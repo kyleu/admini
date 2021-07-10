@@ -7,7 +7,7 @@ cd $dir/../..
 TGT=$1
 [ "$TGT" ] || TGT="v0.0.0"
 
-if [ "$XSKIP_EXTRA" != "true" ]
+if [ "$XSKIP_MOBILE" != "true" ]
 then
   echo "building gomobile for Android..."
   mkdir -p build/dist/mobile_android_arm64

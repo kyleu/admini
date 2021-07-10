@@ -7,7 +7,7 @@ cd $dir/../..
 TGT=$1
 [ "$TGT" ] || TGT="v0.0.0"
 
-if [ "$XSKIP_EXTRA" != "true" ]
+if [ "$XSKIP_MOBILE" != "true" ]
 then
   echo "building gomobile for iOS..."
   time gomobile bind -o build/dist/mobile_ios_arm64/admini.framework -target=ios github.com/kyleu/admini/app/cmd

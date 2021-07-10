@@ -13,14 +13,14 @@ func Lib() (int, error) {
 	if AppBuildInfo == nil {
 		AppBuildInfo = &app.BuildInfo{Version: "TODO", Commit: "TODO", Date: "TODO"}
 	}
-	f := &Flags{Address: "0.0.0.0", Port: 0, Mode: "app"}
+	f := &Flags{Address: "0.0.0.0", Port: 0, Mode: "server"}
 
 	logger, err := rootLogger(f)
 	if err != nil {
 		return 0, err
 	}
 
-	r, logger, err := loadApp(f, logger)
+	r, logger, err := loadServer(f, logger)
 	if err != nil {
 		return 0, err
 	}
@@ -33,7 +33,7 @@ func Lib() (int, error) {
 	logger.Info(fmt.Sprintf("%v library started on port [%v]", util.AppName, port))
 
 	go func() {
-		e := serve("app", listener, r)
+		e := serve(util.AppKey, listener, r)
 		if e != nil {
 			panic(errors.WithStack(e))
 		}

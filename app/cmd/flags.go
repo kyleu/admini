@@ -41,7 +41,7 @@ func parseFlags() *Flags {
 	pflag.StringVarP(&ret.ConfigDir, "dir", "d", "", "directory for configuration, defaults to system config dir")
 	pflag.BoolVarP(&ret.Debug, "verbose", "v", false, "enables verbose logging and additional checks")
 	pflag.BoolVarP(&ret.JSON, "json", "j", false, "enables json logging")
-	pflag.StringVarP(&ret.Mode, "mode", "m", "app", "determines startup behavior, you probably don't want this")
+	pflag.StringVarP(&ret.Mode, "mode", "m", "server", "determines startup behavior, you probably don't want this")
 	pflag.Parse()
 	return ret
 }

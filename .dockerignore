@@ -1,10 +1,8 @@
 .git
+.goreleaser.yml
 .idea
 .run
 build
 client/node_modules
 data
-dist
-doc
-gen
 tmp

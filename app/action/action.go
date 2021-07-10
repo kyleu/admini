@@ -6,6 +6,8 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
+const defaultIcon = "app"
+
 type Action struct {
 	Key         string        `json:"key"`
 	Type        Type          `json:"type,omitempty"`
@@ -59,7 +61,7 @@ func (a *Action) IconWithFallback() string {
 	if a.Type.Icon != "" {
 		return a.Type.Icon
 	}
-	return "app"
+	return defaultIcon
 }
 
 func (a *Action) Clone(pkg util.Pkg, kids Actions) *Action {

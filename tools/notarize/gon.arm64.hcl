@@ -11,10 +11,10 @@ sign {
 }
 
 dmg {
-  output_path = "./build/dist/admini_v0.1.4-SNAPSHOT_macos_arm64.dmg"
+  output_path = "./build/dist/admini_v0.0.0_macos_arm64.dmg"
   volume_name = "Admini"
 }
 
 zip {
-  output_path = "./build/dist/admini_v0.1.4-SNAPSHOT_macos_arm64_notarized.zip"
+  output_path = "./build/dist/admini_v0.0.0_macos_arm64_notarized.zip"
 }
