@@ -2,11 +2,12 @@
 
 ## Build from source
 
-### Linux
+### Linux (Ubuntu)
 
-- Install coreutils
-  - sudo apt install coreutils
+- Install `make` and friends
+  - `sudo apt-get install build-essential`
 - Install Go
+  - `sudo snap install go --classic`
 
 
 ### macOS

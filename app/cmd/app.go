@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"runtime"
+
+	"github.com/fasthttp/router"
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller"
 	"github.com/kyleu/admini/app/database"
@@ -9,11 +12,28 @@ import (
 	"github.com/kyleu/admini/app/loader/lmock"
 	"github.com/kyleu/admini/app/loader/lpostgres"
 	"github.com/kyleu/admini/app/loader/lsqlite"
+	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/source"
+	"github.com/kyleu/admini/app/util"
 	"go.uber.org/zap"
 )
 
 func startApp(flags *Flags, logger *zap.SugaredLogger) (*zap.SugaredLogger, error) {
+	r, logger, err := loadApp(flags, logger)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = listenandserve(util.AppName, flags.Address, flags.Port, r)
+	if err != nil {
+		return nil, err
+	}
+
+	return logger, nil
+}
+
+func loadApp(flags *Flags, logger *zap.SugaredLogger) (*router.Router, *zap.SugaredLogger, error) {
 	r := controller.BuildRouter()
 
 	f := filesystem.NewFileSystem(flags.ConfigDir, logger)
@@ -24,12 +44,19 @@ func startApp(flags *Flags, logger *zap.SugaredLogger) (*zap.SugaredLogger, erro
 	}
 	ls.Set(schema.OriginMock, lmock.NewLoader(logger))
 
-	st, err := app.NewState(flags.Debug, AppBuildInfo, r, f, ls, logger)
+	st, err := app.NewState(flags.Debug, AppBuildInfo, r, f, logger)
 	if err != nil {
-		return logger, err
+		return nil, logger, err
 	}
-	controller.SetState(st, logger)
 
-	return webserver(flags.Addr(), logger, r)
+	ss := source.NewService(f, ls, logger)
+	st.Sources = ss
+	st.Projects = project.NewService(f, ss, ls, logger)
+	st.Loaders = ls
+
+	controller.SetAppState(st, logger)
+
+	logger.Infof("started using address [%s:%d] on %s:%s", flags.Address, flags.Port, runtime.GOOS, runtime.GOARCH)
+
+	return r, logger, nil
 }
-

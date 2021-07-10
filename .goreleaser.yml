@@ -1,5 +1,6 @@
 # http://goreleaser.com
 env:
+  - XSKIP_EXTRA=false
   - XNAME=Kyle U
   - XEMAIL=kyle@kyleu.com
   - XORG=kyleu
@@ -40,9 +41,11 @@ signs:
 
 # Everything below this line is generic
 
+dist: "build/dist"
+
 source:
   enabled: true
-  name_template: "{{ .ProjectName }}-{{ .Version }}-source"
+  name_template: "{{ .ProjectName }}_{{ .Version }}_source"
   format: "zip"
 
 snapshot:
@@ -50,137 +53,27 @@ snapshot:
 
 release:
   draft: true
+  header: |
+    ## {{ .Version }} ({{ .Date }})
+    See https://admini.dev for download links and documentation
 
-changelog:
-  skip: false
-
-checksum:
-  name_template: "checksums.txt"
-
-builds:
-  - id: "aix"
-    goos:
-      - aix
-    goarch:
-      - ppc64
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "darwin-arm64"
-    goos:
-      - darwin
-    goarch:
-      - arm64
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "darwin-amd64"
-    goos:
-      - darwin
-    goarch:
-      - amd64
-    mod_timestamp: "{{ .CommitTimestamp }}"
-#     hooks:
-#       post: gon ./tools/gon.json
-
-  - id: "dragonfly"
-    goos:
-      - dragonfly
-    goarch:
-      - amd64
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "illumos"
-    goos:
-      - illumos
-    goarch:
-      - amd64
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "linux"
-    goos:
-      - linux
-    goarch:
-      - 386
-      - amd64
-      - arm
-      - arm64
-      - mips
-      - mips64
-      - ppc64
-      - riscv64
-      - s390x
-      - wasm
-    goarm:
-      - 7
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "netbsd"
-    goos:
-      - netbsd
-    goarch:
-      - 386
-      - amd64
-      - arm
-      - arm64
-    goarm:
-      - 7
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "openbsd"
-    goos:
-      - openbsd
-    goarch:
-      - 386
-      - amd64
-      - arm
-      - arm64
-    goarm:
-      - 7
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "plan9"
-    goos:
-      - plan9
-    goarch:
-      - 386
-      - amd64
-      - arm
-    goarm:
-      - 7
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "solaris"
-    goos:
-      - solaris
-    goarch:
-      - amd64
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "windows"
-    goos:
-      - windows
-    goarch:
-      - 386
-      - amd64
-      - arm
-      - arm64
-    goarm:
-      - 7
-    mod_timestamp: "{{ .CommitTimestamp }}"
-
-  - id: "js"
-    goos:
-      - js
-    goarch:
-      - wasm
-    mod_timestamp: "{{ .CommitTimestamp }}"
+  extra_files:
+    - glob: "./build/dist/*_notarized.zip"
+    - glob: "./build/dist/*.dmg"
+    - glob: "./build/dist/*_mobile_*.zip"
 
 archives:
-  - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    format: zip
+  - format: zip
     wrap_in_directory: false
     replacements: *replacements
     files:
       - none*
+
+changelog:
+  skip: true
+
+checksum:
+  name_template: "checksums.txt"
 
 dockers:
   -
@@ -215,3 +108,155 @@ scoop:
   description: "{{ .Env.XSUMMARY }}"
   license: "{{ .Env.XLICENSE }}"
   skip_upload: false
+
+builds:
+  - id: "darwin_amd64"
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    hooks:
+      post:
+        - "./tools/bin/notarize-amd64.sh {{ .Version }}"
+
+  - id: "darwin_arm64"
+    goos:
+      - darwin
+    goarch:
+      - arm64
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    hooks:
+      post:
+        - "./tools/bin/notarize-arm64.sh {{ .Version }}"
+
+  - id: "linux"
+    goos:
+      - linux
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+      - mips
+      - mipsle
+      - mips64
+      - mips64le
+      - ppc64
+      - ppc64le
+      - riscv64
+      - s390x
+    goarm:
+      - 5
+      - 6
+      - 7
+    gomips:
+      - hardfloat
+      - softfloat
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "windows"
+    goos:
+      - windows
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 5
+      - 6
+      - 7
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "js"
+    goos:
+      - js
+    goarch:
+      - wasm
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "aix"
+    goos:
+      - aix
+    goarch:
+      - ppc64
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "dragonfly"
+    goos:
+      - dragonfly
+    goarch:
+      - amd64
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "illumos"
+    goos:
+      - illumos
+    goarch:
+      - amd64
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "freebsd"
+    goos:
+      - freebsd
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 5
+      - 6
+      - 7
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "netbsd"
+    goos:
+      - netbsd
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "openbsd"
+    goos:
+      - openbsd
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 5
+      - 6
+      - 7
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "plan9"
+    goos:
+      - plan9
+    goarch:
+      - 386
+      - amd64
+      - arm
+    goarm:
+      - 5
+      - 6
+      - 7
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+  - id: "solaris"
+    goos:
+      - solaris
+    goarch:
+      - amd64
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    hooks:
+      post:
+        - "./tools/bin/build-android.sh {{ .Version }}"
+        - "./tools/bin/build-ios.sh {{ .Version }}"

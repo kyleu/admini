@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	version = "0.0.2" //
-	commit  = "abcd1234"
+	version = "0.1.4" // updated by bin/tag.sh and ldflags
+	commit  = ""
 	date    = "unknown"
 )
 
@@ -20,8 +20,8 @@ func main() {
 	if err != nil {
 		msg := "exiting due to error"
 		if logger == nil {
-			println(log.Red.Add(err.Error()))
-			println(log.Red.Add(msg))
+			println(log.Red.Add(err.Error())) //nolint
+			println(log.Red.Add(msg))         //nolint
 		} else {
 			logger.Error(err)
 			logger.Error(msg)

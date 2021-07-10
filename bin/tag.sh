@@ -7,8 +7,9 @@ dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $dir/..
 
 TGT=$1
-
 [ "$TGT" ] || (echo "must provide one argument, like \"0.0.1\"" && exit)
+
+find . -type f -name "main.go" -print0 | xargs -0 sed -i '' -e "s/[01]\.[0-9]*[0-9]\.[0-9]*[0-9]/${TGT}/g"
 
 make build
 

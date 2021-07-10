@@ -6,7 +6,6 @@
 /dist
 /gen
 /tmp
-/tools/bin
 
 **/*.html.go
 **/*.sql.go

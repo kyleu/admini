@@ -1,4 +1,4 @@
-// +build darwin linux,386 linux,amd64 linux,arm linux,arm64 windows,386 windows,amd64
+// +build darwin !android,linux,386 !android,linux,amd64 !android,linux,arm !android,linux,arm64 windows,386 windows,amd64
 
 package database
 
