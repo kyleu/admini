@@ -3,6 +3,7 @@ package site
 import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/site/download"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
@@ -28,6 +29,10 @@ func Handle(path []string, ctx *fasthttp.RequestCtx, as *app.State, ps *cutil.Pa
 	case keyIntro:
 		ps.Data = siteData("This static page is an introduction to " + util.AppName)
 		page = &views.Debug{}
+	case keyDownload:
+		dls := download.DownloadLinks()
+		ps.Data = dls
+		page = &vsite.Download{Links: dls}
 	case keyInstall:
 		ps.Data = siteData("This static page contains installation instructions")
 		page = &vsite.Installation{}
