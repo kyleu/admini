@@ -10,6 +10,7 @@
 } %}
 
 {% func (p *Download) Body(as *app.State, ps *cutil.PageState) %}
+  {% code var l *download.Link %}
   <div class="card">
     <h3>Download {%s util.AppName %}</h3>
   </div>
@@ -21,19 +22,22 @@
       <li>
         macOS
         <ul>
-          <li><a href=""></a></li>
+          {% code l = p.Links.Get("desktop", "macos", "x86_64") %}
+          <li><a href="{%s l.URL %}">{%s l.URL %}</a></li>
         </ul>
       </li>
       <li>
         Linux
         <ul>
-          <li><a href=""></a></li>
+          {% code l = p.Links.Get("desktop", "linux", "x86_64") %}
+          <li><a href="{%s l.URL %}">{%s l.URL %}</a></li>
         </ul>
       </li>
       <li>
         Windows
         <ul>
-          <li><a href=""></a></li>
+          {% code l = p.Links.Get("desktop", "windows", "x86_64") %}
+          <li><a href="{%s l.URL %}">{%s l.URL %}</a></li>
         </ul>
       </li>
     </ul>
@@ -46,19 +50,22 @@
       <li>
         macOS
         <ul>
-          <li><a href=""></a></li>
+          {% code l = p.Links.Get("server", "macos", "x86_64") %}
+          <li><a href="{%s l.URL %}">{%s l.URL %}</a></li>
         </ul>
       </li>
       <li>
         Linux
         <ul>
-          <li><a href=""></a></li>
+          {% code l = p.Links.Get("server", "linux", "x86_64") %}
+          <li><a href="{%s l.URL %}">{%s l.URL %}</a></li>
         </ul>
       </li>
       <li>
         Windows
         <ul>
-          <li><a href=""></a></li>
+          {% code l = p.Links.Get("server", "windows", "x86_64") %}
+          <li><a href="{%s l.URL %}">{%s l.URL %}</a></li>
         </ul>
       </li>
     </ul>

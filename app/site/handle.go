@@ -30,7 +30,7 @@ func Handle(path []string, ctx *fasthttp.RequestCtx, as *app.State, ps *cutil.Pa
 		ps.Data = siteData("This static page is an introduction to " + util.AppName)
 		page = &views.Debug{}
 	case keyDownload:
-		dls := download.DownloadLinks()
+		dls := download.DownloadLinks(as.BuildInfo.Version)
 		ps.Data = dls
 		page = &vsite.Download{Links: dls}
 	case keyInstall:
