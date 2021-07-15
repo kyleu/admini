@@ -2,7 +2,7 @@
 env:
   - XSKIP_DESKTOP=false
   - XSKIP_MOBILE=false
-  - XSKIP_NOTARIZE=true
+  - XSKIP_NOTARIZE=false
   - XNAME=Kyle U
   - XEMAIL=kyle@kyleu.com
   - XORG=kyleu

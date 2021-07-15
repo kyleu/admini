@@ -2,7 +2,7 @@
 
 ## Dependencies
 
-Admini relies on a ton of open source projects. First among them is the [Go language][1] itself, which is the only platform I could do this on. Other libraries include:
+Admini relies on a ton of open source projects. First among them is the [Go language][1] itself. Other libraries include:
 
 - [fasthttp][2]
 - [quicktemplate][3]

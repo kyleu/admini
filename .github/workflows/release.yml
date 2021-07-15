@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     tags:
-      - 'SKIPv*'
+      - 'DO_NOT_RUN_v*'
 
 permissions:
   contents: write

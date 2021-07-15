@@ -1,4 +1,4 @@
-module gihub.com/kyleu/admini/tools/desktop
+module github.com/kyleu/admini/tools/desktop
 
 go 1.15
 
