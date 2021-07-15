@@ -130,7 +130,7 @@ func (s *Service) Save(prj *Project, overwrite bool) error {
 	}
 	f := filepath.Join(p, "project.json")
 	j := util.ToJSONBytes(prj, true)
-	err := s.files.WriteFile(f, j, overwrite)
+	err := s.files.WriteFile(f, j, filesystem.DefaultMode, overwrite)
 	if err != nil {
 		return errors.Wrapf(err, "unable to save project [%s]", prj.Key)
 	}

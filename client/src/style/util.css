@@ -18,6 +18,10 @@
   margin-top: var(--padding);
 }
 
+.mb {
+  margin-bottom: var(--padding);
+}
+
 .no-padding {
   padding: 0 !important;
 }
@@ -116,4 +120,27 @@
 
 .border-left {
   border-left: var(--border);
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.toggle label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.toggle .x {
+  display: none;
+}
+
+.toggle input[type=checkbox]:checked ~ label {
+  display: none;
+}
+
+.toggle input[type=checkbox]:checked ~ .x {
+  display: block;
 }

@@ -32,7 +32,7 @@ func ProjectInsert(ctx *fasthttp.RequestCtx) {
 		}
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return flashError(err, "/project/_new", ctx, ps)
+			return flashAndRedir(false, err.Error(), "/project/_new", ctx, ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")

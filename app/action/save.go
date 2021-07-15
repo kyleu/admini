@@ -53,7 +53,7 @@ func Save(path string, act *Action, files filesystem.FileLoader) (int, error) {
 	dto := newDTO(act)
 	js := util.ToJSONBytes(dto, true)
 	if len(js) != 2 {
-		err := files.WriteFile(actFile, js, true)
+		err := files.WriteFile(actFile, js, filesystem.DefaultMode, true)
 		if err != nil {
 			return 0, errors.Wrapf(err, "unable to write file for action [%s]", act.Key)
 		}

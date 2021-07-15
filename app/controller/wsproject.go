@@ -14,6 +14,11 @@ import (
 	"github.com/kyleu/admini/app"
 )
 
+func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
+	as, ps := actPrepare("workspace", ctx)
+	actComplete(key, as, ps, ctx, f)
+}
+
 func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 	actWorkspace("workspace", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
 		projectKey, err := ctxRequiredString(ctx, "key", false)
@@ -78,5 +83,5 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, ctx *fasthttp
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
 
-	return renderWS(req, res.Page, res.Breadcrumbs...)
+	return render(req.Ctx, req.AS, res.Page, req.PS, res.Breadcrumbs...)
 }

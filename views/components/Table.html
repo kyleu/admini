@@ -2,7 +2,6 @@
 {% import "github.com/valyala/fasthttp" %}
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/filter" %}
-{% import "github.com/kyleu/admini/views/components/fieldedit" %}
 {% import "github.com/kyleu/admini/views/vutil" %}
 
 {% func TableHeader(section string, key string, title string, locs cutil.Locations, params *filter.Params, icon string, u *fasthttp.URI, tooltip string, sortable bool, cls string, ps *cutil.PageState) %}{% stripspace %}
@@ -38,7 +37,7 @@
     {%= vutil.Indent(true, indent + 1) %}
     <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
     {%= vutil.Indent(true, indent + 1) %}
-    <td>{%= fieldedit.FormInput(key, "input-" + key, value) %}</td>
+    <td>{%= FormInput(key, "input-" + key, value) %}</td>
   {%= vutil.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}
@@ -48,7 +47,7 @@
     {%= vutil.Indent(true, indent + 1) %}
     <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
     {%= vutil.Indent(true, indent + 1) %}
-    <td>{%= fieldedit.FormInputNumber(key, "input-" + key, value) %}</td>
+    <td>{%= FormInputNumber(key, "input-" + key, value) %}</td>
   {%= vutil.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}
@@ -58,7 +57,7 @@
     {%= vutil.Indent(true, indent + 1) %}
     <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
     {%= vutil.Indent(true, indent + 1) %}
-    <td>{%= fieldedit.FormTextarea(key, "input-" + key, value) %}</td>
+    <td>{%= FormTextarea(key, "input-" + key, value) %}</td>
   {%= vutil.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}
@@ -68,7 +67,7 @@
     {%= vutil.Indent(true, indent + 1) %}
     <th class="shrink"><label for="input-{%s key %}">{%s title %}</label></th>
     {%= vutil.Indent(true, indent + 1) %}
-    <td>{%= fieldedit.FormSelect(key, "input-" + key, value, opts, titles, indent) %}</td>
+    <td>{%= FormSelect(key, "input-" + key, value, opts, titles, indent) %}</td>
   {%= vutil.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}
@@ -79,7 +78,7 @@
     <th class="shrink"><label>{%s title %}</label></th>
     {%= vutil.Indent(true, indent + 1) %}
     <td>
-      {%= fieldedit.FormRadio(key, value, opts, titles, indent + 2) %}
+      {%= FormRadio(key, value, opts, titles, indent + 2) %}
     {%= vutil.Indent(true, indent + 1) %}
     </td>
   {%= vutil.Indent(true, indent) %}
@@ -96,7 +95,7 @@
     <th class="shrink"><label>{%s title %}</label></th>
     {%= vutil.Indent(true, indent + 1) %}
     <td>
-      {%= fieldedit.FormCheckbox(key, values, opts, titles, indent + 2) %}
+      {%= FormCheckbox(key, values, opts, titles, indent + 2) %}
     {%= vutil.Indent(true, indent + 1) %}
     </td>
   {%= vutil.Indent(true, indent) %}

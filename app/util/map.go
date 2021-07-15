@@ -12,13 +12,7 @@ type ValueMap map[string]interface{}
 
 func ValueMapFor(kvs ...interface{}) ValueMap {
 	ret := make(ValueMap, len(kvs)/2)
-	for i := 0; i < len(kvs); i += 2 {
-		k, ok := kvs[i].(string)
-		if !ok {
-			k = fmt.Sprintf("error-invalid-type:%T", kvs[i])
-		}
-		ret[k] = kvs[i+1]
-	}
+	ret.Add(kvs...)
 	return ret
 }
 
@@ -39,7 +33,7 @@ func (c ValueMap) GetRequired(k string) (interface{}, error) {
 	v, ok := c[k]
 	if !ok {
 		msg := "no value [%s] among candidates [%s]"
-		return nil, errors.Errorf(msg, k, OxfordComma(c.Keys()))
+		return nil, errors.Errorf(msg, k, OxfordComma(c.Keys(), "and"))
 	}
 	return v, nil
 }
@@ -104,8 +98,6 @@ func (c ValueMap) GetStringArray(k string, allowMissing bool) ([]string, error) 
 	switch t := v.(type) {
 	case []string:
 		return t, nil
-	case Pkg:
-		return t, nil
 	case string:
 		return []string{t}, nil
 	default:
@@ -144,5 +136,27 @@ func (c ValueMap) Keys() []string {
 	for k := range c {
 		ret = append(ret, k)
 	}
+	sort.Strings(ret)
 	return ret
+}
+
+func (c ValueMap) Merge(args ValueMap) ValueMap {
+	ret := make(ValueMap, len(c)+len(args))
+	for k, v := range c {
+		ret[k] = v
+	}
+	for k, v := range args {
+		ret[k] = v
+	}
+	return ret
+}
+
+func (c ValueMap) Add(kvs ...interface{}) {
+	for i := 0; i < len(kvs); i += 2 {
+		k, ok := kvs[i].(string)
+		if !ok {
+			k = fmt.Sprintf("error-invalid-type:%T", kvs[i])
+		}
+		c[k] = kvs[i+1]
+	}
 }

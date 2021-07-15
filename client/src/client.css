@@ -4,6 +4,7 @@
 @import "./style/util.css";
 
 @import "./style/table.css";
+@import "./style/form.css";
 @import "./style/card.css";
 
 @import "./style/accordion.css";
@@ -16,9 +17,6 @@
 @import "./style/menu.css";
 @import "./style/flash.css";
 
-@import "./style/result.css";
-@import "./style/editor.css";
-
-@import "./style/actions.css";
+@import "./style/app.css";
 
 @import "./style/theme.css";

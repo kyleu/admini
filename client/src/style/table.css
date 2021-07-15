@@ -11,6 +11,10 @@ table tr {
   padding: 0;
 }
 
+table th label {
+  display: block;
+}
+
 table td, table th {
   padding: var(--padding-small);
   border-bottom: var(--border);

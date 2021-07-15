@@ -6,6 +6,7 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
+// nolint
 func DownloadLinks(version string) Links {
 	if availableLinks == nil {
 		ret := Links{}

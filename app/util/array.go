@@ -22,6 +22,14 @@ func StringArrayCopy(a []string) []string {
 	return append(ret, a...)
 }
 
+func StringArrayQuoted(a []string) []string {
+	ret := make([]string, 0, len(a))
+	for _, x := range a {
+		ret = append(ret, `"`+x+`"`)
+	}
+	return ret
+}
+
 func StringArrayFromInterfaces(a []interface{}) []string {
 	ret := make([]string, 0, len(a))
 	for _, x := range a {

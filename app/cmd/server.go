@@ -1,6 +1,8 @@
+// Package cmd: $PF_IGNORE$
 package cmd
 
 import (
+	"fmt"
 	"runtime"
 
 	"github.com/fasthttp/router"
@@ -16,25 +18,37 @@ import (
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 )
 
-func startServer(flags *Flags, logger *zap.SugaredLogger) (*zap.SugaredLogger, error) {
-	r, logger, err := loadServer(flags, logger)
+const keyServer = "server"
+
+func serverCmd() *cobra.Command {
+	short := fmt.Sprintf("Starts the http server on port %d (by default)", util.AppPort)
+	f := func(*cobra.Command, []string) error { return startServer() }
+	ret := &cobra.Command{Use: keyServer, Short: short, RunE: f}
+	return ret
+}
+
+func startServer() error {
+	err := initIfNeeded()
 	if err != nil {
-		return nil, err
+		return errors.Wrap(err, "error initializing application")
 	}
 
-	_, err = listenandserve(util.AppName, flags.Address, flags.Port, r)
+	r, _, err := loadServer(_flags, _logger)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return logger, nil
+	_, err = listenandserve(util.AppName, _flags.Address, _flags.Port, r)
+	return err
 }
 
 func loadServer(flags *Flags, logger *zap.SugaredLogger) (*router.Router, *zap.SugaredLogger, error) {
-	r := controller.BuildRouter()
+	r := controller.AppRoutes()
 
 	f := filesystem.NewFileSystem(flags.ConfigDir, logger)
 	ls := loader.NewService()
@@ -44,7 +58,7 @@ func loadServer(flags *Flags, logger *zap.SugaredLogger) (*router.Router, *zap.S
 	}
 	ls.Set(schema.OriginMock, lmock.NewLoader(logger))
 
-	st, err := app.NewState(flags.Debug, AppBuildInfo, r, f, logger)
+	st, err := app.NewState(flags.Debug, _buildInfo, r, f, logger)
 	if err != nil {
 		return nil, logger, err
 	}
@@ -56,7 +70,7 @@ func loadServer(flags *Flags, logger *zap.SugaredLogger) (*router.Router, *zap.S
 
 	controller.SetAppState(st, logger)
 
-	logger.Infof("started using address [%s:%d] on %s:%s", flags.Address, flags.Port, runtime.GOOS, runtime.GOARCH)
+	logger.Infof("started %s using address [%s:%d] on %s:%s", util.AppName, flags.Address, flags.Port, runtime.GOOS, runtime.GOARCH)
 
 	return r, logger, nil
 }

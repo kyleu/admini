@@ -1,5 +1,6 @@
 {% import "fmt" %}
+{% import "github.com/kyleu/admini/views/components" %}
 
 {% func String(x interface{}, k string) %}{% stripspace %}
-  {%= FormInput(k, "", fmt.Sprintf("%v", x)) %}
+  {%= components.FormInput(k, "", fmt.Sprintf("%v", x)) %}
 {% endstripspace %}{% endfunc %}

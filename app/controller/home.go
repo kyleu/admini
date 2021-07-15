@@ -1,3 +1,4 @@
+// Package controller: $PF_IGNORE$
 package controller
 
 import (

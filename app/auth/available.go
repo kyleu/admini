@@ -70,5 +70,5 @@ func ProviderUsage(id string, enabled bool) string {
 	case nextcloudKey:
 		keys = append(keys, "\"nextcloud_url\"")
 	}
-	return fmt.Sprintf("To enable %s, set %s as environment variables", n, util.OxfordComma(keys))
+	return fmt.Sprintf("To enable %s, set %s as environment variables", n, util.OxfordComma(keys, "and"))
 }

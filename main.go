@@ -15,8 +15,7 @@ var (
 )
 
 func main() {
-	cmd.AppBuildInfo = &app.BuildInfo{Version: version, Commit: commit, Date: date}
-	logger, err := cmd.Run()
+	logger, err := cmd.Run(&app.BuildInfo{Version: version, Commit: commit, Date: date})
 	if err != nil {
 		msg := "exiting due to error"
 		if logger == nil {

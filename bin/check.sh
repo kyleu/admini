@@ -8,4 +8,3 @@ cd $dir/..
 
 echo "=== linting ==="
 golangci-lint run ./...
-

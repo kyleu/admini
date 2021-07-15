@@ -37,7 +37,7 @@ func SourceInsert(ctx *fasthttp.RequestCtx) {
 
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return flashError(err, "/source/_new", ctx, ps)
+			return flashAndRedir(false, err.Error(), "/source/_new", ctx, ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")

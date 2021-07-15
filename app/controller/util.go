@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/securecookie"
 	"github.com/kyleu/admini/app/auth"
 	"github.com/kyleu/admini/app/util"
+	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/verror"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
@@ -18,7 +19,6 @@ import (
 	"github.com/go-gem/sessions"
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
 )
 
@@ -42,11 +42,13 @@ var store *sessions.CookieStore
 func SetAppState(a *app.State, l *zap.SugaredLogger) {
 	_currentAppState = a
 	_rootLogger = l
+	initApp()
 }
 
 func SetSiteState(a *app.State, l *zap.SugaredLogger) {
 	_currentSiteState = a
 	_rootLogger = l
+	initSite()
 }
 
 func ctxRequiredString(ctx *fasthttp.RequestCtx, key string, allowEmpty bool) (string, error) {
@@ -61,7 +63,7 @@ func render(ctx *fasthttp.RequestCtx, as *app.State, page layout.Page, ps *cutil
 	defer func() {
 		x := recover()
 		if x != nil {
-			ps.Logger.Error(fmt.Sprintf("Error processing template: %+v", x))
+			ps.Logger.Error(fmt.Sprintf("error processing template: %+v", x))
 			switch t := x.(type) {
 			case error:
 				ed := util.GetErrorDetail(t)
@@ -88,10 +90,6 @@ func render(ctx *fasthttp.RequestCtx, as *app.State, page layout.Page, ps *cutil
 	return "", nil
 }
 
-func renderWS(req *cutil.WorkspaceRequest, page layout.Page, bc ...string) (string, error) {
-	return render(req.Ctx, req.AS, page, req.PS, bc...)
-}
-
 func ersp(msg string, args ...interface{}) (string, error) {
 	return "", errors.Errorf(msg, args...)
 }
@@ -114,10 +112,6 @@ func flashAndRedir(success bool, msg string, redir string, ctx *fasthttp.Request
 		return "/", nil
 	}
 	return redir, nil
-}
-
-func flashError(err error, redir string, ctx *fasthttp.RequestCtx, ps *cutil.PageState) (string, error) {
-	return flashAndRedir(false, err.Error(), redir, ctx, ps)
 }
 
 func initStore(keyPairs ...[]byte) *sessions.CookieStore {

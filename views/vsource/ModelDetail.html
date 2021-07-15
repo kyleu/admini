@@ -4,7 +4,7 @@
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/schema" %}
 {% import "github.com/kyleu/admini/app/source" %}
-{% import "github.com/kyleu/admini/views/components/fieldedit" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/layout" %}
 
 {% code type ModelDetail struct {
@@ -15,7 +15,7 @@
 } %}
 
 {% func (p *ModelDetail) Body(as *app.State, ps *cutil.PageState) %}
-  <form class="editor" action="" method="post" enctype="application/x-www-form-urlencoded">
+  <form action="" method="post" enctype="application/x-www-form-urlencoded">
     <div class="card">
       <div class="right">
         <a href="/s/{%s p.Source.Key %}/{%s filepath.Join(p.Model.Path()...) %}"><button type="button">View</button></a>
@@ -29,11 +29,11 @@
         <tbody>
           <tr>
             <th class="shrink"><label for="input-{%s schema.KeyTitle %}">Title</label></th>
-            <td>{%= fieldedit.FormInput("title", "input-" + schema.KeyTitle, m.Name()) %}</td>
+            <td>{%= components.FormInput("title", "input-" + schema.KeyTitle, m.Name()) %}</td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-{%s schema.KeyPlural %}">Plural</label></th>
-            <td>{%= fieldedit.FormInput("plural", "input-" + schema.KeyPlural, m.PluralName()) %}</td>
+            <td>{%= components.FormInput("plural", "input-" + schema.KeyPlural, m.PluralName()) %}</td>
           </tr>
         </tbody>
       </table>

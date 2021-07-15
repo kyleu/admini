@@ -45,8 +45,8 @@ const (
 	osNetBSD    = "netbsd"
 	osOpenBSD   = "openbsd"
 	osPlan9     = "plan9"
-	osSolaris     = "solaris"
-	osWindows     = "windows"
+	osSolaris   = "solaris"
+	osWindows   = "windows"
 
 	archAMD64        = "x86_64"
 	archAndroid      = "android"

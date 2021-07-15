@@ -4,6 +4,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/kyleu/admini/app/filesystem"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/schema"
@@ -49,7 +50,7 @@ func (s *Service) LoadSchema(key string) (*schema.Schema, error) {
 func (s *Service) SaveSchema(key string, sch *schema.Schema) error {
 	p := filepath.Join(s.root, key, "schema.json")
 	j := util.ToJSONBytes(sch, true)
-	err := s.files.WriteFile(p, j, true)
+	err := s.files.WriteFile(p, j, filesystem.DefaultMode, true)
 	if err != nil {
 		return errors.Wrapf(err, "unable to save schema [%s]", key)
 	}

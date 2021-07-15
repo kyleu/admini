@@ -18,7 +18,7 @@
       <a class="link-confirm" data-message="Are you sure you want to delete source [{%s p.Source.Key %}]?" href="/source/{%s p.Source.Key %}/delete">Delete Source</a>
     </div>
     <h3>Edit [{%s p.Source.Key %}]</h3>
-    <form class="editor mt" action="/source/{%s p.Source.Key %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="mt" action="/source/{%s p.Source.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%= components.TableInput("title", "Title", p.Source.Title, 5) %}

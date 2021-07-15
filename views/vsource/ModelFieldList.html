@@ -3,8 +3,8 @@
 {% import "github.com/kyleu/admini/app/controller/cutil" %}
 {% import "github.com/kyleu/admini/app/model" %}
 {% import "github.com/kyleu/admini/app/util" %}
+{% import "github.com/kyleu/admini/views/components" %}
 {% import "github.com/kyleu/admini/views/components/fieldview" %}
-{% import "github.com/kyleu/admini/views/components/fieldedit" %}
 
 {% func ModelFieldList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Fields) > 0 -%}
     <div class="card">
@@ -34,7 +34,7 @@
                   {%- endif -%}
                 </label>
                 <div class="x">
-                  {%= fieldedit.FormInput(fmt.Sprintf("f.%s.title", f.Key), f.Key + "-title", f.Name()) %}
+                  {%= components.FormInput(fmt.Sprintf("f.%s.title", f.Key), f.Key + "-title", f.Name()) %}
                 </div>
               </div>
             </td>
@@ -49,7 +49,7 @@
                   {%- endif -%}
                 </label>
                 <div class="x">
-                  {%= fieldedit.FormInput(fmt.Sprintf("f.%s.plural", f.Key), f.Key + "-plural", f.PluralName()) %}
+                  {%= components.FormInput(fmt.Sprintf("f.%s.plural", f.Key), f.Key + "-plural", f.PluralName()) %}
                 </div>
               </div>
             </td>

@@ -17,7 +17,7 @@
 
 {% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
   {%= SigninTable(p.Providers, p.Referrer, as, ps) %}
-  <form class="editor" action="" method="post">
+  <form action="" method="post">
     <div class="card">
       <div class="right">
         <a href="#modal-profile"><button type="button">Profile</button></a>

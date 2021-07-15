@@ -62,7 +62,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-//nolint
+// nolint
 func toGoth(id string, k string, s string, c string) (goth.Provider, error) {
 	switch id {
 	case "amazon":

@@ -14,7 +14,7 @@ const (
 	keyContrib    = "contrib"
 )
 
-func SiteMenu(p *user.Profile, s auth.Sessions) menu.Items {
+func Menu(p *user.Profile, s auth.Sessions) menu.Items {
 	return menu.Items{
 		{Key: keyIntro, Title: "Introduction", Icon: "heart", Route: "/intro"},
 		{Key: keyInstall, Title: "Install", Icon: "code", Route: "/install"},

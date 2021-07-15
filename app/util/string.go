@@ -80,7 +80,7 @@ func acr(ret string) string {
 	return ret
 }
 
-func OxfordComma(names []string) string {
+func OxfordComma(names []string, separator string) string {
 	ret := ""
 	for idx, name := range names {
 		if idx > 0 {
@@ -88,7 +88,7 @@ func OxfordComma(names []string) string {
 				if idx > 1 {
 					ret += ","
 				}
-				ret += " and "
+				ret += " " + separator + " "
 			} else {
 				ret += ", "
 			}

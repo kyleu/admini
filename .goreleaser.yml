@@ -2,14 +2,14 @@
 env:
   - XSKIP_DESKTOP=false
   - XSKIP_MOBILE=false
-  - XSKIP_NOTARIZE=false
+  - XSKIP_NOTARIZE=true
   - XNAME=Kyle U
   - XEMAIL=kyle@kyleu.com
   - XORG=kyleu
   - XHOMEPAGE=https://admini.dev
   - XLICENSE=Proprietary
-  - XSUMMARY=Explore and manage your data as fast and easily as possible
-  - XDESCRIPTION=Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface.
+  - XSUMMARY=Use Admini to explore and manage your data as fast and easily as possible
+  - XDESCRIPTION=Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface
 
 brews:
   -
@@ -17,7 +17,7 @@ brews:
       owner: "kyleu"
       name: "homebrew-kyleu"
     commit_author:
-      name: "kyleu"
+      name: "Kyle U"
       email: "kyle@kyleu.com"
     folder: Formula
     homepage: "{{ .Env.XHOMEPAGE }}"
@@ -25,21 +25,18 @@ brews:
     license: "{{ .Env.XLICENSE }}"
     skip_upload: false
 
-snapcrafts:
-  -
-    publish: false
+signs:
+  - artifacts: checksum
+
+archives:
+  - format: zip
+    wrap_in_directory: false
     replacements: &replacements
       darwin: macos
       386: i386
       amd64: x86_64
-    summary: "{{ .Env.XSUMMARY }}"
-    description: "{{ .Env.XDESCRIPTION }}"
-    grade: stable
-    confinement: strict
-    license: "Proprietary"
-
-signs:
-  - artifacts: checksum
+    files:
+      - none*
 
 # Everything below this line is generic
 
@@ -64,13 +61,6 @@ release:
     - glob: "./build/dist/*.dmg"
     - glob: "./build/dist/*_desktop_*.zip"
     - glob: "./build/dist/*_mobile_*.zip"
-
-archives:
-  - format: zip
-    wrap_in_directory: false
-    replacements: *replacements
-    files:
-      - none*
 
 changelog:
   skip: true
@@ -112,6 +102,16 @@ scoop:
   license: "{{ .Env.XLICENSE }}"
   skip_upload: false
 
+snapcrafts:
+  -
+    publish: false
+    replacements: *replacements
+    summary: "{{ .Env.XSUMMARY }}"
+    description: "{{ .Env.XDESCRIPTION }}"
+    grade: stable
+    confinement: strict
+    license: "Proprietary"
+
 builds:
   - id: "darwin_amd64"
     goos:
@@ -121,8 +121,8 @@ builds:
     mod_timestamp: "{{ .CommitTimestamp }}"
     hooks:
       post:
-        - "./tools/bin/release-desktop.sh {{ .Version }}"
-        - "./tools/bin/notarize-amd64.sh {{ .Version }}"
+        - "./bin/build/desktop.release.sh {{ .Version }}"
+        - "./bin/build/notarize-amd64.sh {{ .Version }}"
 
   - id: "darwin_arm64"
     goos:
@@ -132,7 +132,7 @@ builds:
     mod_timestamp: "{{ .CommitTimestamp }}"
     hooks:
       post:
-        - "./tools/bin/notarize-arm64.sh {{ .Version }}"
+        - "./bin/build/notarize-arm64.sh {{ .Version }}"
 
   - id: "linux"
     goos:
@@ -262,5 +262,5 @@ builds:
     mod_timestamp: "{{ .CommitTimestamp }}"
     hooks:
       post:
-        - "./tools/bin/build-android.sh {{ .Version }}"
-        - "./tools/bin/build-ios.sh {{ .Version }}"
+        - "./bin/build/android.sh {{ .Version }}"
+        - "./bin/build/ios.sh {{ .Version }}"

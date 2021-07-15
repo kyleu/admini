@@ -7,6 +7,4 @@ dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $dir/..
 
 echo "=== formatting ==="
-gofumpt -w .
-echo "=== organizing imports ==="
-goimports -w .
+gofumpt -w $(find . -type f -name "*.go" | grep -v .html.go | grep -v .sql.go)

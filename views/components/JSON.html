@@ -1,4 +1,5 @@
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import "github.com/kyleu/admini/app/controller/cutil" %}
+{% import "github.com/kyleu/admini/app/util" %}
 
 {% func JSONModal(key string, title string, item interface{}, indent int) %}{% stripspace %}
   <div id="modal-{%s key %}" class="modal" style="display: none;">
@@ -9,8 +10,23 @@
         <h2>{%s title %}</h2>
       </div>
       <div class="modal-body">
-        {%= fieldview.JSON(item) %}
+        {%= JSON(item) %}
       </div>
     </div>
   </div>
+{% endstripspace %}{% endfunc %}
+
+{% func JSON(v interface{}) %}{% stripspace %}
+  {% code
+    b, ok := v.([]byte)
+    if ok {
+      _ = util.FromJSON(b, &v)
+    }
+  %}
+  {% code out, err := cutil.Format(v, `json`) %}
+  {% if err == nil %}
+    {%s= out %}
+  {% else %}
+    {%s err.Error() %}
+  {% endif %}
 {% endstripspace %}{% endfunc %}

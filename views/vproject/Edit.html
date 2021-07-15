@@ -17,7 +17,7 @@
       <a class="link-confirm" data-message="Are you sure you want to delete project [{%s p.Project.Key %}]?" href="/project/{%s p.Project.Key %}/delete">Delete Project</a>
     </div>
     <h3>Edit [{%s p.Project.Key %}]</h3>
-    <form class="editor mt" action="/project/{%s p.Project.Key %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="mt" action="/project/{%s p.Project.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%= components.TableInput("title", "Title", p.Project.Title, 5) %}

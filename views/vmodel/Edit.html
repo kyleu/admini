@@ -27,7 +27,7 @@
     <div class="right"><a href="{%s p.Req.RouteAct(p.Act, 1 + len(rowPK), append([]string{`d`}, rowPK...)...) %}" onclick="return confirm('{%s confirm %}');">Delete</a></div>
     <h3>Edit <a href="TODO">{%s strings.Join(rowPK, "/") %}</a></h3>
     <em><a href="TODO">{%s p.Model.Name() %}</a></em>
-    <form class="editor mt" action="{%s p.Req.RouteAct(p.Act, 0) %}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="mt" action="{%s p.Req.RouteAct(p.Act, 0) %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%- for idx, f := range p.Model.Fields -%}

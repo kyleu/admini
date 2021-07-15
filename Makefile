@@ -1,5 +1,5 @@
 .PHONY: clean
-clean: ## Clean builds
+clean: ## Removes builds and compiled templates
 	rm -rf tmp/*.hashcode
 	rm -rf out
 	find ./views -type f -name '*.html.go' -exec rm {} +

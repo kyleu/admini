@@ -89,7 +89,7 @@ func (s *Service) Save(src *Source, overwrite bool) error {
 	}
 	f := filepath.Join(p, "source.json")
 	j := util.ToJSONBytes(src, true)
-	err := s.files.WriteFile(f, j, overwrite)
+	err := s.files.WriteFile(f, j, filesystem.DefaultMode, overwrite)
 	if err != nil {
 		return errors.Wrapf(err, "unable to save schema [%s]", src.Key)
 	}
@@ -156,7 +156,7 @@ func (s *Service) SaveOverrides(key string, os schema.Overrides) error {
 	op := filepath.Join(s.root, key, "overrides.json")
 	os.Sort()
 	bytes := util.ToJSONBytes(os, true)
-	err := s.files.WriteFile(op, bytes, true)
+	err := s.files.WriteFile(op, bytes, filesystem.DefaultMode, true)
 	if err != nil {
 		return errors.Wrap(err, "unable to write schema overrides")
 	}

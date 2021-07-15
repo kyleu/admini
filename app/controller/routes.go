@@ -1,3 +1,4 @@
+// Package controller: $PF_IGNORE$
 package controller
 
 import (
@@ -6,7 +7,7 @@ import (
 )
 
 //nolint
-func BuildRouter() *router.Router {
+func AppRoutes() *router.Router {
 	w := fasthttp.CompressHandler
 	r := router.New()
 	r.GET("/", w(Home))

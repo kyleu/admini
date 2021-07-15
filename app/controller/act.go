@@ -21,10 +21,12 @@ import (
 const (
 	defaultSearchPath  = "/search"
 	defaultProfilePath = "/profile"
+	defaultKey         = "app"
+	defaultIcon        = defaultKey
 )
 
 func act(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	mode := "app" // TODO
+	mode := defaultKey
 	as, ps := actPrepare(mode, ctx)
 	clean(as, ps)
 	actComplete(key, as, ps, ctx, f)
@@ -32,13 +34,8 @@ func act(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.P
 
 func actSite(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	as, ps := actPrepare("site", ctx)
-	ps.Menu = site.SiteMenu(ps.Profile, ps.Auth)
+	ps.Menu = site.Menu(ps.Profile, ps.Auth)
 	clean(as, ps)
-	actComplete(key, as, ps, ctx, f)
-}
-
-func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	as, ps := actPrepare("workspace", ctx)
 	actComplete(key, as, ps, ctx, f)
 }
 
@@ -135,7 +132,7 @@ func clean(as *app.State, ps *cutil.PageState) {
 		ps.Profile.Theme = theme.ThemeDefault.Key
 	}
 	if ps.RootIcon == "" {
-		ps.RootIcon = "app"
+		ps.RootIcon = defaultIcon
 	}
 	if ps.RootPath == "" {
 		ps.RootPath = "/"

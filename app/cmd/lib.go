@@ -9,18 +9,18 @@ import (
 )
 
 // Lib starts the application as a library, returning the actual TCP port the server is listening on (as an int32 to make interop easier)
-func Lib() (int, error) {
-	if AppBuildInfo == nil {
-		AppBuildInfo = &app.BuildInfo{Version: "TODO", Commit: "TODO", Date: "TODO"}
+func Lib() (int32, error) {
+	if _buildInfo == nil {
+		_buildInfo = &app.BuildInfo{Version: "TODO", Commit: "TODO", Date: "TODO"}
 	}
-	f := &Flags{Address: "0.0.0.0", Port: 0, Mode: "server"}
+	f := &Flags{Address: "0.0.0.0", Port: 0}
 
-	logger, err := rootLogger(f)
+	err := initIfNeeded()
 	if err != nil {
-		return 0, err
+		return 0, errors.Wrap(err, "error initializing application")
 	}
 
-	r, logger, err := loadServer(f, logger)
+	r, logger, err := loadServer(f, _logger)
 	if err != nil {
 		return 0, err
 	}
@@ -39,5 +39,5 @@ func Lib() (int, error) {
 		}
 	}()
 
-	return int(port), nil
+	return int32(port), nil
 }

@@ -101,7 +101,7 @@ func (s *Service) load() error {
 	if len(ret) == 0 {
 		s.logger.Debug("authentication disabled, no providers configured in environment")
 	} else {
-		s.logger.Debugf("authentication enabled for [%s]", util.OxfordComma(ret.Titles()))
+		s.logger.Debugf("authentication enabled for [%s]", util.OxfordComma(ret.Titles(), "and"))
 	}
 
 	return nil
