@@ -8,6 +8,8 @@ cd $dir/../..
 
 cd tools/desktop
 
+go mod tidy
+
 make build
 echo "build complete, starting desktop application"
 
