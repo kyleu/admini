@@ -19,10 +19,10 @@ var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "code", Run: onTe
 func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := util.ValueMap{}
 	sourceKey := "chinook"
-	source, _ := st.Sources.Load(sourceKey, true)
+	source, _ := st.Services.Sources.Load(sourceKey, true)
 
 	if source != nil {
-		load, err := st.Loaders.Get(source.Type, source.Key, source.Config)
+		load, err := st.Services.Loaders.Get(source.Type, source.Key, source.Config)
 		if err != nil {
 			return nil, errors.Wrap(err, "can't get loader")
 		}

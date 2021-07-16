@@ -24,7 +24,7 @@ func MenuFor(as *app.State) menu.Items {
 }
 
 func projectItems(as *app.State) menu.Items {
-	ps, err := as.Projects.List()
+	ps, err := as.Services.Projects.List()
 	if err != nil {
 		return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}
 	}
@@ -43,7 +43,7 @@ func projectItems(as *app.State) menu.Items {
 }
 
 func sourceItems(as *app.State) menu.Items {
-	ss, err := as.Sources.List()
+	ss, err := as.Services.Sources.List()
 	if err != nil {
 		return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}
 	}

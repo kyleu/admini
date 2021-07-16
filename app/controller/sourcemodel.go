@@ -51,7 +51,7 @@ func SourceModelSave(ctx *fasthttp.RequestCtx) {
 		}
 
 		if len(todo) > 0 {
-			curr, err := as.Sources.GetOverrides(src.Key)
+			curr, err := as.Services.Sources.GetOverrides(src.Key)
 			if err != nil {
 				return "", errors.Wrap(err, "unable to load current overrides")
 			}
@@ -59,7 +59,7 @@ func SourceModelSave(ctx *fasthttp.RequestCtx) {
 			final := append(schema.Overrides{}, curr.Purge(m.Path())...)
 			final = append(final, todo...)
 
-			err = as.Sources.SaveOverrides(src.Key, final)
+			err = as.Services.Sources.SaveOverrides(src.Key, final)
 			if err != nil {
 				return "", errors.Wrapf(err, "unable to save [%d] overrides", len(curr))
 			}
@@ -130,11 +130,11 @@ func loadSourceModel(ctx *fasthttp.RequestCtx, as *app.State) (*source.Source, *
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	src, err := as.Sources.Load(key, false)
+	src, err := as.Services.Sources.Load(key, false)
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load source [%s]", key)
 	}
-	sch, err := as.Sources.LoadSchema(key)
+	sch, err := as.Services.Sources.LoadSchema(key)
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load schema for source [%s]", key)
 	}

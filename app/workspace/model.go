@@ -67,7 +67,7 @@ func loaderFor(req *cutil.WorkspaceRequest, srcKey string) (*source.Source, load
 		return nil, nil, err
 	}
 
-	l, err := req.AS.Loaders.Get(s.Type, s.Key, s.Config)
+	l, err := req.AS.Services.Loaders.Get(s.Type, s.Key, s.Config)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "no loader available")
 	}

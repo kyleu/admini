@@ -16,7 +16,7 @@ func ProjectNew(ctx *fasthttp.RequestCtx) {
 		ps.Title = "New Project"
 		p := &project.Project{}
 		ps.Data = p
-		avail, err := as.Sources.List()
+		avail, err := as.Services.Sources.List()
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
@@ -42,7 +42,7 @@ func ProjectInsert(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 		ret := &project.Project{Key: key, Title: title, Icon: icon, Description: description, Sources: sources}
-		err = as.Projects.Save(ret, false)
+		err = as.Services.Projects.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
@@ -56,14 +56,14 @@ func ProjectEdit(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		prj, err := as.Projects.LoadRequired(key, false)
+		prj, err := as.Services.Projects.LoadRequired(key, false)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
 		ps.Title = fmt.Sprintf("Edit [%s]", prj.Name())
 		ps.Data = prj
 
-		avail, err := as.Sources.List()
+		avail, err := as.Services.Sources.List()
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
@@ -83,7 +83,7 @@ func ProjectSave(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		prj, err := as.Projects.LoadRequired(key, false)
+		prj, err := as.Services.Projects.LoadRequired(key, false)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
@@ -96,7 +96,7 @@ func ProjectSave(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		err = as.Projects.Save(prj, true)
+		err = as.Services.Projects.Save(prj, true)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to save project [%s]", key)
 		}
@@ -112,7 +112,7 @@ func ProjectDelete(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		err = as.Projects.Delete(key)
+		err = as.Services.Projects.Delete(key)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to delete project [%s]", key)
 		}

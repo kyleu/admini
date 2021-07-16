@@ -26,7 +26,7 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		prj, err := as.Projects.LoadRequired(key, false)
+		prj, err := as.Services.Projects.LoadRequired(key, false)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
@@ -54,7 +54,7 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 		}
 		elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 
-		_, err = as.Projects.LoadRequired(prj.Key, true)
+		_, err = as.Services.Projects.LoadRequired(prj.Key, true)
 		if err != nil {
 			return "", err
 		}
@@ -95,7 +95,7 @@ func ActionSave(ctx *fasthttp.RequestCtx) {
 			if na != nil {
 				return "", errors.Errorf("Action with key [%s] already exists in package [%s]", newKey, a.Pkg.String())
 			}
-			err = as.Projects.DeleteAction(p.Key, a)
+			err = as.Services.Projects.DeleteAction(p.Key, a)
 			if err != nil {
 				return "", err
 			}
@@ -118,7 +118,7 @@ func ActionSave(ctx *fasthttp.RequestCtx) {
 		}
 
 		if shouldReload {
-			err = as.Projects.ReloadProject(p.Key)
+			err = as.Services.Projects.ReloadProject(p.Key)
 			if err != nil {
 				return "", err
 			}
@@ -133,7 +133,7 @@ func loadAction(ctx *fasthttp.RequestCtx, as *app.State) (*project.Project, *act
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	p, err := as.Projects.Load(key, false)
+	p, err := as.Services.Projects.Load(key, false)
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}

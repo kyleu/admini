@@ -18,7 +18,7 @@ const sourceKey = "source"
 
 func SourceList(ctx *fasthttp.RequestCtx) {
 	act("source.list", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		s, err := as.Sources.List()
+		s, err := as.Services.Sources.List()
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source list")
 		}
@@ -34,11 +34,11 @@ func SourceDetail(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		src, err := as.Sources.Load(key, false)
+		src, err := as.Services.Sources.Load(key, false)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
-		sch, err := as.Sources.LoadSchema(key)
+		sch, err := as.Services.Sources.LoadSchema(key)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load schema for source [%s]", key)
 		}
@@ -54,7 +54,7 @@ func SourceRefresh(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		_, elapsedMillis, err := as.Sources.SchemaRefresh(key)
+		_, elapsedMillis, err := as.Services.Sources.SchemaRefresh(key)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to  refresh schema for source [%s]", key)
 		}

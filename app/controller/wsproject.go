@@ -34,7 +34,7 @@ func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 			return ersp("provided path [%s] is not part of the project workspace", string(ctx.Path()))
 		}
 
-		pv, err := as.Projects.LoadView(projectKey)
+		pv, err := as.Services.Projects.LoadView(projectKey)
 		if err != nil {
 			return "", errors.Wrapf(err, "error loading project [%s]", projectKey)
 		}

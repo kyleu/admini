@@ -43,8 +43,8 @@ func SourceInsert(ctx *fasthttp.RequestCtx) {
 		icon := frm.GetStringOpt("icon")
 		description := frm.GetStringOpt("description")
 		typ := frm.GetStringOpt("type")
-		ret := as.Sources.NewSource(key, title, icon, description, schema.OriginFromString(typ))
-		err = as.Sources.Save(ret, false)
+		ret := as.Services.Sources.NewSource(key, title, icon, description, schema.OriginFromString(typ))
+		err = as.Services.Sources.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
@@ -58,7 +58,7 @@ func SourceEdit(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		src, err := as.Sources.Load(key, false)
+		src, err := as.Services.Sources.Load(key, false)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
@@ -87,7 +87,7 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		src, err := as.Sources.Load(key, false)
+		src, err := as.Services.Sources.Load(key, false)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
@@ -122,7 +122,7 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 			return "", errors.Errorf("unable to parse config for source type [%s]", src.Type.String())
 		}
 
-		err = as.Sources.Save(src, true)
+		err = as.Services.Sources.Save(src, true)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to save source [%s]", key)
 		}
@@ -138,7 +138,7 @@ func SourceDelete(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		err = as.Sources.Delete(key)
+		err = as.Services.Sources.Delete(key)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to delete source [%s]", key)
 		}

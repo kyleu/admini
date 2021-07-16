@@ -1,4 +1,3 @@
-// Package controller: $PF_IGNORE$
 package controller
 
 import (
@@ -24,8 +23,8 @@ var homeContent = util.ValueMap{
 
 func Home(ctx *fasthttp.RequestCtx) {
 	act("home", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		projects, _ := as.Projects.List()
-		sources, _ := as.Sources.List()
+		projects, _ := as.Services.Projects.List()
+		sources, _ := as.Services.Sources.List()
 		ps.Data = homeContent
 		return render(ctx, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
@@ -42,9 +41,9 @@ func Refresh(ctx *fasthttp.RequestCtx) {
 			}
 		}
 		as.Themes.Clear()
-		as.Loaders.Clear()
-		as.Sources.Clear()
-		as.Projects.Clear()
+		as.Services.Loaders.Clear()
+		as.Services.Sources.Clear()
+		as.Services.Projects.Clear()
 		msg := "Cleared all caches"
 		return flashAndRedir(true, msg, redir, ctx, ps)
 	})
