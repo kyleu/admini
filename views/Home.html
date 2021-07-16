@@ -1,13 +1,15 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/project" %}
-{% import "github.com/kyleu/admini/app/sandbox" %}
-{% import "github.com/kyleu/admini/app/source" %}
-{% import "github.com/kyleu/admini/app/util" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vproject" %}
-{% import "github.com/kyleu/admini/views/vsource" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/project"
+  "github.com/kyleu/admini/app/sandbox"
+  "github.com/kyleu/admini/app/source"
+  "github.com/kyleu/admini/app/util"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/layout"
+  "github.com/kyleu/admini/views/vproject"
+  "github.com/kyleu/admini/views/vsource"
+) %}
 
 {% code type Home struct {
   layout.Basic

@@ -1,8 +1,10 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/export" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
-{% import "github.com/kyleu/admini/views/layout" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/export"
+  "github.com/kyleu/admini/views/components/fieldview"
+  "github.com/kyleu/admini/views/layout"
+) %}
 
 {% code type Detail struct {
   layout.Basic

@@ -1,13 +1,15 @@
-{% import "sort" %}
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/result" %}
-{% import "github.com/kyleu/admini/app/schema" %}
-{% import "github.com/kyleu/admini/app/util" %}
-{% import "github.com/kyleu/admini/queries/qsqlite" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/layout" %}
-{% import "github.com/kyleu/admini/views/vresult" %}
+{% import (
+  "sort"
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/result"
+  "github.com/kyleu/admini/app/schema"
+  "github.com/kyleu/admini/app/util"
+  "github.com/kyleu/admini/queries/qsqlite"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/layout"
+  "github.com/kyleu/admini/views/vresult"
+) %}
 
 {% code type Testbed struct { layout.Basic } %}
 

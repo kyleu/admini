@@ -1,4 +1,6 @@
-{% import "github.com/kyleu/admini/app/schema/schematypes" %}
+{% import (
+  "github.com/kyleu/admini/app/schema/schematypes"
+) %}
 
 {% func Option(x interface{}, t *schematypes.Option, k string) %}{% stripspace %}
   {% switch t.V.Key() %}

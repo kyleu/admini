@@ -1,5 +1,7 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/auth" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/auth"
+) %}
 
 {% func Authentication(as *app.State) %}
   {%- code

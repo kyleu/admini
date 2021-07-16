@@ -1,7 +1,9 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/source" %}
-{% import "github.com/kyleu/admini/views/components" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/source"
+  "github.com/kyleu/admini/views/components"
+) %}
 
 {%- func Table(sources source.Sources, as *app.State, ps *cutil.PageState) -%}
     <table>

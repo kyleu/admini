@@ -1,5 +1,7 @@
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/util" %}
+{% import (
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/util"
+) %}
 
 {% func JSON(v interface{}) %}{% stripspace %}
   {% code

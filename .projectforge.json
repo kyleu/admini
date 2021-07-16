@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "name": "Admini",
   "package": "github.com/kyleu/admini",
-  "args": "-v --addr=0.0.0.0 all",
   "port": 14000,
   "modules": ["core"],
+  "ignore": ["data"],
   "info": {
     "org": "kyleu",
     "authorName": "Kyle U",

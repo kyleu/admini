@@ -1,7 +1,9 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/views/layout" %}
-{% import "runtime/debug" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/views/layout"
+  "runtime/debug"
+) %}
 
 {% code type Modules struct {
   layout.Basic

@@ -1,4 +1,6 @@
-{% import "github.com/kyleu/admini/views/components" %}
+{% import (
+  "github.com/kyleu/admini/views/components"
+) %}
 
 {% func Int(x interface{}, k string) %}{% stripspace %}
   {%= components.FormInputNumber(k, "", x) %}

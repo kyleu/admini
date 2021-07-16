@@ -1,12 +1,14 @@
-{% import "fmt" %}
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/model" %}
-{% import "github.com/kyleu/admini/app/project" %}
-{% import "github.com/kyleu/admini/app/schema" %}
-{% import "github.com/kyleu/admini/app/source" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "fmt"
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/model"
+  "github.com/kyleu/admini/app/project"
+  "github.com/kyleu/admini/app/schema"
+  "github.com/kyleu/admini/app/source"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func ActionAvailable(v *project.View, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
   <div class="container">

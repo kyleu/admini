@@ -1,6 +1,8 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/util" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/util"
+) %}
 
 {% func Head(as *app.State, ps *cutil.PageState) %}
   <meta charset="UTF-8">

@@ -1,11 +1,13 @@
-{% import "fmt" %}
-{% import "strings" %}
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/model" %}
-{% import "github.com/kyleu/admini/views/components/fieldedit" %}
-{% import "github.com/kyleu/admini/views/layout" %}
+{% import (
+  "fmt"
+  "strings"
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/model"
+  "github.com/kyleu/admini/views/components/fieldedit"
+  "github.com/kyleu/admini/views/layout"
+) %}
 
 {% code type Edit struct {
   layout.Basic

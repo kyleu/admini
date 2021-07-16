@@ -1,10 +1,12 @@
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/filter" %}
-{% import "github.com/kyleu/admini/app/model" %}
-{% import "github.com/kyleu/admini/app/result" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/filter"
+  "github.com/kyleu/admini/app/model"
+  "github.com/kyleu/admini/app/result"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func WSOptions(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, indent int, opts *filter.Options) %}{% stripspace %}
   <div class="result-options">

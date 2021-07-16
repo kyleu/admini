@@ -1,11 +1,13 @@
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/field" %}
-{% import "github.com/kyleu/admini/app/model" %}
-{% import "github.com/kyleu/admini/app/qualify" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/field"
+  "github.com/kyleu/admini/app/model"
+  "github.com/kyleu/admini/app/qualify"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/components/fieldview"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}

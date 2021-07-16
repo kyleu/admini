@@ -1,13 +1,15 @@
-{% import "fmt" %}
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/field" %}
-{% import "github.com/kyleu/admini/app/filter" %}
-{% import "github.com/kyleu/admini/app/result" %}
-{% import "github.com/kyleu/admini/app/util" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "fmt"
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/field"
+  "github.com/kyleu/admini/app/filter"
+  "github.com/kyleu/admini/app/result"
+  "github.com/kyleu/admini/app/util"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/components/fieldview"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func Simple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   <div class="right">{%s util.Plural(len(r.Data), `row`) %}</div>

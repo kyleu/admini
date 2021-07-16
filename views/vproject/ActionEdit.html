@@ -1,10 +1,12 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/project" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
-{% import "github.com/kyleu/admini/views/layout" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/project"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/components/fieldview"
+  "github.com/kyleu/admini/views/layout"
+) %}
 
 {% code type ActionEdit struct {
   layout.Basic

@@ -1,7 +1,9 @@
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func ResultChildren(req *cutil.WorkspaceRequest, act *action.Action, indent int) %}{% stripspace %}
   {%- if len(act.Children) > 0 -%}

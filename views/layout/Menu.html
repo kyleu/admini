@@ -1,8 +1,10 @@
-{% import "strings" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/menu" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "strings"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/menu"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func Menu(ps *cutil.PageState) %}{% stripspace %}
   <div class="menu-container">

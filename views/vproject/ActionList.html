@@ -1,8 +1,10 @@
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func ActionList(prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
   <div class="item" data-key="{%s act.Key %}" data-original-path="{%s act.Pkg.ToPath(act.Key) %}">

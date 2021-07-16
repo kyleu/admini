@@ -1,12 +1,14 @@
-{% import "fmt" %}
-{% import "github.com/kyleu/admini/app/action" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/field" %}
-{% import "github.com/kyleu/admini/app/filter" %}
-{% import "github.com/kyleu/admini/app/model" %}
-{% import "github.com/kyleu/admini/app/result" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/vutil" %}
+{% import (
+  "fmt"
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/field"
+  "github.com/kyleu/admini/app/filter"
+  "github.com/kyleu/admini/app/model"
+  "github.com/kyleu/admini/app/result"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/vutil"
+) %}
 
 {% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, opts *filter.Options) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}

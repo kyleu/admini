@@ -1,10 +1,12 @@
-{% import "fmt" %}
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/model" %}
-{% import "github.com/kyleu/admini/app/util" %}
-{% import "github.com/kyleu/admini/views/components" %}
-{% import "github.com/kyleu/admini/views/components/fieldview" %}
+{% import (
+  "fmt"
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/model"
+  "github.com/kyleu/admini/app/util"
+  "github.com/kyleu/admini/views/components"
+  "github.com/kyleu/admini/views/components/fieldview"
+) %}
 
 {% func ModelFieldList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Fields) > 0 -%}
     <div class="card">

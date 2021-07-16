@@ -1,4 +1,6 @@
-{% import "strings" %}
+{% import (
+  "strings"
+) %}
 
 {% func String(v string) %}{% stripspace %}
   {% if len(v) == 0 %}

@@ -1,5 +1,7 @@
-{% import "fmt" %}
-{% import "github.com/kyleu/admini/app/schema/schematypes" %}
+{% import (
+  "fmt"
+  "github.com/kyleu/admini/app/schema/schematypes"
+) %}
 
 {% func Any(x interface{}, t *schematypes.Wrapped) %}{% stripspace %}
   {% switch t.Key() %}

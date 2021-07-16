@@ -1,4 +1,6 @@
-{% import "github.com/kyleu/admini/app/util" %}
+{% import (
+  "github.com/kyleu/admini/app/util"
+) %}
 
 {% func Package(v util.Pkg) %}{% stripspace %}
   {% for idx , x := range v %}

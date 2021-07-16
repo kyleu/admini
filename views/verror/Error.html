@@ -1,8 +1,10 @@
-{% import "strings" %}
-{% import "github.com/kyleu/admini/app" %}
-{% import "github.com/kyleu/admini/app/controller/cutil" %}
-{% import "github.com/kyleu/admini/app/util" %}
-{% import "github.com/kyleu/admini/views/layout" %}
+{% import (
+  "strings"
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/util"
+  "github.com/kyleu/admini/views/layout"
+) %}
 
 {%- func errorStack(ed *util.ErrorDetail) -%}
     <table>
