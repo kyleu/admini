@@ -1,7 +1,7 @@
 {
   "key": "admini",
   "type": "projectforge.dev",
-  "version": "0.0.0",
+  "version": "0.1.7",
   "name": "Admini",
   "package": "github.com/kyleu/admini",
   "port": 14000,
