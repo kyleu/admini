@@ -15,7 +15,8 @@ import (
 )
 
 func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
-	as, ps := actPrepare("workspace", ctx)
+	as := _currentAppState
+	ps := loadPageState(ctx)
 	actComplete(key, as, ps, ctx, f)
 }
 

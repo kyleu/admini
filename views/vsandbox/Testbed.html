@@ -1,5 +1,4 @@
 {% import (
-  "sort"
   "github.com/kyleu/admini/app"
   "github.com/kyleu/admini/app/controller/cutil"
   "github.com/kyleu/admini/app/result"
@@ -24,22 +23,8 @@
 
 {%- func icons(as *app.State, ps *cutil.PageState) -%}
   <div class="card">
-    <h3>Icons!</h3>
-    <div style="display: flex; flex-wrap: wrap">
-      {%- code
-      keys := make([]string, 0, len(util.SVGLibrary))
-      for k := range util.SVGLibrary {
-        keys = append(keys, k)
-      }
-      sort.Strings(keys)
-      -%}
-      {%- for _, k := range keys -%}
-      <div style="text-align: center; margin: 6px 12px 6px 0; padding: 6px; border: var(--border);">
-        <div style="color: var(--color-foreground-muted);">{%= components.SVGRef(k, 64, 64, "icon", ps) %}</div>
-        <div style="font-size: 75%;">{%s k %}</div>
-      </div>
-      {%- endfor -%}
-    </div>
+    <h3>SVG Icons</h3>
+    {%= components.IconGallery(as, ps) %}
   </div>
 {%- endfunc -%}
 

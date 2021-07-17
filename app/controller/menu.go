@@ -9,7 +9,7 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
-func MenuFor(as *app.State) menu.Items {
+func MenuFor(as *app.State) (menu.Items, error) {
 	return menu.Items{
 		&menu.Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: "/project", Children: projectItems(as)},
 		menu.Separator,
@@ -20,7 +20,7 @@ func MenuFor(as *app.State) menu.Items {
 		&menu.Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/settings"},
 		&menu.Item{Key: "refresh", Title: "Refresh", Description: "Reload all cached in " + util.AppName, Icon: "refresh", Route: "/refresh"},
 		&menu.Item{Key: "help", Title: "About", Description: "Get assistance and advice for using " + util.AppName, Icon: "question", Route: "/help"},
-	}
+	}, nil
 }
 
 func projectItems(as *app.State) menu.Items {
