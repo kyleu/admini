@@ -12,6 +12,7 @@ func AppRoutes() *router.Router {
 	r := router.New()
 
 	r.GET("/", w(Home))
+	r.GET("/about", w(About))
 	r.GET("/settings", w(Settings))
 	r.GET("/theme", w(ThemeList))
 	r.GET("/theme/{key}", w(ThemeEdit))
@@ -26,9 +27,6 @@ func AppRoutes() *router.Router {
 
 	r.GET("/admin", w(Admin))
 	r.GET("/admin/{path:*}", w(Admin))
-
-	r.GET("/help", w(Help))
-	r.GET("/help/{path:*}", w(Help))
 
 	// $PF_SECTION_START(routes)$
 	r.GET("/refresh", w(Refresh))

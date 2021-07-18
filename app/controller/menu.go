@@ -19,7 +19,7 @@ func MenuFor(as *app.State) (menu.Items, error) {
 		menu.Separator,
 		&menu.Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/settings"},
 		&menu.Item{Key: "refresh", Title: "Refresh", Description: "Reload all cached in " + util.AppName, Icon: "refresh", Route: "/refresh"},
-		&menu.Item{Key: "help", Title: "About", Description: "Get assistance and advice for using " + util.AppName, Icon: "question", Route: "/help"},
+		&menu.Item{Key: "about", Title: "About", Description: "Get assistance and advice for using " + util.AppName, Icon: "question", Route: "/about"},
 	}, nil
 }
 
