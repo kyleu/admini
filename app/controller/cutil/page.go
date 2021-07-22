@@ -4,14 +4,13 @@ package cutil
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/auth"
-	"github.com/kyleu/admini/app/user"
-
+	"github.com/go-gem/sessions"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"github.com/go-gem/sessions"
+	"github.com/kyleu/admini/app/auth"
 	"github.com/kyleu/admini/app/menu"
+	"github.com/kyleu/admini/app/user"
 	"github.com/kyleu/admini/app/util"
 )
 

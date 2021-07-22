@@ -4,9 +4,10 @@ package main
 import (
 	"fmt"
 
+	"github.com/webview/webview"
+
 	"github.com/kyleu/admini/app/cmd"
 	"github.com/kyleu/admini/app/util"
-	"github.com/webview/webview"
 )
 
 func main() {

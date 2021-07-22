@@ -1,3 +1,4 @@
+// $PF_IGNORE$
 module github.com/kyleu/admini
 
 go 1.16
@@ -8,6 +9,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gertd/go-pluralize v0.1.7
 	github.com/go-gem/sessions v0.0.0-20170522023159-6f6fd65f2530
+	github.com/google/uuid v1.2.0
 	github.com/gorilla/pat v1.0.1 // indirect
 	github.com/gorilla/securecookie v1.1.1
 	github.com/iancoleman/strcase v0.1.3
@@ -21,7 +23,7 @@ require (
 	github.com/valyala/fasthttp v1.26.0
 	github.com/valyala/quicktemplate v1.6.3
 	go.uber.org/zap v1.17.0
-	golang.org/x/mobile v0.0.0-20210710064935-76c259c465ba // indirect
+	golang.org/x/mobile v0.0.0-20210710064935-76c259c465ba
 	golang.org/x/oauth2 v0.0.0-20210402161424-2e8d93401602
 	modernc.org/sqlite v1.11.2
 )

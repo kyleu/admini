@@ -4,13 +4,12 @@ package controller
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/auth"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app/controller/cutil"
-
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/controller/cutil"
 )
 
 const signinMsg = "signed in to %s as [%s]"

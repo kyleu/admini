@@ -8,6 +8,7 @@ import {linkInit} from "./link";
 import {themeInit} from "./theme";
 import {setSiblingToNull} from "./form";
 import {modeInit} from "./mode";
+import {appInit} from "./app";
 
 export function init(): void {
   (window as any).admini = {
@@ -21,6 +22,7 @@ export function init(): void {
   editorInit();
   sortableInit();
   themeInit();
+  appInit();
 }
 
 document.addEventListener("DOMContentLoaded", init);

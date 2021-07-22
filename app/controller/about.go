@@ -2,11 +2,12 @@
 package controller
 
 import (
+	"github.com/valyala/fasthttp"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views"
-	"github.com/valyala/fasthttp"
 )
 
 func About(ctx *fasthttp.RequestCtx) {
@@ -15,4 +16,3 @@ func About(ctx *fasthttp.RequestCtx) {
 		return render(ctx, as, &views.About{}, ps)
 	})
 }
-

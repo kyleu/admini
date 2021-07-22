@@ -1,10 +1,9 @@
+# $PF_IGNORE$
 /.vscode
 /.idea
 /.scannerwork
 /build
 /data
-/dist
-/gen
 /tmp
 
 **/*.html.go

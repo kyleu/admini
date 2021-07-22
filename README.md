@@ -1,3 +1,4 @@
+<!-- $PF_IGNORE$ -->
 # ![image info](./assets/favicon.png) admini
 
 Use [admini](https://admini.dev) to explore and manage your data as fast and easily as possible 

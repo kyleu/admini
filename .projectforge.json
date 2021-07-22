@@ -5,7 +5,7 @@
   "name": "Admini",
   "package": "github.com/kyleu/admini",
   "port": 14000,
-  "modules": ["core", "database"],
+  "modules": ["core", "database", "desktop"],
   "ignore": ["data"],
   "info": {
     "org": "kyleu",

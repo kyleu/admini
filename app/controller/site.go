@@ -3,12 +3,12 @@ package controller
 
 import (
 	"github.com/fasthttp/router"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/site"
-	"github.com/kyleu/admini/app/util"
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/site"
+	"github.com/kyleu/admini/app/util"
 )
 
 func SiteRoutes() *router.Router {

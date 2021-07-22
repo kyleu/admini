@@ -5,14 +5,14 @@ import (
 	"net/url"
 
 	"github.com/go-gem/sessions"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/theme"
-	"github.com/kyleu/admini/app/user"
-	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/theme"
+	"github.com/kyleu/admini/app/user"
+	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vauth"
 )
 

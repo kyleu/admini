@@ -5,10 +5,11 @@ import (
 	"encoding/base64"
 	"net/url"
 
-	"github.com/kyleu/admini/app/util"
 	"github.com/markbates/goth"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 func setState(ctx *fasthttp.RequestCtx) string {

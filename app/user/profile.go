@@ -5,11 +5,12 @@ import (
 	"fmt"
 
 	"github.com/go-gem/sessions"
-	"github.com/kyleu/admini/app/auth"
-	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
+
+	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/util"
 )
 
 type Profile struct {

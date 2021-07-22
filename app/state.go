@@ -5,11 +5,12 @@ import (
 	"fmt"
 
 	"github.com/fasthttp/router"
+	"go.uber.org/zap"
+
 	"github.com/kyleu/admini/app/auth"
 	"github.com/kyleu/admini/app/filesystem"
 	"github.com/kyleu/admini/app/theme"
 	"github.com/kyleu/admini/app/util"
-	"go.uber.org/zap"
 )
 
 type BuildInfo struct {

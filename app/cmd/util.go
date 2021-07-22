@@ -8,12 +8,13 @@ import (
 
 	"github.com/fasthttp/router"
 	"github.com/kirsle/configdir"
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/log"
-	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
+
+	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/log"
+	"github.com/kyleu/admini/app/util"
 )
 
 var (
@@ -28,7 +29,6 @@ type Flags struct {
 	Port      uint16
 	ConfigDir string
 	Debug     bool
-	JSON      bool
 }
 
 func (f *Flags) Addr() string {
@@ -44,7 +44,6 @@ func (f *Flags) Clone(port uint16) *Flags {
 		Port:      port,
 		ConfigDir: f.ConfigDir,
 		Debug:     f.Debug,
-		JSON:      f.JSON,
 	}
 }
 
@@ -61,7 +60,7 @@ func initIfNeeded() error {
 		_ = configdir.MakePath(_flags.ConfigDir)
 	}
 
-	l, err := log.InitLogging(_flags.Debug, _flags.JSON)
+	l, err := log.InitLogging(_flags.Debug)
 	if err != nil {
 		return err
 	}
@@ -72,9 +71,9 @@ func initIfNeeded() error {
 }
 
 func listen(address string, port uint16) (uint16, net.Listener, error) {
-	l, err := net.Listen("tcp", fmt.Sprintf("%v:%v", address, port))
+	l, err := net.Listen("tcp", fmt.Sprintf("%s:%d", address, port))
 	if err != nil {
-		return port, nil, errors.Wrap(err, fmt.Sprintf("unable to listen on port [%v]", port))
+		return port, nil, errors.Wrap(err, fmt.Sprintf("unable to listen on port [%d]", port))
 	}
 	if port == 0 {
 		addr := l.Addr().String()
@@ -89,7 +88,8 @@ func listen(address string, port uint16) (uint16, net.Listener, error) {
 }
 
 func serve(name string, listener net.Listener, r *router.Router) error {
-	err := fasthttp.Serve(listener, r.Handler)
+	x := &fasthttp.Server{Handler: r.Handler, Name: name, ReadBufferSize: 65536, NoDefaultServerHeader: true}
+	err := x.Serve(listener)
 	if err != nil {
 		return errors.Wrap(err, "unable to run http server")
 	}

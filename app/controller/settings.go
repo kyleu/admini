@@ -4,10 +4,9 @@ package controller
 import (
 	"github.com/valyala/fasthttp"
 
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/settings"
-
-	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/views/vsettings"
 )
 

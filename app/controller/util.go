@@ -7,26 +7,23 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-gem/sessions"
 	"github.com/gorilla/securecookie"
+	"github.com/pkg/errors"
+	"github.com/valyala/fasthttp"
+
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/auth"
+	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views"
-	"github.com/kyleu/admini/views/verror"
-	"github.com/valyala/fasthttp"
-	"go.uber.org/zap"
-
-	"github.com/pkg/errors"
-
-	"github.com/go-gem/sessions"
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/views/layout"
+	"github.com/kyleu/admini/views/verror"
 )
 
 var (
 	_currentAppState  *app.State
 	_currentSiteState *app.State
-	_rootLogger       *zap.SugaredLogger
 	initialIcons      = []string{"search"}
 )
 
@@ -40,16 +37,14 @@ var sessionKey = func() string {
 
 var store *sessions.CookieStore
 
-func SetAppState(a *app.State, l *zap.SugaredLogger) {
+func SetAppState(a *app.State) {
 	_currentAppState = a
-	_rootLogger = l
-	initApp()
+	initApp(a)
 }
 
-func SetSiteState(a *app.State, l *zap.SugaredLogger) {
+func SetSiteState(a *app.State) {
 	_currentSiteState = a
-	_rootLogger = l
-	initSite()
+	initSite(a)
 }
 
 func ctxRequiredString(ctx *fasthttp.RequestCtx, key string, allowEmpty bool) (string, error) {
@@ -70,7 +65,7 @@ func render(ctx *fasthttp.RequestCtx, as *app.State, page layout.Page, ps *cutil
 				ed := util.GetErrorDetail(t)
 				verror.WriteDetail(ctx, ed, as, ps)
 			default:
-				ed := &util.ErrorDetail{Message: fmt.Sprintf("%v", t)}
+				ed := &util.ErrorDetail{Message: fmt.Sprint(t)}
 				verror.WriteDetail(ctx, ed, as, ps)
 			}
 		}

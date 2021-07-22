@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyleu/admini/app/util"
 	"github.com/valyala/fasthttp"
-
 	"go.uber.org/zap"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 const MaxRowsDefault = 100

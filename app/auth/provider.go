@@ -6,9 +6,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/kyleu/admini/app/util"
 	"github.com/markbates/goth"
 	"github.com/pkg/errors"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type Provider struct {
