@@ -1,12 +1,21 @@
 {
   "key": "admini",
   "type": "projectforge.dev",
-  "version": "0.1.8",
   "name": "Admini",
+  "version": "0.1.8",
   "package": "github.com/kyleu/admini",
   "port": 14000,
-  "modules": ["core", "database", "desktop", "marketing", "mobile", "oauth"],
-  "ignore": ["data"],
+  "modules": [
+    "core",
+    "database",
+    "desktop",
+    "marketing",
+    "mobile",
+    "oauth"
+  ],
+  "ignore": [
+    "data"
+  ],
   "info": {
     "org": "kyleu",
     "authorName": "Kyle U",
