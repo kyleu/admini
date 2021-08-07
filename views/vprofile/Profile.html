@@ -7,6 +7,7 @@
   "github.com/kyleu/admini/app/user"
   "github.com/kyleu/admini/views/components"
   "github.com/kyleu/admini/views/layout"
+  "github.com/kyleu/admini/views/vauth"
   "github.com/kyleu/admini/views/vtheme"
 ) %}
 
@@ -19,7 +20,7 @@
 } %}
 
 {% func (p *Profile) Body(as *app.State, ps *cutil.PageState) %}
-  {%= SigninTable(p.Providers, p.Referrer, as, ps) %}
+  {%= vauth.SigninTable(p.Providers, p.Referrer, as, ps) %}
   <form action="" method="post">
     <div class="card">
       <div class="right">
