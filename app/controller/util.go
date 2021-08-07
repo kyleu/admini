@@ -13,9 +13,9 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/auth"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/util"
+	"github.com/kyleu/admini/app/web"
 	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
 	"github.com/kyleu/admini/views/verror"
@@ -96,7 +96,7 @@ func flashAndRedir(success bool, msg string, redir string, ctx *fasthttp.Request
 		status = "success"
 	}
 	ps.Session.AddFlash(fmt.Sprintf("%s:%s", status, msg))
-	if err := auth.SaveSession(ctx, ps.Session, ps.Logger); err != nil {
+	if err := web.SaveSession(ctx, ps.Session, ps.Logger); err != nil {
 		return "", errors.Wrap(err, "unable to save flash session")
 	}
 

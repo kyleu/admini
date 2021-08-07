@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	version = "0.1.7" // updated by bin/tag.sh and ldflags
+	version = "0.1.8" // updated by bin/tag.sh and ldflags
 	commit  = ""
 	date    = "unknown"
 )
@@ -24,7 +24,6 @@ func main() {
 			println(log.Red.Add(msg))         //nolint
 		} else {
 			logger.Error(err)
-			println("Inheritance worked!")
 			logger.Error(msg)
 		}
 		os.Exit(1)
