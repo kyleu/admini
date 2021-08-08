@@ -9,13 +9,13 @@
   "github.com/kyleu/admini/views/vutil"
 ) %}
 
-{% func MockupTheme(t *theme.Theme, indent int, ps *cutil.PageState) %}{% stripspace %}
-  {%= MockupColors("light", t.Light, indent, ps) %}
-  {%= MockupColors("dark", t.Dark, indent, ps) %}
+{% func MockupTheme(t *theme.Theme, pointer bool, indent int, ps *cutil.PageState) %}{% stripspace %}
+  {%= MockupColors(util.AppName, "light", t.Light, pointer, indent, ps) %}
+  {%= MockupColors(util.AppName, "dark", t.Dark, pointer, indent, ps) %}
   <div class="title">{%s t.Key %}</div>
 {% endstripspace %}{% endfunc %}
 
-{% func MockupColors(mode string, c *theme.Colors, indent int, ps *cutil.PageState) %}{% stripspace %}
+{% func MockupColors(navTitle string, mode string, c *theme.Colors, pointer bool, indent int, ps *cutil.PageState) %}{% stripspace %}
   {% code
     navStyle := fmt.Sprintf("color: %s; background-color: %s;", c.NavForeground, c.NavBackground)
 
@@ -32,10 +32,13 @@
     if mode != "" {
       cls += " only-" + mode
     }
+    if pointer {
+      cls += " pointer"
+    }
   %}
   {%= vutil.Indent(true, indent) %}
   <div class="{%s cls %}">
-    <div class="mock-nav" style="{%s navStyle %}">{%= components.SVGRef(`app`, 12, 12, `icon`, ps) %}{%s util.AppName %}</div>
+    <div class="mock-nav" style="{%s navStyle %}">{%= components.SVGRef(`app`, 12, 12, `icon`, ps) %}{%s navTitle %}</div>
     <div class="mock-menu" style="{%s menuStyle %}">
       <div class="mock-link" style="{%s menuLinkStyle %}">A</div>
       <div class="mock-link-selected" style="{%s menuLinkSelectedStyle %}">B</div>
