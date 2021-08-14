@@ -71,6 +71,10 @@ func (a *Action) Clone(pkg util.Pkg, kids Actions) *Action {
 	}
 }
 
+func (a *Action) String() string {
+	return fmt.Sprintf("workspace:%s:%s", a.Type.Key, a.Key)
+}
+
 type dto struct {
 	Type        string        `json:"type,omitempty"`
 	Title       string        `json:"title,omitempty"`

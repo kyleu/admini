@@ -2,6 +2,7 @@ package workspace
 
 import (
 	"github.com/kyleu/admini/app/action"
+	"go.opentelemetry.io/otel/attribute"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
@@ -12,6 +13,11 @@ import (
 )
 
 func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
+	ctx, span := req.AS.Telemetry.StartSpan(req.Context, "workspace", act.String())
+	req.Context = ctx
+	span.SetAttributes(attribute.String("actType", act.Type.Key), attribute.String("actPkg", act.Pkg.String()), attribute.String("actKey", act.Key))
+	defer span.End()
+
 	if act == nil || (act.Key == "" && len(act.Pkg) == 0) {
 		return NewResult(req.Project.Name(), nil, req, act, req.Project, &vworkspace.WorkspaceOverview{Req: req}), nil
 	}

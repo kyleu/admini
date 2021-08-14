@@ -1,6 +1,8 @@
 package postgres
 
 import (
+	"context"
+
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
@@ -29,9 +31,9 @@ func (r indexResult) AsIndex() *model.Index {
 	}
 }
 
-func loadIndexes(models model.Models, db *database.Service) error {
+func loadIndexes(ctx context.Context, models model.Models, db *database.Service) error {
 	var idxs []*indexResult
-	err := db.Select(&idxs, qpostgres.ListIndexes(db.SchemaName), nil)
+	err := db.Select(ctx, &idxs, qpostgres.ListIndexes(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list indexes")
 	}

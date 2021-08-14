@@ -1,6 +1,8 @@
 package sqlite
 
 import (
+	"context"
+
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
@@ -9,25 +11,25 @@ import (
 	"github.com/kyleu/admini/app/schema"
 )
 
-func LoadDatabaseSchema(db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {
+func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {
 	metadata := loadMetadata(db)
 
-	tables, err := loadTables(db, logger)
+	tables, err := loadTables(ctx, db, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load tables")
 	}
 
-	err = loadColumns(tables, db, logger)
+	err = loadColumns(ctx, tables, db, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load columns")
 	}
 
-	err = loadIndexes(tables, db)
+	err = loadIndexes(ctx, tables, db)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load indexes")
 	}
 
-	err = loadForeignKeys(tables, db)
+	err = loadForeignKeys(ctx, tables, db)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load foreign keys")
 	}

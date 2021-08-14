@@ -51,7 +51,7 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 		return ErrResult(req, act, errors.New("unable to create loader"))
 	}
 
-	r, err := ld.Query(sql)
+	r, err := ld.Query(req.Context, sql)
 	if err != nil {
 		return ErrResult(req, act, errors.New("unable to execute query"))
 	}

@@ -1,11 +1,12 @@
 package sqlite
 
 import (
+	"context"
+
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/model"
-
 	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/queries/qsqlite"
 )
 
@@ -16,9 +17,9 @@ type indexResult struct {
 	ColumnName  string `db:"cn"`
 }
 
-func loadIndexes(models model.Models, db *database.Service) error {
+func loadIndexes(ctx context.Context, models model.Models, db *database.Service) error {
 	var idxs []*indexResult
-	err := db.Select(&idxs, qsqlite.ListIndexes(db.SchemaName), nil)
+	err := db.Select(ctx, &idxs, qsqlite.ListIndexes(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list indexes")
 	}

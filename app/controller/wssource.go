@@ -53,7 +53,7 @@ func WorkspaceSource(ctx *fasthttp.RequestCtx) {
 
 		wr := &cutil.WorkspaceRequest{
 			T: "s", K: sourceKey, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining,
-			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata,
+			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
 
 		return handleAction(wr, a, ctx, ps)

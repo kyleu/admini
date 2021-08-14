@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/kyleu/admini/app/action"
 	"github.com/valyala/fasthttp"
@@ -16,7 +17,7 @@ import (
 
 func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	as := _currentAppState
-	ps := loadPageState(ctx, as.Logger)
+	ps := loadPageState(ctx, key, as)
 	actComplete(key, as, ps, ctx, f)
 }
 
@@ -57,9 +58,10 @@ func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 
 		a, remaining := pv.Project.Actions.Get(paths)
 
+		ps.Context, _ = as.Telemetry.StartSpan(ps.Context, "workspace", strings.Join(paths, "/"))
 		wr := &cutil.WorkspaceRequest{
 			T: "x", K: pv.Project.Key, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining,
-			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata,
+			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
 		return handleAction(wr, a, ctx, ps)
 	})

@@ -16,7 +16,7 @@ func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 		return ErrResult(req, act, err)
 	}
 
-	x, err := ld.Default(m)
+	x, err := ld.Default(req.Context, m)
 	if err != nil {
 		return ErrResult(req, act, errors.Wrapf(err, "can't load [%s] defaults", m.Key))
 	}
@@ -36,7 +36,7 @@ func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 		return ErrResult(req, act, err)
 	}
 
-	res, err := ld.Add(m, changes)
+	res, err := ld.Add(req.Context, m, changes)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}

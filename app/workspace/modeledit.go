@@ -18,7 +18,7 @@ func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	data, err := getModel(m, idStrings, ld)
+	data, err := getModel(req.Context, m, idStrings, ld)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -58,7 +58,7 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		ids = append(ids, s)
 	}
 
-	res, err := ld.Save(m, ids, changes)
+	res, err := ld.Save(req.Context, m, ids, changes)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -85,7 +85,7 @@ func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey 
 		vals = append(vals, s)
 	}
 
-	numAffected, err := ld.Remove(m, pk, vals, 1)
+	numAffected, err := ld.Remove(req.Context, m, pk, vals, 1)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}

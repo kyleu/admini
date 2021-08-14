@@ -1,6 +1,7 @@
 package sqlite
 
 import (
+	"context"
 	"fmt"
 	"sort"
 
@@ -35,9 +36,9 @@ func (r foreignKeyResults) Sort() {
 	})
 }
 
-func loadForeignKeys(models model.Models, db *database.Service) error {
+func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service) error {
 	keys := foreignKeyResults{}
-	err := db.Select(&keys, qsqlite.ListForeignKeys(db.SchemaName), nil)
+	err := db.Select(ctx, &keys, qsqlite.ListForeignKeys(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list foreign keys")
 	}

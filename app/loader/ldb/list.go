@@ -1,6 +1,7 @@
 package ldb
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -11,18 +12,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-func List(db *database.Service, m *model.Model, opts *filter.Options) (*result.Result, error) {
+func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options) (*result.Result, error) {
 	p := opts.Params
 	if p != nil && p.Limit == 0 {
 		p.Limit = filter.MaxRowsDefault
 	}
 	q := modelListQuery(m, p)
-	rows, err := db.Query(q, nil)
+	rows, err := db.Query(ctx, q, nil)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
 
-	count, err := Count(db, m)
+	count, err := Count(ctx, db, m)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.String())
 	}
@@ -36,12 +37,12 @@ func List(db *database.Service, m *model.Model, opts *filter.Options) (*result.R
 	return ret, nil
 }
 
-func Count(db *database.Service, m *model.Model) (int, error) {
+func Count(ctx context.Context, db *database.Service, m *model.Model) (int, error) {
 	q := modelCountQuery(m)
 	c := struct {
 		C int `db:"c"`
 	}{}
-	if err := db.Get(&c, q, nil); err != nil {
+	if err := db.Get(ctx, &c, q, nil); err != nil {
 		return 0, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
 	return c.C, nil

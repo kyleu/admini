@@ -1,6 +1,7 @@
 package ldb
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -10,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func Remove(db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger) (int, error) {
+func Remove(ctx context.Context, db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger) (int, error) {
 	if len(fields) == 0 {
 		return 0, errors.New("must provide at least one column")
 	}
@@ -26,7 +27,7 @@ func Remove(db *database.Service, m *model.Model, fields []string, values []inte
 	}
 	q := database.SQLDelete(m.Path().Quoted(), where.String())
 
-	rowsAffected, err := db.Delete(q, nil, expected, values...)
+	rowsAffected, err := db.Delete(ctx, q, nil, expected, values...)
 	if err != nil {
 		return 0, errors.Wrap(err, "error deleting rows")
 	}

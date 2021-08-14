@@ -1,6 +1,7 @@
 package ldb
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -13,12 +14,12 @@ import (
 	"github.com/kyleu/admini/app/result"
 )
 
-func Get(db *database.Service, m *model.Model, ids []interface{}, logger *zap.SugaredLogger) (*result.Result, error) {
+func Get(ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, logger *zap.SugaredLogger) (*result.Result, error) {
 	q, err := modelGetByPKQuery(m, logger)
 	if err != nil {
 		return nil, err
 	}
-	rows, err := db.Query(q, nil, ids...)
+	rows, err := db.Query(ctx, q, nil, ids...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}

@@ -22,6 +22,10 @@ require (
 	github.com/spf13/cobra v1.2.1
 	github.com/valyala/fasthttp v1.26.0
 	github.com/valyala/quicktemplate v1.6.3
+	go.opentelemetry.io/otel v1.0.0-RC2
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.0.0-RC2
+	go.opentelemetry.io/otel/sdk v1.0.0-RC2
+	go.opentelemetry.io/otel/trace v1.0.0-RC2
 	go.uber.org/zap v1.17.0
 	golang.org/x/mobile v0.0.0-20210710064935-76c259c465ba
 	golang.org/x/oauth2 v0.0.0-20210402161424-2e8d93401602

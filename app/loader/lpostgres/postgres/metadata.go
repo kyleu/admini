@@ -1,11 +1,13 @@
 package postgres
 
 import (
+	"context"
+
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/schema"
 )
 
-func loadMetadata(db *database.Service) *schema.Metadata {
+func loadMetadata(ctx context.Context, db *database.Service) *schema.Metadata {
 	return &schema.Metadata{
 		Description: "",
 		Comments:    nil,

@@ -1,6 +1,7 @@
 package workspace
 
 import (
+	"context"
 	"strings"
 
 	"github.com/kyleu/admini/app/filter"
@@ -41,13 +42,13 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	}
 }
 
-func getModel(m *model.Model, idStrings []string, ld loader.Loader) ([]interface{}, error) {
+func getModel(ctx context.Context, m *model.Model, idStrings []string, ld loader.Loader) ([]interface{}, error) {
 	ids := make([]interface{}, 0, len(idStrings))
 	for _, x := range idStrings {
 		ids = append(ids, x)
 	}
 
-	rs, err := ld.Get(m, ids)
+	rs, err := ld.Get(ctx, m, ids)
 	if err != nil {
 		return nil, errors.Wrapf(err, "unable to retrieve model [%s] with key [%s]", m.Path().String(), strings.Join(idStrings, "/"))
 	}

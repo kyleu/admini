@@ -1,6 +1,8 @@
 package loader
 
 import (
+	"context"
+
 	"github.com/kyleu/admini/app/filter"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
@@ -9,15 +11,15 @@ import (
 )
 
 type Loader interface {
-	Schema() (*schema.Schema, error)
+	Schema(ctx context.Context) (*schema.Schema, error)
 
-	Connection() (interface{}, error)
-	List(m *model.Model, opts *filter.Options) (*result.Result, error)
-	Count(m *model.Model) (int, error)
-	Get(m *model.Model, ids []interface{}) (*result.Result, error)
-	Query(sql string) (*result.Result, error)
-	Add(m *model.Model, changes util.ValueMap) ([]interface{}, error)
-	Save(m *model.Model, ids []interface{}, changes util.ValueMap) ([]interface{}, error)
-	Remove(m *model.Model, fields []string, values []interface{}, expected int) (int, error)
-	Default(m *model.Model) ([]interface{}, error)
+	Connection(ctx context.Context) (interface{}, error)
+	List(ctx context.Context, m *model.Model, opts *filter.Options) (*result.Result, error)
+	Count(ctx context.Context, m *model.Model) (int, error)
+	Get(ctx context.Context, m *model.Model, ids []interface{}) (*result.Result, error)
+	Query(ctx context.Context, sql string) (*result.Result, error)
+	Add(ctx context.Context, m *model.Model, changes util.ValueMap) ([]interface{}, error)
+	Save(ctx context.Context, m *model.Model, ids []interface{}, changes util.ValueMap) ([]interface{}, error)
+	Remove(ctx context.Context, m *model.Model, fields []string, values []interface{}, expected int) (int, error)
+	Default(ctx context.Context, m *model.Model) ([]interface{}, error)
 }

@@ -1,6 +1,7 @@
 package sqlite
 
 import (
+	"context"
 	"database/sql"
 	"sort"
 
@@ -43,9 +44,9 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 	}
 }
 
-func loadColumns(models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var cols []*columnResult
-	err := db.Select(&cols, qsqlite.ListColumns(db.SchemaName), nil)
+	err := db.Select(ctx, &cols, qsqlite.ListColumns(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list columns")
 	}

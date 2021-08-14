@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"context"
 	"database/sql"
 	"strings"
 
@@ -45,9 +46,9 @@ func (t *enumResult) ToModel() *model.Model {
 	return ret
 }
 
-func loadEnums(db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
+func loadEnums(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
 	var enums []*enumResult
-	err := db.Select(&enums, qpostgres.ListTypes(db.SchemaName), nil)
+	err := db.Select(ctx, &enums, qpostgres.ListTypes(db.SchemaName), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list enums")
 	}

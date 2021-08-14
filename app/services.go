@@ -2,6 +2,8 @@
 package app
 
 import (
+	"context"
+
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/loader/lmock"
@@ -18,13 +20,13 @@ type Services struct {
 	Loaders  *loader.Service
 }
 
-func NewServices(st *State) (*Services, error) {
+func NewServices(ctx context.Context, st *State) (*Services, error) {
 	ls := loader.NewService()
-	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(st.Logger))
+	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(ctx, st.Telemetry, st.Logger))
 	if database.SQLiteEnabled {
-		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(st.Logger))
+		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, st.Telemetry, st.Logger))
 	}
-	ls.Set(schema.OriginMock, lmock.NewLoader(st.Logger))
+	ls.Set(schema.OriginMock, lmock.NewLoader(ctx, st.Logger))
 	ss := source.NewService(st.Files, ls, st.Logger)
 	ps := project.NewService(st.Files, ss, ls, st.Logger)
 

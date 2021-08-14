@@ -54,7 +54,7 @@ func SourceRefresh(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		_, elapsedMillis, err := as.Services.Sources.SchemaRefresh(key)
+		_, elapsedMillis, err := as.Services.Sources.SchemaRefresh(ps.Context, key)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to  refresh schema for source [%s]", key)
 		}

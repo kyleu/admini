@@ -1,6 +1,7 @@
 package cutil
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 
@@ -23,6 +24,7 @@ type WorkspaceRequest struct {
 	Project  *project.Project     `json:"-"`
 	Sources  source.Sources       `json:"-"`
 	Schemata schema.Schemata      `json:"-"`
+	Context  context.Context      `json:"-"`
 }
 
 func (r *WorkspaceRequest) Route(path ...string) string {
@@ -44,6 +46,7 @@ func (r *WorkspaceRequest) RouteAct(act *action.Action, drop int, path ...string
 func (r *WorkspaceRequest) Clone() *WorkspaceRequest {
 	return &WorkspaceRequest{
 		T: r.T, K: r.K, Ctx: r.Ctx, AS: r.AS, PS: r.PS,
-		Item: r.Item, Path: r.Path, Project: r.Project, Sources: r.Sources, Schemata: r.Schemata,
+		Item: r.Item, Path: r.Path, Project: r.Project,
+		Sources: r.Sources, Schemata: r.Schemata, Context: r.Context,
 	}
 }

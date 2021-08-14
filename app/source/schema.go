@@ -1,6 +1,7 @@
 package source
 
 import (
+	"context"
 	"path/filepath"
 	"time"
 
@@ -58,7 +59,7 @@ func (s *Service) SaveSchema(key string, sch *schema.Schema) error {
 	return nil
 }
 
-func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
+func (s *Service) SchemaRefresh(ctx context.Context, key string) (*schema.Schema, float64, error) {
 	startNanos := time.Now().UnixNano()
 	source, err := s.Load(key, false)
 	if err != nil {
@@ -71,7 +72,7 @@ func (s *Service) SchemaRefresh(key string) (*schema.Schema, float64, error) {
 	if ld == nil {
 		return nil, 0, errors.Errorf("no loader defined for type [%s]", source.Type.String())
 	}
-	sch, err := ld.Schema()
+	sch, err := ld.Schema(ctx)
 	if err != nil {
 		return nil, 0, errors.Wrapf(err, "can't load schema with key [%s]", key)
 	}

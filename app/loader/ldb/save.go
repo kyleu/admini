@@ -1,6 +1,7 @@
 package ldb
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -11,7 +12,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func Save(db *database.Service, m *model.Model, ids []interface{}, changes util.ValueMap, logger *zap.SugaredLogger) ([]interface{}, error) {
+func Save(ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, changes util.ValueMap, logger *zap.SugaredLogger) ([]interface{}, error) {
 	cols, vals := changes.KeysAndValues()
 
 	pk := m.GetPK(logger)
@@ -22,7 +23,7 @@ func Save(db *database.Service, m *model.Model, ids []interface{}, changes util.
 	}
 
 	q := database.SQLUpdateReturning(m.Key, cols, strings.Join(where, " and "), pk)
-	out, err := db.QuerySingleRow(q, nil, append(vals, ids...)...)
+	out, err := db.QuerySingleRow(ctx, q, nil, append(vals, ids...)...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "unable to save [%s] with primary key [%s]", m.Name(), strings.Join(pk, "::"))
 	}

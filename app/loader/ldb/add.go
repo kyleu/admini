@@ -1,6 +1,8 @@
 package ldb
 
 import (
+	"context"
+
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/util"
@@ -8,11 +10,11 @@ import (
 	"go.uber.org/zap"
 )
 
-func Add(db *database.Service, m *model.Model, changes util.ValueMap, logger *zap.SugaredLogger) ([]interface{}, error) {
+func Add(ctx context.Context, db *database.Service, m *model.Model, changes util.ValueMap, logger *zap.SugaredLogger) ([]interface{}, error) {
 	columns, data := changes.KeysAndValues()
 	pk := m.GetPK(logger)
 	q := database.SQLInsertReturning(m.Path().Quoted(), columns, 1, pk)
-	out, err := db.QuerySingleRow(q, nil, data...)
+	out, err := db.QuerySingleRow(ctx, q, nil, data...)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to insert row")
 	}

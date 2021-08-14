@@ -2,6 +2,8 @@
 package sandbox
 
 import (
+	"context"
+
 	"github.com/kyleu/admini/app/loader/ldb"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries/qsqlite"
@@ -17,7 +19,7 @@ import (
 
 var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "code", Run: onTestbed}
 
-func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
+func onTestbed(ctx context.Context, st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	ret := util.ValueMap{}
 	sourceKey := "chinook"
 	source, _ := st.Services.Sources.Load(sourceKey, true)
@@ -28,7 +30,7 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 			return nil, errors.Wrap(err, "can't get loader")
 		}
 
-		connInterface, err := load.Connection()
+		connInterface, err := load.Connection(ctx)
 		if err != nil {
 			return nil, errors.Wrap(err, "can't get connection")
 		}
@@ -40,7 +42,7 @@ func onTestbed(st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 
 		run := func(key string, q string) error {
 			var rows *sqlx.Rows
-			rows, err = conn.Query(q, nil)
+			rows, err = conn.Query(ctx, q, nil)
 			if err != nil {
 				return errors.Wrapf(err, "can't query %s", key)
 			}

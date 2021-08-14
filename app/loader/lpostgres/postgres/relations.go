@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"context"
 	"sort"
 
 	"github.com/pkg/errors"
@@ -34,9 +35,9 @@ func (r foreignKeyResults) Sort() {
 	})
 }
 
-func loadForeignKeys(models model.Models, db *database.Service) error {
+func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service) error {
 	keys := foreignKeyResults{}
-	err := db.Select(&keys, qpostgres.ListForeignKeys(db.SchemaName), nil)
+	err := db.Select(ctx, &keys, qpostgres.ListForeignKeys(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list foreign keys")
 	}
