@@ -4,10 +4,13 @@ package controller
 import (
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
+
+	"github.com/kyleu/admini/app/telemetry"
+	"github.com/kyleu/admini/app/util"
 )
 
 //nolint
-func AppRoutes() *router.Router {
+func AppRoutes() (*telemetry.Metrics, fasthttp.RequestHandler) {
 	w := fasthttp.CompressHandler
 	r := router.New()
 
@@ -73,5 +76,7 @@ func AppRoutes() *router.Router {
 	r.OPTIONS("/{_:*}", w(Options))
 	r.NotFound = NotFound
 
-	return r
+	p := telemetry.NewMetrics(util.AppKey)
+
+	return p, p.WrapHandler(r)
 }
