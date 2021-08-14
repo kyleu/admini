@@ -62,10 +62,10 @@ func (f *File) comment(content string) line {
 }
 
 func (f *File) MarshalJSON() ([]byte, error) {
-	ret := make(map[string]interface{})
-	ret["path"] = strings.Join(append(f.Pkg, f.Filename), "/")
-	ret["lines"] = f.Render()
-	return util.ToJSONBytes(ret, false), nil
+	return util.ToJSONBytes(map[string]interface{}{
+		"path":  strings.Join(append(f.Pkg, f.Filename), "/"),
+		"lines": f.Render(),
+	}, false), nil
 }
 
 func (f *File) Render() []string {
