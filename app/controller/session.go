@@ -12,6 +12,7 @@ import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/telemetry"
+	"github.com/kyleu/admini/app/telemetry/httpmetrics"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/app/web"
 )
@@ -41,9 +42,9 @@ func loadPageState(ctx *fasthttp.RequestCtx, key string, as *app.State) *cutil.P
 	path := string(ctx.Request.URI().Path())
 	logger := as.Logger.With(zap.String("path", path))
 
-	ctx = telemetry.ExtractHeaders(ctx, logger)
-	traceCtx, span := as.Telemetry.StartSpan(ctx, "pagestate", "http:"+key)
-	telemetry.InjectHTTP(ctx, span)
+	ctx = httpmetrics.ExtractHeaders(ctx, logger)
+	traceCtx, span := telemetry.StartSpan(ctx, "pagestate", "http:"+key)
+	httpmetrics.InjectHTTP(ctx, span)
 
 	if store == nil {
 		store = initStore([]byte(sessionKey))

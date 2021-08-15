@@ -7,7 +7,6 @@ import (
 	"github.com/kyleu/admini/app/loader/ldb"
 	"github.com/kyleu/admini/app/loader/lpostgres/postgres"
 	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/app/telemetry"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
@@ -25,10 +24,10 @@ type Loader struct {
 	logger *zap.SugaredLogger
 }
 
-func NewLoader(ctx context.Context, telemetry *telemetry.Service, logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
+func NewLoader(ctx context.Context, logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
 		log := logger.With(zap.String("service", "loader.postgres"), zap.String("source", key))
-		db, err := openDatabase(ctx, cfg, telemetry, log)
+		db, err := openDatabase(ctx, cfg, log)
 		if err != nil {
 			return nil, errors.Wrap(err, "error opening database")
 		}
@@ -91,12 +90,12 @@ func LoadConfig(cfg []byte) (*database.PostgresParams, error) {
 	return params, nil
 }
 
-func openDatabase(ctx context.Context, cfg []byte, telemetry *telemetry.Service, logger *zap.SugaredLogger) (*database.Service, error) {
+func openDatabase(ctx context.Context, cfg []byte, logger *zap.SugaredLogger) (*database.Service, error) {
 	params, err := LoadConfig(cfg)
 	if err != nil {
 		return nil, err
 	}
-	db, err := database.OpenPostgresDatabase(ctx, params, telemetry, logger)
+	db, err := database.OpenPostgresDatabase(ctx, params, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error opening database")
 	}

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/telemetry"
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -58,7 +59,7 @@ func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 
 		a, remaining := pv.Project.Actions.Get(paths)
 
-		ps.Context, _ = as.Telemetry.StartSpan(ps.Context, "workspace", strings.Join(paths, "/"))
+		ps.Context, _ = telemetry.StartSpan(ps.Context, "workspace", strings.Join(paths, "/"))
 		wr := &cutil.WorkspaceRequest{
 			T: "x", K: pv.Project.Key, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining,
 			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,

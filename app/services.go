@@ -22,9 +22,9 @@ type Services struct {
 
 func NewServices(ctx context.Context, st *State) (*Services, error) {
 	ls := loader.NewService()
-	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(ctx, st.Telemetry, st.Logger))
+	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(ctx, st.Logger))
 	if database.SQLiteEnabled {
-		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, st.Telemetry, st.Logger))
+		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, st.Logger))
 	}
 	ls.Set(schema.OriginMock, lmock.NewLoader(ctx, st.Logger))
 	ss := source.NewService(st.Files, ls, st.Logger)

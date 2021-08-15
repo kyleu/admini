@@ -8,11 +8,11 @@ import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/site"
-	"github.com/kyleu/admini/app/telemetry"
+	"github.com/kyleu/admini/app/telemetry/httpmetrics"
 	"github.com/kyleu/admini/app/util"
 )
 
-func SiteRoutes() (*telemetry.Metrics, fasthttp.RequestHandler) {
+func SiteRoutes() fasthttp.RequestHandler {
 	w := fasthttp.CompressHandler
 	r := router.New()
 
@@ -33,8 +33,8 @@ func SiteRoutes() (*telemetry.Metrics, fasthttp.RequestHandler) {
 	r.OPTIONS("/{_:*}", w(Options))
 	r.NotFound = NotFound
 
-	m := telemetry.NewMetrics("marketing_site")
-	return m, m.WrapHandler(r)
+	m := httpmetrics.NewMetrics("marketing_site")
+	return m.WrapHandler(r)
 }
 
 func Site(ctx *fasthttp.RequestCtx) {
