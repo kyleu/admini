@@ -8,6 +8,7 @@ import (
 
 	"github.com/kyleu/admini/app/auth"
 	"github.com/kyleu/admini/app/filesystem"
+	"github.com/kyleu/admini/app/telemetry"
 	"github.com/kyleu/admini/app/theme"
 	"github.com/kyleu/admini/app/util"
 )
@@ -38,6 +39,7 @@ type State struct {
 }
 
 func NewState(debug bool, bi *BuildInfo, f filesystem.FileLoader, log *zap.SugaredLogger) (*State, error) {
+	_ = telemetry.InitializeIfNeeded(true, log)
 	return &State{
 		Debug:     debug,
 		BuildInfo: bi,
