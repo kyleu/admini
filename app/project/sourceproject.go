@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/action"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/util"
 
@@ -21,6 +22,9 @@ func (s *Service) LoadSourceProject(srcKey string) (*View, error) {
 	sch, err := s.sources.LoadSchema(src.Key)
 	if err != nil {
 		return nil, err
+	}
+	if sch == nil {
+		return nil, errors.Errorf("no schema found with key [%s]", srcKey)
 	}
 
 	sources := source.Sources{src}
