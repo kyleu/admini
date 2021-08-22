@@ -50,6 +50,10 @@ func (f *File) W(content string, indentDelta ...int) {
 	}
 }
 
+func (f *File) LB() {
+	f.W("")
+}
+
 func (f *File) Wf(content string, args ...interface{}) {
 	f.W(fmt.Sprintf(content, args...))
 }

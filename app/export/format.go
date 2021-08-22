@@ -25,6 +25,8 @@ func (f Format) Get(s string) string {
 		default:
 			return "*logrus.Logger"
 		}
+	case "database":
+		return "*database.Service"
 	default:
 		return fmt.Sprintf("unknown key [%s]", s)
 	}
