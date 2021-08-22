@@ -2,6 +2,7 @@ package export
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/kyleu/admini/app/util"
@@ -15,6 +16,7 @@ type line struct {
 type File struct {
 	Pkg        util.Pkg
 	Filename   string
+	Imports    []string
 	Type       FileType
 	currIndent int
 	output     []line
@@ -46,6 +48,19 @@ func (f *File) W(content string, indentDelta ...int) {
 			f.currIndent += x
 		}
 	}
+}
+
+func (f *File) Wf(content string, args ...interface{}) {
+	f.W(fmt.Sprintf(content, args...))
+}
+
+func (f *File) AddImport(imp string) {
+	for _, i := range f.Imports {
+		if i == imp {
+			return
+		}
+	}
+	f.Imports = append(f.Imports, imp)
 }
 
 func (f *File) AddComment(content string) {
@@ -85,6 +100,7 @@ func (f *File) Render() []string {
 		indent = "\t"
 	}
 	lines := append([]line{}, header...)
+	lines = append(lines, goImportsFor(f.Imports)...)
 	lines = append(lines, append(f.output, footer...)...)
 
 	ret := make([]string, 0, len(lines))
@@ -95,6 +111,19 @@ func (f *File) Render() []string {
 		}
 		ret = append(ret, indention+l.Content)
 	}
+	return ret
+}
+
+func goImportsFor(imps []string) []line {
+	if len(imps) == 0 {
+		return nil
+	}
+	sort.Strings(imps) // TODO improve
+	var ret []line
+	for _, i := range imps {
+		ret = append(ret, line{Content: "\"" + i + "\""})
+	}
+	ret = append(ret, line{})
 	return ret
 }
 

@@ -16,21 +16,21 @@ import (
 
 const sourceKey = "source"
 
-func SourceList(ctx *fasthttp.RequestCtx) {
-	act("source.list", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+func SourceList(rc *fasthttp.RequestCtx) {
+	act("source.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		s, err := as.Services.Sources.List()
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source list")
 		}
 		ps.Title = "Sources"
 		ps.Data = s
-		return render(ctx, as, &vsource.List{Sources: s}, ps, "sources")
+		return render(rc, as, &vsource.List{Sources: s}, ps, "sources")
 	})
 }
 
-func SourceDetail(ctx *fasthttp.RequestCtx) {
-	act("source.detail", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func SourceDetail(rc *fasthttp.RequestCtx) {
+	act("source.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -44,13 +44,13 @@ func SourceDetail(ctx *fasthttp.RequestCtx) {
 		}
 		ps.Title = src.Name()
 		ps.Data = util.ValueMap{sourceKey: src, "schema": sch}
-		return render(ctx, as, &vsource.Detail{Source: src, Schema: sch}, ps, "sources", src.Key)
+		return render(rc, as, &vsource.Detail{Source: src, Schema: sch}, ps, "sources", src.Key)
 	})
 }
 
-func SourceRefresh(ctx *fasthttp.RequestCtx) {
-	act("source.refresh", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func SourceRefresh(rc *fasthttp.RequestCtx) {
+	act("source.refresh", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -60,6 +60,6 @@ func SourceRefresh(ctx *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf("refreshed in [%.3fms]", elapsedMillis)
-		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), ctx, ps)
+		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), rc, ps)
 	})
 }

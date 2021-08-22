@@ -30,6 +30,10 @@ func (f Format) Get(s string) string {
 	}
 }
 
+func (f Format) String() interface{} {
+	return fmt.Sprintf("%s:%s", f.Language, f.Flavor)
+}
+
 type Formats []*Format
 
 var AllFormats = Formats{

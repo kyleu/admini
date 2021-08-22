@@ -11,8 +11,8 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func ProjectNew(ctx *fasthttp.RequestCtx) {
-	act("project.new", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+func ProjectNew(rc *fasthttp.RequestCtx) {
+	act("project.new", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "New Project"
 		p := &project.Project{}
 		ps.Data = p
@@ -20,19 +20,19 @@ func ProjectNew(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return render(ctx, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
+		return render(rc, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
 	})
 }
 
-func ProjectInsert(ctx *fasthttp.RequestCtx) {
-	act("project.insert", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(ctx)
+func ProjectInsert(rc *fasthttp.RequestCtx) {
+	act("project.insert", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return flashAndRedir(false, err.Error(), "/project/_new", ctx, ps)
+			return flashAndRedir(false, err.Error(), "/project/_new", rc, ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")
@@ -46,13 +46,13 @@ func ProjectInsert(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
-		return flashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), ctx, ps)
+		return flashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }
 
-func ProjectEdit(ctx *fasthttp.RequestCtx) {
-	act("project.edit", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func ProjectEdit(rc *fasthttp.RequestCtx) {
+	act("project.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -67,18 +67,18 @@ func ProjectEdit(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return render(ctx, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
+		return render(rc, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
 	})
 }
 
-func ProjectSave(ctx *fasthttp.RequestCtx) {
-	act("project.save", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(ctx)
+func ProjectSave(rc *fasthttp.RequestCtx) {
+	act("project.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key, err := ctxRequiredString(ctx, "key", false)
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -102,13 +102,13 @@ func ProjectSave(ctx *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`saved project "%s"`, key)
-		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), ctx, ps)
+		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }
 
-func ProjectDelete(ctx *fasthttp.RequestCtx) {
-	act("project.delete", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func ProjectDelete(rc *fasthttp.RequestCtx) {
+	act("project.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -118,6 +118,6 @@ func ProjectDelete(ctx *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`deleted project "%s"`, key)
-		return flashAndRedir(true, msg, "/project", ctx, ps)
+		return flashAndRedir(true, msg, "/project", rc, ps)
 	})
 }

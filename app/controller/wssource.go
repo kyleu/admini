@@ -13,14 +13,14 @@ import (
 	"github.com/kyleu/admini/app/workspace"
 )
 
-func WorkspaceSource(ctx *fasthttp.RequestCtx) {
-	actWorkspace("workspace.source", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		sourceKey, err := ctxRequiredString(ctx, "key", false)
+func WorkspaceSource(rc *fasthttp.RequestCtx) {
+	actWorkspace("workspace.source", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		sourceKey, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
 
-		path := string(ctx.Request.URI().Path())
+		path := string(rc.Request.URI().Path())
 		paths := util.SplitAndTrim(path, "/")
 		if len(paths) < 2 {
 			return ersp("no source provided in path [%s]", path)
@@ -52,10 +52,10 @@ func WorkspaceSource(ctx *fasthttp.RequestCtx) {
 		a, remaining := pv.Project.Actions.Get(paths)
 
 		wr := &cutil.WorkspaceRequest{
-			T: "s", K: sourceKey, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining,
+			T: "s", K: sourceKey, Ctx: rc, AS: as, PS: ps, Item: a, Path: remaining,
 			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
 
-		return handleAction(wr, a, ctx, ps)
+		return handleAction(wr, a, rc, ps)
 	})
 }

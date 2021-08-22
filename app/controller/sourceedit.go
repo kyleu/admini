@@ -18,26 +18,26 @@ import (
 	"github.com/kyleu/admini/views/vsource"
 )
 
-func SourceNew(ctx *fasthttp.RequestCtx) {
-	act("source.new", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+func SourceNew(rc *fasthttp.RequestCtx) {
+	act("source.new", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "New Source"
 		t := schema.OriginPostgres
 		s := &source.Source{Type: t}
 		ps.Data = s
-		return render(ctx, as, &vsource.New{Origin: t}, ps, "sources", "New")
+		return render(rc, as, &vsource.New{Origin: t}, ps, "sources", "New")
 	})
 }
 
-func SourceInsert(ctx *fasthttp.RequestCtx) {
-	act("source.insert", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(ctx)
+func SourceInsert(rc *fasthttp.RequestCtx) {
+	act("source.insert", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return flashAndRedir(false, err.Error(), "/source/_new", ctx, ps)
+			return flashAndRedir(false, err.Error(), "/source/_new", rc, ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")
@@ -48,13 +48,13 @@ func SourceInsert(ctx *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
-		return flashAndRedir(true, "saved new source", fmt.Sprintf("/source/%s", key), ctx, ps)
+		return flashAndRedir(true, "saved new source", fmt.Sprintf("/source/%s", key), rc, ps)
 	})
 }
 
-func SourceEdit(ctx *fasthttp.RequestCtx) {
-	act("source.edit", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func SourceEdit(rc *fasthttp.RequestCtx) {
+	act("source.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -68,22 +68,22 @@ func SourceEdit(ctx *fasthttp.RequestCtx) {
 		switch src.Type {
 		case schema.OriginPostgres, schema.OriginSQLite:
 			page := &vsource.Edit{Source: src}
-			return render(ctx, as, page, ps, "sources", src.Key, "Edit")
+			return render(rc, as, page, ps, "sources", src.Key, "Edit")
 		default:
 			msg := fmt.Sprintf("unhandled source type [%s]", src.Type.String())
-			return flashAndRedir(false, msg, "/source", ctx, ps)
+			return flashAndRedir(false, msg, "/source", rc, ps)
 		}
 	})
 }
 
-func SourceSave(ctx *fasthttp.RequestCtx) {
-	act("source.save", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(ctx)
+func SourceSave(rc *fasthttp.RequestCtx) {
+	act("source.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key, err := ctxRequiredString(ctx, "key", false)
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -128,13 +128,13 @@ func SourceSave(ctx *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`saved source "%s"`, key)
-		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), ctx, ps)
+		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), rc, ps)
 	})
 }
 
-func SourceDelete(ctx *fasthttp.RequestCtx) {
-	act("source.delete", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func SourceDelete(rc *fasthttp.RequestCtx) {
+	act("source.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -144,6 +144,6 @@ func SourceDelete(ctx *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`deleted source "%s"`, key)
-		return flashAndRedir(true, msg, "/source", ctx, ps)
+		return flashAndRedir(true, msg, "/source", rc, ps)
 	})
 }

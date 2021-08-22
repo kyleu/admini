@@ -16,25 +16,25 @@ import (
 	"github.com/kyleu/admini/app"
 )
 
-func actWorkspace(key string, ctx *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
+func actWorkspace(key string, rc *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	as := _currentAppState
-	ps := loadPageState(ctx, key, as)
-	actComplete(key, as, ps, ctx, f)
+	ps := loadPageState(rc, key, as)
+	actComplete(key, as, ps, rc, f)
 }
 
-func WorkspaceProject(ctx *fasthttp.RequestCtx) {
-	actWorkspace("workspace", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		projectKey, err := ctxRequiredString(ctx, "key", false)
+func WorkspaceProject(rc *fasthttp.RequestCtx) {
+	actWorkspace("workspace", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		projectKey, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
 
-		paths := util.SplitAndTrim(string(ctx.Path()), "/")
+		paths := util.SplitAndTrim(string(rc.Path()), "/")
 		if len(paths) < 2 {
-			return ersp("no source provided in path [%s]", string(ctx.Path()))
+			return ersp("no source provided in path [%s]", string(rc.Path()))
 		}
 		if paths[0] != "x" {
-			return ersp("provided path [%s] is not part of the project workspace", string(ctx.Path()))
+			return ersp("provided path [%s] is not part of the project workspace", string(rc.Path()))
 		}
 
 		pv, err := as.Services.Projects.LoadView(projectKey)
@@ -61,14 +61,14 @@ func WorkspaceProject(ctx *fasthttp.RequestCtx) {
 
 		ps.Context, _ = telemetry.StartSpan(ps.Context, "workspace", strings.Join(paths, "/"))
 		wr := &cutil.WorkspaceRequest{
-			T: "x", K: pv.Project.Key, Ctx: ctx, AS: as, PS: ps, Item: a, Path: remaining,
+			T: "x", K: pv.Project.Key, Ctx: rc, AS: as, PS: ps, Item: a, Path: remaining,
 			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
-		return handleAction(wr, a, ctx, ps)
+		return handleAction(wr, a, rc, ps)
 	})
 }
 
-func handleAction(req *cutil.WorkspaceRequest, act *action.Action, ctx *fasthttp.RequestCtx, ps *cutil.PageState) (string, error) {
+func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.RequestCtx, ps *cutil.PageState) (string, error) {
 	if req == nil {
 		return "", errors.New("nil project request")
 	}
@@ -81,7 +81,7 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, ctx *fasthttp
 	}
 
 	if res.Redirect != "" {
-		return flashAndRedir(true, res.Title, res.Redirect, ctx, ps)
+		return flashAndRedir(true, res.Title, res.Redirect, rc, ps)
 	}
 
 	req.PS.Title = res.Title

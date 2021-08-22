@@ -20,9 +20,9 @@ import (
 	"github.com/kyleu/admini/app"
 )
 
-func ActionOrdering(ctx *fasthttp.RequestCtx) {
-	act("action.ordering", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func ActionOrdering(rc *fasthttp.RequestCtx) {
+	act("action.ordering", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -31,7 +31,7 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
 
-		frm, err := cutil.ParseForm(ctx)
+		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
@@ -59,31 +59,31 @@ func ActionOrdering(ctx *fasthttp.RequestCtx) {
 			return "", err
 		}
 		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.Plural(count, "action"), elapsedMillis)
-		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), ctx, ps)
+		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }
 
-func ActionEdit(ctx *fasthttp.RequestCtx) {
-	act("action.edit", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, a, _, err := loadAction(ctx, as)
+func ActionEdit(rc *fasthttp.RequestCtx) {
+	act("action.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		p, a, _, err := loadAction(rc, as)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
 		}
 		ps.Title = a.Name()
 		ps.Data = a
 		page := &vproject.ActionEdit{Project: p, Act: a}
-		return render(ctx, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
+		return render(rc, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
 	})
 }
 
-func ActionSave(ctx *fasthttp.RequestCtx) {
-	act("action.save", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, a, _, err := loadAction(ctx, as)
+func ActionSave(rc *fasthttp.RequestCtx) {
+	act("action.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		p, a, _, err := loadAction(rc, as)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
 		}
 
-		frm, err := cutil.ParseForm(ctx)
+		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", err
 		}
@@ -124,12 +124,12 @@ func ActionSave(ctx *fasthttp.RequestCtx) {
 			}
 		}
 
-		return flashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), ctx, ps)
+		return flashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), rc, ps)
 	})
 }
 
-func loadAction(ctx *fasthttp.RequestCtx, as *app.State) (*project.Project, *action.Action, []string, error) {
-	key, err := ctxRequiredString(ctx, "key", false)
+func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *action.Action, []string, error) {
+	key, err := rcRequiredString(rc, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -138,7 +138,7 @@ func loadAction(ctx *fasthttp.RequestCtx, as *app.State) (*project.Project, *act
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}
 
-	path, err := ctxRequiredString(ctx, "path", false)
+	path, err := rcRequiredString(rc, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

@@ -2,7 +2,10 @@ package schematypes
 
 const KeyJSON = "json"
 
-type JSON struct{}
+type JSON struct {
+	IsObject bool `json:"obj,omitempty"`
+	IsArray  bool `json:"arr,omitempty"`
+}
 
 var _ Type = (*JSON)(nil)
 
@@ -28,4 +31,8 @@ func (x *JSON) Default(string) interface{} {
 
 func NewJSON() *Wrapped {
 	return Wrap(&JSON{})
+}
+
+func NewJSONArgs(obj bool, arr bool) *Wrapped {
+	return Wrap(&JSON{IsObject: obj, IsArray: arr})
 }

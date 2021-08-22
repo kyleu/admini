@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/util"
 )
 
 func Migrate(ctx context.Context, s *database.Service, logger *zap.SugaredLogger) error {
@@ -21,7 +22,8 @@ func Migrate(ctx context.Context, s *database.Service, logger *zap.SugaredLogger
 	maxIdx := maxMigrationIdx(ctx, s, logger)
 
 	if len(databaseMigrations) > maxIdx+1 {
-		logger.Info(fmt.Sprintf("applying [%v] database migrations...", len(databaseMigrations)-maxIdx))
+		c := len(databaseMigrations)-maxIdx
+		logger.Info(fmt.Sprintf("applying [%v] database %s...", c, util.PluralMaybe("migration", c)))
 	}
 
 	for i, file := range databaseMigrations {
@@ -66,7 +68,7 @@ func Migrate(ctx context.Context, s *database.Service, logger *zap.SugaredLogger
 		}
 	}
 
-	logger.Info(fmt.Sprintf("verified [%v] database migrations", maxIdx))
+	logger.Info(fmt.Sprintf("verified [%v] database %s", maxIdx, util.PluralMaybe("migration", maxIdx)))
 
 	return errors.Wrap(err, "error running database migration")
 }

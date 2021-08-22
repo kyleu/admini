@@ -19,9 +19,9 @@ import (
 	"github.com/kyleu/admini/views/vsource"
 )
 
-func SourceModelDetail(ctx *fasthttp.RequestCtx) {
-	act("source.model.detail", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		src, sch, m, err := loadSourceModel(ctx, as)
+func SourceModelDetail(rc *fasthttp.RequestCtx) {
+	act("source.model.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		src, sch, m, err := loadSourceModel(rc, as)
 		if err != nil {
 			return "", errors.Wrap(err, "")
 		}
@@ -29,18 +29,18 @@ func SourceModelDetail(ctx *fasthttp.RequestCtx) {
 		ps.Title = src.Name()
 		ps.Data = util.ValueMap{sourceKey: src, "schema": sch}
 		page := &vsource.ModelDetail{Source: src, Schema: sch, Model: m}
-		return render(ctx, as, page, ps, "sources", src.Key)
+		return render(rc, as, page, ps, "sources", src.Key)
 	})
 }
 
-func SourceModelSave(ctx *fasthttp.RequestCtx) {
-	act("source.model.save", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		src, _, m, err := loadSourceModel(ctx, as)
+func SourceModelSave(rc *fasthttp.RequestCtx) {
+	act("source.model.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		src, _, m, err := loadSourceModel(rc, as)
 		if err != nil {
 			return "", err
 		}
 
-		frm, err := cutil.ParseForm(ctx)
+		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
@@ -66,7 +66,7 @@ func SourceModelSave(ctx *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf("saved model [%s] with [%d] overrides", m.Name(), len(todo))
-		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), ctx, ps)
+		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), rc, ps)
 	})
 }
 
@@ -125,8 +125,8 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 	return m, ret, nil
 }
 
-func loadSourceModel(ctx *fasthttp.RequestCtx, as *app.State) (*source.Source, *schema.Schema, *model.Model, error) {
-	key, err := ctxRequiredString(ctx, "key", false)
+func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State) (*source.Source, *schema.Schema, *model.Model, error) {
+	key, err := rcRequiredString(rc, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -138,7 +138,7 @@ func loadSourceModel(ctx *fasthttp.RequestCtx, as *app.State) (*source.Source, *
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load schema for source [%s]", key)
 	}
-	path, err := ctxRequiredString(ctx, "path", false)
+	path, err := rcRequiredString(rc, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

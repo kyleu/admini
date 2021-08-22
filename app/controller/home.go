@@ -22,19 +22,19 @@ var homeContent = util.ValueMap{
 	},
 }
 
-func Home(ctx *fasthttp.RequestCtx) {
-	act("home", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Home(rc *fasthttp.RequestCtx) {
+	act("home", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		projects, _ := as.Services.Projects.List()
 		sources, _ := as.Services.Sources.List()
 		ps.Data = homeContent
-		return render(ctx, as, &views.Home{Sources: sources, Projects: projects}, ps)
+		return render(rc, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
 }
 
-func Refresh(ctx *fasthttp.RequestCtx) {
-	act("refresh", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Refresh(rc *fasthttp.RequestCtx) {
+	act("refresh", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		redir := "/"
-		ref := string(ctx.Request.Header.Peek("Referer"))
+		ref := string(rc.Request.Header.Peek("Referer"))
 		if ref != "" {
 			u, err := url.Parse(ref)
 			if err == nil && u != nil {
@@ -46,6 +46,6 @@ func Refresh(ctx *fasthttp.RequestCtx) {
 		as.Services.Sources.Clear()
 		as.Services.Projects.Clear()
 		msg := "Cleared all caches"
-		return flashAndRedir(true, msg, redir, ctx, ps)
+		return flashAndRedir(true, msg, redir, rc, ps)
 	})
 }

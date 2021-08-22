@@ -12,7 +12,7 @@ func (m *Model) GetPK(logger *zap.SugaredLogger) []string {
 	if m.pk == nil {
 		for _, idx := range m.Indexes {
 			if idx.Primary {
-				if m.pk != nil {
+				if m.pk != nil && logger != nil {
 					logger.Error("multiple primary keys?!")
 				}
 				m.pk = idx.Fields

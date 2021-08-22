@@ -3,6 +3,7 @@ package database
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -35,6 +36,10 @@ func (s *Service) StartTransaction() (*sqlx.Tx, error) {
 		s.logger.Info("opening transaction")
 	}
 	return s.db.Beginx()
+}
+
+func (s *Service) Stats() sql.DBStats {
+	return s.db.Stats()
 }
 
 func errMessage(t string, q string, values []interface{}) string {

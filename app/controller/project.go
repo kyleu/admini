@@ -17,21 +17,21 @@ import (
 	"github.com/kyleu/admini/views/vproject"
 )
 
-func ProjectList(ctx *fasthttp.RequestCtx) {
-	act("project.list", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
+func ProjectList(rc *fasthttp.RequestCtx) {
+	act("project.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		p, err := as.Services.Projects.List()
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project list")
 		}
 		ps.Title = "Projects"
 		ps.Data = p
-		return render(ctx, as, &vproject.List{Projects: p}, ps, "projects")
+		return render(rc, as, &vproject.List{Projects: p}, ps, "projects")
 	})
 }
 
-func ProjectDetail(ctx *fasthttp.RequestCtx) {
-	act("project.detail", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func ProjectDetail(rc *fasthttp.RequestCtx) {
+	act("project.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -41,13 +41,13 @@ func ProjectDetail(ctx *fasthttp.RequestCtx) {
 		}
 		ps.Title = prj.Project.Name()
 		ps.Data = prj.Project
-		return render(ctx, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
+		return render(rc, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
 	})
 }
 
-func ProjectTest(ctx *fasthttp.RequestCtx) {
-	act("project.test", ctx, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := ctxRequiredString(ctx, "key", false)
+func ProjectTest(rc *fasthttp.RequestCtx) {
+	act("project.test", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := rcRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -70,6 +70,6 @@ func ProjectTest(ctx *fasthttp.RequestCtx) {
 		}
 
 		view := &vproject.Test{Message: fmt.Sprintf("Project [%s]: OK", v.Project.Key)}
-		return render(ctx, as, view, ps, "projects", v.Project.Key, "test")
+		return render(rc, as, view, ps, "projects", v.Project.Key, "test")
 	})
 }

@@ -21,7 +21,18 @@ func typeString(typ schematypes.Type, f *Format, ctx string) (string, []util.Pkg
 	case *schematypes.Int:
 		return "int", nil
 	case *schematypes.JSON:
-		return "json.RawMessage", nil
+		switch ctx {
+		case "dto":
+			return "json.RawMessage", []util.Pkg{{"encoding/json"}}
+		default:
+			if t.IsObject {
+				return "util.ValueMap", nil
+			}
+			if t.IsArray {
+				return "[]interface{}", nil
+			}
+			return "interface{}", nil
+		}
 	case *schematypes.List:
 		ts, p := typeString(t.V, f, ctx)
 		return "[]" + ts, p
@@ -35,9 +46,9 @@ func typeString(typ schematypes.Type, f *Format, ctx string) (string, []util.Pkg
 		if ctx == "dto" {
 			switch t.V.T.(type) {
 			case *schematypes.Bool:
-				return "sql.NullBool", nil
+				return "sql.NullBool", []util.Pkg{{"database/sql"}}
 			case *schematypes.String:
-				return "sql.NullString", nil
+				return "sql.NullString", []util.Pkg{{"database/sql"}}
 			}
 		}
 		ts, p := typeString(t.V, f, ctx)
