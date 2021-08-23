@@ -2,6 +2,7 @@
 package controller
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/kyleu/admini/app"
@@ -10,7 +11,7 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
-func MenuFor(as *app.State) (menu.Items, error) {
+func MenuFor(ctx context.Context, as *app.State) (menu.Items, error) {
 	return menu.Items{
 		&menu.Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: "/project", Children: projectItems(as)},
 		menu.Separator,
