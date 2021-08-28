@@ -12,7 +12,7 @@ import (
 
 func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) (*sqlx.Rows, error) {
 	op := "query"
-	now, ctx, span := s.newSpan(ctx, "db:" + op, q)
+	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
 	var ret *sqlx.Rows
 	var err error
 	defer s.complete(q, op, span, now, err)
@@ -63,7 +63,7 @@ func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, val
 
 func (s *Service) Select(ctx context.Context, dest interface{}, q string, tx *sqlx.Tx, values ...interface{}) error {
 	op := "select"
-	now, ctx, span := s.newSpan(ctx, "db:" + op, q)
+	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
 	var err error
 	defer s.complete(q, op, span, now, err)
 	s.logQuery(fmt.Sprintf("selecting rows of type [%T]", dest), q, values)
@@ -77,7 +77,7 @@ func (s *Service) Select(ctx context.Context, dest interface{}, q string, tx *sq
 
 func (s *Service) Get(ctx context.Context, dto interface{}, q string, tx *sqlx.Tx, values ...interface{}) error {
 	op := "get"
-	now, ctx, span := s.newSpan(ctx, "db:" + op, q)
+	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
 	var err error
 	defer s.complete(q, op, span, now, err)
 	s.logQuery(fmt.Sprintf("getting single row of type [%T]", dto), q, values)
@@ -95,7 +95,7 @@ type singleIntResult struct {
 
 func (s *Service) SingleInt(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) (int64, error) {
 	op := "single-int"
-	now, ctx, span := s.newSpan(ctx, "db:" + op, q)
+	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
 	var err error
 	defer s.complete(q, op, span, now, err)
 	x := &singleIntResult{}

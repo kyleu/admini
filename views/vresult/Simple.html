@@ -48,7 +48,7 @@
 
       {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
         {%= vutil.Indent(true, indent + 2) %}
-        <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination("x", r.Count, params, ps.URI) %}</td></tr>
+        <tr><td colspan="{%d len(r.Fields) %}">{%= components.Pagination(r.Count, params, ps.URI) %}</td></tr>
       {% endif %}
     {%= vutil.Indent(true, indent + 1) %}
     </tbody>

@@ -26,7 +26,7 @@
           {%- if p.Act.Type != action.TypeSeparator -%}
           {%= components.TableInput("title", "Title", p.Act.Title, 5) %}
           {%= components.TableIcons("icon", "Icon", p.Act.Icon, ps, 5) %}
-          {%= components.TableTextarea("description", "Description", p.Act.Description, 5) %}
+          {%= components.TableTextarea("description", "Description", 8, p.Act.Description, 5) %}
           {%- endif -%}
           {%- switch p.Act.Type -%}
           {%- case action.TypeStatic -%}
@@ -35,7 +35,7 @@
             content, _ := p.Act.Config["content"].(string)
           -%}
           {%= components.TableSelect("format", "Format", format, []string{"html", "text", "code"}, []string{"HTML", "Text", "Code"}, 5) %}
-          {%= components.TableTextarea("content", "Content", content, 5) %}
+          {%= components.TableTextarea("content", "Content", 8, content, 5) %}
           {%- endswitch -%}
         </tbody>
       </table>
