@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/views/vmodel"
 
@@ -12,8 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
-	_, ld, err := loaderFor(req, srcKey)
+func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string, as *app.State) (*Result, error) {
+	_, ld, err := loaderFor(req, srcKey, as)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -38,7 +39,7 @@ func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	return NewResult("", bc, req, act, data, page), nil
 }
 
-func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
+func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string, as *app.State) (*Result, error) {
 	changes, err := cutil.ParseFormAsChanges(req.Ctx)
 	if err != nil {
 		return ErrResult(req, act, err)
@@ -48,7 +49,7 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return RedirectResult("no changes required", req.RouteAct(act, 0)), nil
 	}
 
-	_, ld, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey, as)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -72,10 +73,10 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	return RedirectResult(msg, dest), nil
 }
 
-func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string) (*Result, error) {
+func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string, as *app.State) (*Result, error) {
 	pk := m.GetPK(req.PS.Logger)
 
-	_, ld, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey, as)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}

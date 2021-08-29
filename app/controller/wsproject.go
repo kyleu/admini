@@ -61,31 +61,31 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 
 		ps.Context, _ = telemetry.StartSpan(ps.Context, "workspace", strings.Join(paths, "/"))
 		wr := &cutil.WorkspaceRequest{
-			T: "x", K: pv.Project.Key, Ctx: rc, AS: as, PS: ps, Item: a, Path: remaining,
+			T: "x", K: pv.Project.Key, Ctx: rc, PS: ps, Item: a, Path: remaining,
 			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
-		return handleAction(wr, a, rc, ps)
+		return handleAction(wr, a, rc, as)
 	})
 }
 
-func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.RequestCtx, ps *cutil.PageState) (string, error) {
+func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.RequestCtx, as *app.State) (string, error) {
 	if req == nil {
 		return "", errors.New("nil project request")
 	}
 	if act == nil {
 		act = &action.Action{}
 	}
-	res, err := workspace.ActionHandler(req, act)
+	res, err := workspace.ActionHandler(req, act, as)
 	if err != nil {
 		return "", err
 	}
 
 	if res.Redirect != "" {
-		return flashAndRedir(true, res.Title, res.Redirect, rc, ps)
+		return flashAndRedir(true, res.Title, res.Redirect, rc, req.PS)
 	}
 
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
 
-	return render(req.Ctx, req.AS, res.Page, req.PS, res.Breadcrumbs...)
+	return render(req.Ctx, as, res.Page, req.PS, res.Breadcrumbs...)
 }

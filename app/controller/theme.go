@@ -8,7 +8,6 @@ import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/theme"
-	"github.com/kyleu/admini/app/user"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vtheme"
 )
@@ -76,7 +75,7 @@ func ThemeSave(rc *fasthttp.RequestCtx) {
 		}
 
 		ps.Profile.Theme = newKey
-		err = user.SaveProfile(ps.Profile, rc, ps.Session, ps.Logger)
+		err = cutil.SaveProfile(ps.Profile, rc, ps.Session, ps.Logger)
 		if err != nil {
 			return "", err
 		}

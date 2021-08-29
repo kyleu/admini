@@ -22,7 +22,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 	maxKeyLength := 0
 	maxTypeLength := 0
 	maxDTOTypeLength := 0
-	var dataFields []string
+	dataFields := make([]string, 0, len(m.Fields))
 	for _, fld := range m.Fields {
 		if len(fld.Key) > maxKeyLength {
 			maxKeyLength = len(fld.Key)
@@ -35,7 +35,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 		if len(z) > maxDTOTypeLength {
 			maxDTOTypeLength = len(z)
 		}
-		dataFields = append(dataFields, firstChar + "." + util.ToCamel(fld.Key))
+		dataFields = append(dataFields, firstChar+"."+util.ToCamel(fld.Key))
 	}
 
 	f.W("type "+sk+" struct {", 1)
@@ -58,7 +58,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 	f.W("}", -1)
 	f.LB()
 
-	f.W("func (" + firstChar + " *" + sk + ") ToData() []interface{} {", 1)
+	f.W("func ("+firstChar+" *"+sk+") ToData() []interface{} {", 1)
 	f.W("return []interface{}{" + strings.Join(dataFields, ", ") + "}")
 	f.W("}", -1)
 	f.LB()
@@ -66,9 +66,9 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 	f.Wf("type %s []*%s", pluralk, sk)
 	f.LB()
 
-	var cols []string
+	cols := make([]string, 0, len(m.Fields))
 	for _, f := range m.Fields {
-		cols = append(cols, "\"" + f.Key + "\"")
+		cols = append(cols, "\""+f.Key+"\"")
 	}
 
 	f.W("var (", 1)
@@ -81,7 +81,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 
 	f.W("type "+lk+"DTO struct {", 1)
 	dtoMsg := "%-" + fmt.Sprintf("%d", maxKeyLength) + "s %-" + fmt.Sprintf("%d", maxDTOTypeLength) + "s %s"
-	dtoFieldMsg := "%-" + fmt.Sprintf("%d", maxKeyLength + 1) + "s %s.%s,"
+	dtoFieldMsg := "%-" + fmt.Sprintf("%d", maxKeyLength+1) + "s %s.%s,"
 	for _, fld := range m.Fields {
 		typ, imps := typeString(fld.Type, fm, "dto")
 		for _, imp := range imps {
@@ -92,7 +92,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 	f.W("}", -1)
 	f.LB()
 	f.W(fmt.Sprintf("func (%s *%sDTO) To%s() *%s {", firstChar, lk, sk, sk), 1)
-	f.W("return &" + sk + "{", 1)
+	f.W("return &"+sk+"{", 1)
 	for _, fld := range m.Fields {
 		call := util.ToCamel(fld.Key)
 		switch typ, _ := typeString(fld.Type, fm, "dto"); typ {
@@ -101,7 +101,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 		case "sql.NullString":
 			call += ".String"
 		}
-		f.Wf(dtoFieldMsg, util.ToCamel(fld.Key) + ":", firstChar, call)
+		f.Wf(dtoFieldMsg, util.ToCamel(fld.Key)+":", firstChar, call)
 	}
 	f.W("}", -1)
 	f.W("}", -1)

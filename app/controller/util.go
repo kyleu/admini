@@ -12,27 +12,12 @@ import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/app/web"
 	"github.com/kyleu/admini/views"
 	"github.com/kyleu/admini/views/layout"
 	"github.com/kyleu/admini/views/verror"
 )
 
-var (
-	_currentAppState  *app.State
-	_currentSiteState *app.State
-	initialIcons      = []string{"search"}
-)
-
-func SetAppState(a *app.State) {
-	_currentAppState = a
-	initApp(a)
-}
-
-func SetSiteState(a *app.State) {
-	_currentSiteState = a
-	initSite(a)
-}
+var initialIcons = []string{"search"}
 
 func rcRequiredString(rc *fasthttp.RequestCtx, key string, allowEmpty bool) (string, error) {
 	v, ok := rc.UserValue(key).(string)
@@ -83,7 +68,7 @@ func flashAndRedir(success bool, msg string, redir string, rc *fasthttp.RequestC
 		status = "success"
 	}
 	ps.Session.AddFlash(fmt.Sprintf("%s:%s", status, msg))
-	if err := web.SaveSession(rc, ps.Session, ps.Logger); err != nil {
+	if err := cutil.SaveSession(rc, ps.Session, ps.Logger); err != nil {
 		return "", errors.Wrap(err, "unable to save flash session")
 	}
 

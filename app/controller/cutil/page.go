@@ -13,7 +13,6 @@ import (
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/user"
 	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/app/web"
 )
 
 type PageState struct {
@@ -26,7 +25,7 @@ type PageState struct {
 	Flashes       []string           `json:"flashes"`
 	Session       *sessions.Session  `json:"-"`
 	Profile       *user.Profile      `json:"profile"`
-	Accounts      web.Accounts       `json:"accounts"`
+	Accounts      user.Accounts      `json:"accounts"`
 	Icons         []string           `json:"icons"`
 	RootIcon      string             `json:"rootIcon"`
 	RootPath      string             `json:"rootPath"`

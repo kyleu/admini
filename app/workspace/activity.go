@@ -1,6 +1,7 @@
 package workspace
 
 import (
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/views/vaction"
@@ -8,11 +9,11 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
+func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {
 	a := act.Config.GetStringOpt(action.TypeActivity.Key)
 	switch a {
 	case "sql":
-		return sourceActivitySQL(req, act)
+		return sourceActivitySQL(req, act, as)
 	case "":
 		return ErrResult(req, act, errors.New("must provide activity in action config"))
 	default:
@@ -20,7 +21,7 @@ func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action) (*Result, e
 	}
 }
 
-func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
+func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {
 	srcKey := act.Config.GetStringOpt(action.TypeSource.Key)
 	if srcKey == "" {
 		return ErrResult(req, act, errors.New("must provide source in action config"))
@@ -46,7 +47,7 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action) (*Result
 	if src == nil {
 		return ErrResult(req, act, errors.Errorf("source [%s] is not in this project's configuration", srcKey))
 	}
-	ld, err := req.AS.Services.Loaders.Get(src.Type, src.Key, src.Config)
+	ld, err := as.Services.Loaders.Get(src.Type, src.Key, src.Config)
 	if err != nil {
 		return ErrResult(req, act, errors.New("unable to create loader"))
 	}

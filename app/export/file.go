@@ -123,7 +123,7 @@ func goImportsFor(imps []string) []line {
 		return nil
 	}
 	sort.Strings(imps) // TODO improve
-	var ret []line
+	ret := make([]line, 0, len(imps)+1)
 	for _, i := range imps {
 		ret = append(ret, line{Content: "\"" + i + "\""})
 	}

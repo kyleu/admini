@@ -1,6 +1,7 @@
 package workspace
 
 import (
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/telemetry"
 	"go.opentelemetry.io/otel/attribute"
@@ -13,15 +14,15 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
+func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {
 	ctx, span := telemetry.StartSpan(req.Context, "workspace", act.String())
 	req.Context = ctx
-	span.SetAttributes(attribute.String("actType", act.Type.Key), attribute.String("actPkg", act.Pkg.String()), attribute.String("actKey", act.Key))
 	defer span.End()
 
 	if act == nil || (act.Key == "" && len(act.Pkg) == 0) {
 		return NewResult(req.Project.Name(), nil, req, act, req.Project, &vworkspace.WorkspaceOverview{Req: req}), nil
 	}
+	span.SetAttributes(attribute.String("actType", act.Type.Key), attribute.String("actPkg", act.Pkg.String()), attribute.String("actKey", act.Key))
 	switch act.Type {
 	case action.TypeFolder:
 		return NewResult("", nil, req, act, act, &vaction.Folder{Req: req, Act: act}), nil
@@ -29,18 +30,18 @@ func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action) (*Result, er
 		return NewResult("", nil, req, act, act, &vaction.Static{Req: req, Act: act}), nil
 
 	case action.TypeAll:
-		return sourceAll(req, act)
+		return sourceAll(req, act, as)
 	case action.TypeSource, action.TypePackage, action.TypeModel:
-		return sourceItem(req, act)
+		return sourceItem(req, act, as)
 	case action.TypeActivity:
-		return sourceActivity(req, act)
+		return sourceActivity(req, act, as)
 
 	default:
 		return nil, errors.Errorf("unhandled action type [%s]", act.Type.Key)
 	}
 }
 
-func sourceAll(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
+func sourceAll(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {
 	switch len(req.Path) {
 	case 0:
 		return NewResult("", nil, req, act, act, &vaction.Sources{Req: req, Act: act}), nil
@@ -53,11 +54,11 @@ func sourceAll(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error)
 		if err != nil {
 			return ErrResult(req, act, err)
 		}
-		return process(req, act, p, req.Path[0], req.Path[1:])
+		return process(req, act, p, req.Path[0], req.Path[1:], as)
 	}
 }
 
-func sourceItem(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error) {
+func sourceItem(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {
 	src := act.Config.GetStringOpt(action.TypeSource.Key)
 	p, err := rootItemFor(req, src)
 	if err != nil {
@@ -71,14 +72,14 @@ func sourceItem(req *cutil.WorkspaceRequest, act *action.Action) (*Result, error
 		}
 		x = util.SplitAndTrim(t, "/")
 	}
-	return process(req, act, p, src, append(x, req.Path...))
+	return process(req, act, p, src, append(x, req.Path...), as)
 }
 
-func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package, srcKey string, path []string) (*Result, error) {
+func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package, srcKey string, path []string, as *app.State) (*Result, error) {
 	i, remaining := pkg.Get(path)
 	switch t := i.(type) {
 	case *model.Model:
-		return processModel(req, act, srcKey, t, remaining)
+		return processModel(req, act, srcKey, t, remaining, as)
 	case *model.Package:
 		return processPackage(req, act, t)
 	case error:

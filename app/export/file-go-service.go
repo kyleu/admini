@@ -40,23 +40,23 @@ func goServiceFile(m *model.Model, fm *Format) (*Result, error) {
 			for _, imp := range imps {
 				f.AddImport(imp.String())
 			}
-			pkArgs = append(pkArgs, flk+ " " + typ)
+			pkArgs = append(pkArgs, flk+" "+typ)
 		}
 		lk := util.ToLowerCamel(util.ToSingular(m.Key))
 		sk := util.ToCamel(util.ToSingular(m.Key))
 		f.AddImport("context")
-		f.W("func (s *Service) Get(ctx context.Context, tx *sqlx.Tx, " + strings.Join(pkArgs, ", ") + ") (*" + sk + ", error) {", 1)
+		f.W("func (s *Service) Get(ctx context.Context, tx *sqlx.Tx, "+strings.Join(pkArgs, ", ")+") (*"+sk+", error) {", 1)
 		f.Wf("ret := &%sDTO{}", lk)
 		var pkWhereClause []string
 		for idx, x := range pk {
-			pkWhereClause = append(pkWhereClause, fmt.Sprintf("%s = $%d", x, idx + 1))
+			pkWhereClause = append(pkWhereClause, fmt.Sprintf("%s = $%d", x, idx+1))
 		}
 		f.Wf("q := database.SQLSelectSimple(Table, ColumnsString, \"%s\")", strings.Join(pkWhereClause, " and "))
 		f.Wf("err := s.db.Get(ctx, ret, q, tx, %s)", strings.Join(pk, ", "))
 		f.W("if err != nil {", 1)
 		var pkLogs []string
 		for _, x := range pk {
-			pkLogs = append(pkLogs, x + " [%v]")
+			pkLogs = append(pkLogs, x+" [%v]")
 		}
 		msg := "\"unable to get " + lk + " by " + strings.Join(pkLogs, " and ") + "\""
 		f.Wf("return nil, errors.Wrapf(err, %s, %s)", msg, strings.Join(pk, ", "))

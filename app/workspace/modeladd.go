@@ -3,6 +3,7 @@ package workspace
 import (
 	"fmt"
 
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
@@ -10,8 +11,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model) (*Result, error) {
-	_, ld, err := loaderFor(req, srcKey)
+func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, as *app.State) (*Result, error) {
+	_, ld, err := loaderFor(req, srcKey, as)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
@@ -25,13 +26,13 @@ func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 	return NewResult("", nil, req, act, x, page), nil
 }
 
-func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string) (*Result, error) {
+func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string, as *app.State) (*Result, error) {
 	changes, err := cutil.ParseFormAsChanges(req.Ctx)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
 
-	_, ld, err := loaderFor(req, srcKey)
+	_, ld, err := loaderFor(req, srcKey, as)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}

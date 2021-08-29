@@ -4,6 +4,7 @@ import (
 	"context"
 	"strings"
 
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/filter"
 	"github.com/valyala/fasthttp"
 
@@ -16,27 +17,27 @@ import (
 	"github.com/pkg/errors"
 )
 
-func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string) (*Result, error) {
+func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string, as *app.State) (*Result, error) {
 	if len(additional) == 0 {
-		return processModelList(req, act, srcKey, m)
+		return processModelList(req, act, srcKey, m, as)
 	}
 	switch additional[0] {
 	case "new":
 		if string(req.Ctx.Method()) == fasthttp.MethodPost {
-			return processModelAdd(req, act, srcKey, m, additional[1:])
+			return processModelAdd(req, act, srcKey, m, additional[1:], as)
 		}
-		return processModelNew(req, act, srcKey, m)
+		return processModelNew(req, act, srcKey, m, as)
 	case "export":
 		return processModelExport(req, act, m, additional[1:])
 	case "v":
-		return processModelView(req, act, srcKey, m, additional[1:])
+		return processModelView(req, act, srcKey, m, additional[1:], as)
 	case "x":
 		if string(req.Ctx.Method()) == fasthttp.MethodPost {
-			return processModelSave(req, act, srcKey, m, additional[1:])
+			return processModelSave(req, act, srcKey, m, additional[1:], as)
 		}
-		return processModelEdit(req, act, srcKey, m, additional[1:])
+		return processModelEdit(req, act, srcKey, m, additional[1:], as)
 	case "d":
-		return processModelDelete(req, act, srcKey, m, additional[1:])
+		return processModelDelete(req, act, srcKey, m, additional[1:], as)
 	default:
 		return nil, errors.Errorf("unhandled model parameters [%s]", strings.Join(additional, "/"))
 	}
@@ -62,13 +63,13 @@ func getModel(ctx context.Context, m *model.Model, idStrings []string, ld loader
 	}
 }
 
-func loaderFor(req *cutil.WorkspaceRequest, srcKey string) (*source.Source, loader.Loader, error) {
+func loaderFor(req *cutil.WorkspaceRequest, srcKey string, as *app.State) (*source.Source, loader.Loader, error) {
 	s, err := req.Sources.GetWithError(srcKey)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	l, err := req.AS.Services.Loaders.Get(s.Type, s.Key, s.Config)
+	l, err := as.Services.Loaders.Get(s.Type, s.Key, s.Config)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "no loader available")
 	}
