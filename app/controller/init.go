@@ -4,10 +4,12 @@ package controller
 import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/user"
 )
 
 // Initialize app-specific system dependencies.
 func initApp(*app.State) {
+	user.SetPermissions(true, user.Perm("/admin", "*", true))
 }
 
 // Configure app-specific data for each request.
