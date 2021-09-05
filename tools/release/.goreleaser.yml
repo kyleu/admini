@@ -77,19 +77,6 @@ release:
     - glob: "./build/dist/*_desktop_*.zip"
     - glob: "./build/dist/*_mobile_*.zip"
 
-scoop:
-  bucket:
-    owner: "kyleu"
-    name: "admini"
-  commit_author:
-    name: "Kyle U"
-    email: "kyle@kyleu.com"
-  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
-  homepage: "https://admini.dev"
-  description: "Use Admini to explore and manage your data as fast and easily as possible"
-  license: "Proprietary"
-  skip_upload: false
-
 signs:
   - artifacts: checksum
 

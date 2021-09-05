@@ -2,6 +2,7 @@
   "key": "admini",
   "type": "projectforge.dev",
   "name": "Admini",
+  "icon": "compass",
   "version": "0.1.8",
   "package": "github.com/kyleu/admini",
   "port": 14000,
