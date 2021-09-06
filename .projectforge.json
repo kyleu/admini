@@ -28,5 +28,29 @@
     "sourcecode": "https://github.com/kyleu/admini",
     "summary": "Use Admini to explore and manage your data as fast and easily as possible",
     "description": "Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface"
+  },
+  "build": {
+    "publish": true,
+    "desktop": true,
+    "notarize": true,
+    "signing": true,
+    "android": true,
+    "iOS": true,
+    "wasm": true,
+    "windowsARM": true,
+    "linuxARM": true,
+    "linuxMIPS": true,
+    "linuxOdd": true,
+    "aix": true,
+    "dragonfly": true,
+    "illumos": true,
+    "freeBSD": true,
+    "netBSD": true,
+    "openBSD": true,
+    "plan9": true,
+    "solaris": true,
+    "homebrew": true,
+    "nfpms": true,
+    "snapcraft": true
   }
 }
