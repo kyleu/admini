@@ -12,7 +12,8 @@
     "desktop",
     "marketing",
     "mobile",
-    "oauth"
+    "oauth",
+    "search"
   ],
   "ignore": [
     "data"

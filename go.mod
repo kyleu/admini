@@ -14,11 +14,9 @@ require (
 	github.com/fasthttp/router v1.4.2
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gertd/go-pluralize v0.1.7
-	github.com/go-gem/sessions v0.0.0-20170522023159-6f6fd65f2530
 	github.com/golang-jwt/jwt v3.2.1+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.2.0
-	github.com/gorilla/securecookie v1.1.1
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/iancoleman/strcase v0.2.0
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
