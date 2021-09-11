@@ -3,7 +3,7 @@
   "type": "projectforge.dev",
   "name": "Admini",
   "icon": "compass",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "package": "github.com/kyleu/admini",
   "port": 14000,
   "modules": [
