@@ -29,6 +29,12 @@ changelog:
 
 checksum:
   name_template: "checksums.txt"
+  extra_files:
+    - glob: "./build/dist/*_notarized.zip"
+    - glob: "./build/dist/*_desktop_*.dmg"
+    - glob: "./build/dist/*_desktop_*.zip"
+    # $PF_SECTION_START(checksums)$
+    # $PF_SECTION_END(checksums)$
 
 dockers:
   -
@@ -76,6 +82,8 @@ release:
     - glob: "./build/dist/*.dmg"
     - glob: "./build/dist/*_desktop_*.zip"
     - glob: "./build/dist/*_mobile_*.zip"
+    # $PF_SECTION_START(releasefiles)$
+    # $PF_SECTION_END(releasefiles)$
 
 signs:
   - artifacts: checksum
@@ -111,6 +119,8 @@ builds:
         - "./tools/notarize/notarize-amd64.sh {{ .Version }}"
         - "./bin/build/android.sh {{ .Version }}"
         - "./bin/build/ios.sh {{ .Version }}"
+        # $PF_SECTION_START(extrascripts)$
+        # $PF_SECTION_END(extrascripts)$
 
   - id: "darwin_arm64"
     goos:

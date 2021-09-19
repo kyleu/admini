@@ -5,14 +5,10 @@ FROM golang:alpine AS builder
 ENV GOFLAGS="-mod=readonly"
 
 RUN apk add --update --no-cache bash ca-certificates make git curl build-base
+RUN go get -u github.com/valyala/quicktemplate/qtc
 
 RUN mkdir /app
-
 WORKDIR /app
-
-RUN go get -u github.com/pyros2097/go-embed
-RUN go get -u github.com/valyala/quicktemplate
-RUN go get -u github.com/valyala/quicktemplate/qtc
 
 ADD ./go.mod        /app/go.mod
 ADD ./go.sum        /app/go.sum
@@ -31,9 +27,7 @@ ADD ./views         /app/views
 # $PF_SECTION_END(dockerbuild)$
 
 RUN go mod download
-
 RUN set -xe && bash -c 'make build-release'
-
 RUN mv build/release /build
 
 # Final image

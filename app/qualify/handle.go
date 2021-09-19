@@ -25,8 +25,8 @@ func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequ
 	ret := make(Results, 0, len(quals))
 	for _, q := range quals {
 		// TODO: pull and fill `m` && `d`
-		mdl := m
-		d := []interface{}{q}
+		mdl := &model.Model{Key: "TODO"}
+		d := []interface{}{"TODO"}
 		x := &Result{
 			Action: q.Action,
 			Icon:   q.Icon,

@@ -5,9 +5,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 
-	"github.com/jmoiron/sqlx"
+	"github.com/kyleu/admini/app/util"
 )
 
 func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) (*sqlx.Rows, error) {
@@ -25,7 +26,7 @@ func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, values ...in
 	return ret, err
 }
 
-func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) ([]map[string]interface{}, error) {
+func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) ([]util.ValueMap, error) {
 	rows, err := s.Query(ctx, q, tx, values...)
 	if err != nil {
 		return nil, err
@@ -34,7 +35,7 @@ func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, values .
 		_ = rows.Close()
 	}()
 
-	ret := []map[string]interface{}{}
+	ret := []util.ValueMap{}
 	for rows.Next() {
 		x := map[string]interface{}{}
 		err = rows.MapScan(x)
@@ -47,7 +48,7 @@ func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, values .
 	return ret, nil
 }
 
-func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) (map[string]interface{}, error) {
+func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) (util.ValueMap, error) {
 	rows, err := s.QueryRows(ctx, q, tx, values...)
 	if err != nil {
 		return nil, err
