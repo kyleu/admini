@@ -3,7 +3,7 @@
   "type": "projectforge.dev",
   "name": "Admini",
   "icon": "compass",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "package": "github.com/kyleu/admini",
   "port": 14000,
   "modules": [
@@ -13,7 +13,9 @@
     "marketing",
     "mobile",
     "oauth",
-    "search"
+    "postgres",
+    "search",
+    "sqlite"
   ],
   "ignore": [
     "data"
