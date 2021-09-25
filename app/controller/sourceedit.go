@@ -1,20 +1,24 @@
 package controller
 
 import (
+	"bytes"
+	"compress/gzip"
 	"fmt"
+	"io/ioutil"
+	"path/filepath"
 	"strconv"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/filesystem"
 	"github.com/valyala/fasthttp"
+	"github.com/pkg/errors"
 
+	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
-	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/controller/cutil"
-
-	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/assets"
 	"github.com/kyleu/admini/views/vsource"
 )
 
@@ -25,6 +29,44 @@ func SourceNew(rc *fasthttp.RequestCtx) {
 		s := &source.Source{Type: t}
 		ps.Data = s
 		return render(rc, as, &vsource.New{Origin: t}, ps, "sources", "New")
+	})
+}
+
+func SourceExample(rc *fasthttp.RequestCtx) {
+	act("source.example", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		ps.Title = "Example Database"
+
+		data, _, err := assets.EmbedAsset("example.sqlite.gz")
+		if err != nil {
+			return "", errors.Wrap(err, "unable to load embedded example database")
+		}
+		b := bytes.NewBuffer(data)
+		zr, err := gzip.NewReader(b)
+		if err != nil {
+			return "", err
+		}
+		defer func() { _ = zr.Close() }()
+		out, err := ioutil.ReadAll(zr)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to decompress embedded example database")
+		}
+
+		fn := filepath.Join(as.Files.Root(), "example.sqlite")
+		fpath := filepath.Join(as.Files.Root(), "example.sqlite")
+
+		err = as.Files.WriteFile(fn, out, filesystem.DefaultMode, true)
+		if err != nil {
+			return "", errors.Wrapf(err, "unable to write example database to [%s]", fpath)
+		}
+
+		ret := as.Services.Sources.NewSource("example", "Example", "star", "Example music database", schema.OriginSQLite)
+		ret.Config = []byte(util.ToJSON(map[string]interface{}{"file": fpath}))
+		err = as.Services.Sources.Save(ret, false)
+		if err != nil {
+			return "", errors.Wrap(err, "unable to save example database")
+		}
+		ps.Data = ret
+		return flashAndRedir(true, "saved example source", "/source/example", rc, ps)
 	})
 }
 

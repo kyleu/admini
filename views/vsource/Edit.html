@@ -57,7 +57,11 @@
 
 {% func sqliteFields(b []byte, indent int) %}{% stripspace %}
   {% code
-    cfg, _ := lsqlite.LoadConfig(b)
+    println(len(b))
+    cfg, err := lsqlite.LoadConfig(b)
+    if err != nil {
+      panic(err)
+    }
   %}
   {%= components.TableInput("file", "File", cfg.File, indent) %}
   {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}

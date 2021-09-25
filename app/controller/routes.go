@@ -32,6 +32,7 @@ func AppRoutes() fasthttp.RequestHandler {
 	r.GET("/source", SourceList)
 	r.POST("/source", SourceInsert)
 	r.GET("/source/_new", SourceNew)
+	r.GET("/source/_example", SourceExample)
 	r.GET("/source/{key}", SourceDetail)
 	r.GET("/source/{key}/edit", SourceEdit)
 	r.POST("/source/{key}", SourceSave)
