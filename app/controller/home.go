@@ -27,6 +27,9 @@ func Home(rc *fasthttp.RequestCtx) {
 		projects, _ := as.Services.Projects.List()
 		sources, _ := as.Services.Sources.List()
 		ps.Data = homeContent
+		if len(sources) /* TODO */ != /* TODO */ 0 {
+			return render(rc, as, &views.Home{Sources: sources, Projects: projects}, ps)
+		}
 		return render(rc, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
 }
