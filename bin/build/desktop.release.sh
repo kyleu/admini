@@ -53,7 +53,7 @@ zip "admini_desktop_${TGT}_linux_x86_64.zip" "./admini"
 echo "building Windows zip..."
 curl -o webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 curl -o WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
-zip "projectforge_desktop_${TGT}_windows_x86_64.zip" "./projectforge.exe" "./webview.dll" "./WebView2Loader.dll"
+zip "admini_desktop_${TGT}_windows_x86_64.zip" "./admini.exe" "./webview.dll" "./WebView2Loader.dll"
 
 mkdir -p "../../build/dist"
 mv "./admini_desktop_${TGT}_macos_x86_64.dmg" "../../build/dist"
