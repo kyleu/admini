@@ -7,11 +7,12 @@
   "package": "github.com/kyleu/admini",
   "port": 14000,
   "modules": [
+    "android",
     "core",
     "database",
     "desktop",
+    "ios",
     "marketing",
-    "mobile",
     "oauth",
     "postgres",
     "search",

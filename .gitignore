@@ -9,4 +9,8 @@
 **/*.html.go
 **/*.sql.go
 
+/tools/ios/app.xcodeproj/xcuserdata
+/tools/ios/build
+/tools/ios/*.framework
+
 /client/node_modules

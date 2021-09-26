@@ -12,4 +12,16 @@ echo "building gomobile for iOS..."
 time gomobile bind -o build/dist/mobile_ios_arm64/admini.framework -target=ios github.com/kyleu/admini/app/cmd
 echo "gomobile for iOS completed successfully, building distribution..."
 cd "build/dist/mobile_ios_arm64/admini.framework"
-zip --symlinks -r "../../admini_${TGT}_mobile_ios.zip" .
+zip --symlinks -r "../../admini_${TGT}_mobile_ios_framework.zip" .
+
+echo "Building iOS app..."
+cd $dir/../../tools/ios
+
+rm -rf admini.framework
+cp -R ../../build/dist/mobile_ios_arm64/admini.framework ./admini.framework
+
+xcodebuild -project app.xcodeproj
+
+cd build/Release-iphoneos/
+
+zip -r "$dir/../../build/dist/admini_${TGT}_mobile_ios_app.zip" "admini.app"

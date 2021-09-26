@@ -9,8 +9,8 @@ import (
 	"strconv"
 
 	"github.com/kyleu/admini/app/filesystem"
-	"github.com/valyala/fasthttp"
 	"github.com/pkg/errors"
+	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
