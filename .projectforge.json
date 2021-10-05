@@ -1,6 +1,5 @@
 {
   "key": "admini",
-  "type": "projectforge.dev",
   "name": "Admini",
   "icon": "compass",
   "version": "0.1.12",
@@ -26,12 +25,13 @@
     "authorName": "Kyle U",
     "authorEmail": "kyle@kyleu.com",
     "license": "Proprietary",
-    "bundle": "com.kyleu.admini",
-    "signingIdentity": "Developer ID Application: Kyle Unverferth (C6S478FYLD)",
     "homepage": "https://admini.dev",
     "sourcecode": "https://github.com/kyleu/admini",
     "summary": "Use Admini to explore and manage your data as fast and easily as possible",
-    "description": "Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface"
+    "description": "Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface",
+    "bundle": "com.kyleu.admini",
+    "signingIdentity": "Developer ID Application: Kyle Unverferth (C6S478FYLD)",
+    "javaPackage": "dev.admini"
   },
   "build": {
     "publish": true,
