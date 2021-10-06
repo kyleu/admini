@@ -33,6 +33,7 @@ checksum:
     - glob: "./build/dist/*_notarized.zip"
     - glob: "./build/dist/*_desktop_*.dmg"
     - glob: "./build/dist/*_desktop_*.zip"
+    - glob: "./build/dist/*_mobile_*.zip"
     # $PF_SECTION_START(checksums)$
     # $PF_SECTION_END(checksums)$
 

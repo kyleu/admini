@@ -26,3 +26,4 @@ mv Info.plist ../../build/dist/mobile_ios_app_arm64
 cd ../../build/dist/mobile_ios_app_arm64
 
 xcodebuild -project "Admini.xcodeproj" -allowProvisioningUpdates
+zip -r "$dir/../../build/dist/admini_${TGT}_mobile_ios_app.zip" .
