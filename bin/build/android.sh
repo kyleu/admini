@@ -13,7 +13,7 @@ mkdir -p build/dist/mobile_android_arm64
 time gomobile bind -o build/dist/mobile_android_arm64/admini.aar -target=android github.com/kyleu/admini/app/cmd
 echo "gomobile for Android completed successfully, building distribution..."
 cd "build/dist/mobile_android_arm64"
-zip -r "../admini_${TGT}_mobile_android_aar.zip" .
+zip -r "../admini_${TGT}_android_aar.zip" .
 
 echo "creating Android project..."
 cd $dir/../..
@@ -29,4 +29,4 @@ cp ../mobile_android_arm64/admini-sources.jar ./app/libs/
 
 gradle assembleDebug
 cd app/build/outputs/apk/debug
-zip -r "$dir/../../build/dist/admini_${TGT}_mobile_android_apk.zip" .
+zip -r "$dir/../../build/dist/admini_${TGT}_android_apk.zip" .

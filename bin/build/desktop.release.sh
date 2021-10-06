@@ -44,19 +44,19 @@ codesign  -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer
 cp "./template/macos/appdmg.config.json" "./appdmg.config.json"
 
 echo "building macOS DMG..."
-appdmg "appdmg.config.json" "./admini_desktop_${TGT}_macos_x86_64.dmg"
-zip -r "admini_desktop_${TGT}_macos_x86_64.zip" "./Admini.app"
+appdmg "appdmg.config.json" "./admini_${TGT}_macos_x86_64_desktop.dmg"
+zip -r "admini_${TGT}_macos_x86_64_desktop.zip" "./Admini.app"
 
 echo "building Linux zip..."
-zip "admini_desktop_${TGT}_linux_x86_64.zip" "./admini"
+zip "admini_${TGT}_linux_x86_64_desktop.zip" "./admini"
 
 echo "building Windows zip..."
 curl -o webview.dll https://github.com/webview/webview/raw/master/dll/x64/webview.dll
 curl -o WebView2Loader.dll https://github.com/webview/webview/raw/master/dll/x64/WebView2Loader.dll
-zip "admini_desktop_${TGT}_windows_x86_64.zip" "./admini.exe" "./webview.dll" "./WebView2Loader.dll"
+zip "admini_${TGT}_windows_x86_64_desktop.zip" "./admini.exe" "./webview.dll" "./WebView2Loader.dll"
 
 mkdir -p "../../build/dist"
-mv "./admini_desktop_${TGT}_macos_x86_64.dmg" "../../build/dist"
-mv "./admini_desktop_${TGT}_macos_x86_64.zip" "../../build/dist"
-mv "./admini_desktop_${TGT}_linux_x86_64.zip" "../../build/dist"
-mv "./admini_desktop_${TGT}_windows_x86_64.zip" "../../build/dist"
+mv "./admini_${TGT}_macos_x86_64_desktop.dmg" "../../build/dist"
+mv "./admini_${TGT}_macos_x86_64_desktop.zip" "../../build/dist"
+mv "./admini_${TGT}_linux_x86_64_desktop.zip" "../../build/dist"
+mv "./admini_${TGT}_windows_x86_64_desktop.zip" "../../build/dist"

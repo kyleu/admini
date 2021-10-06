@@ -3,6 +3,7 @@
   "github.com/kyleu/admini/app"
   "github.com/kyleu/admini/app/util"
   "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/views/components"
   "github.com/kyleu/admini/views/layout"
 ) %}
 
@@ -10,8 +11,8 @@
 
 {% func (p *Index) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>Marketing Site!</h3>
-    <em>TODO</em>
+    <h3>{%= components.SVGRefIcon(`app`, ps) %}{%s util.AppName %}</h3>
+    <em>Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface</em>
     <pre>{%s util.ToJSON(ps.Data) %}</pre>
   </div>
 {% endfunc %}

@@ -3,7 +3,7 @@ source = ["./build/dist/darwin_amd64_darwin_amd64/admini"]
 bundle_id = "com.kyleu.admini"
 
 //notarize {
-//  path = "./build/dist/admini_desktop_0.1.13_macos_x86_64.dmg"
+//  path = "./build/dist/admini_0.1.13_macos_x86_64_desktop.dmg"
 //  bundle_id = "com.kyleu.admini"
 //}
 
