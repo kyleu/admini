@@ -3,15 +3,14 @@ package field
 import (
 	"time"
 
+	"github.com/kyleu/admini/app/types"
 	"github.com/kyleu/admini/app/util"
-
-	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
 type Field struct {
-	Key      string               `json:"key"`
-	Type     *schematypes.Wrapped `json:"type"`
-	Title    string               `json:"-"` // override only
+	Key      string         `json:"key"`
+	Type     *types.Wrapped `json:"type"`
+	Title    string         `json:"-"` // override only
 	Plural   string               `json:"-"` // override only
 	Hidden   bool                 `json:"-"` // override only
 	Default  interface{}          `json:"default,omitempty"`

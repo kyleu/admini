@@ -3,151 +3,150 @@ package postgres
 import (
 	"strings"
 
+	"github.com/kyleu/admini/app/types"
 	"go.uber.org/zap"
-
-	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
-func TypeForName(t string, logger *zap.SugaredLogger) *schematypes.Wrapped {
+func TypeForName(t string, logger *zap.SugaredLogger) *types.Wrapped {
 	if strings.HasPrefix(t, "_") {
-		return schematypes.NewList(TypeForName(t[1:], logger))
+		return types.NewList(TypeForName(t[1:], logger))
 	}
 	return typeFor(t, nil, logger)
 }
 
 // nolint
-func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes.Wrapped {
+func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *types.Wrapped {
 	if cr != nil && cr.Nullable == pgYes {
 		cr.Nullable = pgNo
-		return schematypes.NewOption(typeFor(t, cr, logger))
+		return types.NewOption(typeFor(t, cr, logger))
 	}
 	if strings.HasPrefix(t, "_") {
-		return schematypes.NewList(typeFor(t[1:], cr, logger))
+		return types.NewList(typeFor(t[1:], cr, logger))
 	}
 	if t == "ARRAY" && cr != nil && cr.ArrayType.Valid {
-		return schematypes.NewList(typeFor(cr.ArrayType.String, cr, logger))
+		return types.NewList(typeFor(cr.ArrayType.String, cr, logger))
 	}
 	switch strings.ToLower(t) {
 	case "aclitem":
-		// return schematypes.NewACL()
+		// return types.NewACL()
 	case "bit":
 		if cr != nil && cr.CharLength.Valid {
-			return schematypes.NewListSized(schematypes.NewBit(), int(cr.CharLength.Int32))
+			return types.NewListSized(types.NewBit(), int(cr.CharLength.Int32))
 		}
-		return schematypes.NewBit()
+		return types.NewBit()
 	case "varbit", "bit varying":
-		return schematypes.NewList(schematypes.NewBit())
+		return types.NewList(types.NewBit())
 	case "bool", "boolean":
-		return schematypes.NewBool()
+		return types.NewBool()
 	case "box":
-		// return schematypes.NewBox()
+		// return types.NewBox()
 	case "bpchar":
 		return stringFor(cr)
 	case "bytea":
-		return schematypes.NewList(schematypes.NewByte())
+		return types.NewList(types.NewByte())
 	case "char", "character":
-		return schematypes.NewChar()
+		return types.NewChar()
 	case "character varying", "varchar":
 		return stringFor(cr)
 	case "cid":
-		// return schematypes.NewCID()
+		// return types.NewCID()
 	case "cidr":
-		// return schematypes.NewCIDR()
+		// return types.NewCIDR()
 	case "circle":
-		// return schematypes.NewCircle()
+		// return types.NewCircle()
 	case "date":
-		return schematypes.NewDate()
+		return types.NewDate()
 	case "daterange":
-		return schematypes.NewRange(schematypes.NewDate())
+		return types.NewRange(types.NewDate())
 	case "float4", "real", "float":
-		return schematypes.NewFloat(32)
+		return types.NewFloat(32)
 	case "float8", "double precision", "double":
-		return schematypes.NewFloat(64)
+		return types.NewFloat(64)
 	case "hstore":
-		return schematypes.NewMap(schematypes.NewString(), schematypes.NewString())
+		return types.NewMap(types.NewString(), types.NewString())
 	case "inet":
-		// return schematypes.NewInet()
+		// return types.NewInet()
 	case "int2", "smallint":
-		return schematypes.NewInt(16)
+		return types.NewInt(16)
 	case "int2range":
-		return schematypes.NewRange(schematypes.NewInt(16))
+		return types.NewRange(types.NewInt(16))
 	case "int4", "integer", "int", "mediumint":
-		return schematypes.NewInt(32)
+		return types.NewInt(32)
 	case "int4range":
-		return schematypes.NewRange(schematypes.NewInt(32))
+		return types.NewRange(types.NewInt(32))
 	case "int8", "bigint":
-		return schematypes.NewInt(64)
+		return types.NewInt(64)
 	case "int8range":
-		return schematypes.NewRange(schematypes.NewInt(64))
+		return types.NewRange(types.NewInt(64))
 	case "interval":
-		// return schematypes.NewInterval()
+		// return types.NewInterval()
 	case "json":
-		return schematypes.NewJSON()
+		return types.NewJSON()
 	case "jsonb":
-		return schematypes.NewJSON()
+		return types.NewJSON()
 	case "line":
-		// return schematypes.NewLine()
+		// return types.NewLine()
 	case "lseg":
-		// return schematypes.NewLineSegment()
+		// return types.NewLineSegment()
 	case "macaddr":
-		// return schematypes.NewMacAddr()
+		// return types.NewMacAddr()
 	case "money":
-		// return schematypes.NewMoney()
+		// return types.NewMoney()
 	case "name":
 		return stringFor(cr)
 	case "numeric", "decimal":
-		// return schematypes.NewNumeric()
+		// return types.NewNumeric()
 	case "numrange":
-		return schematypes.NewRange(schematypes.NewFloat(64))
+		return types.NewRange(types.NewFloat(64))
 	case "oid":
-		return schematypes.NewInt(32)
+		return types.NewInt(32)
 	case "path":
-		// return schematypes.NewPath()
+		// return types.NewPath()
 	case "point":
-		// return schematypes.NewPoint()
+		// return types.NewPoint()
 	case "polygon":
-		// return schematypes.NewPolygon()
+		// return types.NewPolygon()
 	case "record":
-		// return schematypes.NewRecord()
+		// return types.NewRecord()
 	case "text":
 		return stringFor(cr)
 	case "tid":
-		// return schematypes.NewTID()
+		// return types.NewTID()
 	case "time", "time without time zone":
-		return schematypes.NewTime()
+		return types.NewTime()
 	case "timetz", "time with time zone":
-		// return schematypes.NewTimeTZ()
+		// return types.NewTimeTZ()
 	case "timestamp", "timestamp without time zone", "datetime":
-		return schematypes.NewTimestamp()
+		return types.NewTimestamp()
 	case "timestamptz", "timestamp with time zone":
-		return schematypes.NewTimestampZoned()
+		return types.NewTimestampZoned()
 	case "tsrange":
-		return schematypes.NewRange(schematypes.NewTimestamp())
+		return types.NewRange(types.NewTimestamp())
 	case "tsquery":
-		// return schematypes.NewTsQuery()
+		// return types.NewTsQuery()
 	case "tsvector":
-		return schematypes.NewList(schematypes.NewTimestamp())
+		return types.NewList(types.NewTimestamp())
 	case "tstzrange":
-		return schematypes.NewRange(schematypes.NewTimestampZoned())
+		return types.NewRange(types.NewTimestampZoned())
 	case "uuid":
-		return schematypes.NewUUID()
+		return types.NewUUID()
 	case "USER-DEFINED":
-		return schematypes.NewReference()
+		return types.NewReference()
 	case "xid":
-		// return schematypes.NewXID()
+		// return types.NewXID()
 	case "xml":
-		return schematypes.NewXML()
+		return types.NewXML()
 	case "year":
-		// return schematypes.NewYear()
+		// return types.NewYear()
 	}
 	logger.Warn("unhandled PostgreSQL type: " + t)
-	return schematypes.NewUnknown(t)
+	return types.NewUnknown(t)
 }
 
-func stringFor(cr *columnResult) *schematypes.Wrapped {
+func stringFor(cr *columnResult) *types.Wrapped {
 	max := 0
 	if cr != nil && cr.CharLength.Valid {
 		max = int(cr.CharLength.Int32)
 	}
-	return schematypes.NewStringArgs(0, max, "")
+	return types.NewStringArgs(0, max, "")
 }

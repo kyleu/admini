@@ -17,7 +17,8 @@
     "oauth",
     "postgres",
     "search",
-    "sqlite"
+    "sqlite",
+    "types"
   ],
   "ignore": [
     "data"

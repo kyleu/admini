@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/field"
-	"github.com/kyleu/admini/app/schema/schematypes"
+	"github.com/kyleu/admini/app/types"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
@@ -38,7 +38,7 @@ func (t *enumResult) ToModel() *model.Model {
 	for _, el := range els {
 		fields = append(fields, &field.Field{
 			Key:  el,
-			Type: schematypes.NewEnumValue(),
+			Type: types.NewEnumValue(),
 		})
 	}
 	ret.Fields = fields

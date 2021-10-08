@@ -1,8 +1,8 @@
 {% import (
-  "github.com/kyleu/admini/app/schema/schematypes"
+  "github.com/kyleu/admini/app/types"
 ) %}
 
-{% func Option(x interface{}, t *schematypes.Option, k string) %}{% stripspace %}
+{% func Option(x interface{}, t *types.Option, k string) %}{% stripspace %}
   {% switch t.V.Key() %}
   {% case "bool" %}
     {%= Boolean(x, true, k) %}

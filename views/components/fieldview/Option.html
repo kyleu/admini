@@ -1,8 +1,8 @@
 {% import (
-  "github.com/kyleu/admini/app/schema/schematypes"
+  "github.com/kyleu/admini/app/types"
 ) %}
 
-{% func Option(x interface{}, t *schematypes.Option) %}{% stripspace %}
+{% func Option(x interface{}, t *types.Option) %}{% stripspace %}
   {% if x == nil %}
     <em>∅</em>
   {% else %}

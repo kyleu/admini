@@ -1,12 +1,12 @@
 {% import (
   "fmt"
-  "github.com/kyleu/admini/app/schema/schematypes"
+  "github.com/kyleu/admini/app/types"
 ) %}
 
-{% func Any(x interface{}, t *schematypes.Wrapped) %}{% stripspace %}
+{% func Any(x interface{}, t *types.Wrapped) %}{% stripspace %}
   {% switch t.Key() %}
   {% case "option" %}
-    {%= Option(x, t.T.(*schematypes.Option)) %}
+    {%= Option(x, t.T.(*types.Option)) %}
   {% case "string" %}
     {%= String(x.(string)) %}
   {% case "json" %}

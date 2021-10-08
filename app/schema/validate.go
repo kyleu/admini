@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/kyleu/admini/app/types"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/model"
-
-	"github.com/kyleu/admini/app/schema/schematypes"
 )
 
 const (
@@ -57,24 +56,24 @@ func validateModel(r *ValidationResult, s *Schema, m *model.Model) *ValidationRe
 	return r
 }
 
-func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKey string, f schematypes.Type) {
+func validateType(r *ValidationResult, s *Schema, mType string, mKey string, fKey string, f types.Type) {
 	switch t := f.(type) {
-	case *schematypes.Wrapped:
+	case *types.Wrapped:
 		validateType(r, s, mType, mKey, fKey, t.T)
-	case *schematypes.Unknown:
+	case *types.Unknown:
 		r.log(mType, mKey, fmt.Sprintf("field [%s] has unknown type [%s]", fKey, t.X), LevelWarn)
-	case *schematypes.Error:
+	case *types.Error:
 		r.log(mType, mKey, fmt.Sprintf("field [%s] has error: %s", fKey, t.Message), LevelWarn)
-	case *schematypes.Option:
+	case *types.Option:
 		validateType(r, s, mType, mKey, fKey, t.V)
-	case *schematypes.List:
+	case *types.List:
 		validateType(r, s, mType, mKey, fKey, t.V)
-	case *schematypes.Range:
+	case *types.Range:
 		validateType(r, s, mType, mKey, fKey, t.V)
-	case *schematypes.Map:
+	case *types.Map:
 		validateType(r, s, mType, mKey, fKey, t.K)
 		validateType(r, s, mType, mKey, fKey, t.V)
-	case *schematypes.Reference:
+	case *types.Reference:
 		if s.Models.Get(t.Pkg, t.K) == nil && s.Scalars.Get(t.Pkg, t.K) == nil {
 			pkg := strings.Join(t.Pkg, ".")
 			msg := fmt.Sprintf("field [%s] has reference to unknown type [%s::%s]", fKey, pkg, t.K)

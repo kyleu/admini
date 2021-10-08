@@ -1,7 +1,7 @@
 {% import (
-  "github.com/kyleu/admini/app/schema/schematypes"
+  "github.com/kyleu/admini/app/types"
 ) %}
 
-{% func Type(v schematypes.Type) %}{% stripspace %}
+{% func Type(v types.Type) %}{% stripspace %}
   {%s v.String() %}
 {% endstripspace %}{% endfunc %}
