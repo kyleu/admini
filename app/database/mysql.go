@@ -17,6 +17,8 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
+var typeMySQL = &DBType{Key: "mysql", Title: "MySQL", Quote: "`"}
+
 type MySQLParams struct {
 	Host     string `json:"host"`
 	Port     int    `json:"port,omitempty"`
@@ -92,7 +94,7 @@ func OpenMySQLDatabase(ctx context.Context, key string, params *MySQLParams, log
 		log = logger.With("svc", "database", "db", key)
 	}
 
-	svc := NewService(key, params.Database, params.Schema, params.Username, db, log)
+	svc := NewService(typeMySQL, key, params.Database, params.Schema, params.Username, db, log)
 	return svc, nil
 }
 
