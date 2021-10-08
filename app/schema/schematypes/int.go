@@ -1,6 +1,9 @@
 package schematypes
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 const KeyInt = "int"
 
@@ -28,6 +31,9 @@ func (x *Int) Sortable() bool {
 
 func (x *Int) From(v interface{}) interface{} {
 	switch t := v.(type) {
+	case string:
+		ret, _ := strconv.Atoi(t)
+		return ret
 	case int:
 		return t
 	case int32:

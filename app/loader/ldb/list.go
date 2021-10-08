@@ -21,6 +21,7 @@ func List(ctx context.Context, db *database.Service, m *model.Model, opts *filte
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
+	defer func() { _ = rows.Close() }()
 
 	count, err := Count(ctx, db, m)
 	if err != nil {

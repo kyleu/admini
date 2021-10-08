@@ -26,8 +26,6 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 	}
 	// TODO: limit to MySQL types
 	switch strings.ToLower(t) {
-	case "aclitem":
-		// return schematypes.NewACL()
 	case "bit":
 		if cr != nil && cr.CharLength.Valid {
 			return schematypes.NewListSized(schematypes.NewBit(), int(cr.CharLength.Int64))
@@ -37,8 +35,6 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		return schematypes.NewList(schematypes.NewBit())
 	case "bool", "boolean":
 		return schematypes.NewBool()
-	case "box":
-		// return schematypes.NewBox()
 	case "bpchar":
 		return stringFor(cr)
 	case "bytea":
@@ -47,12 +43,6 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		return schematypes.NewChar()
 	case "character varying", "varchar":
 		return stringFor(cr)
-	case "cid":
-		// return schematypes.NewCID()
-	case "cidr":
-		// return schematypes.NewCIDR()
-	case "circle":
-		// return schematypes.NewCircle()
 	case "date":
 		return schematypes.NewDate()
 	case "daterange":
@@ -63,8 +53,6 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		return schematypes.NewFloat(64)
 	case "hstore":
 		return schematypes.NewMap(schematypes.NewString(), schematypes.NewString())
-	case "inet":
-		// return schematypes.NewInet()
 	case "int2", "smallint":
 		return schematypes.NewInt(16)
 	case "int2range":
@@ -77,20 +65,10 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		return schematypes.NewInt(64)
 	case "int8range":
 		return schematypes.NewRange(schematypes.NewInt(64))
-	case "interval":
-		// return schematypes.NewInterval()
 	case "json":
 		return schematypes.NewJSON()
 	case "jsonb":
 		return schematypes.NewJSON()
-	case "line":
-		// return schematypes.NewLine()
-	case "lseg":
-		// return schematypes.NewLineSegment()
-	case "macaddr":
-		// return schematypes.NewMacAddr()
-	case "money":
-		// return schematypes.NewMoney()
 	case "name":
 		return stringFor(cr)
 	case "numeric", "decimal":
@@ -99,18 +77,8 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		return schematypes.NewRange(schematypes.NewFloat(64))
 	case "oid":
 		return schematypes.NewInt(32)
-	case "path":
-		// return schematypes.NewPath()
-	case "point":
-		// return schematypes.NewPoint()
-	case "polygon":
-		// return schematypes.NewPolygon()
-	case "record":
-		// return schematypes.NewRecord()
 	case "text":
 		return stringFor(cr)
-	case "tid":
-		// return schematypes.NewTID()
 	case "time", "time without time zone":
 		return schematypes.NewTime()
 	case "timetz", "time with time zone":
@@ -119,24 +87,10 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 		return schematypes.NewTimestamp()
 	case "timestamptz", "timestamp with time zone":
 		return schematypes.NewTimestampZoned()
-	case "tsrange":
-		return schematypes.NewRange(schematypes.NewTimestamp())
-	case "tsquery":
-		// return schematypes.NewTsQuery()
-	case "tsvector":
-		return schematypes.NewList(schematypes.NewTimestamp())
-	case "tstzrange":
-		return schematypes.NewRange(schematypes.NewTimestampZoned())
 	case "uuid":
 		return schematypes.NewUUID()
 	case "USER-DEFINED":
 		return schematypes.NewReference()
-	case "xid":
-		// return schematypes.NewXID()
-	case "xml":
-		return schematypes.NewXML()
-	case "year":
-		// return schematypes.NewYear()
 	}
 	logger.Warn("unhandled MySQL type: [" + t + "]")
 	return schematypes.NewUnknown(t)

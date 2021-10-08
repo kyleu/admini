@@ -23,6 +23,7 @@ func Get(ctx context.Context, db *database.Service, m *model.Model, ids []interf
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
+	defer func() { _ = rows.Close() }()
 
 	var timing *result.Timing
 	ret, err := ParseResultFields(m.Name(), 0, q, timing, m.Fields, rows)

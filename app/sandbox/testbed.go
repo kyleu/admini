@@ -46,6 +46,7 @@ func onTestbed(ctx context.Context, st *app.State, logger *zap.SugaredLogger) (i
 			if err != nil {
 				return errors.Wrapf(err, "can't query %s", key)
 			}
+			defer func() { _ = rows.Close() }()
 			var res *result.Result
 			res, err = ldb.ParseResult(key, 0, q, nil, rows, logger)
 			if err != nil {

@@ -21,7 +21,7 @@ func (x *Unknown) Sortable() bool {
 }
 
 func (x *Unknown) From(v interface{}) interface{} {
-	return invalidInput(x.Key(), v)
+	return v
 }
 
 func (x *Unknown) Default(string) interface{} {

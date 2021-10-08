@@ -21,7 +21,7 @@ func (x *Option) Sortable() bool {
 }
 
 func (x *Option) From(v interface{}) interface{} {
-	return invalidInput(x.Key(), x)
+	return x.V.From(v)
 }
 
 func NewOption(t *Wrapped) *Wrapped {

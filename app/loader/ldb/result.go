@@ -24,6 +24,20 @@ func ParseResultFields(title string, count int, q string, timing *result.Timing,
 	if err != nil {
 		return nil, errors.Wrap(err, "error processing database rows")
 	}
+	if len(data) > 0 {
+		for _, row := range data {
+			for colIdx, x := range row {
+				switch x.(type) {
+				case []uint8:
+					f := fields[colIdx]
+					if row[colIdx] != nil {
+						s := string(row[colIdx].([]uint8))
+						row[colIdx] = f.Type.From(s)
+					}
+				}
+			}
+		}
+	}
 	if count == 0 {
 		count = len(data)
 	}
