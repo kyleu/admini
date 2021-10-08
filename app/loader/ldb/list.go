@@ -2,7 +2,6 @@ package ldb
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/kyleu/admini/app/database"
@@ -17,7 +16,7 @@ func List(ctx context.Context, db *database.Service, m *model.Model, opts *filte
 	if p != nil && p.Limit == 0 {
 		p.Limit = filter.MaxRowsDefault
 	}
-	q := modelListQuery(m, p)
+	q := modelListQuery(db.Type, m, p)
 	rows, err := db.Query(ctx, q, nil)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
@@ -38,7 +37,7 @@ func List(ctx context.Context, db *database.Service, m *model.Model, opts *filte
 }
 
 func Count(ctx context.Context, db *database.Service, m *model.Model) (int, error) {
-	q := modelCountQuery(m)
+	q := modelCountQuery(db.Type, m)
 	c := struct {
 		C int `db:"c"`
 	}{}
@@ -48,19 +47,19 @@ func Count(ctx context.Context, db *database.Service, m *model.Model) (int, erro
 	return c.C, nil
 }
 
-func modelListQuery(m *model.Model, params *filter.Params) string {
-	cols, tbl := forTable(m)
+func modelListQuery(typ *database.DBType, m *model.Model, params *filter.Params) string {
+	cols, tbl := forTable(typ, m)
 	return database.SQLSelect(cols, tbl, "", params.OrderByString(), params.Limit, params.Offset)
 }
 
-func modelCountQuery(m *model.Model) string {
-	return database.SQLSelectSimple("count(*) as c", m.Path().Quoted(), "")
+func modelCountQuery(typ *database.DBType, m *model.Model) string {
+	return database.SQLSelectSimple("count(*) as c", m.Path().Quoted(typ.Quote), "")
 }
 
-func forTable(m *model.Model) (string, string) {
+func forTable(typ *database.DBType, m *model.Model) (string, string) {
 	cols := make([]string, 0, len(m.Fields))
 	for _, f := range m.Fields {
-		cols = append(cols, fmt.Sprintf(`"%s"`, f.Key))
+		cols = append(cols, typ.Quote + f.Key + typ.Quote)
 	}
-	return strings.Join(cols, ", "), m.Path().Quoted()
+	return strings.Join(cols, ", "), m.Path().Quoted(typ.Quote)
 }

@@ -24,6 +24,7 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *schematypes
 	if strings.HasPrefix(t, "_") {
 		return schematypes.NewList(typeFor(t[1:], cr, logger))
 	}
+	// TODO: limit to MySQL types
 	switch strings.ToLower(t) {
 	case "aclitem":
 		// return schematypes.NewACL()

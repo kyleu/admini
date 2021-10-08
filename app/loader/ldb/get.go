@@ -15,7 +15,7 @@ import (
 )
 
 func Get(ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, logger *zap.SugaredLogger) (*result.Result, error) {
-	q, err := modelGetByPKQuery(m, logger)
+	q, err := modelGetByPKQuery(db.Type, m, logger)
 	if err != nil {
 		return nil, err
 	}
@@ -33,8 +33,8 @@ func Get(ctx context.Context, db *database.Service, m *model.Model, ids []interf
 	return ret, nil
 }
 
-func modelGetByPKQuery(m *model.Model, logger *zap.SugaredLogger) (string, error) {
-	cols, tbl := forTable(m)
+func modelGetByPKQuery(typ *database.DBType, m *model.Model, logger *zap.SugaredLogger) (string, error) {
+	cols, tbl := forTable(typ, m)
 	pk := m.GetPK(logger)
 	if len(pk) == 0 {
 		return "", errors.Errorf("no PK for model [%s]", m.String())

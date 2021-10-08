@@ -25,7 +25,7 @@ func Remove(ctx context.Context, db *database.Service, m *model.Model, fields []
 		}
 		where.WriteString(fmt.Sprintf(`"%s" = $%d`, x, idx+1))
 	}
-	q := database.SQLDelete(m.Path().Quoted(), where.String())
+	q := database.SQLDelete(m.Path().Quoted(db.Type.Quote), where.String())
 
 	rowsAffected, err := db.Delete(ctx, q, nil, expected, values...)
 	if err != nil {
