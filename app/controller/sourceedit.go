@@ -108,7 +108,7 @@ func SourceEdit(rc *fasthttp.RequestCtx) {
 		ps.Data = src
 
 		switch src.Type {
-		case schema.OriginPostgres, schema.OriginSQLite:
+		case schema.OriginPostgres, schema.OriginSQLite, schema.OriginMySQL:
 			page := &vsource.Edit{Source: src}
 			return render(rc, as, page, ps, "sources", src.Key, "Edit")
 		default:
@@ -139,6 +139,20 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 		src.Description = frm.GetStringOpt("description")
 
 		switch src.Type {
+		case schema.OriginMySQL:
+			ps := frm.GetStringOpt("port")
+			params := &database.MySQLParams{}
+			params.Host = frm.GetStringOpt("host")
+			if ps != "" {
+				params.Port, _ = strconv.Atoi(ps)
+			}
+			params.Username = frm.GetStringOpt("username")
+			params.Password = frm.GetStringOpt("password")
+			params.Database = frm.GetStringOpt("database")
+			params.Schema = frm.GetStringOpt("schema")
+			params.Debug, _ = frm.GetBool("debug")
+
+			src.Config = util.ToJSONBytes(params, true)
 		case schema.OriginPostgres:
 			ps := frm.GetStringOpt("port")
 			params := &database.PostgresParams{}

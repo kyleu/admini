@@ -1,6 +1,7 @@
 {% import (
   "github.com/kyleu/admini/app"
   "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/loader/lmysql"
   "github.com/kyleu/admini/app/loader/lpostgres"
   "github.com/kyleu/admini/app/loader/lsqlite"
   "github.com/kyleu/admini/app/schema"
@@ -27,6 +28,8 @@
           {%= components.TableIcons("icon", "Icon", p.Source.Icon, ps, 5) %}
           {%= components.TableInput("description", "Description", p.Source.Description, 5) %}
           {%- switch p.Source.Type -%}
+          {%- case schema.OriginMySQL -%}
+          {%= mySQLFields(p.Source.Config, 5) %}
           {%- case schema.OriginPostgres -%}
           {%= postgresFields(p.Source.Config, 5) %}
           {%- case schema.OriginSQLite -%}
@@ -45,6 +48,19 @@
 {% func postgresFields(b []byte, indent int) %}{% stripspace %}
   {% code
     cfg, _ := lpostgres.LoadConfig(b)
+  %}
+  {%= components.TableInput("host", "Host", cfg.Host, indent) %}
+  {%= components.TableInputNumber("port", "Port", cfg.Port, indent) %}
+  {%= components.TableInput("username", "Username", cfg.Username, indent) %}
+  {%= components.TableInput("password", "Password", cfg.Password, indent) %}
+  {%= components.TableInput("database", "Database", cfg.Database, indent) %}
+  {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}
+  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+{% endstripspace %}{% endfunc %}
+
+{% func mySQLFields(b []byte, indent int) %}{% stripspace %}
+  {% code
+    cfg, _ := lmysql.LoadConfig(b)
   %}
   {%= components.TableInput("host", "Host", cfg.Host, indent) %}
   {%= components.TableInputNumber("port", "Port", cfg.Port, indent) %}

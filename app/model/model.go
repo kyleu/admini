@@ -78,3 +78,11 @@ func (m Models) Sort() {
 		return m[l].Key < m[r].Key
 	})
 }
+
+func (m Models) Names() []string {
+	ret := make([]string, 0, len(m))
+	for _, md := range m {
+		ret = append(ret, md.Key)
+	}
+	return ret
+}

@@ -42,6 +42,8 @@ func (s *Service) List() (Sources, error) {
 func (s *Service) NewSource(key string, title string, icon string, description string, t schema.Origin) *Source {
 	ret := &Source{Key: key, Title: title, Icon: icon, Description: description, Type: t}
 	switch t {
+	case schema.OriginMySQL:
+		ret.Config = util.ToJSONBytes(&database.MySQLParams{Host: "localhost", Port: 3306, Database: key}, true)
 	case schema.OriginPostgres:
 		ret.Config = util.ToJSONBytes(&database.PostgresParams{Host: "localhost", Port: 5432, Database: key}, true)
 	case schema.OriginSQLite:

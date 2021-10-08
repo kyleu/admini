@@ -12,6 +12,7 @@ type Origin struct {
 }
 
 var (
+	OriginMySQL      = Origin{Key: "mysql", Title: "MySQL", Icon: "database", Description: "MySQL database schema"}
 	OriginPostgres   = Origin{Key: "postgres", Title: "PostgreSQL", Icon: "database", Description: "PostgreSQL database schema"}
 	OriginSQLite     = Origin{Key: "sqlite", Title: "SQLite", Icon: "database", Description: "SQLite database schema"}
 	OriginGraphQL    = Origin{Key: "graphql", Title: "GraphQL", Icon: "star", Description: "GraphQL schema and queries"}
@@ -37,7 +38,7 @@ func OriginTitles() []string {
 	return ret
 }
 
-var AllOrigins = []Origin{OriginPostgres, OriginSQLite, OriginGraphQL, OriginProtobuf, OriginJSONSchema, OriginMock}
+var AllOrigins = []Origin{OriginMySQL, OriginPostgres, OriginSQLite, OriginGraphQL, OriginProtobuf, OriginJSONSchema, OriginMock}
 
 func OriginFromString(s string) Origin {
 	for _, t := range AllOrigins {

@@ -7,6 +7,7 @@ import (
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/loader/lmock"
+	"github.com/kyleu/admini/app/loader/lmysql"
 	"github.com/kyleu/admini/app/loader/lpostgres"
 	"github.com/kyleu/admini/app/loader/lsqlite"
 	"github.com/kyleu/admini/app/project"
@@ -22,6 +23,7 @@ type Services struct {
 
 func NewServices(ctx context.Context, st *State) (*Services, error) {
 	ls := loader.NewService()
+	ls.Set(schema.OriginMySQL, lmysql.NewLoader(ctx, st.Logger))
 	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(ctx, st.Logger))
 	if database.SQLiteEnabled {
 		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, st.Logger))
