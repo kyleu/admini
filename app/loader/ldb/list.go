@@ -54,7 +54,7 @@ func modelListQuery(typ *database.DBType, m *model.Model, params *filter.Params)
 }
 
 func modelCountQuery(typ *database.DBType, m *model.Model) string {
-	return database.SQLSelectSimple("count(*) as c", m.Path().Quoted(typ.Quote), "")
+	return database.SQLSelectSimple("count(*) as c", m.Path().Quoted(typ.Quote))
 }
 
 func forTable(typ *database.DBType, m *model.Model) (string, string) {

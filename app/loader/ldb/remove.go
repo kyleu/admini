@@ -23,7 +23,11 @@ func Remove(ctx context.Context, db *database.Service, m *model.Model, fields []
 		if idx > 0 {
 			where.WriteString(" and ")
 		}
-		where.WriteString(fmt.Sprintf(`"%s" = $%d`, x, idx+1))
+		if db.Type.Placeholder == "?" {
+			where.WriteString(fmt.Sprintf(`%s%s%s = ?`, db.Type.Quote, x, db.Type.Quote))
+		} else {
+			where.WriteString(fmt.Sprintf(`%s%s%s = $%d`, db.Type.Quote, x, db.Type.Quote, idx+1))
+		}
 	}
 	q := database.SQLDelete(m.Path().Quoted(db.Type.Quote), where.String())
 

@@ -42,7 +42,11 @@ func modelGetByPKQuery(typ *database.DBType, m *model.Model, logger *zap.Sugared
 	}
 	where := make([]string, 0, len(pk))
 	for idx, pkf := range pk {
-		where = append(where, fmt.Sprintf(`"%s" = $%d`, pkf, idx+1))
+		if typ.Placeholder == "?" {
+			where = append(where, fmt.Sprintf(`%s%s%s = ?`, typ.Quote, pkf, typ.Quote))
+		} else {
+			where = append(where, fmt.Sprintf(`%s%s%s = $%d`, typ.Quote, pkf, typ.Quote, idx+1))
+		}
 	}
 	return database.SQLSelectSimple(cols, tbl, strings.Join(where, " and ")), nil
 }
