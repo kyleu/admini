@@ -20,7 +20,7 @@ brews:
       email: "kyle@kyleu.com"
     folder: Formula
     homepage: "https://admini.dev"
-    description: "Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface"
+    description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     license: "Proprietary"
     skip_upload: false
 
@@ -63,7 +63,7 @@ nfpms:
     vendor: "Kyle U"
     homepage: "https://admini.dev}"
     maintainer: "Kyle U <kyle@kyleu.com>"
-    description: "Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface"
+    description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     license: "Proprietary"
     replacements: *replacements
     formats:
@@ -100,7 +100,7 @@ snapcrafts:
     publish: false
     replacements: *replacements
     summary: "Use Admini to explore and manage your data as fast and easily as possible"
-    description: "Explore and manage your data as fast and easily as possible. Supports SQLite and PostgreSQL data sources, and provides a lightning-fast web interface"
+    description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     grade: stable
     confinement: strict
     license: "Proprietary"

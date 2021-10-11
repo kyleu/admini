@@ -12,7 +12,8 @@ Admini relies on a ton of open source projects. First among them is the [Go lang
 - [zap][6]
 - [sqlx][7]
 - [pgx][8]
-- [sqlite][9]
+- [mysql][9]
+- [sqlite][10]
 
 
 [1]: https://golang.org "What a great contribution to the world of engineering"
@@ -23,4 +24,5 @@ Admini relies on a ton of open source projects. First among them is the [Go lang
 [6]: https://go.uber.org/zap "Crazy fast logging, with a custom encoder to dump tons of debug info"
 [7]: https://github.com/jmoiron/sqlx "Provides enhancements to the stdlib's sql package, super handy"
 [8]: https://github.com/jackc/pgx "Handles (most of) the crazy types that PostgreSQL supports"
-[9]: https://modernc.org/sqlite "A version of SQLite that was compiled to Go by a machine"
+[9]: https://github.com/go-sql-driver/mysql "The Golang MySQL driver, does what it says on the tin"
+[10]: https://modernc.org/sqlite "A version of SQLite that was compiled to Go by a machine"

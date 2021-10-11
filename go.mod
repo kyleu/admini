@@ -8,6 +8,8 @@ require (
 	github.com/fasthttp/router v1.4.2
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gertd/go-pluralize v0.1.7
+	github.com/go-sql-driver/mysql v1.6.0
+	github.com/gomarkdown/markdown v0.0.0-20210918233619-6c1113f12c4a
 	github.com/google/uuid v1.2.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/jackc/pgx/v4 v4.6.1-0.20200606145419-4e5062306904
@@ -38,7 +40,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
 	github.com/dlclark/regexp2 v1.4.0 // indirect
-	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang-jwt/jwt v3.2.1+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
