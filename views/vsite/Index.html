@@ -13,6 +13,9 @@
   <div class="card">
     <h3>{%= components.SVGRefIcon(`app`, ps) %}{%s util.AppName %}</h3>
     <p>Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface</p>
-    <pre>{%s util.ToJSON(ps.Data) %}</pre>
+    <p>
+      <a href="/download"><button>Download</button></a>
+      <a href="https://github.com/kyleu/admini"><button>Source Code</button></a>
+    </p>
   </div>
 {% endfunc %}
