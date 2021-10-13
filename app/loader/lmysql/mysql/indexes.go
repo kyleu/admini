@@ -26,7 +26,7 @@ func (r indexResult) AsIndex() *model.Index {
 		Key:      r.Index,
 		Fields:   util.SplitAndTrim(r.ColumnNames, ","),
 		Unique:   !r.NonUnique,
-		Primary:  strings.ToLower(r.Index) == "primary",
+		Primary:  strings.EqualFold(r.Index, "primary"),
 		Metadata: nil,
 	}
 }

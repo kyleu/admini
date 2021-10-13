@@ -9,6 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// nolint
 func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result, error) {
 	f := NewGoFile(m.Pkg, m.Key)
 

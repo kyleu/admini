@@ -15,10 +15,10 @@ import (
 )
 
 type tableResult struct {
-	Schema string `db:"TABLE_SCHEMA"`
-	Name   string `db:"TABLE_NAME"`
-	Rows   int64 `db:"TABLE_ROWS"`
-	Type   string `db:"TABLE_TYPE"`
+	Schema  string `db:"TABLE_SCHEMA"`
+	Name    string `db:"TABLE_NAME"`
+	Rows    int64  `db:"TABLE_ROWS"`
+	Type    string `db:"TABLE_TYPE"`
 	Comment string `db:"TABLE_COMMENT"`
 }
 

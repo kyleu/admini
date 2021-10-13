@@ -17,18 +17,18 @@ import (
 )
 
 type columnResult struct {
-	Schema                string         `db:"TABLE_SCHEMA"`
-	Table                 string         `db:"TABLE_NAME"`
-	Name                  string         `db:"COLUMN_NAME"`
-	Ordinal               int32          `db:"ORDINAL_POSITION"`
-	Default               sql.NullString `db:"COLUMN_DEFAULT"`
-	Nullable              string         `db:"IS_NULLABLE"`
-	DataType              string         `db:"DATA_TYPE"`
-	CharLength            sql.NullInt64  `db:"CHARACTER_MAXIMUM_LENGTH"`
-	OctetLength           sql.NullInt64  `db:"CHARACTER_OCTET_LENGTH"`
-	NumericPrecision      sql.NullInt64  `db:"NUMERIC_PRECISION"`
-	NumericScale          sql.NullInt64  `db:"NUMERIC_SCALE"`
-	DatetimePrecision     sql.NullInt64  `db:"DATETIME_PRECISION"`
+	Schema            string         `db:"TABLE_SCHEMA"`
+	Table             string         `db:"TABLE_NAME"`
+	Name              string         `db:"COLUMN_NAME"`
+	Ordinal           int32          `db:"ORDINAL_POSITION"`
+	Default           sql.NullString `db:"COLUMN_DEFAULT"`
+	Nullable          string         `db:"IS_NULLABLE"`
+	DataType          string         `db:"DATA_TYPE"`
+	CharLength        sql.NullInt64  `db:"CHARACTER_MAXIMUM_LENGTH"`
+	OctetLength       sql.NullInt64  `db:"CHARACTER_OCTET_LENGTH"`
+	NumericPrecision  sql.NullInt64  `db:"NUMERIC_PRECISION"`
+	NumericScale      sql.NullInt64  `db:"NUMERIC_SCALE"`
+	DatetimePrecision sql.NullInt64  `db:"DATETIME_PRECISION"`
 }
 
 func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger) *field.Field {

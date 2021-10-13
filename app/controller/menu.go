@@ -20,13 +20,14 @@ func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State) (m
 	}
 	if isAdmin {
 		ret = append(ret,
-			&menu.Item{Key: "sandbox", Title: "Sandboxes", Description: "Playgrounds for testing new features", Icon: "social", Route: "/sandbox", Children: sandboxItems()},
+			sandbox.Menu(),
 			menu.Separator,
 			&menu.Item{Key: "settings", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/admin/settings"},
 			&menu.Item{Key: "refresh", Title: "Refresh", Description: "Reload all cached in " + util.AppName, Icon: "refresh", Route: "/refresh"},
 		)
 	}
-	ret = append(ret, &menu.Item{Key: "about", Title: "About", Description: "Get assistance and advice for using " + util.AppName, Icon: "question", Route: "/about"})
+	aboutDesc := "Get assistance and advice for using " + util.AppName
+	ret = append(ret, &menu.Item{Key: "about", Title: "About", Description: aboutDesc, Icon: "question", Route: "/about"})
 	return ret, nil
 }
 
@@ -63,20 +64,6 @@ func sourceItems(as *app.State) menu.Items {
 			Icon:        s.IconWithFallback(),
 			Description: s.Description,
 			Route:       fmt.Sprintf("/source/%s", s.Key),
-		})
-	}
-	return ret
-}
-
-func sandboxItems() menu.Items {
-	ret := make(menu.Items, 0, len(sandbox.AllSandboxes))
-	for _, s := range sandbox.AllSandboxes {
-		ret = append(ret, &menu.Item{
-			Key:         s.Key,
-			Title:       s.Title,
-			Icon:        s.Icon,
-			Description: fmt.Sprintf("Sandbox [%s]", s.Key),
-			Route:       fmt.Sprintf("/sandbox/%s", s.Key),
 		})
 	}
 	return ret

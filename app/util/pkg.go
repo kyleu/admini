@@ -9,7 +9,7 @@ type Pkg []string
 func (p Pkg) Quoted(quote string) string {
 	ret := make(Pkg, 0, len(p))
 	for _, x := range p {
-		ret = append(ret, quote + x + quote)
+		ret = append(ret, quote+x+quote)
 	}
 	return strings.Join(ret, ".")
 }

@@ -13,7 +13,9 @@ import (
 	"go.uber.org/zap"
 )
 
-func Save(ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, changes util.ValueMap, logger *zap.SugaredLogger) ([]interface{}, error) {
+func Save(
+	ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, changes util.ValueMap, logger *zap.SugaredLogger,
+) ([]interface{}, error) {
 	cols, vals := changes.KeysAndValues()
 
 	pk := m.GetPK(logger)
@@ -41,6 +43,10 @@ func Save(ctx context.Context, db *database.Service, m *model.Model, ids []inter
 	}
 
 	tx, err := db.StartTransaction()
+	if err != nil {
+		return nil, err
+	}
+
 	uq := database.SQLUpdate(m.Key, cols, strings.Join(where, " and "), db.Type.Placeholder)
 	_, err = db.Exec(ctx, uq, tx, -1, append(vals, ids...)...)
 	if err != nil {
@@ -50,7 +56,6 @@ func Save(ctx context.Context, db *database.Service, m *model.Model, ids []inter
 
 	return loadAfterEdit(ctx, pk, ids, m, tx, db)
 }
-
 
 func loadAfterEdit(ctx context.Context, pk []string, pkVals []interface{}, m *model.Model, tx *sqlx.Tx, db *database.Service) ([]interface{}, error) {
 	wc := make([]string, 0, len(pk))

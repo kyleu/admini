@@ -7,6 +7,8 @@ import (
 	"go.uber.org/zap"
 )
 
-var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Icon: "print", Run: func(ctx context.Context, st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
+func codegenF(ctx context.Context, st *app.State, logger *zap.SugaredLogger) (interface{}, error) {
 	return "Work in progress...", nil
-}}
+}
+
+var codegen = &Sandbox{Key: "codegen", Title: "Code Generation", Icon: "print", Run: codegenF}

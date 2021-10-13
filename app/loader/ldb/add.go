@@ -28,6 +28,9 @@ func Add(ctx context.Context, db *database.Service, m *model.Model, changes util
 	}
 
 	tx, err := db.StartTransaction()
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to open transaction")
+	}
 	iq := database.SQLInsert(m.Path().Quoted(db.Type.Quote), columns, 1, db.Type.Placeholder)
 	_, err = db.Exec(ctx, iq, tx, 1, data...)
 	if err != nil {

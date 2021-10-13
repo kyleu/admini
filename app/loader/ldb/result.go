@@ -27,8 +27,7 @@ func ParseResultFields(title string, count int, q string, timing *result.Timing,
 	if len(data) > 0 {
 		for _, row := range data {
 			for colIdx, x := range row {
-				switch x.(type) {
-				case []uint8:
+				if _, ok := x.([]uint8); ok {
 					f := fields[colIdx]
 					if row[colIdx] != nil {
 						s := string(row[colIdx].([]uint8))

@@ -60,7 +60,7 @@ func modelCountQuery(typ *database.DBType, m *model.Model) string {
 func forTable(typ *database.DBType, m *model.Model) (string, string) {
 	cols := make([]string, 0, len(m.Fields))
 	for _, f := range m.Fields {
-		cols = append(cols, typ.Quote + f.Key + typ.Quote)
+		cols = append(cols, typ.Quote+f.Key+typ.Quote)
 	}
 	return strings.Join(cols, ", "), m.Path().Quoted(typ.Quote)
 }

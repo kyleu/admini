@@ -11,7 +11,9 @@ import (
 	"go.uber.org/zap"
 )
 
-func Remove(ctx context.Context, db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger) (int, error) {
+func Remove(
+	ctx context.Context, db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger,
+) (int, error) {
 	if len(fields) == 0 {
 		return 0, errors.New("must provide at least one column")
 	}

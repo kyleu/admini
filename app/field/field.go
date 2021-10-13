@@ -11,11 +11,11 @@ type Field struct {
 	Key      string         `json:"key"`
 	Type     *types.Wrapped `json:"type"`
 	Title    string         `json:"-"` // override only
-	Plural   string               `json:"-"` // override only
-	Hidden   bool                 `json:"-"` // override only
-	Default  interface{}          `json:"default,omitempty"`
-	ReadOnly bool                 `json:"readOnly,omitempty"`
-	Metadata *Metadata            `json:"metadata,omitempty"`
+	Plural   string         `json:"-"` // override only
+	Hidden   bool           `json:"-"` // override only
+	Default  interface{}    `json:"default,omitempty"`
+	ReadOnly bool           `json:"readOnly,omitempty"`
+	Metadata *Metadata      `json:"metadata,omitempty"`
 }
 
 func (f *Field) Name() string {

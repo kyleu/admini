@@ -7,6 +7,7 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
+// nolint
 func typeString(typ types.Type, f *Format, ctx string) (string, []util.Pkg) {
 	switch t := typ.(type) {
 	case *types.Wrapped:
