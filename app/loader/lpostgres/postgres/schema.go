@@ -30,7 +30,12 @@ func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.S
 		return nil, errors.Wrap(err, "can't load tables")
 	}
 
-	err = loadColumns(ctx, tables, db, logger)
+	models := make(model.Models, 0, len(tables)+len(enums))
+	models = append(models, enums...)
+	models = append(models, tables...)
+	models.Sort()
+
+	err = loadColumns(ctx, models, db, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load columns")
 	}
@@ -45,10 +50,10 @@ func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.S
 		return nil, errors.Wrap(err, "can't load foreign keys")
 	}
 
-	models := make(model.Models, 0, len(tables)+len(enums))
-	models = append(models, enums...)
-	models = append(models, tables...)
-	models.Sort()
+	err = loadEnumRelations(ctx, enums, tables, db)
+	if err != nil {
+		return nil, errors.Wrap(err, "can't load foreign keys")
+	}
 
 	ret := &schema.Schema{
 		Paths:    []string{"postgres:" + db.DatabaseName},

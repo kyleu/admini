@@ -21,6 +21,8 @@ func typeString(typ types.Type, f *Format, ctx string) (string, []util.Pkg) {
 		return "bool", nil
 	case *types.Int:
 		return "int", nil
+	case *types.Enum:
+		return "string /* " + t.Ref + " */", nil
 	case *types.JSON:
 		switch ctx {
 		case "dto":

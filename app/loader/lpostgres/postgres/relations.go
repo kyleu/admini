@@ -66,3 +66,24 @@ func loadForeignKeys(ctx context.Context, models model.Models, db *database.Serv
 
 	return nil
 }
+
+func loadEnumRelations(ctx context.Context, enums model.Models, models model.Models, db *database.Service) error {
+	for _, e := range enums {
+		for _, m := range models {
+			for _, f := range m.Fields {
+				if ek := f.Type.EnumKey(); ek == e.Key {
+					rel := &model.Relationship{
+						Key:          "enum_" + m.Key + "_" + f.Key,
+						SourceFields: []string{e.Key},
+						TargetPkg:    m.Pkg,
+						TargetModel:  m.Key,
+						TargetFields: []string{f.Key},
+					}
+					e.Relationships = append(e.Relationships, rel)
+				}
+			}
+		}
+	}
+
+	return nil
+}

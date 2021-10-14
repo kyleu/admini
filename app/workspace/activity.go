@@ -47,12 +47,13 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action, as *app.
 	if src == nil {
 		return ErrResult(req, act, errors.Errorf("source [%s] is not in this project's configuration", srcKey))
 	}
+
 	ld, err := as.Services.Loaders.Get(src.Type, src.Key, src.Config)
 	if err != nil {
 		return ErrResult(req, act, errors.New("unable to create loader"))
 	}
 
-	r, err := ld.Query(req.Context, sql)
+	r, err := ld.Query(req.Context, nil, sql)
 	if err != nil {
 		return ErrResult(req, act, errors.New("unable to execute query"))
 	}

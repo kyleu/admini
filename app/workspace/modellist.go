@@ -3,6 +3,7 @@ package workspace
 import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/types"
 	"github.com/kyleu/admini/views/vmodel"
 
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -27,7 +28,24 @@ func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		page := &vmodel.List{Req: req, Act: act, Model: m, Options: opts, Result: rs}
 		return NewResult("", nil, req, act, rs, page), nil
 	case model.TypeEnum:
-		page := &vmodel.Enum{Req: req, Act: act, Model: m}
+		refs := model.Relationships{}
+		for _, sch := range req.Schemata {
+			for _, mod := range sch.Models {
+				for _, f := range mod.Fields {
+					if t, ok := f.Type.T.(*types.Enum); ok {
+						if t.Ref == m.Key {
+							refs = append(refs, &model.Relationship{
+								Key:          mod.Key + "_" + f.Key,
+								TargetPkg:    mod.Pkg,
+								TargetModel:  mod.Key,
+								TargetFields: []string{f.Key},
+							})
+						}
+					}
+				}
+			}
+		}
+		page := &vmodel.Enum{Req: req, Act: act, Model: m, Refs: refs}
 		return NewResult("", nil, req, act, m, page), nil
 	default:
 		return nil, errors.Errorf("unhandled model type [%s]", m.Type.String())

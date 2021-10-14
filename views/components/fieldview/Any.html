@@ -9,6 +9,8 @@
     {%= Option(x, t.T.(*types.Option)) %}
   {% case "string" %}
     {%= String(x.(string)) %}
+  {% case "enum" %}
+    <span title="enum:{%s t.T.(*types.Enum).Ref %}">{%v x %}</span>
   {% case "json" %}
     {%= JSONInline(x) %}
   {% case "int" %}

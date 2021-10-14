@@ -13,6 +13,7 @@
   Req *cutil.WorkspaceRequest
   Act *action.Action
   Model *model.Model
+  Refs model.Relationships
 } %}
 
 {% func (p *Enum) Body(as *app.State, ps *cutil.PageState) %}
@@ -31,6 +32,17 @@
       {%- endfor -%}
     </ul>
   </div>
+
+  {%- if len(p.Refs) > 0 -%}
+  <div class="card">
+    <h3>References</h3>
+    <ul>
+      {%- for _, ref := range p.Refs -%}
+      <li>{%v ref %}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%- endif -%}
 
   {%= components.JSONModal("model", "Model JSON", p.Model, 1) %}
   {%-= vaction.ResultChildren(p.Req, p.Act, 1) -%}

@@ -57,8 +57,8 @@ func (l *Loader) Get(ctx context.Context, m *model.Model, ids []interface{}) (*r
 	return ldb.Get(ctx, l.db, m, ids, l.logger)
 }
 
-func (l *Loader) Query(ctx context.Context, sql string) (*result.Result, error) {
-	return ldb.Query(ctx, l.db, sql, l.logger)
+func (l *Loader) Query(ctx context.Context, enums model.Models, sql string) (*result.Result, error) {
+	return ldb.Query(ctx, l.db, sql, enums, l.logger)
 }
 
 func (l *Loader) Add(ctx context.Context, m *model.Model, changes util.ValueMap) ([]interface{}, error) {

@@ -62,7 +62,7 @@ func (l *Loader) Get(context.Context, *model.Model, []interface{}) (*result.Resu
 	return nil, errors.New("mock not implemented")
 }
 
-func (l *Loader) Query(context.Context, string) (*result.Result, error) {
+func (l *Loader) Query(context.Context, model.Models, string) (*result.Result, error) {
 	return nil, errors.New("mock not implemented")
 }
 

@@ -6,13 +6,14 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/kyleu/admini/app/field"
 	"github.com/kyleu/admini/app/loader/lpostgres/postgres"
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
 
-func ParseResult(title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, logger *zap.SugaredLogger) (*result.Result, error) {
-	fields, err := parseColumns(rows, logger)
+func ParseResult(title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger) (*result.Result, error) {
+	fields, err := parseColumns(rows, enums, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error processing columns")
 	}
@@ -44,7 +45,7 @@ func ParseResultFields(title string, count int, q string, timing *result.Timing,
 	return ret, nil
 }
 
-func parseColumns(rows *sqlx.Rows, logger *zap.SugaredLogger) (field.Fields, error) {
+func parseColumns(rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger) (field.Fields, error) {
 	cts, err := rows.ColumnTypes()
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to determine column types")
@@ -52,7 +53,7 @@ func parseColumns(rows *sqlx.Rows, logger *zap.SugaredLogger) (field.Fields, err
 
 	fs := make(field.Fields, 0, len(cts))
 	for _, ct := range cts {
-		f, err := fieldFor(ct, logger)
+		f, err := fieldFor(ct, enums, logger)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to parse column type")
 		}
@@ -74,9 +75,9 @@ func parseRows(rows *sqlx.Rows) ([][]interface{}, error) {
 	return data, nil
 }
 
-func fieldFor(ct *sql.ColumnType, logger *zap.SugaredLogger) (*field.Field, error) {
+func fieldFor(ct *sql.ColumnType, enums model.Models, logger *zap.SugaredLogger) (*field.Field, error) {
 	return &field.Field{
 		Key:  ct.Name(),
-		Type: postgres.TypeForName(ct.DatabaseTypeName(), logger),
+		Type: postgres.TypeForName(ct.DatabaseTypeName(), enums, logger),
 	}, nil
 }

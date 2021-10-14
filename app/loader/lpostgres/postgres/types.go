@@ -3,28 +3,30 @@ package postgres
 import (
 	"strings"
 
+	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/types"
+	"github.com/kyleu/admini/app/util"
 	"go.uber.org/zap"
 )
 
-func TypeForName(t string, logger *zap.SugaredLogger) *types.Wrapped {
+func TypeForName(t string, enums model.Models, logger *zap.SugaredLogger) *types.Wrapped {
 	if strings.HasPrefix(t, "_") {
-		return types.NewList(TypeForName(t[1:], logger))
+		return types.NewList(TypeForName(t[1:], enums, logger))
 	}
-	return typeFor(t, nil, logger)
+	return typeFor(t, nil, enums, logger)
 }
 
 // nolint
-func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *types.Wrapped {
+func typeFor(t string, cr *columnResult, enums model.Models, logger *zap.SugaredLogger) *types.Wrapped {
 	if cr != nil && cr.Nullable == pgYes {
 		cr.Nullable = pgNo
-		return types.NewOption(typeFor(t, cr, logger))
+		return types.NewOption(typeFor(t, cr, enums, logger))
 	}
 	if strings.HasPrefix(t, "_") {
-		return types.NewList(typeFor(t[1:], cr, logger))
+		return types.NewList(typeFor(t[1:], cr, enums, logger))
 	}
 	if t == "ARRAY" && cr != nil && cr.ArrayType.Valid {
-		return types.NewList(typeFor(cr.ArrayType.String, cr, logger))
+		return types.NewList(typeFor(cr.ArrayType.String, cr, enums, logger))
 	}
 	switch strings.ToLower(t) {
 	case "aclitem":
@@ -138,6 +140,9 @@ func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *types.Wrapp
 		return types.NewXML()
 	case "year":
 		// return types.NewYear()
+	}
+	if e := enums.Get(util.Pkg{cr.Schema}, t); e != nil {
+		return types.NewEnum(cr.UDTName)
 	}
 	logger.Warn("unhandled PostgreSQL type: " + t)
 	return types.NewUnknown(t)

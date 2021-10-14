@@ -48,7 +48,7 @@ func onTestbed(ctx context.Context, st *app.State, logger *zap.SugaredLogger) (i
 			}
 			defer func() { _ = rows.Close() }()
 			var res *result.Result
-			res, err = ldb.ParseResult(key, 0, q, nil, rows, logger)
+			res, err = ldb.ParseResult(key, 0, q, nil, rows, nil, logger)
 			if err != nil {
 				return errors.Wrapf(err, "can't parse result for %s", key)
 			}
