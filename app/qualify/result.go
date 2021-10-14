@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
 )
@@ -17,12 +16,6 @@ type Result struct {
 	Model  *model.Model   `json:"model,omitempty"`
 	Data   []interface{}  `json:"data,omitempty"`
 	Debug  string         `json:"debug,omitempty"`
-}
-
-func (r *Result) ToWorkspaceRequest(in *cutil.WorkspaceRequest) *cutil.WorkspaceRequest {
-	ret := in.Clone()
-	ret.Path = r.Path
-	return ret
 }
 
 func (r *Result) ToResult() *result.Result {
