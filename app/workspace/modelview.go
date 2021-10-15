@@ -22,7 +22,6 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-
 	for _, rel := range m.Relationships {
 		rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, data)
 		if err != nil {
