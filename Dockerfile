@@ -37,5 +37,5 @@ COPY --from=builder /build/* /
 # $PF_SECTION_START(dockerimage)$
 # $PF_SECTION_END(dockerimage)$
 
-EXPOSE 40000
+EXPOSE 14000
 ENTRYPOINT ["/admini", "-a", "0.0.0.0"]

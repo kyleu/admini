@@ -1,6 +1,6 @@
 name: "Admini"
 options:
-  bundleIdPrefix: com.kyleu
+  bundleIdPrefix: com.kyleu.admini
 targets:
   Admini:
     type: application

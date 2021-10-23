@@ -1,4 +1,4 @@
-source = ["./build/dist/darwin_arm64_darwin_arm64/admini"]
+source = ["./build/dist/darwin_darwin_arm64/admini"]
 bundle_id = "com.kyleu.admini"
 
 apple_id {

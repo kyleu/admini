@@ -1,4 +1,4 @@
-source = ["./build/dist/darwin_amd64_darwin_amd64/admini"]
+source = ["./build/dist/darwin_darwin_amd64/admini"]
 bundle_id = "com.kyleu.admini"
 
 //notarize {
