@@ -53,6 +53,6 @@ func GetStrings(src field.Fields, tgt []string, vals []interface{}) ([]string, e
 	if err != nil {
 		return nil, err
 	}
-	ret := util.StringArrayFromInterfaces(is)
+	ret := util.StringArrayFromInterfaces(is, 0)
 	return ret, nil
 }

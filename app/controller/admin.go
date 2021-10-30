@@ -13,6 +13,7 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/user"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vadmin"
 )
@@ -24,7 +25,7 @@ func Admin(rc *fasthttp.RequestCtx) {
 			ps.Title = "Administration"
 			x := &runtime.MemStats{}
 			runtime.ReadMemStats(x)
-			return render(rc, as, &vadmin.List{Mem: x}, ps, "Administration")
+			return render(rc, as, &vadmin.Settings{Perms: user.GetPermissions(), Mem: x}, ps, "admin")
 		}
 		switch path[0] {
 		case "modules":
@@ -34,11 +35,15 @@ func Admin(rc *fasthttp.RequestCtx) {
 			}
 			ps.Title = "Modules"
 			ps.Data = mods.Deps
-			return render(rc, as, &vadmin.Modules{Mods: mods.Deps}, ps, "Administration||/admin", "Modules")
+			return render(rc, as, &vadmin.Modules{Mods: mods.Deps}, ps, "admin", "Modules")
+		case "request":
+			ps.Title = "Request Debug"
+			ps.Data = rc
+			return render(rc, as, &vadmin.Request{RC: rc}, ps, "admin", "Request")
 		case "session":
 			ps.Title = "Session Debug"
 			ps.Data = ps.Session
-			return render(rc, as, &vadmin.Session{}, ps, "Administration||/admin", "Session")
+			return render(rc, as, &vadmin.Session{}, ps, "admin", "Session")
 		case "cpu":
 			switch path[1] {
 			case "start":

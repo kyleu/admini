@@ -50,7 +50,7 @@ func Count(ctx context.Context, db *database.Service, m *model.Model) (int, erro
 
 func modelListQuery(typ *database.DBType, m *model.Model, params *filter.Params) string {
 	cols, tbl := forTable(typ, m)
-	return database.SQLSelect(cols, tbl, "", params.OrderByString(), params.Limit, params.Offset)
+	return database.SQLSelect(cols, tbl, "", "", params.OrderByString(), params.Limit, params.Offset)
 }
 
 func modelCountQuery(typ *database.DBType, m *model.Model) string {
