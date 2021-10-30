@@ -29,46 +29,46 @@ rm -rf "dist"
 # macOS x86_64
 cp -R "../../tools/desktop/template" .
 
-mkdir -p "./Project Forge.app/Contents/Resources"
-mkdir -p "./Project Forge.app/Contents/MacOS"
+mkdir -p "./Admini.app/Contents/Resources"
+mkdir -p "./Admini.app/Contents/MacOS"
 
-cp -R "./template/macos/Info.plist" "./Project Forge.app/Contents/Info.plist"
-cp -R "./template/macOS/icons.icns" "./Project Forge.app/Contents/Resources/icons.icns"
+cp -R "./template/macos/Info.plist" "./Admini.app/Contents/Info.plist"
+cp -R "./template/macOS/icons.icns" "./Admini.app/Contents/Resources/icons.icns"
 
-cp "admini.macos" "./Project Forge.app/Contents/MacOS/admini"
+cp "admini.macos" "./Admini.app/Contents/MacOS/admini"
 
 echo "signing amd64 desktop binary..."
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Project Forge.app/Contents/MacOS/admini"
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Project Forge.app"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
 
 cp "./template/macos/appdmg.config.json" "./appdmg.config.json"
 
 echo "building macOS amd64 DMG..."
 appdmg "appdmg.config.json" "./admini_${TGT}_macos_x86_64_desktop.dmg"
-zip -r "admini_${TGT}_macos_x86_64_desktop.zip" "./Project Forge.app"
+zip -r "admini_${TGT}_macos_x86_64_desktop.zip" "./Admini.app"
 
 # macOS arm64
-cp "admini.macos.arm64" "./Project Forge.app/Contents/MacOS/admini"
+cp "admini.macos.arm64" "./Admini.app/Contents/MacOS/admini"
 
 echo "signing arm64 desktop binary..."
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Project Forge.app/Contents/MacOS/admini"
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Project Forge.app"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
 
 echo "building macOS arm64 DMG..."
 appdmg "appdmg.config.json" "./admini_${TGT}_macos_arm64_desktop.dmg"
-zip -r "admini_${TGT}_macos_arm64_desktop.zip" "./Project Forge.app"
+zip -r "admini_${TGT}_macos_arm64_desktop.zip" "./Admini.app"
 
 # macOS universal
-rm "./Project Forge.app/Contents/MacOS/admini"
-lipo -create -output "./Project Forge.app/Contents/MacOS/admini" admini.macos admini.macos.arm64
+rm "./Admini.app/Contents/MacOS/admini"
+lipo -create -output "./Admini.app/Contents/MacOS/admini" admini.macos admini.macos.arm64
 
 echo "signing universal desktop binary..."
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Project Forge.app/Contents/MacOS/admini"
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Project Forge.app"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
 
 echo "building macOS universal DMG..."
 appdmg "appdmg.config.json" "./admini_${TGT}_macos_all_desktop.dmg"
-zip -r "admini_${TGT}_macos_all_desktop.zip" "./Project Forge.app"
+zip -r "admini_${TGT}_macos_all_desktop.zip" "./Admini.app"
 
 # linux
 echo "building Linux zip..."
