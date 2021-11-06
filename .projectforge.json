@@ -18,7 +18,8 @@
     "postgres",
     "search",
     "sqlite",
-    "types"
+    "types",
+    "upgrade"
   ],
   "ignore": [
     "data"
