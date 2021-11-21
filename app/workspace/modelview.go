@@ -27,7 +27,7 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		if err != nil {
 			return nil, err
 		}
-		println("[" + strings.Join(rowFK, ", ") + "]")
+		req.PS.Logger.Debugf("relations: [%s]", strings.Join(rowFK, ", "))
 	}
 
 	page := &vmodel.View{Req: req, Act: act, Model: m, Result: data}

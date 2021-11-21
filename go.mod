@@ -9,6 +9,7 @@ require (
 	github.com/fasthttp/router v1.4.2
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gertd/go-pluralize v0.1.7
+	github.com/go-ini/ini v1.64.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gomarkdown/markdown v0.0.0-20210918233619-6c1113f12c4a
 	github.com/google/go-github/v39 v39.2.0
@@ -21,9 +22,7 @@ require (
 	github.com/markbates/goth v1.68.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.7.1
-	github.com/rhysd/go-github-selfupdate v1.2.3
 	github.com/spf13/cobra v1.2.1
-	github.com/tcnksm/go-gitconfig v0.1.2
 	github.com/valyala/fasthttp v1.29.0
 	github.com/valyala/quicktemplate v1.6.3
 	go.opentelemetry.io/otel v1.0.0
@@ -40,16 +39,13 @@ require (
 	cloud.google.com/go v0.81.0 // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
 	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-github/v30 v30.1.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
-	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.5.1-0.20200601181101-fa742c524853 // indirect
@@ -69,7 +65,6 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
 	github.com/savsgio/gotils v0.0.0-20210617111740-97865ed5a873 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/ulikunitz/xz v0.5.9 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.0.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.9.0 // indirect

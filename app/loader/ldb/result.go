@@ -12,7 +12,9 @@ import (
 	"go.uber.org/zap"
 )
 
-func ParseResult(title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger) (*result.Result, error) {
+func ParseResult(
+	title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger,
+) (*result.Result, error) {
 	fields, err := parseColumns(rows, enums, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error processing columns")

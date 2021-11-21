@@ -70,13 +70,9 @@ func loadColumns(ctx context.Context, models model.Models, db *database.Service,
 		if mod == nil {
 			return errors.Errorf("no table [%s] found among [%d] candidates", col.Table, len(models))
 		}
-		if e := models.Get(util.Pkg{col.Schema}, col.UDTName); e != nil {
-			err = mod.AddField(col.AsField(mod.Type == model.TypeInterface, models, logger))
-		} else {
-			err = mod.AddField(col.AsField(mod.Type == model.TypeInterface, models, logger))
-			if err != nil {
-				return errors.Wrap(err, "can't add field")
-			}
+		err = mod.AddField(col.AsField(mod.Type == model.TypeInterface, models, logger))
+		if err != nil {
+			return errors.Wrap(err, "can't add field")
 		}
 	}
 
