@@ -40,6 +40,7 @@ func NewService(typ *DBType, key string, dbName string, schName string, username
 	if err != nil {
 		return nil, err
 	}
+
 	return &Service{Key: key, DatabaseName: dbName, SchemaName: schName, Username: username, Type: typ, db: db, metrics: m, logger: logger}, nil
 }
 

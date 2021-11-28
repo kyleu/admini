@@ -5,11 +5,11 @@ import (
 )
 
 var ThemeDefault = func() *Theme {
-	nbl := "#4f9abd"
+	nbl := "#8eb6bd"
 	if o := os.Getenv("app_nav_color_light"); o != "" {
 		nbl = o
 	}
-	nbd := "#2d414e"
+	nbd := "#495f64"
 	if o := os.Getenv("app_nav_color_dark"); o != "" {
 		nbd = o
 	}
@@ -22,7 +22,7 @@ var ThemeDefault = func() *Theme {
 			Background: "#ffffff", BackgroundMuted: "#eeeeee",
 			LinkForeground: "#2d414e", LinkVisitedForeground: "#406379",
 			NavForeground: "#000000", NavBackground: nbl,
-			MenuForeground: "#000000", MenuBackground: "#f0f8ff", MenuSelectedBackground: "#faebd7", MenuSelectedForeground: "#000000",
+			MenuForeground: "#000000", MenuBackground: "#c1e3e8", MenuSelectedBackground: "#8fb3c3", MenuSelectedForeground: "#000000",
 			ModalBackdrop: "rgba(77, 77, 77, .7)", Success: "#008000", Error: "#FF0000",
 		},
 		Dark: &Colors{
