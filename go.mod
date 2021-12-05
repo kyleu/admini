@@ -32,6 +32,7 @@ require (
 	go.uber.org/zap v1.17.0
 	golang.org/x/mobile v0.0.0-20190719004257-d2bd2a29d028
 	golang.org/x/oauth2 v0.0.0-20210402161424-2e8d93401602
+	gopkg.in/yaml.v2 v2.4.0
 	modernc.org/sqlite v1.12.0
 )
 

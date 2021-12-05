@@ -51,6 +51,10 @@ func (s *Service) StartTransaction() (*sqlx.Tx, error) {
 	return s.db.Beginx()
 }
 
+func (s *Service) Conn(ctx context.Context) (*sql.Conn, error) {
+	return s.db.Conn(ctx)
+}
+
 func (s *Service) Stats() sql.DBStats {
 	return s.db.Stats()
 }
