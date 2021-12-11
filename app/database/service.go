@@ -41,7 +41,8 @@ func NewService(typ *DBType, key string, dbName string, schName string, username
 		return nil, err
 	}
 
-	return &Service{Key: key, DatabaseName: dbName, SchemaName: schName, Username: username, Type: typ, db: db, metrics: m, logger: logger}, nil
+	ret := &Service{Key: key, DatabaseName: dbName, SchemaName: schName, Username: username, Type: typ, db: db, metrics: m, logger: logger}
+	return ret, nil
 }
 
 func (s *Service) StartTransaction() (*sqlx.Tx, error) {

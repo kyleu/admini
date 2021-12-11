@@ -85,6 +85,7 @@
     "android": true,
     "iOS": true,
     "wasm": true,
+    "x86": true,
     "windowsARM": true,
     "linuxARM": true,
     "linuxMIPS": true,
