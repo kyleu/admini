@@ -28,7 +28,7 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 		}
 		return processModelNew(req, act, srcKey, m, as)
 	case "export":
-		return processModelExport(req, act, m, additional[1:])
+		return processModelExport(req, act, m, additional[1:], as)
 	case "v":
 		return processModelView(req, act, srcKey, m, additional[1:], as)
 	case "x":

@@ -7,18 +7,18 @@ import (
 	"github.com/kyleu/admini/app/schema/model"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 )
 
-func goServiceFile(m *model.Model, fm *Format) (*Result, error) {
-	f := NewGoFile(m.Pkg, m.Key+"Service")
+func fileService(m *model.Model, logger *zap.SugaredLogger) (*Result, error) {
+	f := NewGoFile(m.Pkg, "service")
 
 	f.W("type Service struct {", 1)
-	f.W("db     " + fm.Get("database"))
-	f.W("logger " + fm.Get("logger"))
+	f.W("db     *database.Service")
+	f.W("logger *zap.SugaredLogger")
 	f.W("}", -1)
 	f.LB()
-	nsLine := "func NewService(db %s, logger %s) *Service {"
-	f.W(fmt.Sprintf(nsLine, fm.Get("database"), fm.Get("logger")), 1)
+	f.W("func NewService(db *database.Service, logger *zap.SugaredLogger) *Service {", 1)
 	f.W("return &Service{db: db, logger: logger}")
 	f.W("}", -1)
 	f.LB()
@@ -36,7 +36,7 @@ func goServiceFile(m *model.Model, fm *Format) (*Result, error) {
 				return nil, errors.Errorf("missing pk col [%s]", pkCol)
 			}
 			flk := util.ToLowerCamel(util.ToSingular(fld.Key))
-			typ, imps := typeString(fld.Type, fm, "model")
+			typ, imps := typeString(fld.Type, "model")
 			for _, imp := range imps {
 				f.AddImport(imp.String())
 			}
@@ -65,6 +65,6 @@ func goServiceFile(m *model.Model, fm *Format) (*Result, error) {
 		f.W("}", -1)
 	}
 
-	ret := &Result{Key: "service", Out: f}
+	ret := &Result{Key: f.Path(), Out: f}
 	return ret, nil
 }

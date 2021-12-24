@@ -8,10 +8,10 @@ import (
 )
 
 // nolint
-func typeString(typ types2.Type, f *Format, ctx string) (string, []util.Pkg) {
+func typeString(typ types2.Type, ctx string) (string, []util.Pkg) {
 	switch t := typ.(type) {
 	case *types2.Wrapped:
-		return typeString(t.T, f, ctx)
+		return typeString(t.T, ctx)
 	case *types2.Unknown:
 		return fmt.Sprintf("string /* %s */", t.X), nil
 	case *types2.Error:
@@ -37,11 +37,11 @@ func typeString(typ types2.Type, f *Format, ctx string) (string, []util.Pkg) {
 			return "interface{}", nil
 		}
 	case *types2.List:
-		ts, p := typeString(t.V, f, ctx)
+		ts, p := typeString(t.V, ctx)
 		return "[]" + ts, p
 	case *types2.Map:
-		kts, kp := typeString(t.K, f, ctx)
-		vts, vp := typeString(t.V, f, ctx)
+		kts, kp := typeString(t.K, ctx)
+		vts, vp := typeString(t.V, ctx)
 		return fmt.Sprintf("map[%s]%s", kts, vts), append(kp, vp...)
 	case *types2.Float:
 		return "float", nil
@@ -54,7 +54,7 @@ func typeString(typ types2.Type, f *Format, ctx string) (string, []util.Pkg) {
 				return "sql.NullString", []util.Pkg{{"database/sql"}}
 			}
 		}
-		ts, p := typeString(t.V, f, ctx)
+		ts, p := typeString(t.V, ctx)
 		return "*" + ts, p
 	case *types2.String:
 		return "string", nil

@@ -10,7 +10,7 @@ import (
 )
 
 // nolint
-func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result, error) {
+func fileModel(m *model.Model, logger *zap.SugaredLogger) (*Result, error) {
 	f := NewGoFile(m.Pkg, m.Key)
 
 	pk := m.GetPK(logger)
@@ -28,11 +28,11 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 		if len(fld.Key) > maxKeyLength {
 			maxKeyLength = len(fld.Key)
 		}
-		x, _ := typeString(fld.Type, fm, "model")
+		x, _ := typeString(fld.Type, "model")
 		if len(x) > maxTypeLength {
 			maxTypeLength = len(x)
 		}
-		z, _ := typeString(fld.Type, fm, "dto")
+		z, _ := typeString(fld.Type, "dto")
 		if len(z) > maxDTOTypeLength {
 			maxDTOTypeLength = len(z)
 		}
@@ -42,7 +42,7 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 	f.W("type "+sk+" struct {", 1)
 	msg := "%-" + fmt.Sprintf("%d", maxKeyLength) + "s %-" + fmt.Sprintf("%d", maxTypeLength) + "s %s%s"
 	for _, fld := range m.Fields {
-		typ, imps := typeString(fld.Type, fm, "model")
+		typ, imps := typeString(fld.Type, "model")
 		for _, imp := range imps {
 			f.AddImport(imp.String())
 		}
@@ -80,11 +80,11 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 	f.W(")", -1)
 	f.LB()
 
-	f.W("type "+lk+"DTO struct {", 1)
+	f.W("type dto struct {", 1)
 	dtoMsg := "%-" + fmt.Sprintf("%d", maxKeyLength) + "s %-" + fmt.Sprintf("%d", maxDTOTypeLength) + "s %s"
-	dtoFieldMsg := "%-" + fmt.Sprintf("%d", maxKeyLength+1) + "s %s.%s,"
+	dtoFieldMsg := "%-" + fmt.Sprintf("%d", maxKeyLength+1) + "s d.%s,"
 	for _, fld := range m.Fields {
-		typ, imps := typeString(fld.Type, fm, "dto")
+		typ, imps := typeString(fld.Type, "dto")
 		for _, imp := range imps {
 			f.AddImport(imp.String())
 		}
@@ -92,32 +92,32 @@ func goModelFile(m *model.Model, fm *Format, logger *zap.SugaredLogger) (*Result
 	}
 	f.W("}", -1)
 	f.LB()
-	f.W(fmt.Sprintf("func (%s *%sDTO) To%s() *%s {", firstChar, lk, sk, sk), 1)
+	f.W(fmt.Sprintf("func (d *dto) To%s() *%s {", sk, sk), 1)
 	f.W("return &"+sk+"{", 1)
 	for _, fld := range m.Fields {
 		call := util.ToCamel(fld.Key)
-		switch typ, _ := typeString(fld.Type, fm, "dto"); typ {
+		switch typ, _ := typeString(fld.Type, "dto"); typ {
 		case "sql.NullBool":
 			call += ".Bool"
 		case "sql.NullString":
 			call += ".String"
 		}
-		f.Wf(dtoFieldMsg, util.ToCamel(fld.Key)+":", firstChar, call)
+		f.Wf(dtoFieldMsg, util.ToCamel(fld.Key)+":", call)
 	}
 	f.W("}", -1)
 	f.W("}", -1)
 	f.LB()
-	f.Wf("type %sDTOs []*%sDTO", lk, lk)
+	f.Wf("type dtos []*dto")
 	f.LB()
 
-	f.W(fmt.Sprintf("func (%s %sDTOs) To%s() %s {", firstChar, lk, pluralk, pluralk), 1)
-	f.Wf("ret := make(%s, 0, len(%s))", pluralk, firstChar)
-	f.W(fmt.Sprintf("for _, dto := range %s {", firstChar), 1)
-	f.Wf("ret = append(ret, dto.To%s())", sk)
+	f.W(fmt.Sprintf("func (d dtos) To%s() %s {", pluralk, pluralk), 1)
+	f.Wf("ret := make(%s, 0, len(d))", pluralk)
+	f.W("for _, x := range d {", 1)
+	f.Wf("ret = append(ret, x.To%s())", sk)
 	f.W("}", -1)
 	f.W("return ret")
 	f.W("}", -1)
 
-	ret := &Result{Key: "model", Out: f}
+	ret := &Result{Key: f.Path(), Out: f}
 	return ret, nil
 }
