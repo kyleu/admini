@@ -3,7 +3,7 @@ package model
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/field"
+	"github.com/kyleu/admini/app/schema/field"
 )
 
 type Index struct {

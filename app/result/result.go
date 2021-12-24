@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/kyleu/admini/app/schema/field"
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/field"
 )
 
 type Timing struct {

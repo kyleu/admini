@@ -6,10 +6,10 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/schema/model"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/menu"
-	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"

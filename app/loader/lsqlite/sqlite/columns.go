@@ -5,12 +5,11 @@ import (
 	"database/sql"
 	"sort"
 
+	"github.com/kyleu/admini/app/schema/field"
+	model2 "github.com/kyleu/admini/app/schema/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/field"
-	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/queries/qsqlite"
@@ -44,21 +43,21 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 	}
 }
 
-func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadColumns(ctx context.Context, models model2.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var cols []*columnResult
 	err := db.Select(ctx, &cols, qsqlite.ListColumns(db.SchemaName), nil)
 	if err != nil {
 		return errors.Wrap(err, "can't list columns")
 	}
 
-	pks := map[*model.Model]map[int]string{}
+	pks := map[*model2.Model]map[int]string{}
 
 	for _, col := range cols {
 		mod := models.Get(nil, col.Table)
 		if mod == nil {
 			return errors.Errorf("no table [%s] found among [%d] candidates", col.Table, len(models))
 		}
-		err = mod.AddField(col.AsField(mod.Type == model.TypeInterface, logger))
+		err = mod.AddField(col.AsField(mod.Type == model2.TypeInterface, logger))
 		if err != nil {
 			return errors.Wrap(err, "can't add field")
 		}
@@ -73,7 +72,7 @@ func loadColumns(ctx context.Context, models model.Models, db *database.Service,
 	}
 
 	for k, v := range pks {
-		idx := &model.Index{Key: k.Key + "_pk", Unique: true, Primary: true}
+		idx := &model2.Index{Key: k.Key + "_pk", Unique: true, Primary: true}
 		nums := make([]int, 0, len(v))
 		for num := range v {
 			nums = append(nums, num)

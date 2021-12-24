@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/model"
+	"github.com/kyleu/admini/app/schema/model"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )

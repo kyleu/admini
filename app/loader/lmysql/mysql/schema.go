@@ -3,7 +3,7 @@ package mysql
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/model"
+	"github.com/kyleu/admini/app/schema/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"

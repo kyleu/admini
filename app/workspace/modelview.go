@@ -5,13 +5,13 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
+	model2 "github.com/kyleu/admini/app/schema/model"
 	"github.com/kyleu/admini/views/vmodel"
 
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/model"
 )
 
-func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string, as *app.State) (*Result, error) {
+func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model2.Model, idStrings []string, as *app.State) (*Result, error) {
 	_, ld, err := loaderFor(req, srcKey, as)
 	if err != nil {
 		return ErrResult(req, act, err)
@@ -23,7 +23,7 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	}
 
 	for _, rel := range m.Relationships {
-		rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, data)
+		rowFK, err := model2.GetStrings(m.Fields, rel.SourceFields, data)
 		if err != nil {
 			return nil, err
 		}

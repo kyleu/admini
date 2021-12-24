@@ -22,7 +22,7 @@ var ThemeDefault = func() *Theme {
 			Background: "#ffffff", BackgroundMuted: "#eeeeee",
 			LinkForeground: "#2d414e", LinkVisitedForeground: "#406379",
 			NavForeground: "#000000", NavBackground: nbl,
-			MenuForeground: "#000000", MenuBackground: "#c1e3e8", MenuSelectedBackground: "#8fb3c3", MenuSelectedForeground: "#000000",
+			MenuForeground: "#000000", MenuBackground: "#c1e3e8", MenuSelectedBackground: "#8eb6bd", MenuSelectedForeground: "#000000",
 			ModalBackdrop: "rgba(77, 77, 77, .7)", Success: "#008000", Error: "#FF0000",
 		},
 		Dark: &Colors{

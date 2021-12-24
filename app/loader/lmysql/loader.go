@@ -7,13 +7,13 @@ import (
 	"github.com/kyleu/admini/app/loader/ldb"
 	"github.com/kyleu/admini/app/loader/lmysql/mysql"
 	"github.com/kyleu/admini/app/result"
+	"github.com/kyleu/admini/app/schema/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/loader"
-	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 )

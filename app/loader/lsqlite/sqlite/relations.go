@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"sort"
 
+	model2 "github.com/kyleu/admini/app/schema/model"
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/queries/qsqlite"
@@ -36,7 +35,7 @@ func (r foreignKeyResults) Sort() {
 	})
 }
 
-func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service) error {
+func loadForeignKeys(ctx context.Context, models model2.Models, db *database.Service) error {
 	keys := foreignKeyResults{}
 	err := db.Select(ctx, &keys, qsqlite.ListForeignKeys(db.SchemaName), nil)
 	if err != nil {
@@ -51,7 +50,7 @@ func loadForeignKeys(ctx context.Context, models model.Models, db *database.Serv
 
 		curr := mod.Relationships.Get(k.String())
 		if curr == nil {
-			curr = &model.Relationship{
+			curr = &model2.Relationship{
 				Key:          k.String(),
 				SourceFields: []string{},
 				TargetModel:  k.TargetTable,

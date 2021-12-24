@@ -4,12 +4,11 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/kyleu/admini/app/schema/field"
+	model2 "github.com/kyleu/admini/app/schema/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/field"
-	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
@@ -45,7 +44,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 	}
 }
 
-func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadColumns(ctx context.Context, models model2.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var cols []*columnResult
 	err := db.Select(ctx, &cols, qmysql.ListColumns(db.DatabaseName), nil)
 	if err != nil {
@@ -57,7 +56,7 @@ func loadColumns(ctx context.Context, models model.Models, db *database.Service,
 		if mod == nil {
 			return errors.Errorf("no table [%s] found among [%d] candidates (%s)", col.Table, len(models), util.OxfordComma(models.Names(), "and"))
 		}
-		err = mod.AddField(col.AsField(mod.Type == model.TypeInterface, logger))
+		err = mod.AddField(col.AsField(mod.Type == model2.TypeInterface, logger))
 		if err != nil {
 			return errors.Wrap(err, "can't add field")
 		}

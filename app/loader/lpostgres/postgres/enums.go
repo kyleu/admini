@@ -5,13 +5,12 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/kyleu/admini/app/field"
-	"github.com/kyleu/admini/app/types"
+	"github.com/kyleu/admini/app/schema/field"
+	model2 "github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/schema/types"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
@@ -29,9 +28,9 @@ type enumResult struct {
 	Description sql.NullString `db:"description"`
 }
 
-func (t *enumResult) ToModel() *model.Model {
-	ret := model.NewModel(util.Pkg{t.Schema}, t.Name)
-	ret.Type = model.TypeEnum
+func (t *enumResult) ToModel() *model2.Model {
+	ret := model2.NewModel(util.Pkg{t.Schema}, t.Name)
+	ret.Type = model2.TypeEnum
 
 	els := strings.Split(t.Elements, "\n")
 	fields := make(field.Fields, 0, len(els))
@@ -46,7 +45,7 @@ func (t *enumResult) ToModel() *model.Model {
 	return ret
 }
 
-func loadEnums(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
+func loadEnums(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (model2.Models, error) {
 	var enums []*enumResult
 	err := db.Select(ctx, &enums, qpostgres.ListTypes(db.SchemaName), nil)
 	if err != nil {
@@ -55,7 +54,7 @@ func loadEnums(ctx context.Context, db *database.Service, logger *zap.SugaredLog
 
 	logger.Infof("loading [%d] enums", len(enums))
 
-	ret := make(model.Models, 0, len(enums))
+	ret := make(model2.Models, 0, len(enums))
 	for _, t := range enums {
 		ret = append(ret, t.ToModel())
 	}

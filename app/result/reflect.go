@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/kyleu/admini/app/field"
+	field2 "github.com/kyleu/admini/app/schema/field"
 	"github.com/pkg/errors"
 )
 
@@ -54,21 +54,21 @@ func valuesOf(v reflect.Value) ([]interface{}, error) {
 	return ret, nil
 }
 
-func getFields(x interface{}) (field.Fields, error) {
+func getFields(x interface{}) (field2.Fields, error) {
 	return fieldsOf(reflect.ValueOf(x))
 }
 
-func fieldsOf(v reflect.Value) (field.Fields, error) {
+func fieldsOf(v reflect.Value) (field2.Fields, error) {
 	if v.Kind() == reflect.Ptr {
 		return fieldsOf(v.Elem())
 	}
 
 	t := v.Type()
 
-	ret := make(field.Fields, 0, t.NumField())
+	ret := make(field2.Fields, 0, t.NumField())
 	for i := 0; i < t.NumField(); i++ {
 		f := t.Field(i)
-		ret = append(ret, field.NewFieldByType(f.Name, f.Type, !v.CanSet(), nil))
+		ret = append(ret, field2.NewFieldByType(f.Name, f.Type, !v.CanSet(), nil))
 	}
 
 	return ret, nil

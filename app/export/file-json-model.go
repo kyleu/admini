@@ -1,7 +1,7 @@
 package export
 
 import (
-	"github.com/kyleu/admini/app/model"
+	"github.com/kyleu/admini/app/schema/model"
 	"github.com/kyleu/admini/app/util"
 	"go.uber.org/zap"
 )

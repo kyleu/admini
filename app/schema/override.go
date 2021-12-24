@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/kyleu/admini/app/field"
-	"github.com/kyleu/admini/app/model"
+	"github.com/kyleu/admini/app/schema/field"
+	"github.com/kyleu/admini/app/schema/model"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 )

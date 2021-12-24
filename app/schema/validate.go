@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyleu/admini/app/types"
+	"github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/schema/types"
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/model"
 )
 
 const (

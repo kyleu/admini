@@ -6,10 +6,10 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/schema/model"
 	"github.com/kyleu/admini/views/vmodel"
 
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/model"
 	"github.com/pkg/errors"
 )
 

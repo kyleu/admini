@@ -3,7 +3,7 @@ package field
 import (
 	"reflect"
 
-	"github.com/kyleu/admini/app/types"
+	"github.com/kyleu/admini/app/schema/types"
 )
 
 func NewFieldByType(key string, t reflect.Type, ro bool, md *Metadata) *Field {

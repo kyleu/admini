@@ -3,9 +3,8 @@ package postgres
 import (
 	"context"
 
+	model2 "github.com/kyleu/admini/app/schema/model"
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
@@ -21,8 +20,8 @@ type indexResult struct {
 	ColumnNames string `db:"column_names"`
 }
 
-func (r indexResult) AsIndex() *model.Index {
-	return &model.Index{
+func (r indexResult) AsIndex() *model2.Index {
+	return &model2.Index{
 		Key:      r.Index,
 		Fields:   util.SplitAndTrim(r.ColumnNames, ","),
 		Unique:   r.Unique,
@@ -31,7 +30,7 @@ func (r indexResult) AsIndex() *model.Index {
 	}
 }
 
-func loadIndexes(ctx context.Context, models model.Models, db *database.Service) error {
+func loadIndexes(ctx context.Context, models model2.Models, db *database.Service) error {
 	var idxs []*indexResult
 	err := db.Select(ctx, &idxs, qpostgres.ListIndexes(db.SchemaName), nil)
 	if err != nil {

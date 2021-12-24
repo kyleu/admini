@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/kyleu/admini/app/model"
+	model2 "github.com/kyleu/admini/app/schema/model"
 
 	"github.com/kyleu/admini/app/menu"
 	"github.com/kyleu/admini/app/util"
@@ -17,7 +17,7 @@ var menuItemBack = &menu.Item{
 	Route:       "/",
 }
 
-func SourceMenuPackage(mp *model.Package, path string) menu.Items {
+func SourceMenuPackage(mp *model2.Package, path string) menu.Items {
 	ret := menu.Items{}
 
 	for _, m := range mp.ChildModels {
@@ -30,7 +30,7 @@ func SourceMenuPackage(mp *model.Package, path string) menu.Items {
 	return ret
 }
 
-func SourceMenuModel(m *model.Model, path string) *menu.Item {
+func SourceMenuModel(m *model2.Model, path string) *menu.Item {
 	return &menu.Item{
 		Key:         m.Key,
 		Title:       m.Name(),
@@ -40,11 +40,11 @@ func SourceMenuModel(m *model.Model, path string) *menu.Item {
 	}
 }
 
-func sourceMenuAddModel(ret menu.Items, m *model.Model, path string) menu.Items {
+func sourceMenuAddModel(ret menu.Items, m *model2.Model, path string) menu.Items {
 	return append(ret, SourceMenuModel(m, filepath.Join(path, m.Key)))
 }
 
-func sourceMenuAddPackage(ret menu.Items, mp *model.Package, path string) menu.Items {
+func sourceMenuAddPackage(ret menu.Items, mp *model2.Package, path string) menu.Items {
 	path = filepath.Join(path, mp.Key)
 	desc := fmt.Sprintf("package [%s], containing [%d] models", mp.Key, len(mp.ChildModels))
 

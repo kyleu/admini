@@ -4,9 +4,8 @@ import (
 	"context"
 	"sort"
 
+	model2 "github.com/kyleu/admini/app/schema/model"
 	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/model"
 
 	"github.com/kyleu/admini/app/database"
 	"github.com/kyleu/admini/app/util"
@@ -35,7 +34,7 @@ func (r foreignKeyResults) Sort() {
 	})
 }
 
-func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service) error {
+func loadForeignKeys(ctx context.Context, models model2.Models, db *database.Service) error {
 	keys := foreignKeyResults{}
 	err := db.Select(ctx, &keys, qpostgres.ListForeignKeys(db.SchemaName), nil)
 	if err != nil {
@@ -50,7 +49,7 @@ func loadForeignKeys(ctx context.Context, models model.Models, db *database.Serv
 
 		curr := mod.Relationships.Get(k.Name)
 		if curr == nil {
-			curr = &model.Relationship{
+			curr = &model2.Relationship{
 				Key:          k.Name,
 				SourceFields: []string{},
 				TargetPkg:    util.Pkg{k.TargetSchema},
@@ -67,12 +66,12 @@ func loadForeignKeys(ctx context.Context, models model.Models, db *database.Serv
 	return nil
 }
 
-func loadEnumRelations(ctx context.Context, enums model.Models, models model.Models, db *database.Service) error {
+func loadEnumRelations(ctx context.Context, enums model2.Models, models model2.Models, db *database.Service) error {
 	for _, e := range enums {
 		for _, m := range models {
 			for _, f := range m.Fields {
 				if ek := f.Type.EnumKey(); ek == e.Key {
-					rel := &model.Relationship{
+					rel := &model2.Relationship{
 						Key:          "enum_" + m.Key + "_" + f.Key,
 						SourceFields: []string{e.Key},
 						TargetPkg:    m.Pkg,

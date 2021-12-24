@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/kyleu/admini/app/filter"
-	"github.com/kyleu/admini/app/model"
 	"github.com/kyleu/admini/app/result"
 	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/schema/model"
 	"github.com/kyleu/admini/app/util"
 )
 
