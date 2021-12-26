@@ -70,7 +70,7 @@ func (s Sources) GetWithError(key string) (*Source, error) {
 	for _, x := range s {
 		keys = append(keys, x.Key)
 	}
-	return nil, errors.Errorf("no source [%s] available among candidates [%s]", key, util.OxfordComma(keys, "and"))
+	return nil, errors.Errorf("no source [%s] available among candidates [%s]", key, util.StringArrayOxfordComma(keys, "and"))
 }
 
 func (s Sources) Sort() {

@@ -70,7 +70,7 @@ func sourceItem(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) 
 		if t == "" {
 			return ErrResult(req, act, errors.Errorf("must provide [%s] in config", act.Type.Key))
 		}
-		x = util.SplitAndTrim(t, "/")
+		x = util.StringSplitAndTrim(t, "/")
 	}
 	return process(req, act, p, src, append(x, req.Path...), as)
 }

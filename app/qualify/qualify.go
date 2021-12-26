@@ -32,7 +32,7 @@ func qualifyAct(req *Request, act *action.Action, schemata schema.Schemata) (Qua
 		if err != nil {
 			return nil, err
 		}
-		ret, err = qualifyModel(req, act, srcKey, util.Pkg(util.SplitAndTrim(modelPath, "/")), schemata)
+		ret, err = qualifyModel(req, act, srcKey, util.Pkg(util.StringSplitAndTrim(modelPath, "/")), schemata)
 		if err != nil {
 			return nil, err
 		}

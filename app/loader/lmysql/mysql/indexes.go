@@ -23,7 +23,7 @@ type indexResult struct {
 func (r indexResult) AsIndex() *model2.Index {
 	return &model2.Index{
 		Key:      r.Index,
-		Fields:   util.SplitAndTrim(r.ColumnNames, ","),
+		Fields:   util.StringSplitAndTrim(r.ColumnNames, ","),
 		Unique:   !r.NonUnique,
 		Primary:  strings.EqualFold(r.Index, "primary"),
 		Metadata: nil,

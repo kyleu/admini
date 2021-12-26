@@ -80,21 +80,21 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 		}
 		switch {
 		case k == schema.KeyTitle:
-			if s == util.ToSingular(util.ToTitle(m.Key)) {
+			if s == util.StringToSingular(util.StringToTitle(m.Key)) {
 				m.Title = ""
 			} else {
 				ret = append(ret, schema.NewOverride("model", m.Path(), schema.KeyTitle, v))
 				m.Title = s
 			}
 		case k == schema.KeyPlural:
-			if s == util.ToPlural(util.ToTitle(m.Key)) {
+			if s == util.StringToPlural(util.StringToTitle(m.Key)) {
 				m.Plural = ""
 			} else {
 				ret = append(ret, schema.NewOverride("model", m.Path(), schema.KeyPlural, v))
 				m.Plural = s
 			}
 		case strings.HasPrefix(k, "f."):
-			fs, prop := util.SplitStringLast(k, '.', true)
+			fs, prop := util.StringSplitLast(k, '.', true)
 			fs = strings.TrimPrefix(fs, "f.")
 			_, f := m.Fields.Get(fs)
 			if f == nil {
@@ -102,14 +102,14 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 			}
 			switch prop {
 			case schema.KeyTitle:
-				if s == util.ToSingular(util.ToTitle(f.Key)) {
+				if s == util.StringToSingular(util.StringToTitle(f.Key)) {
 					f.Title = ""
 				} else {
 					ret = append(ret, schema.NewOverride("field", append(m.Path(), f.Key), schema.KeyTitle, v))
 					f.Title = s
 				}
 			case schema.KeyPlural:
-				if s == util.ToPlural(util.ToTitle(f.Key)) {
+				if s == util.StringToPlural(util.StringToTitle(f.Key)) {
 					f.Plural = ""
 				} else {
 					ret = append(ret, schema.NewOverride("field", append(m.Path(), f.Key), schema.KeyPlural, v))
@@ -142,7 +142,7 @@ func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State) (*source.Source, *s
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	pkg := util.Pkg(util.SplitAndTrim(path, "/"))
+	pkg := util.Pkg(util.StringSplitAndTrim(path, "/"))
 
 	m := sch.Models.Get(pkg.Drop(1), pkg.Last())
 	if m == nil {

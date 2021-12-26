@@ -15,9 +15,9 @@ func fileModel(m *model.Model, logger *zap.SugaredLogger) (*Result, error) {
 
 	pk := m.GetPK(logger)
 
-	lk := util.ToLowerCamel(util.ToSingular(m.Key))
-	sk := util.ToCamel(util.ToSingular(m.Key))
-	pluralk := util.ToCamel(util.ToPlural(m.Key))
+	lk := util.StringToLowerCamel(util.StringToSingular(m.Key))
+	sk := util.StringToCamel(util.StringToSingular(m.Key))
+	pluralk := util.StringToCamel(util.StringToPlural(m.Key))
 	firstChar := strings.ToLower(string(m.Key[0]))
 
 	maxKeyLength := 0
@@ -36,7 +36,7 @@ func fileModel(m *model.Model, logger *zap.SugaredLogger) (*Result, error) {
 		if len(z) > maxDTOTypeLength {
 			maxDTOTypeLength = len(z)
 		}
-		dataFields = append(dataFields, firstChar+"."+util.ToCamel(fld.Key))
+		dataFields = append(dataFields, firstChar+"."+util.StringToCamel(fld.Key))
 	}
 
 	f.W("type "+sk+" struct {", 1)
@@ -54,7 +54,7 @@ func fileModel(m *model.Model, logger *zap.SugaredLogger) (*Result, error) {
 		if util.StringArrayContains(pk, fld.Key) {
 			suffix = " /* primary key */"
 		}
-		f.Wf(msg, util.ToCamel(fld.Key), typ, "`json:\""+util.ToLowerCamel(fld.Key)+omit+"\"`", suffix)
+		f.Wf(msg, util.StringToCamel(fld.Key), typ, "`json:\""+util.StringToLowerCamel(fld.Key)+omit+"\"`", suffix)
 	}
 	f.W("}", -1)
 	f.LB()
@@ -88,21 +88,21 @@ func fileModel(m *model.Model, logger *zap.SugaredLogger) (*Result, error) {
 		for _, imp := range imps {
 			f.AddImport(imp.String())
 		}
-		f.Wf(dtoMsg, util.ToCamel(fld.Key), typ, "`db:\""+fld.Key+"\"`")
+		f.Wf(dtoMsg, util.StringToCamel(fld.Key), typ, "`db:\""+fld.Key+"\"`")
 	}
 	f.W("}", -1)
 	f.LB()
 	f.W(fmt.Sprintf("func (d *dto) To%s() *%s {", sk, sk), 1)
 	f.W("return &"+sk+"{", 1)
 	for _, fld := range m.Fields {
-		call := util.ToCamel(fld.Key)
+		call := util.StringToCamel(fld.Key)
 		switch typ, _ := typeString(fld.Type, "dto"); typ {
 		case "sql.NullBool":
 			call += ".Bool"
 		case "sql.NullString":
 			call += ".String"
 		}
-		f.Wf(dtoFieldMsg, util.ToCamel(fld.Key)+":", call)
+		f.Wf(dtoFieldMsg, util.StringToCamel(fld.Key)+":", call)
 	}
 	f.W("}", -1)
 	f.W("}", -1)

@@ -133,7 +133,7 @@ func itemsForPackage(x *menu.Item, act *action.Action, view *project.View) error
 	if err != nil {
 		return errors.Wrap(err, "no [package] in config")
 	}
-	pkg := util.SplitAndTrim(pkgStr, "/")
+	pkg := util.StringSplitAndTrim(pkgStr, "/")
 	if len(pkg) == 0 {
 		return errors.New("config [package] is empty")
 	}

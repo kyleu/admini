@@ -21,7 +21,7 @@ func WorkspaceSource(rc *fasthttp.RequestCtx) {
 		}
 
 		path := string(rc.Request.URI().Path())
-		paths := util.SplitAndTrim(path, "/")
+		paths := util.StringSplitAndTrim(path, "/")
 		if len(paths) < 2 {
 			return ersp("no source provided in path [%s]", path)
 		}

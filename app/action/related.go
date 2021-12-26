@@ -29,7 +29,7 @@ func GetItem(act *Action, schemata schema.Schemata, key string) (interface{}, []
 		return nil, nil, errors.Wrap(err, "config key [package] must be provided")
 	}
 
-	i, remaining := sch.Get(util.SplitAndTrim(p, "/"))
+	i, remaining := sch.Get(util.StringSplitAndTrim(p, "/"))
 	if i == nil {
 		return nil, nil, errors.Errorf("no item found at path [%s]", p)
 	}

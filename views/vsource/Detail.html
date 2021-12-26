@@ -57,7 +57,7 @@
     <td><a href="/source/{%s srcKey %}/model/{%s m.String() %}">{%s m.Key %}</a></td>
     {%= vutil.Indent(true, indent + 1) %}
 
-    {% code sing, plur := util.StringForms(util.ToTitle(m.Key)) %}
+    {% code sing, plur := util.StringForms(util.StringToTitle(m.Key)) %}
     <td>
       {% if m.Name() == sing %}
         <em>{%s m.Name() %}</em>

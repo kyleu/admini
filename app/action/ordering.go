@@ -58,10 +58,10 @@ func ReorderActions(acts Actions, orderings Orderings) (Actions, error) {
 
 func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, error) {
 	var act *Action
-	p := util.SplitAndTrim(o.OriginalPath, "/")
+	p := util.StringSplitAndTrim(o.OriginalPath, "/")
 	if o.Key == "_new" {
 		var err error
-		c := util.SplitAndTrim(o.OriginalPath, "/")
+		c := util.StringSplitAndTrim(o.OriginalPath, "/")
 		if len(c) < 1 {
 			return nil, errors.New("attempted to create new action with no arguments")
 		}

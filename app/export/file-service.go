@@ -35,15 +35,15 @@ func fileService(m *model.Model, logger *zap.SugaredLogger) (*Result, error) {
 			if fld == nil {
 				return nil, errors.Errorf("missing pk col [%s]", pkCol)
 			}
-			flk := util.ToLowerCamel(util.ToSingular(fld.Key))
+			flk := util.StringToLowerCamel(util.StringToSingular(fld.Key))
 			typ, imps := typeString(fld.Type, "model")
 			for _, imp := range imps {
 				f.AddImport(imp.String())
 			}
 			pkArgs = append(pkArgs, flk+" "+typ)
 		}
-		lk := util.ToLowerCamel(util.ToSingular(m.Key))
-		sk := util.ToCamel(util.ToSingular(m.Key))
+		lk := util.StringToLowerCamel(util.StringToSingular(m.Key))
+		sk := util.StringToCamel(util.StringToSingular(m.Key))
 		f.AddImport("context")
 		f.W("func (s *Service) Get(ctx context.Context, tx *sqlx.Tx, "+strings.Join(pkArgs, ", ")+") (*"+sk+", error) {", 1)
 		f.Wf("ret := &%sDTO{}", lk)

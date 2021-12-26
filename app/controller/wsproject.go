@@ -29,7 +29,7 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		paths := util.SplitAndTrim(string(rc.Path()), "/")
+		paths := util.StringSplitAndTrim(string(rc.Path()), "/")
 		if len(paths) < 2 {
 			return ersp("no source provided in path [%s]", string(rc.Path()))
 		}

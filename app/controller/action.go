@@ -58,7 +58,7 @@ func ActionOrdering(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.Plural(count, "action"), elapsedMillis)
+		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.StringPluralCount(count, "action"), elapsedMillis)
 		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }
@@ -142,7 +142,7 @@ func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *acti
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	pkg := util.SplitAndTrim(path, "/")
+	pkg := util.StringSplitAndTrim(path, "/")
 
 	a, remaining := p.Actions.Get(pkg)
 	if a == nil {

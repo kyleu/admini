@@ -54,7 +54,7 @@ func loadColumns(ctx context.Context, models model2.Models, db *database.Service
 	for _, col := range cols {
 		mod := models.Get(util.Pkg{col.Schema}, col.Table)
 		if mod == nil {
-			return errors.Errorf("no table [%s] found among [%d] candidates (%s)", col.Table, len(models), util.OxfordComma(models.Names(), "and"))
+			return errors.Errorf("no table [%s] found among [%d] candidates (%s)", col.Table, len(models), util.StringArrayOxfordComma(models.Names(), "and"))
 		}
 		err = mod.AddField(col.AsField(mod.Type == model2.TypeInterface, logger))
 		if err != nil {

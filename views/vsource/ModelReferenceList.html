@@ -8,7 +8,7 @@
 
 {% func ModelReferenceList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.References) > 0 -%}
     <div class="card">
-      <h3>{%s util.Plural(len(m.References), `reference`) %}</h3>
+      <h3>{%s util.StringPluralCount(len(m.References), `reference`) %}</h3>
       <table>
         <thead>
           <tr>
