@@ -10,7 +10,7 @@
 
 {% func ModelFieldList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Fields) > 0 -%}
     <div class="card">
-      <h3>{%s util.StringPluralCount(len(m.Fields), `field`) %}</h3>
+      <h3>{%s util.StringPlural(len(m.Fields), `field`) %}</h3>
       <table>
         <thead>
           <tr>

@@ -8,7 +8,7 @@
 
 {% func ModelRelationshipList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Relationships) > 0 -%}
     <div class="card">
-      <h3>{%s util.StringPluralCount(len(m.Relationships), `relationship`) %}</h3>
+      <h3>{%s util.StringPlural(len(m.Relationships), `relationship`) %}</h3>
       <table>
         <thead>
           <tr>

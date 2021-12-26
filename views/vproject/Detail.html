@@ -27,7 +27,7 @@
     {%- if len(p.View.Sources) == 0 -%}
     <h3>No sources in project</h3>
     {%- else -%}
-    <h3>{%s util.StringPluralCount(len(p.View.Sources), `source`) %} in project</h3>
+    <h3>{%s util.StringPlural(len(p.View.Sources), `source`) %} in project</h3>
     <ul>
     {%- for _, s := range p.View.Sources -%}
       <li><a href="/source/{%s s.Key %}">{%= components.SVGRef(s.IconWithFallback(), 16, 16, "icon", ps) %}{%s s.Name() %}</a></li>
@@ -52,7 +52,7 @@
             </form>
           </div>
         </div>
-        <h3 class="no-padding"><span class="drag-tracked-size" data-sing="action" data-plur="actions">{%s util.StringPluralCount(p.View.Project.Actions.Size(), "action") %}</span></h3>
+        <h3 class="no-padding"><span class="drag-tracked-size" data-sing="action" data-plur="actions">{%s util.StringPlural(p.View.Project.Actions.Size(), "action") %}</span></h3>
         <div class="clear"></div>
         <div class="container tracked">
           {%- for _, act := range p.View.Project.Actions -%}
