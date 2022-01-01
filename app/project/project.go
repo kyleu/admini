@@ -31,7 +31,7 @@ func (p *Project) IconWithFallback() string {
 }
 
 func (p *Project) WebPath() string {
-	return fmt.Sprintf("/project/", p.Key)
+	return fmt.Sprintf("/project/%s", p.Key)
 }
 
 type Projects []*Project
