@@ -1,6 +1,7 @@
 package project
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/kyleu/admini/app/action"
@@ -27,6 +28,10 @@ func (p *Project) IconWithFallback() string {
 		return "app"
 	}
 	return p.Icon
+}
+
+func (p *Project) WebPath() string {
+	return fmt.Sprintf("/project/", p.Key)
 }
 
 type Projects []*Project

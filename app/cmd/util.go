@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/log"
+	"github.com/kyleu/admini/app/lib/log"
 	"github.com/kyleu/admini/app/util"
 )
 

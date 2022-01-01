@@ -8,7 +8,7 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/theme"
+	"github.com/kyleu/admini/app/lib/theme"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/verror"
 )

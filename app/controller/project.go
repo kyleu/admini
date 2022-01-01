@@ -19,7 +19,7 @@ import (
 
 func ProjectList(rc *fasthttp.RequestCtx) {
 	act("project.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, err := as.Services.Projects.List()
+		p, err := as.Services.Projects.List(ps.Context)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project list")
 		}

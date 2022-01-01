@@ -6,10 +6,10 @@ import (
 
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/auth"
-	"github.com/kyleu/admini/app/filesystem"
-	"github.com/kyleu/admini/app/telemetry"
-	"github.com/kyleu/admini/app/theme"
+	"github.com/kyleu/admini/app/lib/auth"
+	"github.com/kyleu/admini/app/lib/filesystem"
+	"github.com/kyleu/admini/app/lib/telemetry"
+	"github.com/kyleu/admini/app/lib/theme"
 	"github.com/kyleu/admini/app/util"
 )
 

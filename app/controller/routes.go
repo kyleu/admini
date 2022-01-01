@@ -4,7 +4,7 @@ import (
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app/telemetry/httpmetrics"
+	"github.com/kyleu/admini/app/lib/telemetry/httpmetrics"
 	"github.com/kyleu/admini/app/util"
 )
 

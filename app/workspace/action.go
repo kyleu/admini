@@ -3,8 +3,8 @@ package workspace
 import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
-	model2 "github.com/kyleu/admini/app/schema/model"
-	"github.com/kyleu/admini/app/telemetry"
+	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/kyleu/admini/app/lib/telemetry"
 	"go.opentelemetry.io/otel/attribute"
 
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -75,12 +75,12 @@ func sourceItem(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) 
 	return process(req, act, p, src, append(x, req.Path...), as)
 }
 
-func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model2.Package, srcKey string, path []string, as *app.State) (*Result, error) {
+func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package, srcKey string, path []string, as *app.State) (*Result, error) {
 	i, remaining := pkg.Get(path)
 	switch t := i.(type) {
-	case *model2.Model:
+	case *model.Model:
 		return processModel(req, act, srcKey, t, remaining, as)
-	case *model2.Package:
+	case *model.Package:
 		return processPackage(req, act, t)
 	case error:
 		return ErrResult(req, act, errors.Wrapf(t, "provided path [%s] can't be loaded", string(req.Ctx.URI().Path())))
@@ -91,7 +91,7 @@ func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model2.Packag
 	}
 }
 
-func rootItemFor(req *cutil.WorkspaceRequest, srcKey string) (*model2.Package, error) {
+func rootItemFor(req *cutil.WorkspaceRequest, srcKey string) (*model.Package, error) {
 	if srcKey == "" {
 		return nil, errors.New("must provide source key")
 	}

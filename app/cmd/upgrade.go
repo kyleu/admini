@@ -5,8 +5,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/kyleu/admini/app/log"
-	"github.com/kyleu/admini/app/upgrade"
+	"github.com/kyleu/admini/app/lib/log"
+	"github.com/kyleu/admini/app/lib/upgrade"
 	"github.com/kyleu/admini/app/util"
 )
 

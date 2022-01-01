@@ -2,8 +2,8 @@ package site
 
 import (
 	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/menu"
-	"github.com/kyleu/admini/app/user"
+	"github.com/kyleu/admini/app/lib/menu"
+	"github.com/kyleu/admini/app/lib/user"
 )
 
 const (

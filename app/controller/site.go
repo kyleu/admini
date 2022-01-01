@@ -6,8 +6,8 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/lib/telemetry/httpmetrics"
 	"github.com/kyleu/admini/app/site"
-	"github.com/kyleu/admini/app/telemetry/httpmetrics"
 	"github.com/kyleu/admini/app/util"
 )
 

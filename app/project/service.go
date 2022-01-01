@@ -1,9 +1,11 @@
 package project
 
 import (
+	"context"
 	"path/filepath"
 
 	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/lib/search/result"
 
 	"go.uber.org/zap"
 
@@ -13,7 +15,7 @@ import (
 
 	"github.com/kyleu/admini/app/loader"
 
-	"github.com/kyleu/admini/app/filesystem"
+	"github.com/kyleu/admini/app/lib/filesystem"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -31,7 +33,7 @@ func NewService(files filesystem.FileLoader, sources *source.Service, ld *loader
 	return &Service{root: "project", files: files, sources: sources, loaders: ld, logger: log}
 }
 
-func (s *Service) List() (Projects, error) {
+func (s *Service) List(_ context.Context) (Projects, error) {
 	if s.cache == nil {
 		err := s.reloadCache()
 		if err != nil {
@@ -39,6 +41,20 @@ func (s *Service) List() (Projects, error) {
 		}
 	}
 	return s.cache, nil
+}
+
+func (s *Service) Search(ctx context.Context, q string) (result.Results, error) {
+	ret := result.Results{}
+	ps, err := s.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, p := range ps {
+		if res := result.NewResult("project", p.Key, p.WebPath(), p.Name(), p.IconWithFallback(), p, q); len(res.Matches) > 0 {
+			ret = append(ret, res)
+		}
+	}
+	return ret, nil
 }
 
 func (s *Service) reloadCache() error {

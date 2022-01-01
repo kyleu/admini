@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyleu/admini/app/schema/field"
+	"github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/pkg/errors"
 )
 

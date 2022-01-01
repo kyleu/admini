@@ -1,6 +1,7 @@
 {% import (
   "github.com/kyleu/admini/app"
-  "github.com/kyleu/admini/app/search"
+  "github.com/kyleu/admini/app/lib/search"
+  "github.com/kyleu/admini/app/lib/search/result"
   "github.com/kyleu/admini/app/util"
   "github.com/kyleu/admini/app/controller/cutil"
   "github.com/kyleu/admini/views/layout"
@@ -9,7 +10,7 @@
 {% code type Results struct {
   layout.Basic
   Params *search.Params
-  Results search.Results
+  Results result.Results
   Errors []error
 } %}
 

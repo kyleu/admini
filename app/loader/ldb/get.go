@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/result"
 )
 

@@ -101,7 +101,7 @@ func ProjectSave(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to save project [%s]", key)
 		}
 
-		msg := fmt.Sprintf(`saved project "%s"`, key)
+		msg := fmt.Sprintf(`saved project %q`, key)
 		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }
@@ -117,7 +117,7 @@ func ProjectDelete(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to delete project [%s]", key)
 		}
 
-		msg := fmt.Sprintf(`deleted project "%s"`, key)
+		msg := fmt.Sprintf(`deleted project %q`, key)
 		return flashAndRedir(true, msg, "/project", rc, ps)
 	})
 }

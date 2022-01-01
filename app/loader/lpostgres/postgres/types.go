@@ -3,51 +3,51 @@ package postgres
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/schema/model"
-	types2 "github.com/kyleu/admini/app/schema/types"
+	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/types"
 	"github.com/kyleu/admini/app/util"
 	"go.uber.org/zap"
 )
 
-func TypeForName(t string, enums model.Models, logger *zap.SugaredLogger) *types2.Wrapped {
+func TypeForName(t string, enums model.Models, logger *zap.SugaredLogger) *types.Wrapped {
 	if strings.HasPrefix(t, "_") {
-		return types2.NewList(TypeForName(t[1:], enums, logger))
+		return types.NewList(TypeForName(t[1:], enums, logger))
 	}
 	return typeFor(t, nil, enums, logger)
 }
 
 // nolint
-func typeFor(t string, cr *columnResult, enums model.Models, logger *zap.SugaredLogger) *types2.Wrapped {
+func typeFor(t string, cr *columnResult, enums model.Models, logger *zap.SugaredLogger) *types.Wrapped {
 	if cr != nil && cr.Nullable == pgYes {
 		cr.Nullable = pgNo
-		return types2.NewOption(typeFor(t, cr, enums, logger))
+		return types.NewOption(typeFor(t, cr, enums, logger))
 	}
 	if strings.HasPrefix(t, "_") {
-		return types2.NewList(typeFor(t[1:], cr, enums, logger))
+		return types.NewList(typeFor(t[1:], cr, enums, logger))
 	}
 	if t == "ARRAY" && cr != nil && cr.ArrayType.Valid {
-		return types2.NewList(typeFor(cr.ArrayType.String, cr, enums, logger))
+		return types.NewList(typeFor(cr.ArrayType.String, cr, enums, logger))
 	}
 	switch strings.ToLower(t) {
 	case "aclitem":
 		// return types.NewACL()
 	case "bit":
 		if cr != nil && cr.CharLength.Valid {
-			return types2.NewListSized(types2.NewBit(), int(cr.CharLength.Int32))
+			return types.NewListSized(types.NewBit(), int(cr.CharLength.Int32))
 		}
-		return types2.NewBit()
+		return types.NewBit()
 	case "varbit", "bit varying":
-		return types2.NewList(types2.NewBit())
+		return types.NewList(types.NewBit())
 	case "bool", "boolean":
-		return types2.NewBool()
+		return types.NewBool()
 	case "box":
 		// return types.NewBox()
 	case "bpchar":
 		return stringFor(cr)
 	case "bytea":
-		return types2.NewList(types2.NewByte())
+		return types.NewList(types.NewByte())
 	case "char", "character":
-		return types2.NewChar()
+		return types.NewChar()
 	case "character varying", "varchar":
 		return stringFor(cr)
 	case "cid":
@@ -57,35 +57,35 @@ func typeFor(t string, cr *columnResult, enums model.Models, logger *zap.Sugared
 	case "circle":
 		// return types.NewCircle()
 	case "date":
-		return types2.NewDate()
+		return types.NewDate()
 	case "daterange":
-		return types2.NewRange(types2.NewDate())
+		return types.NewRange(types.NewDate())
 	case "float4", "real", "float":
-		return types2.NewFloat(32)
+		return types.NewFloat(32)
 	case "float8", "double precision", "double":
-		return types2.NewFloat(64)
+		return types.NewFloat(64)
 	case "hstore":
-		return types2.NewMap(types2.NewString(), types2.NewString())
+		return types.NewMap(types.NewString(), types.NewString())
 	case "inet":
 		// return types.NewInet()
 	case "int2", "smallint":
-		return types2.NewInt(16)
+		return types.NewInt(16)
 	case "int2range":
-		return types2.NewRange(types2.NewInt(16))
+		return types.NewRange(types.NewInt(16))
 	case "int4", "integer", "int", "mediumint":
-		return types2.NewInt(32)
+		return types.NewInt(32)
 	case "int4range":
-		return types2.NewRange(types2.NewInt(32))
+		return types.NewRange(types.NewInt(32))
 	case "int8", "bigint":
-		return types2.NewInt(64)
+		return types.NewInt(64)
 	case "int8range":
-		return types2.NewRange(types2.NewInt(64))
+		return types.NewRange(types.NewInt(64))
 	case "interval":
 		// return types.NewInterval()
 	case "json":
-		return types2.NewJSON()
+		return types.NewJSON()
 	case "jsonb":
-		return types2.NewJSON()
+		return types.NewJSON()
 	case "line":
 		// return types.NewLine()
 	case "lseg":
@@ -99,9 +99,9 @@ func typeFor(t string, cr *columnResult, enums model.Models, logger *zap.Sugared
 	case "numeric", "decimal":
 		// return types.NewNumeric()
 	case "numrange":
-		return types2.NewRange(types2.NewFloat(64))
+		return types.NewRange(types.NewFloat(64))
 	case "oid":
-		return types2.NewInt(32)
+		return types.NewInt(32)
 	case "path":
 		// return types.NewPath()
 	case "point":
@@ -115,43 +115,43 @@ func typeFor(t string, cr *columnResult, enums model.Models, logger *zap.Sugared
 	case "tid":
 		// return types.NewTID()
 	case "time", "time without time zone":
-		return types2.NewTime()
+		return types.NewTime()
 	case "timetz", "time with time zone":
 		// return types.NewTimeTZ()
 	case "timestamp", "timestamp without time zone", "datetime":
-		return types2.NewTimestamp()
+		return types.NewTimestamp()
 	case "timestamptz", "timestamp with time zone":
-		return types2.NewTimestampZoned()
+		return types.NewTimestampZoned()
 	case "tsrange":
-		return types2.NewRange(types2.NewTimestamp())
+		return types.NewRange(types.NewTimestamp())
 	case "tsquery":
 		// return types.NewTsQuery()
 	case "tsvector":
-		return types2.NewList(types2.NewTimestamp())
+		return types.NewList(types.NewTimestamp())
 	case "tstzrange":
-		return types2.NewRange(types2.NewTimestampZoned())
+		return types.NewRange(types.NewTimestampZoned())
 	case "uuid":
-		return types2.NewUUID()
+		return types.NewUUID()
 	case "USER-DEFINED":
-		return types2.NewReference()
+		return types.NewReference()
 	case "xid":
 		// return types.NewXID()
 	case "xml":
-		return types2.NewXML()
+		return types.NewXML()
 	case "year":
 		// return types.NewYear()
 	}
 	if e := enums.Get(util.Pkg{cr.Schema}, t); e != nil {
-		return types2.NewEnum(cr.UDTName)
+		return types.NewEnum(cr.UDTName)
 	}
 	logger.Warn("unhandled PostgreSQL type: " + t)
-	return types2.NewUnknown(t)
+	return types.NewUnknown(t)
 }
 
-func stringFor(cr *columnResult) *types2.Wrapped {
+func stringFor(cr *columnResult) *types.Wrapped {
 	max := 0
 	if cr != nil && cr.CharLength.Valid {
 		max = int(cr.CharLength.Int32)
 	}
-	return types2.NewStringArgs(0, max, "")
+	return types.NewStringArgs(0, max, "")
 }

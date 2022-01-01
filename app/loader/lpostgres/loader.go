@@ -3,18 +3,18 @@ package lpostgres
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/filter"
+	"github.com/kyleu/admini/app/lib/filter"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/loader/ldb"
 	"github.com/kyleu/admini/app/loader/lpostgres/postgres"
 	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/app/schema/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/loader"
-	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/util"
 )
 

@@ -7,7 +7,7 @@ import (
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/schema"
 )
 
 type Source struct {
@@ -32,6 +32,10 @@ func (s *Source) IconWithFallback() string {
 		return "app"
 	}
 	return s.Icon
+}
+
+func (s *Source) WebPath() string {
+	return "/source/" + s.Key
 }
 
 type Sources []*Source

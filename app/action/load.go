@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kyleu/admini/app/filesystem"
+	"github.com/kyleu/admini/app/lib/filesystem"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 )

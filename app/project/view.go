@@ -3,7 +3,7 @@ package project
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/source"
 	"github.com/pkg/errors"
 )

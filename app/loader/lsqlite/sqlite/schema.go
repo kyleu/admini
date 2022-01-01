@@ -7,8 +7,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema"
 )
 
 func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {

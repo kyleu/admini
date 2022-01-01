@@ -3,10 +3,10 @@ package sqlite
 import (
 	"context"
 
-	model2 "github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/queries/qsqlite"
 )
 
@@ -17,7 +17,7 @@ type indexResult struct {
 	ColumnName  string `db:"cn"`
 }
 
-func loadIndexes(ctx context.Context, models model2.Models, db *database.Service) error {
+func loadIndexes(ctx context.Context, models model.Models, db *database.Service) error {
 	var idxs []*indexResult
 	err := db.Select(ctx, &idxs, qsqlite.ListIndexes(db.SchemaName), nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func loadIndexes(ctx context.Context, models model2.Models, db *database.Service
 
 		curr := mod.Indexes.Get(idx.Name)
 		if curr == nil {
-			curr = &model2.Index{Key: idx.Name}
+			curr = &model.Index{Key: idx.Name}
 			err = mod.AddIndex(curr)
 			if err != nil {
 				return errors.Wrap(err, "can't add index")

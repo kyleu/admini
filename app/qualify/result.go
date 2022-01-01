@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/app/schema/model"
 )
 
 type Result struct {

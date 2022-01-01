@@ -3,11 +3,11 @@ package qualify
 import (
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
-	model2 "github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/model"
 )
 
-func Handle(rel *model2.Relationship, act *action.Action, wr *cutil.WorkspaceRequest, m *model2.Model, result []interface{}) (Results, error) {
-	rowFK, err := model2.GetStrings(m.Fields, rel.SourceFields, result)
+func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequest, m *model.Model, result []interface{}) (Results, error) {
+	rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, result)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func Handle(rel *model2.Relationship, act *action.Action, wr *cutil.WorkspaceReq
 	for _, q := range quals {
 		// TODO: pull and fill `m` && `d`
 
-		mdl := &model2.Model{Key: "TODO"}
+		mdl := &model.Model{Key: "TODO"}
 		d := []interface{}{"TODO"}
 		x := &Result{Action: q.Action, Icon: q.Icon, Path: q.Path, Model: mdl, Data: d}
 		ret = append(ret, x)

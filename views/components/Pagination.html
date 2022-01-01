@@ -1,7 +1,7 @@
 {% import (
   "github.com/valyala/fasthttp"
 
-  "github.com/kyleu/admini/app/filter"
+  "github.com/kyleu/admini/app/lib/filter"
 ) %}
 
 {% func Pagination(count int, params *filter.Params, u *fasthttp.URI) %}{% stripspace %}

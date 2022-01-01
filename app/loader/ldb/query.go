@@ -3,9 +3,9 @@ package ldb
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/app/schema/model"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )

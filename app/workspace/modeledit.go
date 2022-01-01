@@ -6,7 +6,7 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/views/vmodel"
 
 	"github.com/kyleu/admini/app/controller/cutil"

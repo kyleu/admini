@@ -8,7 +8,7 @@ import (
 
 	"github.com/kyleu/admini/app/util"
 
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/source"
 )
 

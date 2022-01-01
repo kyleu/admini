@@ -3,17 +3,17 @@ package workspace
 import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
-	model2 "github.com/kyleu/admini/app/schema/model"
-	"github.com/kyleu/admini/app/schema/types"
+	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/types"
 	"github.com/kyleu/admini/views/vmodel"
 
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/pkg/errors"
 )
 
-func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model2.Model, as *app.State) (*Result, error) {
+func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, as *app.State) (*Result, error) {
 	switch m.Type {
-	case model2.TypeStruct:
+	case model.TypeStruct:
 		_, ld, err := loaderFor(req, srcKey, as)
 		if err != nil {
 			return ErrResult(req, act, err)
@@ -27,14 +27,14 @@ func processModelList(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		}
 		page := &vmodel.List{Req: req, Act: act, Model: m, Options: opts, Result: rs}
 		return NewResult("", nil, req, act, rs, page), nil
-	case model2.TypeEnum:
-		refs := model2.Relationships{}
+	case model.TypeEnum:
+		refs := model.Relationships{}
 		for _, sch := range req.Schemata {
 			for _, mod := range sch.Models {
 				for _, f := range mod.Fields {
 					if t, ok := f.Type.T.(*types.Enum); ok {
 						if t.Ref == m.Key {
-							refs = append(refs, &model2.Relationship{
+							refs = append(refs, &model.Relationship{
 								Key:          mod.Key + "_" + f.Key,
 								TargetPkg:    mod.Pkg,
 								TargetModel:  mod.Key,

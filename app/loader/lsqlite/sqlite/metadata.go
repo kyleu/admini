@@ -1,8 +1,8 @@
 package sqlite
 
 import (
-	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema"
 )
 
 func loadMetadata(db *database.Service) *schema.Metadata {

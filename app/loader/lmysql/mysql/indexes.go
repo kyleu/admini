@@ -4,11 +4,11 @@ import (
 	"context"
 	"strings"
 
-	model2 "github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/queries/qmysql"
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -20,8 +20,8 @@ type indexResult struct {
 	ColumnNames string `db:"column_names"`
 }
 
-func (r indexResult) AsIndex() *model2.Index {
-	return &model2.Index{
+func (r indexResult) AsIndex() *model.Index {
+	return &model.Index{
 		Key:      r.Index,
 		Fields:   util.StringSplitAndTrim(r.ColumnNames, ","),
 		Unique:   !r.NonUnique,
@@ -30,7 +30,7 @@ func (r indexResult) AsIndex() *model2.Index {
 	}
 }
 
-func loadIndexes(ctx context.Context, models model2.Models, db *database.Service) error {
+func loadIndexes(ctx context.Context, models model.Models, db *database.Service) error {
 	var idxs []*indexResult
 	err := db.Select(ctx, &idxs, qmysql.ListIndexes(db.DatabaseName), nil)
 	if err != nil {

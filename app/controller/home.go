@@ -24,7 +24,7 @@ var homeContent = util.ValueMap{
 
 func Home(rc *fasthttp.RequestCtx) {
 	act("home", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		projects, _ := as.Services.Projects.List()
+		projects, _ := as.Services.Projects.List(ps.Context)
 		sources, _ := as.Services.Sources.List()
 		ps.Data = homeContent
 		return render(rc, as, &views.Home{Sources: sources, Projects: projects}, ps)

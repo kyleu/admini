@@ -4,14 +4,14 @@ package app
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/loader/lmock"
 	"github.com/kyleu/admini/app/loader/lmysql"
 	"github.com/kyleu/admini/app/loader/lpostgres"
 	"github.com/kyleu/admini/app/loader/lsqlite"
 	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/schema"
 	"github.com/kyleu/admini/app/source"
 )
 

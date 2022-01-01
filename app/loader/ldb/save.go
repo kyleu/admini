@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"

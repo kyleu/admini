@@ -4,13 +4,13 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/kyleu/admini/app/schema/field"
-	model2 "github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/field"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries/qpostgres"
 )
@@ -43,7 +43,7 @@ func (cr *columnResult) IsNullable() bool {
 	return cr.Nullable == pgYes
 }
 
-func (cr *columnResult) AsField(readOnlyOverride bool, enums model2.Models, logger *zap.SugaredLogger) *field.Field {
+func (cr *columnResult) AsField(readOnlyOverride bool, enums model.Models, logger *zap.SugaredLogger) *field.Field {
 	var d interface{}
 	if cr.Default.Valid {
 		d = cr.Default.String
@@ -57,7 +57,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool, enums model2.Models, logg
 	}
 }
 
-func loadColumns(ctx context.Context, models model2.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var cols []*columnResult
 	err := db.Select(ctx, &cols, qpostgres.ListColumns(db.SchemaName), nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func loadColumns(ctx context.Context, models model2.Models, db *database.Service
 		if mod == nil {
 			return errors.Errorf("no table [%s] found among [%d] candidates", col.Table, len(models))
 		}
-		err = mod.AddField(col.AsField(mod.Type == model2.TypeInterface, models, logger))
+		err = mod.AddField(col.AsField(mod.Type == model.TypeInterface, models, logger))
 		if err != nil {
 			return errors.Wrap(err, "can't add field")
 		}

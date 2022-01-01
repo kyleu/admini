@@ -3,7 +3,7 @@ package util_test
 import (
 	"testing"
 
-	"github.com/kyleu/admini/app/log"
+	"github.com/kyleu/admini/app/lib/log"
 	"github.com/kyleu/admini/app/util"
 )
 

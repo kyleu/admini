@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/menu"
-	"github.com/kyleu/admini/app/sandbox"
-	"github.com/kyleu/admini/app/telemetry"
+	"github.com/kyleu/admini/app/lib/menu"
+	"github.com/kyleu/admini/app/lib/sandbox"
+	"github.com/kyleu/admini/app/lib/telemetry"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -17,14 +17,14 @@ func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State) (m
 	var ret menu.Items
 	// $PF_SECTION_START(routes_start)$
 	projectItems := func(as *app.State) menu.Items {
-		ps, err := as.Services.Projects.List()
+		ps, err := as.Services.Projects.List(ctx)
 		if err != nil {
 			return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}
 		}
 
-		ret := make(menu.Items, 0, len(ps))
+		prjMenu := make(menu.Items, 0, len(ps))
 		for _, p := range ps {
-			ret = append(ret, &menu.Item{
+			prjMenu = append(prjMenu, &menu.Item{
 				Key:         p.Key,
 				Title:       p.Name(),
 				Icon:        p.IconWithFallback(),
@@ -32,7 +32,7 @@ func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State) (m
 				Route:       "/project/" + p.Key,
 			})
 		}
-		return ret
+		return prjMenu
 	}
 
 	sourceItems := func(as *app.State) menu.Items {
@@ -41,9 +41,9 @@ func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State) (m
 			return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}
 		}
 
-		ret := make(menu.Items, 0, len(ss))
+		srcMenu := make(menu.Items, 0, len(ss))
 		for _, s := range ss {
-			ret = append(ret, &menu.Item{
+			srcMenu = append(srcMenu, &menu.Item{
 				Key:         s.Key,
 				Title:       s.Name(),
 				Icon:        s.IconWithFallback(),
@@ -51,7 +51,7 @@ func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State) (m
 				Route:       "/source/" + s.Key,
 			})
 		}
-		return ret
+		return srcMenu
 	}
 	ret = append(ret,
 		&menu.Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: "/project", Children: projectItems(as)},
@@ -65,7 +65,7 @@ func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State) (m
 	// $PF_SECTION_START(routes_end)$
 	if isAdmin {
 		ret = append(ret,
-			sandbox.Menu(),
+			sandbox.Menu(ctx),
 			menu.Separator,
 			&menu.Item{Key: "admin", Title: "Settings", Description: "System-wide settings and preferences", Icon: "cog", Route: "/admin"},
 			&menu.Item{Key: "refresh", Title: "Refresh", Description: "Reload all cached in " + util.AppName, Icon: "refresh", Route: "/refresh"},

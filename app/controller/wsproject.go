@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/telemetry"
+	"github.com/kyleu/admini/app/lib/telemetry"
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/controller/cutil"

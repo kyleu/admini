@@ -3,15 +3,16 @@ package source
 import (
 	"path/filepath"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/search/result"
 	"go.uber.org/zap"
 
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/loader"
 
-	"github.com/kyleu/admini/app/filesystem"
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/filesystem"
+	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -37,6 +38,20 @@ func (s *Service) List() (Sources, error) {
 		}
 	}
 	return s.cache, nil
+}
+
+func (s *Service) Search(q string) (result.Results, error) {
+	ret := result.Results{}
+	ps, err := s.List()
+	if err != nil {
+		return nil, err
+	}
+	for _, p := range ps {
+		if res := result.NewResult("source", p.Key, p.WebPath(), p.Name(), p.IconWithFallback(), p, q); len(res.Matches) > 0 {
+			ret = append(ret, res)
+		}
+	}
+	return ret, nil
 }
 
 func (s *Service) NewSource(key string, title string, icon string, description string, t schema.Origin) *Source {

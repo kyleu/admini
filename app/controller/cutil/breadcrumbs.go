@@ -1,7 +1,7 @@
 package cutil
 
 import (
-	"github.com/kyleu/admini/app/menu"
+	"github.com/kyleu/admini/app/lib/menu"
 )
 
 type Breadcrumbs []string

@@ -8,8 +8,8 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/lib/user"
 	"github.com/kyleu/admini/app/site"
-	"github.com/kyleu/admini/app/user"
 )
 
 const (

@@ -12,7 +12,7 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller"
-	"github.com/kyleu/admini/app/filesystem"
+	"github.com/kyleu/admini/app/lib/filesystem"
 	"github.com/kyleu/admini/app/util"
 )
 

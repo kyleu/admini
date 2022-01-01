@@ -5,7 +5,7 @@ import (
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/cmd"
-	"github.com/kyleu/admini/app/log"
+	"github.com/kyleu/admini/app/lib/log"
 )
 
 var (

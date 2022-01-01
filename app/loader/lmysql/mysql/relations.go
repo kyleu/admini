@@ -4,11 +4,11 @@ import (
 	"context"
 	"sort"
 
-	model2 "github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/queries/qmysql"
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/database"
+	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -34,7 +34,7 @@ func (r foreignKeyResults) Sort() {
 	})
 }
 
-func loadForeignKeys(ctx context.Context, models model2.Models, db *database.Service) error {
+func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service) error {
 	keys := foreignKeyResults{}
 	err := db.Select(ctx, &keys, qmysql.ListForeignKeys(db.DatabaseName), nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func loadForeignKeys(ctx context.Context, models model2.Models, db *database.Ser
 
 		curr := mod.Relationships.Get(k.Name)
 		if curr == nil {
-			curr = &model2.Relationship{
+			curr = &model.Relationship{
 				Key:          k.Name,
 				SourceFields: []string{},
 				TargetPkg:    util.Pkg{k.TargetSchema},

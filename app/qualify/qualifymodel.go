@@ -2,7 +2,7 @@ package qualify
 
 import (
 	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 )

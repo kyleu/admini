@@ -3,7 +3,7 @@ package action
 import (
 	"path/filepath"
 
-	"github.com/kyleu/admini/app/filesystem"
+	"github.com/kyleu/admini/app/lib/filesystem"
 	"github.com/kyleu/admini/app/util"
 	"github.com/pkg/errors"
 )

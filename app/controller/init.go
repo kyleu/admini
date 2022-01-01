@@ -4,7 +4,7 @@ package controller
 import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/user"
+	"github.com/kyleu/admini/app/lib/user"
 )
 
 // Initialize app-specific system dependencies.

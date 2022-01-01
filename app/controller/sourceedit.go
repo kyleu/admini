@@ -4,18 +4,18 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"path/filepath"
 	"strconv"
 
-	"github.com/kyleu/admini/app/filesystem"
+	"github.com/kyleu/admini/app/lib/filesystem"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/database"
-	"github.com/kyleu/admini/app/schema"
+	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/assets"
@@ -46,7 +46,7 @@ func SourceExample(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 		defer func() { _ = zr.Close() }()
-		out, err := ioutil.ReadAll(zr)
+		out, err := io.ReadAll(zr)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to decompress embedded example database")
 		}
@@ -183,7 +183,7 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to save source [%s]", key)
 		}
 
-		msg := fmt.Sprintf(`saved source "%s"`, key)
+		msg := fmt.Sprintf(`saved source %q`, key)
 		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), rc, ps)
 	})
 }
@@ -199,7 +199,7 @@ func SourceDelete(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to delete source [%s]", key)
 		}
 
-		msg := fmt.Sprintf(`deleted source "%s"`, key)
+		msg := fmt.Sprintf(`deleted source %q`, key)
 		return flashAndRedir(true, msg, "/source", rc, ps)
 	})
 }

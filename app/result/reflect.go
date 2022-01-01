@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	field2 "github.com/kyleu/admini/app/schema/field"
+	field2 "github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/pkg/errors"
 )
 

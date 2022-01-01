@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/filter"
-	"github.com/kyleu/admini/app/schema/model"
+	"github.com/kyleu/admini/app/lib/filter"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app/action"
