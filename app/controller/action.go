@@ -22,7 +22,7 @@ import (
 
 func ActionOrdering(rc *fasthttp.RequestCtx) {
 	act("action.ordering", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -129,7 +129,7 @@ func ActionSave(rc *fasthttp.RequestCtx) {
 }
 
 func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *action.Action, []string, error) {
-	key, err := rcRequiredString(rc, "key", false)
+	key, err := RCRequiredString(rc, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -138,7 +138,7 @@ func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *acti
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}
 
-	path, err := rcRequiredString(rc, "path", false)
+	path, err := RCRequiredString(rc, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

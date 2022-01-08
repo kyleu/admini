@@ -96,7 +96,7 @@ func SourceInsert(rc *fasthttp.RequestCtx) {
 
 func SourceEdit(rc *fasthttp.RequestCtx) {
 	act("source.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -125,7 +125,7 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -190,7 +190,7 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 
 func SourceDelete(rc *fasthttp.RequestCtx) {
 	act("source.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}

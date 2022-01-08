@@ -30,7 +30,7 @@ func SourceList(rc *fasthttp.RequestCtx) {
 
 func SourceDetail(rc *fasthttp.RequestCtx) {
 	act("source.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -50,7 +50,7 @@ func SourceDetail(rc *fasthttp.RequestCtx) {
 
 func SourceRefresh(rc *fasthttp.RequestCtx) {
 	act("source.refresh", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}

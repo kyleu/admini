@@ -52,7 +52,7 @@ func ProjectInsert(rc *fasthttp.RequestCtx) {
 
 func ProjectEdit(rc *fasthttp.RequestCtx) {
 	act("project.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -78,7 +78,7 @@ func ProjectSave(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -108,7 +108,7 @@ func ProjectSave(rc *fasthttp.RequestCtx) {
 
 func ProjectDelete(rc *fasthttp.RequestCtx) {
 	act("project.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := rcRequiredString(rc, "key", false)
+		key, err := RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
