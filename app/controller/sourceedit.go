@@ -150,7 +150,7 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 			params.Password = frm.GetStringOpt("password")
 			params.Database = frm.GetStringOpt("database")
 			params.Schema = frm.GetStringOpt("schema")
-			params.Debug, _ = frm.GetBool("debug")
+			params.Debug, _ = frm.GetBool("debug", true)
 
 			src.Config = util.ToJSONBytes(params, true)
 		case schema.OriginPostgres:
@@ -164,14 +164,14 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 			params.Password = frm.GetStringOpt("password")
 			params.Database = frm.GetStringOpt("database")
 			params.Schema = frm.GetStringOpt("schema")
-			params.Debug, _ = frm.GetBool("debug")
+			params.Debug, _ = frm.GetBool("debug", true)
 
 			src.Config = util.ToJSONBytes(params, true)
 		case schema.OriginSQLite:
 			params := &database.SQLiteParams{}
 			params.File = frm.GetStringOpt("file")
 			params.Schema = frm.GetStringOpt("schema")
-			params.Debug, _ = frm.GetBool("debug")
+			params.Debug, _ = frm.GetBool("debug", true)
 
 			src.Config = util.ToJSONBytes(params, true)
 		default:
