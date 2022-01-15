@@ -2,7 +2,7 @@
   "key": "admini",
   "name": "Admini",
   "icon": "compass",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "package": "github.com/kyleu/admini",
   "port": 14000,
   "modules": [

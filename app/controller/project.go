@@ -63,10 +63,20 @@ func ProjectTest(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to qualify project [%s]", key)
 		}
 
+		var models []interface{}
+		for _, s := range v.Schemata {
+			for _, m := range s.Models {
+				if true {
+					models = append(models, m.Key)
+				}
+			}
+		}
+
 		ps.Title = v.Project.Name() + " - Test"
 		ps.Data = util.ValueMap{
 			"request": req,
 			"qualify": q,
+			"models":  models,
 		}
 
 		view := &vproject.Test{Message: fmt.Sprintf("Project [%s]: OK", v.Project.Key)}
