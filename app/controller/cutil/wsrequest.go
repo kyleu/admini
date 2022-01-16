@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/valyala/fasthttp"
+
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/source"
-	"github.com/valyala/fasthttp"
 )
 
 type WorkspaceRequest struct {

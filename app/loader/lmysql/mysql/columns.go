@@ -4,13 +4,12 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/pkg/errors"
-
 	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema/field"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries/qmysql"
 )

@@ -3,11 +3,12 @@ package ldb
 import (
 	"context"
 
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
+
 	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/result"
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
 )
 
 func Query(ctx context.Context, db *database.Service, sql string, enums model.Models, logger *zap.SugaredLogger) (*result.Result, error) {

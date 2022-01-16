@@ -6,18 +6,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kyleu/admini/app/action"
-
-	"github.com/kyleu/admini/views/vproject"
+	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
+	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/util"
-	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/controller/cutil"
-
-	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/views/vproject"
 )
 
 func ActionOrdering(rc *fasthttp.RequestCtx) {

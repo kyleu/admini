@@ -4,12 +4,13 @@ import (
 	"database/sql"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
+
 	"github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/loader/lpostgres/postgres"
 	"github.com/kyleu/admini/app/result"
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
 )
 
 func ParseResult(

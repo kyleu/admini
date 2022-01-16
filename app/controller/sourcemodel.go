@@ -4,18 +4,15 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
+	"github.com/valyala/fasthttp"
+
+	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/source"
-
 	"github.com/kyleu/admini/app/util"
-	"github.com/valyala/fasthttp"
-
-	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/controller/cutil"
-
-	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/views/vsource"
 )
 

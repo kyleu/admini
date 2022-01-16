@@ -3,14 +3,12 @@ package controller
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/controller/cutil"
-
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vsource"
 )
 
@@ -61,5 +59,24 @@ func SourceRefresh(rc *fasthttp.RequestCtx) {
 
 		msg := fmt.Sprintf("refreshed in [%.3fms]", elapsedMillis)
 		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), rc, ps)
+	})
+}
+
+func SourceHack(rc *fasthttp.RequestCtx) {
+	act("source.hack", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := RCRequiredString(rc, "key", false)
+		if err != nil {
+			return "", err
+		}
+		sch, err := as.Services.Sources.LoadSchema(key)
+		if err != nil {
+			return "", errors.Wrapf(err, "unable to load schema for source [%s]", key)
+		}
+		ret, err := sch.Hack(ps.Logger)
+		if err != nil {
+			return "", errors.Wrapf(err, "unable to run schema hack for source [%s]", key)
+		}
+		ps.Data = ret
+		return render(rc, as, &vsource.Hack{Schema: sch, Result: ret}, ps, "sources", key, "hack")
 	})
 }

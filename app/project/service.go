@@ -4,18 +4,14 @@ import (
 	"context"
 	"path/filepath"
 
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/lib/search/result"
-
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/pkg/errors"
-
-	"github.com/kyleu/admini/app/source"
-
-	"github.com/kyleu/admini/app/loader"
-
+	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/lib/filesystem"
+	"github.com/kyleu/admini/app/lib/search/result"
+	"github.com/kyleu/admini/app/loader"
+	"github.com/kyleu/admini/app/source"
 	"github.com/kyleu/admini/app/util"
 )
 

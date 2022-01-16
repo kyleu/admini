@@ -1,10 +1,10 @@
 package model
 
 import (
-	"github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
+	"github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/kyleu/admini/app/util"
 )
 

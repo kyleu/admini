@@ -1,8 +1,9 @@
 package loader
 
 import (
-	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/pkg/errors"
+
+	"github.com/kyleu/admini/app/lib/schema"
 )
 
 type loaderFn = func(key string, cfg []byte) (Loader, error)

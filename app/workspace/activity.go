@@ -1,12 +1,13 @@
 package workspace
 
 import (
+	"github.com/pkg/errors"
+	"github.com/valyala/fasthttp"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/views/vaction"
-	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 )
 
 func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {

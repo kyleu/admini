@@ -3,13 +3,12 @@ package project
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/action"
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/util"
-
+	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/source"
+	"github.com/kyleu/admini/app/util"
 )
 
 const SourceProjectPrefix = "__"

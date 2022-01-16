@@ -1,9 +1,10 @@
 package schema
 
 import (
+	"github.com/pkg/errors"
+
 	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/util"
-	"github.com/pkg/errors"
 )
 
 type Schema struct {

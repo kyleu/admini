@@ -3,9 +3,9 @@ package action
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/util"
-
 	"github.com/pkg/errors"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type Type struct {

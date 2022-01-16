@@ -3,10 +3,10 @@ package sqlite
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/queries/qsqlite"
 )
 

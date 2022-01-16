@@ -4,12 +4,12 @@ import (
 	"context"
 	"sort"
 
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/queries/qmysql"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/util"
+	"github.com/kyleu/admini/queries/qmysql"
 )
 
 type foreignKeyResult struct {

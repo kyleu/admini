@@ -4,17 +4,16 @@ import (
 	"context"
 	"strings"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/lib/filter"
-	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
+	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
-
 	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/lib/filter"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/loader"
 	"github.com/kyleu/admini/app/source"
-	"github.com/pkg/errors"
 )
 
 func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string, as *app.State) (*Result, error) {

@@ -3,14 +3,13 @@ package mysql
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/queries/qmysql"
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/pkg/errors"
-
 	"github.com/kyleu/admini/app/lib/database"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/util"
+	"github.com/kyleu/admini/queries/qmysql"
 )
 
 type tableResult struct {

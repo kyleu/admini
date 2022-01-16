@@ -5,15 +5,15 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/lib/menu"
 	"github.com/kyleu/admini/app/lib/schema"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/project"
 	"github.com/kyleu/admini/app/util"
-	"github.com/pkg/errors"
 )
 
 func ProjectMenu(as *app.State, prj *project.View) (menu.Items, error) {

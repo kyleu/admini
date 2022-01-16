@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/views/vmodel"
-
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/pkg/errors"
 )
 
 func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string, as *app.State) (*Result, error) {

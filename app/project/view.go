@@ -3,9 +3,10 @@ package project
 import (
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/source"
-	"github.com/pkg/errors"
 )
 
 type View struct {

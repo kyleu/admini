@@ -4,12 +4,11 @@ package controller
 import (
 	"net/url"
 
-	"github.com/kyleu/admini/app/util"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app/controller/cutil"
-
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views"
 )
 

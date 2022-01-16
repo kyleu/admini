@@ -4,8 +4,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kyleu/admini/app/lib/schema/types"
 	"go.uber.org/zap"
+
+	"github.com/kyleu/admini/app/lib/schema/types"
 )
 
 // nolint

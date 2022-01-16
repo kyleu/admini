@@ -3,8 +3,9 @@ package mysql
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/lib/schema/types"
 	"go.uber.org/zap"
+
+	"github.com/kyleu/admini/app/lib/schema/types"
 )
 
 func TypeForName(t string, logger *zap.SugaredLogger) *types.Wrapped {

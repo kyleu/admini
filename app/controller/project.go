@@ -3,17 +3,14 @@ package controller
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/qualify"
-
-	"github.com/kyleu/admini/app/action"
-
-	"github.com/kyleu/admini/app/util"
+	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/pkg/errors"
-
 	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/action"
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/qualify"
+	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vproject"
 )
 

@@ -1,17 +1,17 @@
 package workspace
 
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/lib/telemetry"
+	"github.com/pkg/errors"
 	"go.opentelemetry.io/otel/attribute"
 
+	"github.com/kyleu/admini/app"
+	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/kyleu/admini/app/lib/telemetry"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/kyleu/admini/views/vworkspace"
-	"github.com/pkg/errors"
 )
 
 func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {

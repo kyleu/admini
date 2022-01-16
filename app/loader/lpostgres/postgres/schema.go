@@ -3,13 +3,12 @@ package postgres
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"go.uber.org/zap"
-
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/lib/schema"
+	"github.com/kyleu/admini/app/lib/schema/model"
 )
 
 func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {

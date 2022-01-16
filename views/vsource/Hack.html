@@ -1,0 +1,19 @@
+{% import (
+  "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/app/lib/schema"
+  "github.com/kyleu/admini/views/layout"
+) %}
+
+{% code type Hack struct {
+  layout.Basic
+  Schema *schema.Schema
+  Result string
+} %}
+
+{% func (p *Hack) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>Source Hack!</h3>
+    <pre>{%s p.Result %}</pre>
+  </div>
+{% endfunc %}

@@ -4,11 +4,12 @@ import (
 	"context"
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/lib/filter"
 	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/kyleu/admini/app/result"
-	"github.com/pkg/errors"
 )
 
 func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options) (*result.Result, error) {

@@ -3,8 +3,9 @@ package model
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/pkg/errors"
+
+	"github.com/kyleu/admini/app/lib/schema/field"
 )
 
 func (m *Model) AddField(f *field.Field) error {
