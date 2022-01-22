@@ -1,3 +1,4 @@
+// Content managed by Project Forge, see [projectforge.md] for details.
 package database
 
 import (
@@ -85,7 +86,7 @@ func OpenDefaultPostgres(logger *zap.SugaredLogger) (*Service, error) {
 
 func OpenPostgresDatabase(ctx context.Context, key string, params *PostgresParams, logger *zap.SugaredLogger) (*Service, error) {
 	_, span := telemetry.StartSpan(ctx, "database", "open")
-	defer span.End()
+	defer span.Complete()
 	host := params.Host
 	if host == "" {
 		host = localhost
@@ -120,7 +121,7 @@ func OpenPostgresDatabase(ctx context.Context, key string, params *PostgresParam
 
 func OpenPostgresDatabaseSSL(ctx context.Context, key string, ep *PostgresParams, sp *PostgresServiceParams, logger *zap.SugaredLogger) (*Service, error) {
 	_, span := telemetry.StartSpan(ctx, "database", "open")
-	defer span.End()
+	defer span.Complete()
 
 	dbname := sp.Database
 	if dbname == "" {

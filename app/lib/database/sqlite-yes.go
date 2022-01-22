@@ -1,3 +1,5 @@
+// Content managed by Project Forge, see [projectforge.md] for details.
+// nolint
 //go:build darwin || (!android && linux && 386) || (!android && linux && amd64) || (!android && linux && arm) || (!android && linux && arm64) || (windows && 386) || (windows && amd64)
 // +build darwin !android,linux,386 !android,linux,amd64 !android,linux,arm !android,linux,arm64 windows,386 windows,amd64
 
@@ -22,7 +24,7 @@ var typeSQLite = &DBType{Key: "sqlite", Title: "SQLite", Quote: `"`, Placeholder
 
 func OpenSQLiteDatabase(ctx context.Context, key string, params *SQLiteParams, logger *zap.SugaredLogger) (*Service, error) {
 	_, span := telemetry.StartSpan(ctx, "database", "open")
-	defer span.End()
+	defer span.Complete()
 	if params.File == "" {
 		return nil, errors.New("need filename for SQLite database")
 	}

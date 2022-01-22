@@ -1,3 +1,4 @@
+# Content managed by Project Forge, see [projectforge.md] for details.
 source = ["./build/dist/darwin_darwin_amd64/admini"]
 bundle_id = "com.kyleu.admini"
 

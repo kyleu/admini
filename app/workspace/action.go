@@ -1,9 +1,6 @@
 package workspace
 
 import (
-	"github.com/pkg/errors"
-	"go.opentelemetry.io/otel/attribute"
-
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
@@ -12,17 +9,22 @@ import (
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vaction"
 	"github.com/kyleu/admini/views/vworkspace"
+	"github.com/pkg/errors"
 )
 
 func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {
 	ctx, span := telemetry.StartSpan(req.Context, "workspace", act.String())
 	req.Context = ctx
-	defer span.End()
+	defer span.Complete()
 
 	if act == nil || (act.Key == "" && len(act.Pkg) == 0) {
 		return NewResult(req.Project.Name(), nil, req, act, req.Project, &vworkspace.WorkspaceOverview{Req: req}), nil
 	}
-	span.SetAttributes(attribute.String("actType", act.Type.Key), attribute.String("actPkg", act.Pkg.String()), attribute.String("actKey", act.Key))
+	span.Attributes(
+		&telemetry.Attribute{Key: "actType", Value: act.Type.Key},
+		&telemetry.Attribute{Key: "actPkg", Value: act.Pkg.String()},
+		&telemetry.Attribute{Key: "actKey", Value: act.Key},
+	)
 	switch act.Type {
 	case action.TypeFolder:
 		return NewResult("", nil, req, act, act, &vaction.Folder{Req: req, Act: act}), nil
