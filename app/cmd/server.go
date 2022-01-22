@@ -14,6 +14,7 @@ import (
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/controller"
 	"github.com/kyleu/admini/app/lib/filesystem"
+	"github.com/kyleu/admini/app/lib/telemetry"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -48,7 +49,10 @@ func loadServer(flags *Flags, logger *zap.SugaredLogger) (fasthttp.RequestHandle
 		return nil, logger, err
 	}
 
-	svcs, err := app.NewServices(context.Background(), st)
+	ctx, span := telemetry.StartSpan(context.Background(), util.AppKey, "appinit")
+	defer span.Complete()
+
+	svcs, err := app.NewServices(ctx, st)
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error creating services")
 	}
