@@ -3,8 +3,8 @@ select
   n.nspname as schema_name,
   t.relname as table_name,
   i.relname as index_name,
-  idx.indisprimary as pk,
-  idx.indisunique as u,
+  case when idx.indisprimary then 1 else 0 end as pk,
+  case when idx.indisunique then 1 else 0 end as u,
   array_to_string(array_agg(a.attname), ',') as column_names
 from
   pg_class t,
