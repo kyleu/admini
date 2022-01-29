@@ -58,6 +58,7 @@
               -%}
               {%= vresult.WSTable(p.Req, r.Action, r.ToResult(), r.Model, nil, 4, false, &filter.Options{}) %}
               <pre>{%s util.ToJSON(r) %}</pre>
+              <pre>{%s util.ToJSON(r.ToResult()) %}</pre>
             </div>
             {%- endfor -%}
             {%- endfor -%}

@@ -15,7 +15,9 @@ import (
 func (s *Schema) Hack(logger *zap.SugaredLogger) (string, error) {
 	ret := make([]util.ValueMap, 0, len(s.Models))
 	for _, m := range s.Models {
-		ret = append(ret, hackModel(m, logger))
+		if m.Type != model.TypeEnum {
+			ret = append(ret, hackModel(m, logger))
+		}
 	}
 	return util.ToJSON(ret), nil
 }
@@ -29,7 +31,7 @@ func hackModel(m *model.Model, logger *zap.SugaredLogger) util.ValueMap {
 		"columns":     cols,
 		"description": m.Description(),
 		"icon":        "star",
-		"name":        m.Name(),
+		"name":        m.Key,
 		"ordering":    []interface{}{},
 		"package":     strings.ToLower(m.Key),
 		"search":      []interface{}{},
