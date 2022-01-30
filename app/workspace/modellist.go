@@ -1,13 +1,13 @@
 package workspace
 
 import (
+	"github.com/kyleu/admini/app/lib/types"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app"
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/lib/schema/types"
 	"github.com/kyleu/admini/views/vmodel"
 )
 

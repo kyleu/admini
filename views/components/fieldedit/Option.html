@@ -1,10 +1,11 @@
+<!-- Content managed by Project Forge, see [projectforge.md] for details. -->
 {% import (
-  "github.com/kyleu/admini/app/lib/schema/types"
+  "github.com/kyleu/admini/app/lib/types"
 ) %}
 
 {% func Option(x interface{}, t *types.Option, k string) %}{% stripspace %}
   {% switch t.V.Key() %}
-  {% case "bool" %}
+  {% case types.KeyBool %}
     {%= Boolean(x, true, k) %}
   {% default %}
     <div class="two-pane">

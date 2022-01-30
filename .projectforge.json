@@ -16,6 +16,7 @@
     "notarize",
     "oauth",
     "postgres",
+    "schema",
     "search",
     "sqlite",
     "types",

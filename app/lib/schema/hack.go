@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
+	types2 "github.com/kyleu/admini/app/lib/types"
 	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/lib/schema/types"
 	"github.com/kyleu/admini/app/util"
 )
 
@@ -51,11 +51,11 @@ func hackField(m *model.Model, f *field.Field, logger *zap.SugaredLogger) util.V
 	return ret
 }
 
-func typeFor(t types.Type) string {
-	if w, ok := t.(*types.Wrapped); ok {
+func typeFor(t types2.Type) string {
+	if w, ok := t.(*types2.Wrapped); ok {
 		return typeFor(w.T)
 	}
-	if o, ok := t.(*types.Option); ok {
+	if o, ok := t.(*types2.Option); ok {
 		return typeFor(o.V)
 	}
 	switch t.Key() {

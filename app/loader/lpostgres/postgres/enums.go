@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"strings"
 
+	"github.com/kyleu/admini/app/lib/types"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
 	"github.com/kyleu/admini/app/lib/database"
 	"github.com/kyleu/admini/app/lib/schema/field"
 	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/lib/schema/types"
 	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/queries/qpostgres"
 )

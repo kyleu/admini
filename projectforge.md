@@ -17,6 +17,7 @@ The following modules were used to build this project:
 - [notarize](./doc/module/notarize.md)
 - [oauth](./doc/module/oauth.md)
 - [postgres](./doc/module/postgres.md)
+- [schema](./doc/module/schema.md)
 - [search](./doc/module/search.md)
 - [sqlite](./doc/module/sqlite.md)
 - [types](./doc/module/types.md)
