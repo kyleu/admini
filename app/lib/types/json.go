@@ -14,12 +14,16 @@ func (x *JSON) Key() string {
 	return KeyJSON
 }
 
-func (x *JSON) String() string {
-	return x.Key()
-}
-
 func (x *JSON) Sortable() bool {
 	return false
+}
+
+func (x *JSON) Scalar() bool {
+	return false
+}
+
+func (x *JSON) String() string {
+	return x.Key()
 }
 
 func (x *JSON) From(v interface{}) interface{} {

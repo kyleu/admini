@@ -22,6 +22,10 @@ func (x *Reference) Sortable() bool {
 	return true
 }
 
+func (x *Reference) Scalar() bool {
+	return false
+}
+
 func (x *Reference) String() string {
 	return "ref:" + strings.Join(x.Path(), ".")
 }

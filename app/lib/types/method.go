@@ -30,14 +30,6 @@ func (x *Method) Key() string {
 	return KeyMethod
 }
 
-func (x *Method) String() string {
-	argStrings := make([]string, 0, len(x.Args))
-	for _, arg := range x.Args {
-		argStrings = append(argStrings, arg.String())
-	}
-	return fmt.Sprintf("fn(%s) %s", strings.Join(argStrings, ", "), x.Ret.String())
-}
-
 func (x *Method) Sortable() bool {
 	for _, a := range x.Args {
 		if !a.Type.Sortable() {
@@ -45,6 +37,18 @@ func (x *Method) Sortable() bool {
 		}
 	}
 	return x.Ret.Sortable()
+}
+
+func (x *Method) Scalar() bool {
+	return false
+}
+
+func (x *Method) String() string {
+	argStrings := make([]string, 0, len(x.Args))
+	for _, arg := range x.Args {
+		argStrings = append(argStrings, arg.String())
+	}
+	return fmt.Sprintf("fn(%s) %s", strings.Join(argStrings, ", "), x.Ret.String())
 }
 
 func (x *Method) From(v interface{}) interface{} {
