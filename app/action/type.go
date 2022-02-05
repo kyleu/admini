@@ -16,25 +16,25 @@ type Type struct {
 }
 
 var (
-	TypeFolder    = Type{Key: "", Title: "Folder", Icon: "folder", Description: "holds other actions, like a folder"}
-	TypeStatic    = Type{Key: "static", Title: "Static", Icon: "image", Description: "returns HTML for rendering"}
-	TypeSeparator = Type{Key: "separator", Title: "Separator", Icon: "handle", Description: "a separator, used between other items"}
+	TypeFolder    = &Type{Key: "", Title: "Folder", Icon: "folder", Description: "holds other actions, like a folder"}
+	TypeStatic    = &Type{Key: "static", Title: "Static", Icon: "image", Description: "returns HTML for rendering"}
+	TypeSeparator = &Type{Key: "separator", Title: "Separator", Icon: "handle", Description: "a separator, used between other items"}
 
-	TypeAll      = Type{Key: "all", Title: "All Sources", Icon: "world", Description: "provides actions for each source in the system"}
-	TypeSource   = Type{Key: "source", Title: "Source", Icon: "location", Description: "provides actions for each model in the source"}
-	TypePackage  = Type{Key: "package", Title: "Package", Icon: "tag", Description: "provides actions for a package contained in a source"}
-	TypeModel    = Type{Key: "model", Title: "Model", Icon: "file-text", Description: "provides actions for a model contained in a source"}
-	TypeActivity = Type{Key: "activity", Title: "Activity", Icon: "happy", Description: "provides actions for a specific activity"}
+	TypeAll      = &Type{Key: "all", Title: "All Sources", Icon: "world", Description: "provides actions for each source in the system"}
+	TypeSource   = &Type{Key: "source", Title: "Source", Icon: "location", Description: "provides actions for each model in the source"}
+	TypePackage  = &Type{Key: "package", Title: "Package", Icon: "tag", Description: "provides actions for a package contained in a source"}
+	TypeModel    = &Type{Key: "model", Title: "Model", Icon: "file-text", Description: "provides actions for a model contained in a source"}
+	TypeActivity = &Type{Key: "activity", Title: "Activity", Icon: "happy", Description: "provides actions for a specific activity"}
 
-	TypeTest    = Type{Key: "test", Title: "Test", Icon: "star", Description: "a test action, who knows what it'll do"}
-	TypeUnknown = Type{Key: "unknown", Title: "Unknown", Icon: "star", Description: "an unknown action type"}
+	TypeTest    = &Type{Key: "test", Title: "Test", Icon: "star", Description: "a test action, who knows what it'll do"}
+	TypeUnknown = &Type{Key: "unknown", Title: "Unknown", Icon: "star", Description: "an unknown action type"}
 )
 
-var AllTypes = []Type{
+var AllTypes = []*Type{
 	TypeFolder, TypeStatic, TypeSeparator, TypeAll, TypeSource, TypePackage, TypeModel, TypeActivity, TypeTest,
 }
 
-func TypeFromString(s string) (Type, error) {
+func TypeFromString(s string) (*Type, error) {
 	for _, t := range AllTypes {
 		if t.Key == s {
 			return t, nil
@@ -50,46 +50,29 @@ func (t *Type) String() string {
 	return t.Key
 }
 
-func (t *Type) MarshalJSON() ([]byte, error) {
-	return util.ToJSONBytes(t.Key, false), nil
-}
-
-func (t *Type) UnmarshalJSON(data []byte) error {
-	var s string
-	if err := util.FromJSON(data, &s); err != nil {
-		return err
-	}
-	x, err := TypeFromString(s)
-	if err != nil {
-		return err
-	}
-	*t = x
-	return nil
-}
-
 func (t Type) ConfigString(cfg util.ValueMap) string {
-	switch t {
-	case TypeFolder:
+	switch t.Key {
+	case TypeFolder.Key:
 		return ""
-	case TypeStatic:
+	case TypeStatic.Key:
 		return ""
-	case TypeSeparator:
+	case TypeSeparator.Key:
 		return ""
 
-	case TypeAll:
+	case TypeAll.Key:
 		return "All Sources"
-	case TypeSource:
+	case TypeSource.Key:
 		return cfg.GetStringOpt("source")
-	case TypePackage:
+	case TypePackage.Key:
 		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("package"))
-	case TypeModel:
+	case TypeModel.Key:
 		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("model"))
-	case TypeActivity:
+	case TypeActivity.Key:
 		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("activity"))
 
-	case TypeTest:
+	case TypeTest.Key:
 		return "TEST"
-	case TypeUnknown:
+	case TypeUnknown.Key:
 		return "UNKNOWN"
 
 	default:

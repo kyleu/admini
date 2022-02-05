@@ -7,7 +7,6 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/lib/filesystem"
 	"github.com/kyleu/admini/app/lib/search/result"
 	"github.com/kyleu/admini/app/loader"
@@ -54,13 +53,13 @@ func (s *Service) Search(ctx context.Context, q string) (result.Results, error) 
 }
 
 func (s *Service) reloadCache() error {
-	dirs := s.files.ListDirectories(s.root)
-	ret := make(Projects, 0, len(dirs))
+	files := s.files.ListJSON(s.root, true)
+	ret := make(Projects, 0, len(files))
 
-	for _, dir := range dirs {
-		prj, err := s.LoadRequired(dir, true)
+	for _, key := range files {
+		prj, err := s.LoadRequired(key, true)
 		if err != nil {
-			return errors.Wrapf(err, "unable to load project [%s]", dir)
+			return errors.Wrapf(err, "unable to load project [%s]", key)
 		}
 		ret = append(ret, prj)
 	}
@@ -74,7 +73,7 @@ func (s *Service) ReloadProject(key string) error {
 	if err != nil {
 		return errors.Wrapf(err, "unable to load project [%s]", key)
 	}
-	s.cache.Replace(prj)
+	s.cache = s.cache.Replace(prj)
 	return nil
 }
 
@@ -91,11 +90,7 @@ func (s *Service) Load(key string, force bool) (*Project, error) {
 		}
 	}
 
-	dir := filepath.Join(s.root, key)
-	if !s.files.Exists(dir) {
-		return nil, nil
-	}
-	pf := filepath.Join(dir, "project.json")
+	pf := filepath.Join(s.root, key+".json")
 
 	ret := &Project{}
 	if s.files.Exists(pf) {
@@ -113,12 +108,6 @@ func (s *Service) Load(key string, force bool) (*Project, error) {
 
 	ret.Key = key
 
-	actions, err := action.Load(filepath.Join(dir, "actions"), s.files)
-	if err != nil {
-		return nil, errors.Wrap(err, "unable to load actions")
-	}
-	ret.Actions = actions
-
 	s.cache = s.cache.Replace(ret)
 
 	return ret, nil
@@ -132,17 +121,17 @@ func (s *Service) LoadRequired(key string, force bool) (*Project, error) {
 	if ret == nil {
 		return nil, errors.Errorf("no project found with key [%s]", key)
 	}
+	ret.Actions.Cleanup()
 	return ret, nil
 }
 
 func (s *Service) Save(prj *Project, overwrite bool) error {
-	p := filepath.Join(s.root, prj.Key)
+	p := filepath.Join(s.root, prj.Key+".json")
 	if !overwrite && s.files.Exists(p) {
 		return errors.Errorf("project [%s] already exists", prj.Key)
 	}
-	f := filepath.Join(p, "project.json")
 	j := util.ToJSONBytes(prj, true)
-	err := s.files.WriteFile(f, j, filesystem.DefaultMode, overwrite)
+	err := s.files.WriteFile(p, j, filesystem.DefaultMode, overwrite)
 	if err != nil {
 		return errors.Wrapf(err, "unable to save project [%s]", prj.Key)
 	}
@@ -165,22 +154,6 @@ func (s *Service) Delete(key string) error {
 	err = s.reloadCache()
 	if err != nil {
 		return errors.Wrap(err, "unable to load project cache")
-	}
-	return nil
-}
-
-func (s *Service) DeleteAction(key string, act *action.Action) error {
-	p := filepath.Join(s.root, key)
-	if !s.files.Exists(p) {
-		return errors.Errorf("project [%s] doesn't exist", key)
-	}
-	err := action.Remove(filepath.Join(p, "actions"), act, s.files)
-	if err != nil {
-		return errors.Wrap(err, "unable to remove project action")
-	}
-	err = s.ReloadProject(key)
-	if err != nil {
-		return errors.Wrap(err, "unable to reload project cache")
 	}
 	return nil
 }

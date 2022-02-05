@@ -58,9 +58,12 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 
 		a, remaining := pv.Project.Actions.Get(paths)
 
-		ps.Context, _ = telemetry.StartSpan(ps.Context, "workspace", strings.Join(paths, "/"))
+		ctx, span, logger := telemetry.StartSpan(ps.Context, "workspace:"+strings.Join(paths, "/"), ps.Logger)
+		defer span.Complete()
+		ps.Context = ctx
+		ps.Logger = logger
 		wr := &cutil.WorkspaceRequest{
-			T: "x", K: pv.Project.Key, Ctx: rc, PS: ps, Item: a, Path: remaining,
+			T: "x", K: pv.Project.Key, RC: rc, PS: ps, Item: a, Path: remaining,
 			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
 		return handleAction(wr, a, rc, as)
@@ -72,7 +75,7 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.
 		return "", errors.New("nil project request")
 	}
 	if act == nil {
-		act = &action.Action{}
+		act = action.RootAction
 	}
 	res, err := workspace.ActionHandler(req, act, as)
 	if err != nil {
@@ -86,5 +89,5 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
 
-	return render(req.Ctx, as, res.Page, req.PS, res.Breadcrumbs...)
+	return render(req.RC, as, res.Page, req.PS, res.Breadcrumbs...)
 }

@@ -22,14 +22,14 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	}
 	switch additional[0] {
 	case "new":
-		if string(req.Ctx.Method()) == fasthttp.MethodPost {
+		if string(req.RC.Method()) == fasthttp.MethodPost {
 			return processModelAdd(req, act, srcKey, m, additional[1:], as)
 		}
 		return processModelNew(req, act, srcKey, m, as)
 	case "v":
 		return processModelView(req, act, srcKey, m, additional[1:], as)
 	case "x":
-		if string(req.Ctx.Method()) == fasthttp.MethodPost {
+		if string(req.RC.Method()) == fasthttp.MethodPost {
 			return processModelSave(req, act, srcKey, m, additional[1:], as)
 		}
 		return processModelEdit(req, act, srcKey, m, additional[1:], as)
@@ -74,7 +74,7 @@ func loaderFor(req *cutil.WorkspaceRequest, srcKey string, as *app.State) (*sour
 }
 
 func optionsFor(req *cutil.WorkspaceRequest) filter.OptionsMap {
-	p := cutil.ParamSetFromRequest(req.Ctx)
+	p := cutil.ParamSetFromRequest(req.RC)
 	ret := filter.OptionsMap{}
 	for k, v := range p {
 		ret[k] = &filter.Options{Sort: nil, Filter: nil, Group: nil, Params: v}

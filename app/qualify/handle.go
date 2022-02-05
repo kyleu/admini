@@ -12,7 +12,7 @@ func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequ
 		return nil, err
 	}
 	src := act.Config["source"]
-	if act.Type == action.TypeAll {
+	if act.TypeKey == action.TypeAll.Key {
 		src = wr.Path[0]
 	}
 	req := NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)

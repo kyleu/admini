@@ -7,6 +7,7 @@ import (
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/controller/cutil"
 	"github.com/kyleu/admini/app/lib/schema/model"
+	"github.com/kyleu/admini/app/util"
 	"github.com/kyleu/admini/views/vmodel"
 )
 
@@ -26,7 +27,13 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		if err != nil {
 			return nil, err
 		}
+		//TODO maybe: getModel(req.Context, someModel, idStrings, ld)
 		req.PS.Logger.Debugf("relations: [%s]", strings.Join(rowFK, ", "))
+	}
+
+	obj := util.NewOrderedMap(false, len(m.Fields))
+	for idx, f := range m.Fields {
+		obj.Append(f.Key, data[idx])
 	}
 
 	page := &vmodel.View{Req: req, Act: act, Model: m, Result: data}
@@ -35,5 +42,5 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		idx = 0
 	}
 	bc := append(append(act.Path(), req.Path[:idx]...), idStrings...)
-	return NewResult("", bc, req, act, data, page), nil
+	return NewResult("", bc, req, act, obj, page), nil
 }

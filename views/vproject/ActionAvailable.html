@@ -42,8 +42,8 @@
   {% endfor %}
 {% endstripspace %}{% endfunc %}
 
-{% func itemTemplate(t action.Type, path string, title string, indent int) %}{% stripspace %}
-  <div class="item{% space %}{%s t.Key %}" data-key="_new" data-original-path="{%s path %}">
+{% func itemTemplate(t *action.Type, path string, title string, indent int) %}{% stripspace %}
+  <div class="item{% space %}{%s t.Key %}" data-key="_new" data-title="{%s title %}" data-original-path="{%s path %}">
     {%= vutil.Indent(true, indent + 1) %}
     <div class="content">
       {%= vutil.Indent(true, indent + 2) %}

@@ -51,7 +51,7 @@
               panic(err)
             }
             src := act.Config["source"]
-            if act.Type == action.TypeAll {
+            if act.TypeKey == action.TypeAll.Key {
               src = ws.Path[0]
             }
             req := qualify.NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)

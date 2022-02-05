@@ -13,7 +13,7 @@ type Project struct {
 	Icon        string         `json:"icon,omitempty"`
 	Description string         `json:"description,omitempty"`
 	Sources     []string       `json:"sources,omitempty"`
-	Actions     action.Actions `json:"actions,omitempty"`
+	Actions     action.Actions `json:"actions"`
 }
 
 func (p *Project) Name() string {
@@ -49,7 +49,7 @@ func (p Projects) Replace(n *Project) Projects {
 	for idx, x := range p {
 		if x.Key == n.Key {
 			p[idx] = n
-			return nil
+			return p
 		}
 	}
 	return append(p, n)

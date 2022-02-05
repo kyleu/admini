@@ -28,8 +28,8 @@ func sourceActivitySQL(req *cutil.WorkspaceRequest, act *action.Action, as *app.
 		return ErrResult(req, act, errors.New("must provide source in action config"))
 	}
 	sql := act.Config.GetStringOpt("query")
-	if string(req.Ctx.Method()) == fasthttp.MethodPost {
-		frm, err := cutil.ParseForm(req.Ctx)
+	if string(req.RC.Method()) == fasthttp.MethodPost {
+		frm, err := cutil.ParseForm(req.RC)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to parse form")
 		}

@@ -16,20 +16,20 @@
 
 {% func (p *ActionEdit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><em>{%s p.Act.Type.Title %}</em></div>
+    <div class="right"><em>{%s p.Act.Type().Title %}</em></div>
     <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
     <em>{%s p.Act.ConfigString() %}</em>
     <form class="mt" action="/project/{%s p.Project.Key %}/action/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
           {%= components.TableInput("key", "Key", p.Act.Key, 5) %}
-          {%- if p.Act.Type != action.TypeSeparator -%}
+          {%- if p.Act.TypeKey != action.TypeSeparator.Key -%}
           {%= components.TableInput("title", "Title", p.Act.Title, 5) %}
           {%= components.TableIcons("icon", "Icon", p.Act.Icon, ps, 5) %}
           {%= components.TableTextarea("description", "Description", 8, p.Act.Description, 5) %}
           {%- endif -%}
-          {%- switch p.Act.Type -%}
-          {%- case action.TypeStatic -%}
+          {%- switch p.Act.TypeKey -%}
+          {%- case action.TypeStatic.Key -%}
           {%- code
             format, _ := p.Act.Config["format"].(string)
             content, _ := p.Act.Config["content"].(string)

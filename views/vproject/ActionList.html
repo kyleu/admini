@@ -7,7 +7,7 @@
 ) %}
 
 {% func ActionList(prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
-  <div class="item" data-key="{%s act.Key %}" data-original-path="{%s act.Pkg.ToPath(act.Key) %}">
+  <div class="item" data-key="{%s act.Key %}" data-title="{%s act.Title %}" data-original-path="{%s act.Pkg.ToPath(act.Key) %}">
     {%= vutil.Indent(true, indent + 1) %}
     <div class="content">
       {%= vutil.Indent(true, indent + 2) %}

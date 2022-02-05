@@ -7,6 +7,7 @@ import (
 
 type Ordering struct {
 	Key          string    `json:"k"`
+	Title        string    `json:"t"`
 	OriginalPath string    `json:"p"`
 	Children     Orderings `json:"c,omitempty"`
 }
@@ -44,8 +45,8 @@ func (a Orderings) Find(key string) *Ordering {
 func ReorderActions(acts Actions, orderings Orderings) (Actions, error) {
 	ret := Actions{}
 
-	for idx, o := range orderings {
-		act, err := forOrdering(acts, o, util.Pkg{}, idx)
+	for _, o := range orderings {
+		act, err := forOrdering(acts, o, util.Pkg{})
 		if err != nil {
 			return nil, err
 		}
@@ -56,7 +57,7 @@ func ReorderActions(acts Actions, orderings Orderings) (Actions, error) {
 	return ret, nil
 }
 
-func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, error) {
+func forOrdering(acts Actions, o *Ordering, pkg util.Pkg) (*Action, error) {
 	var act *Action
 	p := util.StringSplitAndTrim(o.OriginalPath, "/")
 	if o.Key == "_new" {
@@ -69,7 +70,7 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, err
 		if err != nil {
 			return nil, err
 		}
-		act, err = NewAction(c[1:], t, pkg)
+		act, err = newAction(c[1:], o.Title, t, pkg)
 		if err != nil {
 			return nil, errors.Wrapf(err, "can't parse new action from [%s]", o.OriginalPath)
 		}
@@ -79,10 +80,9 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg, idx int) (*Action, err
 			return nil, errors.Errorf("no original action available at path [%s]", o.OriginalPath)
 		}
 	}
-	act.Ordinal = idx
 	kids := make(Actions, 0, len(o.Children))
-	for idx, x := range o.Children {
-		kid, err := forOrdering(acts, x, pkg.Push(o.Key), idx)
+	for _, x := range o.Children {
+		kid, err := forOrdering(acts, x, pkg.Push(o.Key))
 		if err != nil {
 			return nil, err
 		}

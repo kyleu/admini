@@ -8,15 +8,16 @@ import (
 
 const defaultIcon = "app"
 
+var RootAction = &Action{TypeKey: TypeFolder.Key, Config: util.ValueMap{}}
+
 type Action struct {
-	Key         string        `json:"key"`
-	Type        Type          `json:"type,omitempty"`
+	Key         string        `json:"key,omitempty"`
+	TypeKey     string        `json:"type,omitempty"`
 	Title       string        `json:"title,omitempty"`
 	Description string        `json:"description,omitempty"`
 	Icon        string        `json:"icon,omitempty"`
-	Ordinal     int           `json:"ordinal,omitempty"`
-	Children    Actions       `json:"children,omitempty"` // stored in subdirs
-	Pkg         util.Pkg      `json:"-"`                  // injected
+	Children    Actions       `json:"children,omitempty"`
+	Pkg         util.Pkg      `json:"-"` // injected
 	Config      util.ValueMap `json:"config,omitempty"`
 }
 
@@ -27,8 +28,13 @@ func (a *Action) Name() string {
 	return a.Title
 }
 
+func (a *Action) Type() *Type {
+	ret, _ := TypeFromString(a.TypeKey)
+	return ret
+}
+
 func (a *Action) ConfigString() string {
-	ret := a.Type.ConfigString(a.Config)
+	ret := a.Type().ConfigString(a.Config)
 	if len(a.Children) == 0 {
 		return ret
 	}
@@ -58,45 +64,19 @@ func (a *Action) IconWithFallback() string {
 	if a.Icon != "" {
 		return a.Icon
 	}
-	if a.Type.Icon != "" {
-		return a.Type.Icon
+	if a.Type().Icon != "" {
+		return a.Type().Icon
 	}
 	return defaultIcon
 }
 
 func (a *Action) Clone(pkg util.Pkg, kids Actions) *Action {
 	return &Action{
-		Key: a.Key, Type: a.Type, Title: a.Title, Description: a.Description,
-		Icon: a.Icon, Ordinal: a.Ordinal, Children: kids, Pkg: pkg, Config: a.Config,
+		Key: a.Key, TypeKey: a.TypeKey, Title: a.Title, Description: a.Description,
+		Icon: a.Icon, Children: kids, Pkg: pkg, Config: a.Config,
 	}
 }
 
 func (a *Action) String() string {
-	return fmt.Sprintf("workspace:%s:%s", a.Type.Key, a.Key)
-}
-
-type dto struct {
-	Type        string        `json:"type,omitempty"`
-	Title       string        `json:"title,omitempty"`
-	Description string        `json:"description,omitempty"`
-	Icon        string        `json:"icon,omitempty"`
-	Ordinal     int           `json:"ordinal,omitempty"`
-	Children    Actions       `json:"-"` // excluded for saving
-	Pkg         util.Pkg      `json:"-"` // excluded for saving
-	Config      util.ValueMap `json:"config,omitempty"`
-}
-
-func newDTO(a *Action) *dto {
-	return &dto{
-		Type: a.Type.Key, Title: a.Title, Description: a.Description, Icon: a.Icon,
-		Ordinal: a.Ordinal, Children: a.Children, Pkg: a.Pkg, Config: a.Config,
-	}
-}
-
-func (d *dto) ToAction(key string) *Action {
-	t, _ := TypeFromString(d.Type)
-	return &Action{
-		Key: key, Type: t, Title: d.Title, Description: d.Description, Icon: d.Icon,
-		Ordinal: d.Ordinal, Children: d.Children, Pkg: d.Pkg, Config: d.Config,
-	}
+	return fmt.Sprintf("workspace:%s:%s", a.TypeKey, a.Key)
 }

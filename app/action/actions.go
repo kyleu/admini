@@ -2,7 +2,6 @@ package action
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 )
 
@@ -14,15 +13,6 @@ func (a Actions) Size() int {
 		ret += x.Size()
 	}
 	return ret
-}
-
-func (a Actions) Sort() {
-	sort.Slice(a, func(i, j int) bool {
-		if a[i].Ordinal == a[j].Ordinal {
-			return a[i].Key < a[j].Key
-		}
-		return a[i].Ordinal < a[j].Ordinal
-	})
 }
 
 func (a Actions) Get(paths []string) (*Action, []string) {
@@ -70,5 +60,16 @@ func (a Actions) CleanKeys() {
 		} else {
 			act.Key = fmt.Sprintf("%s-%d", proposed, idx)
 		}
+	}
+}
+
+func (a Actions) Cleanup() {
+	a.cleanup()
+}
+
+func (a Actions) cleanup(path ...string) {
+	for _, kid := range a {
+		kid.Pkg = path
+		kid.Children.cleanup(append(append([]string{}, path...), kid.Key)...)
 	}
 }

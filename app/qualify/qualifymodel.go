@@ -10,7 +10,7 @@ import (
 
 func qualifyModel(req *Request, act *action.Action, srcKey string, modelPkg util.Pkg, schemata schema.Schemata) (Qualifications, error) {
 	modelPath := modelPkg
-	if act.Type == action.TypeAll {
+	if act.TypeKey == action.TypeAll.Key {
 		sch, err := schemata.GetWithError(srcKey)
 		if err != nil {
 			return nil, errors.Wrapf(err, "can't find source in project with key [%s]", modelPath[0])
@@ -26,8 +26,8 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPkg util
 	if !checkSource(act, srcKey) {
 		return nil, nil
 	}
-	switch act.Type {
-	case action.TypeSource:
+	switch act.TypeKey {
+	case action.TypeSource.Key:
 		src, err := action.GetSource(act, schemata)
 		if err != nil {
 			return nil, err
@@ -36,7 +36,7 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPkg util
 		if m != nil {
 			return modelResults(req, act, act.IconWithFallback(), modelPath, "src")
 		}
-	case action.TypePackage:
+	case action.TypePackage.Key:
 		pkg, remaining, err := action.GetPackage(act, schemata)
 		if err != nil {
 			return nil, err
@@ -47,7 +47,7 @@ func qualifyModel(req *Request, act *action.Action, srcKey string, modelPkg util
 				return modelResults(req, act, act.IconWithFallback(), modelPath[len(pkg.Path()):], "pkg")
 			}
 		}
-	case action.TypeModel:
+	case action.TypeModel.Key:
 		model, remaining, err := action.GetModel(act, schemata)
 		if err != nil {
 			return nil, err

@@ -55,27 +55,27 @@ func ToMenu(as *app.State, path string, a action.Actions, view *project.View) (m
 			Route:       p,
 		}
 		var err error
-		switch act.Type {
-		case action.TypeFolder:
+		switch act.TypeKey {
+		case action.TypeFolder.Key:
 			// noop
-		case action.TypeStatic:
+		case action.TypeStatic.Key:
 			// noop
-		case action.TypeSeparator:
+		case action.TypeSeparator.Key:
 			x = &menu.Item{}
 
-		case action.TypeAll:
+		case action.TypeAll.Key:
 			err = itemsForAll(x, view)
-		case action.TypeSource:
+		case action.TypeSource.Key:
 			err = itemsForSource(x, act, view)
-		case action.TypePackage:
+		case action.TypePackage.Key:
 			err = itemsForPackage(x, act, view)
-		case action.TypeModel:
+		case action.TypeModel.Key:
 			// err = itemsForModel(x, act, view)
-		case action.TypeActivity:
+		case action.TypeActivity.Key:
 			// noop
 
 		default:
-			err = errors.Errorf("unhandled menu action type [%s]", act.Type.Key)
+			err = errors.Errorf("unhandled menu action type [%s]", act.TypeKey)
 		}
 		if err != nil {
 			return nil, err

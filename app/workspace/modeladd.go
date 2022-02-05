@@ -28,7 +28,7 @@ func processModelNew(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 }
 
 func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string, as *app.State) (*Result, error) {
-	changes, err := cutil.ParseFormAsChanges(req.Ctx)
+	changes, err := cutil.ParseFormAsChanges(req.RC)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}
