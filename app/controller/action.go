@@ -45,6 +45,9 @@ func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *acti
 	if a == nil {
 		return nil, nil, nil, errors.Errorf("no action available at [%s]", path)
 	}
+	if a.Config == nil {
+		a.Config = util.ValueMap{}
+	}
 
 	return p, a, remaining, nil
 }

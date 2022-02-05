@@ -73,3 +73,11 @@ func (a Actions) cleanup(path ...string) {
 		kid.Children.cleanup(append(append([]string{}, path...), kid.Key)...)
 	}
 }
+
+func (a Actions) Clone() Actions {
+	ret := make(Actions, 0, len(a))
+	for _, x := range a {
+		ret = append(ret, x.Clone(x.Pkg, x.Children.Clone()))
+	}
+	return ret
+}

@@ -62,20 +62,20 @@ func forOrdering(acts Actions, o *Ordering, pkg util.Pkg) (*Action, error) {
 	p := util.StringSplitAndTrim(o.OriginalPath, "/")
 	if o.Key == "_new" {
 		var err error
-		c := util.StringSplitAndTrim(o.OriginalPath, "/")
-		if len(c) < 1 {
+		if len(p) < 1 {
 			return nil, errors.New("attempted to create new action with no arguments")
 		}
-		t, err := TypeFromString(c[0])
+		t, err := TypeFromString(p[0])
 		if err != nil {
 			return nil, err
 		}
-		act, err = newAction(c[1:], o.Title, t, pkg)
+		act, err = newAction(p[1:], o.Title, t, pkg)
 		if err != nil {
 			return nil, errors.Wrapf(err, "can't parse new action from [%s]", o.OriginalPath)
 		}
 	} else {
-		act, _ = acts.Get(p)
+		x := append(append([]string{}, p...), o.Key)
+		act, _ = acts.Get(x)
 		if act == nil {
 			return nil, errors.Errorf("no original action available at path [%s]", o.OriginalPath)
 		}

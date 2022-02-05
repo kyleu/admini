@@ -14,10 +14,14 @@
       <div class="handle">≡</div>
       {%= vutil.Indent(true, indent + 2) %}
       <div class="title">
+        {%- if act.Type().Key == action.TypeSeparator.Key -%}
+        <em>Separator</em>
+        {%- else -%}
         <a href="/project/{%s prj %}/action/{%s act.Pkg.ToPath(act.Key) %}">
           {%= components.SVGRef(act.IconWithFallback(), 16, 16, "icon", ps) %}
           {%s act.Name() %}
         </a>
+        {%- endif -%}
       </div>
       {%= vutil.Indent(true, indent + 2) %}
       <div class="remove">×</div>

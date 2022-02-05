@@ -32,22 +32,29 @@ func ActionSave(rc *fasthttp.RequestCtx) {
 			a.Key = newKey
 		}
 
-		switch a.TypeKey {
-		case action.TypeStatic.Key:
+		title := frm.GetStringOpt("title")
+		if title == "" {
+			title = a.Title
+		}
+		if title == "" {
+			title = "-"
+		}
+		a.Title = title
+		a.Description = frm.GetStringOpt("description")
+		a.Icon = frm.GetStringOpt("icon")
+
+		if a.TypeKey == action.TypeStatic.Key {
 			format := frm.GetStringOpt("format")
 			if format == "" {
 				format = "text"
 			}
 			a.Config["format"] = format
 			a.Config["content"] = frm.GetStringOpt("content")
-		case action.TypeSeparator.Key:
-			a.Title = frm.GetStringOpt("title")
-			a.Description = frm.GetStringOpt("description")
-			icon := frm.GetStringOpt("icon")
-			if icon != "" {
-				a.Icon = icon
-			}
 		}
+
+		acts := p.Actions.Clone()
+		// p.Actions.Set(a)
+		p.Actions = acts
 
 		err = as.Services.Projects.Save(p, true)
 		if err != nil {

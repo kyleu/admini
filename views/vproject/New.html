@@ -23,7 +23,7 @@
           {%= components.TableInput("title", "Title", "", 5) %}
           {%= components.TableIcons("icon", "Icon", "", ps, 5) %}
           {%= components.TableInput("description", "Description", "", 5) %}
-          {%= components.TableCheckbox("sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5) %}
+          {%= components.TableCheckbox("sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), true, 5) %}
         </tbody>
       </table>
       <div class="mt">

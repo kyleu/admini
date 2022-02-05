@@ -19,7 +19,7 @@ func newAction(args []string, title string, typ *Type, pkg util.Pkg) (*Action, e
 	case TypeStatic:
 		return base(typ, typ.Key, title, pkg, cfg), nil
 	case TypeSeparator:
-		return base(typ, "", title, pkg, cfg), nil
+		return base(typ, "", "", pkg, cfg), nil
 	case TypeAll:
 		return base(typ, typ.Key, title, pkg, cfg), nil
 	case TypeSource:

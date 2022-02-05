@@ -22,7 +22,7 @@
 {% func actionList(req *cutil.WorkspaceRequest, acts action.Actions, ps *cutil.PageState, indent int) %}{% stripspace %}
   <ul>
   {% for _, act := range acts %}
-    {% if act.TypeKey == action.TypeSeparator.Key %}
+    {% if act.TypeKey != action.TypeSeparator.Key %}
       {% if len(act.Children) == 0 %}
         {%= vutil.Indent(true, indent + 1) %}
         <li><a href="{%s req.RouteAct(act, 0) %}">
