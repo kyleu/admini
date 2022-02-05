@@ -2,13 +2,9 @@
 {% import (
   "github.com/kyleu/admini/app"
   "github.com/kyleu/admini/app/controller/cutil"
-  "github.com/kyleu/admini/app/result"
   "github.com/kyleu/admini/app/lib/schema"
-  "github.com/kyleu/admini/app/util"
-  "github.com/kyleu/admini/queries/qsqlite"
   "github.com/kyleu/admini/views/components"
   "github.com/kyleu/admini/views/layout"
-  "github.com/kyleu/admini/views/vresult"
 ) %}
 
 {% code type Testbed struct { layout.Basic } %}
@@ -18,8 +14,6 @@
 {%= tabs(as, ps) %}
 {%= accordion(as, ps) %}
 {%= modal(as, ps) %}
-{%- code data := ps.Data.(util.ValueMap) -%}
-{% if len(data) > 0 %}{%= db(as, ps) %}{% endif %}
 {% endfunc %}
 
 {%- func icons(as *app.State, ps *cutil.PageState) -%}
@@ -81,29 +75,5 @@
         Here's a modal body!
       </div>
     </div>
-  </div>
-{%- endfunc -%}
-
-{%- func db(as *app.State, ps *cutil.PageState) -%}
-  {%- code data := ps.Data.(util.ValueMap) -%}
-  <div class="card">
-    <h3>Tables</h3>
-    <pre>{%s qsqlite.ListTables("") %}</pre>
-    {%= vresult.Simple(data["tables"].(*result.Result), 3, as, ps) %}
-  </div>
-  <div class="card">
-    <h3>Columns</h3>
-    <pre>{%s qsqlite.ListColumns("") %}</pre>
-    {%= vresult.Simple(data["columns"].(*result.Result), 3, as, ps) %}
-  </div>
-  <div class="card">
-    <h3>Indexes</h3>
-    <pre>{%s qsqlite.ListIndexes("") %}</pre>
-    {%= vresult.Simple(data["indexes"].(*result.Result), 3, as, ps) %}
-  </div>
-  <div class="card">
-    <h3>Foreign Keys</h3>
-    <pre>{%s qsqlite.ListForeignKeys("") %}</pre>
-    {%= vresult.Simple(data["fks"].(*result.Result), 3, as, ps) %}
   </div>
 {%- endfunc -%}
