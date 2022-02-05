@@ -23,7 +23,7 @@ func (x *Map) Sortable() bool {
 }
 
 func (x *Map) Scalar() bool {
-	return false
+	return true
 }
 
 func (x *Map) String() string {
