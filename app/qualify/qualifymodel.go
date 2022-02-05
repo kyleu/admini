@@ -73,7 +73,7 @@ func modelResults(req *Request, act *action.Action, icon string, remaining []str
 }
 
 func checkSource(act *action.Action, key string) bool {
-	k, err := act.Config.GetString("source", false)
+	k, err := act.Config.GetString(action.TypeSource.Key, false)
 	if err != nil {
 		return false
 	}

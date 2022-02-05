@@ -1,6 +1,6 @@
-// Content managed by Project Forge, see [projectforge.md] for details.
 export function sortableInit() {
   if ((window as any).Sortable) {
+    (window as any).admini.sortableEdit = sortableEdit;
     for (const dd of Array.from(document.getElementsByClassName("sortable"))) {
       sortableCreate(dd);
     }

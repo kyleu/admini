@@ -1,4 +1,7 @@
 // $PF_IGNORE$
-export function appInit(): void {
 
+import {sortableInit} from "./sortable";
+
+export function appInit(): void {
+  sortableInit();
 }

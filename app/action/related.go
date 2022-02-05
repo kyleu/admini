@@ -8,7 +8,7 @@ import (
 )
 
 func GetSource(act *Action, schemata schema.Schemata) (*model.Package, error) {
-	k, err := act.Config.GetString("source", false)
+	k, err := act.Config.GetString(TypeSource.Key, false)
 	if err != nil {
 		return nil, errors.Wrap(err, "config key [source] must be provided")
 	}

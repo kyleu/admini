@@ -25,6 +25,7 @@ brews:
     description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     license: "Proprietary"
     skip_upload: "false"
+    install: "bin.install \"program\""
 
 changelog:
   skip: true

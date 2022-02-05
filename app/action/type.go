@@ -62,13 +62,13 @@ func (t Type) ConfigString(cfg util.ValueMap) string {
 	case TypeAll.Key:
 		return "All Sources"
 	case TypeSource.Key:
-		return cfg.GetStringOpt("source")
+		return cfg.GetStringOpt(TypeSource.Key)
 	case TypePackage.Key:
-		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("package"))
+		return fmt.Sprintf("%s:%s", cfg.GetStringOpt(TypeSource.Key), cfg.GetStringOpt(TypePackage.Key))
 	case TypeModel.Key:
-		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("model"))
+		return fmt.Sprintf("%s:%s", cfg.GetStringOpt(TypeSource.Key), cfg.GetStringOpt(TypeModel.Key))
 	case TypeActivity.Key:
-		return fmt.Sprintf("%s:%s", cfg.GetStringOpt("source"), cfg.GetStringOpt("activity"))
+		return fmt.Sprintf("%s:%s", cfg.GetStringOpt(TypeSource.Key), cfg.GetStringOpt(TypeActivity.Key))
 
 	case TypeTest.Key:
 		return "TEST"

@@ -42,19 +42,19 @@ func SourceModelSave(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		m, todo, err := applyOverrides(frm, m)
+		m, overrides, err := applyOverrides(frm, m)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to process overrides")
 		}
 
-		if len(todo) > 0 {
+		if len(overrides) > 0 {
 			curr, err := as.Services.Sources.GetOverrides(src.Key)
 			if err != nil {
 				return "", errors.Wrap(err, "unable to load current overrides")
 			}
 
 			final := append(schema.Overrides{}, curr.Purge(m.Path())...)
-			final = append(final, todo...)
+			final = append(final, overrides...)
 
 			err = as.Services.Sources.SaveOverrides(src.Key, final)
 			if err != nil {
@@ -62,7 +62,7 @@ func SourceModelSave(rc *fasthttp.RequestCtx) {
 			}
 		}
 
-		msg := fmt.Sprintf("saved model [%s] with [%d] overrides", m.Name(), len(todo))
+		msg := fmt.Sprintf("saved model [%s] with [%d] overrides", m.Name(), len(overrides))
 		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), rc, ps)
 	})
 }
