@@ -17,14 +17,6 @@ import (
 )
 
 func ProjectMenu(as *app.State, prj *project.View) (menu.Items, error) {
-	overviewDesc := "Overview of the project, displaying details about the configuration"
-	overviewRoute := fmt.Sprintf("/x/%s", prj.Project.Key)
-	if strings.HasPrefix(prj.Project.Key, project.SourceProjectPrefix) {
-		overviewRoute = fmt.Sprintf("/s/%s", strings.TrimPrefix(prj.Project.Key, project.SourceProjectPrefix))
-	}
-	overview := &menu.Item{Key: "overview", Title: "Project overview", Description: overviewDesc, Route: overviewRoute}
-	ret := menu.Items{overview, menu.Separator}
-
 	pKey := prj.Project.Key
 	rt := "/x"
 	if strings.HasPrefix(pKey, project.SourceProjectPrefix) {
@@ -37,8 +29,18 @@ func ProjectMenu(as *app.State, prj *project.View) (menu.Items, error) {
 		return nil, err
 	}
 
-	ret = append(ret, m...)
-	ret = append(ret, menu.Separator, menuItemBack)
+	const configDesc = "Edit this project's settings and actions"
+	config := &menu.Item{Key: "settings", Description: configDesc, Icon: "cog"}
+	if strings.HasPrefix(prj.Project.Key, project.SourceProjectPrefix) {
+		config.Route = fmt.Sprintf("/source/%s", strings.TrimPrefix(prj.Project.Key, project.SourceProjectPrefix))
+		config.Title = "Source Settings"
+	} else {
+		config.Route = fmt.Sprintf("/project/%s", prj.Project.Key)
+		config.Title = "Project Settings"
+	}
+
+	ret := append(menu.Items{}, m...)
+	ret = append(ret, menu.Separator, config, menuItemBack)
 
 	return ret, nil
 }

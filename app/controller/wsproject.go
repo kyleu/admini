@@ -88,6 +88,7 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.
 
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
+	req.PS.SearchPath = req.Route("search")
 
 	return render(req.RC, as, res.Page, req.PS, res.Breadcrumbs...)
 }

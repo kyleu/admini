@@ -9,12 +9,7 @@ import (
 	"github.com/kyleu/admini/app/util"
 )
 
-var menuItemBack = &menu.Item{
-	Key:         "_back",
-	Title:       "Back to " + util.AppName,
-	Description: "Return to " + util.AppName,
-	Route:       "/",
-}
+var menuItemBack = &menu.Item{Key: "_back", Title: "Back to " + util.AppName, Description: "Return to " + util.AppName, Icon: "backward", Route: "/"}
 
 func SourceMenuPackage(mp *model.Package, path string) menu.Items {
 	ret := menu.Items{}

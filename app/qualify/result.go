@@ -22,7 +22,7 @@ func (r *Result) ToResult() *result.Result {
 	return &result.Result{
 		Title:  r.Action.Title,
 		Count:  len(r.Data),
-		Query:  "todo",
+		Query:  r.Debug,
 		Fields: r.Model.Fields,
 		Data:   [][]interface{}{r.Data},
 		Timing: &result.Timing{},
