@@ -2,6 +2,7 @@
 package util
 
 const (
+	BoolTrue   = "true"
 	AppKey     = "admini"
 	AppName    = "Admini"
 	AppSummary = "Use Admini to explore and manage your data as fast and easily as possible"

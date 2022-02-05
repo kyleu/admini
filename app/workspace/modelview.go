@@ -27,7 +27,7 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		if err != nil {
 			return nil, err
 		}
-		//TODO maybe: getModel(req.Context, someModel, idStrings, ld)
+		// TODO maybe: getModel(req.Context, someModel, idStrings, ld)
 		req.PS.Logger.Debugf("relations: [%s]", strings.Join(rowFK, ", "))
 	}
 
