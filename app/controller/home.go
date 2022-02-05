@@ -44,7 +44,7 @@ func Refresh(rc *fasthttp.RequestCtx) {
 		as.Services.Loaders.Clear()
 		as.Services.Sources.Clear()
 		as.Services.Projects.Clear()
-		msg := "Cleared all caches"
+		const msg = "Cleared all caches"
 		return flashAndRedir(true, msg, redir, rc, ps)
 	})
 }

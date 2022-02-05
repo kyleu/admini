@@ -5,6 +5,8 @@ import (
 	"database/sql"
 
 	"github.com/prometheus/client_golang/prometheus"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type StatsGetter interface {
@@ -25,10 +27,9 @@ type StatsCollector struct {
 }
 
 func newStatsCollector(subsystem string, dbName string, sg StatsGetter) *StatsCollector {
-	namespace := ""
 	labels := prometheus.Labels{"db_name": dbName}
 	x := func(key string, help string) *prometheus.Desc {
-		return prometheus.NewDesc(prometheus.BuildFQName(namespace, subsystem, key), help, nil, labels)
+		return prometheus.NewDesc(prometheus.BuildFQName(util.AppKey, subsystem, key), help, nil, labels)
 	}
 	return &StatsCollector{
 		sg:                    sg,

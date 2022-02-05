@@ -50,7 +50,7 @@ func (s *Service) LoadSourceProject(srcKey string) (*View, error) {
 	}
 
 	sCfg := util.ValueMapFor(action.TypeSource.Key, src.Key, action.TypeActivity.Key, "sql")
-	sd := "Run ad-hoc SQL queries and DDL"
+	const sd = "Run ad-hoc SQL queries and DDL"
 	acts = append(acts, &action.Action{Key: "sql", TypeKey: action.TypeActivity.Key, Title: "SQL Playground", Description: sd, Config: sCfg})
 
 	prj := &Project{Key: SourceProjectPrefix + src.Key, Title: src.Title, Icon: src.Icon, Description: src.Description, Sources: []string{srcKey}, Actions: acts}
