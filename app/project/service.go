@@ -92,20 +92,19 @@ func (s *Service) Load(key string, force bool) (*Project, error) {
 
 	pf := filepath.Join(s.root, key+".json")
 
+	if !s.files.Exists(pf) {
+		return nil, errors.Errorf("no project file found at [%s]", pf)
+	}
 	ret := &Project{}
-	if s.files.Exists(pf) {
-		ret = &Project{}
-		out, err := s.files.ReadFile(pf)
-		if err != nil {
-			return nil, errors.Wrapf(err, "unable to read project [%s]", key)
-		}
-
-		err = util.FromJSON(out, ret)
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to parse project")
-		}
+	out, err := s.files.ReadFile(pf)
+	if err != nil {
+		return nil, errors.Wrapf(err, "unable to read project [%s]", key)
 	}
 
+	err = util.FromJSON(out, ret)
+	if err != nil {
+		return nil, errors.Wrap(err, "unable to parse project")
+	}
 	ret.Key = key
 
 	s.cache = s.cache.Replace(ret)

@@ -43,7 +43,7 @@ func processModelAdd(req *cutil.WorkspaceRequest, act *action.Action, srcKey str
 		return ErrResult(req, act, err)
 	}
 
-	msg := fmt.Sprintf("Added [%d] changes, received [%d] fields", len(changes), len(res))
+	msg := fmt.Sprintf("Added [%d] changes", len(changes), len(res))
 	end := len(additional)
 	if end > 0 {
 		end--

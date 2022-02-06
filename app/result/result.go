@@ -16,23 +16,17 @@ type Timing struct {
 }
 
 type Result struct {
-	Title  string          `json:"title,omitempty"`
-	Count  int             `json:"count,omitempty"`
-	Query  string          `json:"query,omitempty"`
-	Fields field.Fields    `json:"fields"`
-	Data   [][]interface{} `json:"data"`
-	Timing *Timing         `json:"timing,omitempty"`
+	Title    string             `json:"title,omitempty"`
+	Count    int                `json:"count,omitempty"`
+	Query    string             `json:"query,omitempty"`
+	Fields   field.Fields       `json:"fields"`
+	Data     [][]interface{}    `json:"data"`
+	Timing   *Timing            `json:"timing,omitempty"`
+	Children map[string]*Result `json:"children,omitempty"`
 }
 
 func NewResult(title string, count int, q string, fields field.Fields, data [][]interface{}, timing *Timing) *Result {
-	return &Result{
-		Title:  title,
-		Count:  count,
-		Query:  q,
-		Fields: fields,
-		Data:   data,
-		Timing: timing,
-	}
+	return &Result{Title: title, Count: count, Query: q, Fields: fields, Data: data, Timing: timing}
 }
 
 func (r *Result) Size() int {

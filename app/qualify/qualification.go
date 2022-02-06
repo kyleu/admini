@@ -14,15 +14,16 @@ type Qualification struct {
 	Debug  string         `json:"debug,omitempty"`
 }
 
-func (r *Qualification) String() string {
-	if r.Debug == "" {
-		return strings.Join(r.Link(), "/")
-	}
-	return fmt.Sprintf("%s (%s)", strings.Join(r.Link(), "/"), r.Debug)
+func (q *Qualification) String() string {
+	return strings.Join(q.Link(), "/")
 }
 
-func (r *Qualification) Link() []string {
-	return append(r.Action.Path(), r.Path...)
+func (q *Qualification) Help() string {
+	return fmt.Sprintf("View %s", q.Action.Title)
+}
+
+func (q *Qualification) Link() []string {
+	return append(q.Action.Path(), q.Path...)
 }
 
 type Qualifications []*Qualification

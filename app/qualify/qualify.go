@@ -1,12 +1,33 @@
 package qualify
 
 import (
+	"github.com/kyleu/admini/app/controller/cutil"
+	"github.com/kyleu/admini/app/lib/schema/model"
 	"github.com/pkg/errors"
 
 	"github.com/kyleu/admini/app/action"
 	"github.com/kyleu/admini/app/lib/schema"
 	"github.com/kyleu/admini/app/util"
 )
+
+func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequest, m *model.Model, result []interface{}) (Qualifications, error) {
+	rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, result)
+	if err != nil {
+		return nil, err
+	}
+	src := act.Config["source"]
+	if act.TypeKey == action.TypeAll.Key {
+		src = wr.Path[0]
+	}
+	req := NewRequest("model", "view", "source", src, "model", rel.Path(), "keys", rowFK)
+
+	quals, err := Qualify(req, wr.Project.Actions, wr.Schemata)
+	if err != nil {
+		return nil, err
+	}
+
+	return quals, nil
+}
 
 func Qualify(req *Request, acts action.Actions, schemata schema.Schemata) (Qualifications, error) {
 	var ret Qualifications

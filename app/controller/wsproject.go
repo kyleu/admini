@@ -30,7 +30,7 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 
 		paths := util.StringSplitAndTrim(string(rc.Path()), "/")
 		if len(paths) < 2 {
-			return ersp("no source provided in path [%s]", string(rc.Path()))
+			return ersp("no project provided in path [%s]", string(rc.Path()))
 		}
 		if paths[0] != "x" {
 			return ersp("provided path [%s] is not part of the project workspace", string(rc.Path()))
@@ -38,7 +38,7 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 
 		pv, err := as.Services.Projects.LoadView(projectKey)
 		if err != nil {
-			return "", errors.Wrapf(err, "error loading project [%s]", projectKey)
+			return "", errors.Wrapf(err, "unable to load project [%s]", projectKey)
 		}
 
 		paths = paths[2:]
