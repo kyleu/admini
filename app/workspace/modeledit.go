@@ -64,7 +64,7 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	msg := fmt.Sprintf("Saved [%d] changes", len(changes), len(res))
+	msg := fmt.Sprintf("Saved [%d] changes", len(changes))
 	path := []string{"v"}
 	for _, x := range res {
 		path = append(path, fmt.Sprintf("%v", x))
