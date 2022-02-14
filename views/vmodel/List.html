@@ -22,9 +22,7 @@
 
 {% func (p *List) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card card-sticky">
-    <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
-    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
-    <em>Model [{%s p.Model.Name() %}] ({%s p.Model.Type.String() %})</em>
+    {%= vaction.ActionHeader(p.Act, "Model [" + p.Model.Name() + "] (" + p.Model.Type.String() + ")", ps) %}
     <a href="#modal-model"><button type="button">Model</button></a>
     <a href="#modal-result"><button type="button">Result</button></a>
     <a href="{%s p.Req.RouteAct(p.Act, 0, `new`) %}"><button type="button">Create New</button></a>

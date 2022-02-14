@@ -1,0 +1,11 @@
+{% import (
+  "github.com/kyleu/admini/app/action"
+  "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/views/components"
+) %}
+
+{% func ActionHeader(act *action.Action, subtitle string, ps *cutil.PageState) %}
+  <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
+  <h3>{%= components.SVGRef(act.IconWithFallback(), 20, 20, "icon", ps) %}{%s act.Name() %}</h3>{% if subtitle != "" %}
+  <em>{%s subtitle %}</em>{% endif %}
+{% endfunc %}

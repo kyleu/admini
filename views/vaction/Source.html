@@ -17,9 +17,7 @@
 
 {% func (p *Source) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
-    <h3>{%s p.Source.Name() %}</h3>
-    <em>Source</em>
+    {%= ActionHeader(p.Act, "Source", ps) %}
     {%- if len(p.Pkg.ChildPackages) > 0 -%}
     <ul>
     {%- for _, pkg := range p.Pkg.ChildPackages -%}
