@@ -20,7 +20,7 @@
     </div>
     <h3>Edit [{%s p.Project.Key %}]</h3>
     <form class="mt" action="/project/{%s p.Project.Key %}" method="post" enctype="application/x-www-form-urlencoded">
-      <table>
+      <table class="expanded">
         <tbody>
           {%= components.TableInput("title", "Title", p.Project.Title, 5) %}
           {%= components.TableIcons("icon", "Icon", p.Project.Icon, ps, 5) %}

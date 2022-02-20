@@ -20,7 +20,7 @@
     <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
     <em>{%s p.Act.ConfigString() %}</em>
     <form class="mt" action="/project/{%s p.Project.Key %}/action/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
-      <table>
+      <table class="expanded">
         <tbody>
           {%= components.TableInput("key", "Key", p.Act.Key, 5) %}
           {%- if p.Act.TypeKey != action.TypeSeparator.Key -%}

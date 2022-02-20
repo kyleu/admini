@@ -68,7 +68,11 @@
         <input id="{%s r.Key %}-count" type="checkbox" hidden />
         <label for="{%s r.Key %}-count">{%= components.ExpandCollapse(3, ps) %} {%s r.String() %}</label>
         <div class="bd">
-          <div>TODO</div>
+          <noscript>
+            <style>.jsrequired { display: none } </style>
+            <a href="">View {%s r.String() %}</a> (or enable JavaScript)
+          </noscript>
+          <div class="jsrequired">Loading... (nah, not really; soon though)</div>
         </div>
       </li>
       {%- endfor -%}
