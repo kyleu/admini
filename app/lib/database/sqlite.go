@@ -2,7 +2,12 @@
 package database
 
 import (
+	"context"
 	"os"
+
+	"go.uber.org/zap"
+
+	"github.com/kyleu/admini/app/util"
 )
 
 type SQLiteParams struct {
@@ -11,8 +16,17 @@ type SQLiteParams struct {
 	Debug  bool   `json:"debug,omitempty"`
 }
 
+func OpenSQLite(ctx context.Context, prefix string, logger *zap.SugaredLogger) (*Service, error) {
+	envParams := SQLiteParamsFromEnv(util.AppKey, util.AppKey, prefix)
+	return OpenSQLiteDatabase(ctx, util.AppKey, envParams, logger)
+}
+
+func OpenDefaultSQLite(ctx context.Context, logger *zap.SugaredLogger) (*Service, error) {
+	return OpenSQLite(ctx, "", logger)
+}
+
 func SQLiteParamsFromEnv(key string, defaultUser string, prefix string) *SQLiteParams {
-	f := ""
+	f := util.AppKey + ".sqlite"
 	if x := os.Getenv(prefix + "DB_FILE"); x != "" {
 		f = x
 	}

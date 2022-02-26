@@ -55,10 +55,10 @@
       </tbody>
     </table>
   </div>
-  {%= viewRelations(p.Model.References, ps) %}
+  {%= viewReferences(p.Model.References, ps) %}
 {% endfunc %}
 
-{% func viewRelations(refs model.References, ps *cutil.PageState) %}
+{% func viewReferences(refs model.References, ps *cutil.PageState) %}
   {%- if len(refs) > 0 -%}
   <div class="card">
     <h3>References</h3>
@@ -72,7 +72,10 @@
             <style>.jsrequired { display: none } </style>
             <a href="">View {%s r.String() %}</a> (or enable JavaScript)
           </noscript>
-          <div class="jsrequired">Loading... (nah, not really; soon though)</div>
+          <div class="jsrequired">
+            <div class="relationship" data-key="{%s r.Key %}" data-pkg="{%s r.SourcePkg.String() %}" data-model="{%s r.SourceModel %}" data-fields="{%s strings.Join(r.SourceFields, `//`) %}">Loading...</div>
+            <em>(nah, not really; soon though)</em>
+          </div>
         </div>
       </li>
       {%- endfor -%}

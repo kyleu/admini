@@ -1,8 +1,8 @@
 <!-- Content managed by Project Forge, see [projectforge.md] for details. -->
 {% import (
   "github.com/kyleu/admini/app"
-  "github.com/kyleu/admini/app/util"
   "github.com/kyleu/admini/app/controller/cutil"
+  "github.com/kyleu/admini/views/components"
   "github.com/kyleu/admini/views/layout"
 ) %}
 
@@ -11,6 +11,6 @@
 {% func (p *Debug) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%s ps.Title %}</h3>
-    <pre>{%s util.ToJSON(ps.Data) %}</pre>
+    {%s= components.JSON(ps.Data) %}
   </div>
 {% endfunc %}
