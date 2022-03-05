@@ -14,6 +14,8 @@ EXPOSE 14000
 # marketing port
 EXPOSE 14001
 
+WORKDIR /
+
 ENTRYPOINT ["/admini", "-a", "0.0.0.0"]
 
 COPY admini /

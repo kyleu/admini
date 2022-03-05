@@ -37,7 +37,9 @@
     "description": "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface",
     "bundle": "com.kyleu.admini",
     "signingIdentity": "Developer ID Application: Kyle Unverferth (C6S478FYLD)",
-    "javaPackage": "dev.admini"
+    "javaPackage": "dev.admini",
+    "goVersion": "1.18",
+    "goBinary": "go1.18beta2"
   },
   "theme": {
     "light": {
