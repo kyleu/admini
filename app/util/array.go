@@ -5,25 +5,17 @@ import (
 	"fmt"
 )
 
-func ArrayIndexOf[T comparable](a []T, v T) int {
+func StringArrayContains(a []string, str string) bool {
+	return StringArrayIndexOf(a, str) >= 0
+}
+
+func StringArrayIndexOf(a []string, str string) int {
 	for idx, x := range a {
-		if x == v {
+		if x == str {
 			return idx
 		}
 	}
 	return -1
-}
-
-func InterfaceArray[T any](s []T) []interface{} {
-	ret := make([]interface{}, len(s))
-	for idx, item := range s {
-		ret[idx] = item
-	}
-	return ret
-}
-
-func StringArrayContains(a []string, str string) bool {
-	return ArrayIndexOf[string](a, str) >= 0
 }
 
 func StringArrayMaxLength(a []string) int {
@@ -66,6 +58,14 @@ func StringArrayFromInterfaces(a []interface{}, maxLength int) []string {
 			v = v[:maxLength] + "... (truncated)"
 		}
 		ret = append(ret, v)
+	}
+	return ret
+}
+
+func InterfaceArrayFromStrings(s []string) []interface{} {
+	ret := make([]interface{}, len(s))
+	for idx, item := range s {
+		ret[idx] = item
 	}
 	return ret
 }

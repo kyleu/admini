@@ -11,7 +11,6 @@ The following modules were used to build this project:
 - [core](./doc/module/core.md)
 - [database](./doc/module/database.md)
 - [desktop](./doc/module/desktop.md)
-- [go118](./doc/module/go118.md)
 - [ios](./doc/module/ios.md)
 - [marketing](./doc/module/marketing.md)
 - [mysql](./doc/module/mysql.md)
