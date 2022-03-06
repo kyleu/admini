@@ -16,11 +16,7 @@ var mockData = map[string]*mockObj{
 	"mock": {
 		Schema: &schema.Schema{
 			Models: model.Models{
-				{
-					Key:  "a1x1",
-					Pkg:  util.Pkg{"a", "1", "x"},
-					Type: model.TypeStruct,
-				},
+				&model.Model{Key: "a1x1", Pkg: util.Pkg{"a", "1", "x"}, Type: model.TypeStruct},
 			},
 		},
 		Data: map[string]*result.Result{
