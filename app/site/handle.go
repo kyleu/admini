@@ -2,6 +2,8 @@
 package site
 
 import (
+	"fmt"
+
 	"github.com/valyala/fasthttp"
 
 	"github.com/kyleu/admini/app"
@@ -15,6 +17,10 @@ import (
 
 func Handle(path []string, rc *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) (string, layout.Page, []string, error) {
 	if len(path) == 0 {
+		msg := "\n  " +
+			"<meta name=\"go-import\" content=\"github.com/kyleu/admini git %s\">\n  " +
+			"<meta name=\"go-source\" content=\"github.com/kyleu/admini %s %s/tree/master{/dir} %s/blob/master{/dir}/{file}#L{line}\">"
+		ps.HeaderContent = fmt.Sprintf(msg, util.AppSource, util.AppSource, util.AppSource, util.AppSource)
 		ps.Data = siteData("Welcome to the marketing site!")
 		return "", &vsite.Index{}, path, nil
 	}
