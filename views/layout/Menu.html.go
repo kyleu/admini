@@ -10,10 +10,10 @@ package layout
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/menu"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/vutil"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/menu"
+	"admini.dev/views/components"
+	"admini.dev/views/vutil"
 )
 
 //line views/layout/Menu.html:11

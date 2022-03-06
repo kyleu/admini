@@ -8,9 +8,9 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/database"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/result"
+	"admini.dev/app/lib/database"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/result"
 )
 
 func Get(ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, logger *zap.SugaredLogger) (*result.Result, error) {

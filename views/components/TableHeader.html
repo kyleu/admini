@@ -2,8 +2,8 @@
 {% import (
   "github.com/valyala/fasthttp"
 
-  "github.com/kyleu/admini/app/controller/cutil"
-  "github.com/kyleu/admini/app/lib/filter"
+  "admini.dev/app/controller/cutil"
+  "admini.dev/app/lib/filter"
 ) %}
 
 {% func TableHeader(section string, key string, title string, params *filter.Params, icon string, u *fasthttp.URI, tooltip string, sortable bool, cls string, resizable bool, ps *cutil.PageState) %}{% stripspace %}

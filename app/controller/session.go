@@ -5,12 +5,12 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/telemetry"
-	"github.com/kyleu/admini/app/lib/telemetry/httpmetrics"
-	"github.com/kyleu/admini/app/lib/user"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/telemetry"
+	"admini.dev/app/lib/telemetry/httpmetrics"
+	"admini.dev/app/lib/user"
+	"admini.dev/app/util"
 )
 
 func loadPageState(rc *fasthttp.RequestCtx, key string, as *app.State) *cutil.PageState {

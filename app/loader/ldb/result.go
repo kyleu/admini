@@ -7,10 +7,10 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/loader/lpostgres/postgres"
-	"github.com/kyleu/admini/app/result"
+	"admini.dev/app/lib/schema/field"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/loader/lpostgres/postgres"
+	"admini.dev/app/result"
 )
 
 func ParseResult(

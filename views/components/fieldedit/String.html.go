@@ -10,7 +10,7 @@ package fieldedit
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/views/components"
+	"admini.dev/views/components"
 )
 
 //line views/components/fieldedit/String.html:8

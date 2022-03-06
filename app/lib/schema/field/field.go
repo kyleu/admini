@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/kyleu/admini/app/lib/types"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/types"
+	"admini.dev/app/util"
 )
 
 type Field struct {

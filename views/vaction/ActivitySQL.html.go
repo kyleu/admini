@@ -6,12 +6,12 @@ package vaction
 
 //line views/vaction/ActivitySQL.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/views/layout"
-	"github.com/kyleu/admini/views/vresult"
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/result"
+	"admini.dev/views/layout"
+	"admini.dev/views/vresult"
 )
 
 //line views/vaction/ActivitySQL.html:10

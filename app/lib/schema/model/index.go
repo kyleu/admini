@@ -4,7 +4,7 @@ package model
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/lib/schema/field"
+	"admini.dev/app/lib/schema/field"
 )
 
 type Index struct {

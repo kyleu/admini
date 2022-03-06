@@ -7,11 +7,11 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/filesystem"
-	"github.com/kyleu/admini/app/lib/search/result"
-	"github.com/kyleu/admini/app/loader"
-	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/filesystem"
+	"admini.dev/app/lib/search/result"
+	"admini.dev/app/loader"
+	"admini.dev/app/source"
+	"admini.dev/app/util"
 )
 
 type Service struct {

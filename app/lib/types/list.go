@@ -4,7 +4,7 @@ package types
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 const KeyList = "list"

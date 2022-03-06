@@ -8,15 +8,15 @@ package vprofile
 
 //line views/vprofile/Profile.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/auth"
-	"github.com/kyleu/admini/app/lib/theme"
-	"github.com/kyleu/admini/app/lib/user"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/layout"
-	"github.com/kyleu/admini/views/vauth"
-	"github.com/kyleu/admini/views/vtheme"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/auth"
+	"admini.dev/app/lib/theme"
+	"admini.dev/app/lib/user"
+	"admini.dev/views/components"
+	"admini.dev/views/layout"
+	"admini.dev/views/vauth"
+	"admini.dev/views/vtheme"
 )
 
 //line views/vprofile/Profile.html:14

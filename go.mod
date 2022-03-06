@@ -1,5 +1,5 @@
 // $PF_IGNORE$
-module github.com/kyleu/admini
+module admini.dev
 
 go 1.18
 

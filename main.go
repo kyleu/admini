@@ -4,9 +4,9 @@ package main
 import (
 	"os"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/cmd"
-	"github.com/kyleu/admini/app/lib/log"
+	"admini.dev/app"
+	"admini.dev/app/cmd"
+	"admini.dev/app/lib/log"
 )
 
 var (

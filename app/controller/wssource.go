@@ -7,10 +7,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/app/workspace"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/util"
+	"admini.dev/app/workspace"
 )
 
 func WorkspaceSource(rc *fasthttp.RequestCtx) {

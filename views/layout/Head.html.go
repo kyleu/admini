@@ -8,9 +8,9 @@ package layout
 
 //line views/layout/Head.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/util"
 )
 
 //line views/layout/Head.html:8

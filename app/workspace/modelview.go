@@ -3,12 +3,12 @@ package workspace
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/vmodel"
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/util"
+	"admini.dev/views/vmodel"
 	"github.com/pkg/errors"
 )
 

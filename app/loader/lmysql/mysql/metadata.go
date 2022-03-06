@@ -3,8 +3,8 @@ package mysql
 import (
 	"context"
 
-	"github.com/kyleu/admini/app/lib/database"
-	"github.com/kyleu/admini/app/lib/schema"
+	"admini.dev/app/lib/database"
+	"admini.dev/app/lib/schema"
 )
 
 func loadMetadata(ctx context.Context, db *database.Service) *schema.Metadata {

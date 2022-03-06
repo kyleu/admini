@@ -6,14 +6,14 @@ package vmodel
 
 //line views/vmodel/View.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/qualify"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/components/fieldview"
-	"github.com/kyleu/admini/views/layout"
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/qualify"
+	"admini.dev/views/components"
+	"admini.dev/views/components/fieldview"
+	"admini.dev/views/layout"
 	"strings"
 )
 

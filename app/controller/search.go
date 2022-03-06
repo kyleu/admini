@@ -4,10 +4,10 @@ package controller
 import (
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/search"
-	"github.com/kyleu/admini/views/vsearch"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/search"
+	"admini.dev/views/vsearch"
 )
 
 func Search(rc *fasthttp.RequestCtx) {

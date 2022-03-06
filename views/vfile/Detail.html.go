@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"unicode/utf8"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
 )
 
 //line views/vfile/Detail.html:10

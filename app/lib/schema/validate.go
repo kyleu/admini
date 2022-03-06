@@ -7,8 +7,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/lib/types"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/lib/types"
 )
 
 const (

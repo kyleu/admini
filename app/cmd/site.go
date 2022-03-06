@@ -10,10 +10,10 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller"
-	"github.com/kyleu/admini/app/lib/filesystem"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app"
+	"admini.dev/app/controller"
+	"admini.dev/app/lib/filesystem"
+	"admini.dev/app/util"
 )
 
 const keySite = "site"

@@ -6,10 +6,10 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/views/vproject"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/project"
+	"admini.dev/views/vproject"
 )
 
 func ProjectNew(rc *fasthttp.RequestCtx) {

@@ -8,10 +8,10 @@ package vsandbox
 
 //line views/vsandbox/Run.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/layout"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/components"
+	"admini.dev/views/layout"
 )
 
 //line views/vsandbox/Run.html:9

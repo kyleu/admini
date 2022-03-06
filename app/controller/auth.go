@@ -7,9 +7,9 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/auth"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/auth"
 )
 
 const signinMsg = "signed in using %s as [%s]"

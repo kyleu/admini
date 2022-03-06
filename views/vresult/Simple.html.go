@@ -6,16 +6,16 @@ package vresult
 
 //line views/vresult/Simple.html:1
 import (
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/filter"
+	"admini.dev/app/lib/schema/field"
+	"admini.dev/app/result"
+	"admini.dev/app/util"
+	"admini.dev/views/components"
+	"admini.dev/views/components/fieldview"
+	"admini.dev/views/vutil"
 	"fmt"
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/filter"
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/components/fieldview"
-	"github.com/kyleu/admini/views/vutil"
 )
 
 //line views/vresult/Simple.html:14

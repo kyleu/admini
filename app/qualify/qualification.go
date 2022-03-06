@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/kyleu/admini/app/action"
+	"admini.dev/app/action"
 )
 
 type Qualification struct {

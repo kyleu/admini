@@ -1,14 +1,14 @@
 package workspace
 
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/lib/telemetry"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/vaction"
-	"github.com/kyleu/admini/views/vworkspace"
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/lib/telemetry"
+	"admini.dev/app/util"
+	"admini.dev/views/vaction"
+	"admini.dev/views/vworkspace"
 	"github.com/pkg/errors"
 )
 

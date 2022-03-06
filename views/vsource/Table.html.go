@@ -6,10 +6,10 @@ package vsource
 
 //line views/vsource/Table.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/views/components"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/source"
+	"admini.dev/views/components"
 )
 
 //line views/vsource/Table.html:8

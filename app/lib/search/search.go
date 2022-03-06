@@ -8,8 +8,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/lib/search/result"
+	"admini.dev/app"
+	"admini.dev/app/lib/search/result"
 )
 
 type Provider func(context.Context, *app.State, *Params) (result.Results, error)

@@ -8,18 +8,18 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/kyleu/admini/app/lib/filesystem"
+	"admini.dev/app/lib/filesystem"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/database"
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/assets"
-	"github.com/kyleu/admini/views/vsource"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/database"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/source"
+	"admini.dev/app/util"
+	"admini.dev/assets"
+	"admini.dev/views/vsource"
 )
 
 func SourceNew(rc *fasthttp.RequestCtx) {

@@ -10,11 +10,11 @@ package vsearch
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/search"
-	"github.com/kyleu/admini/app/lib/search/result"
-	"github.com/kyleu/admini/views/components"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/search"
+	"admini.dev/app/lib/search/result"
+	"admini.dev/views/components"
 )
 
 //line views/vsearch/Result.html:12

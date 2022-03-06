@@ -1,9 +1,9 @@
 package action
 
 import (
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/util"
 	"github.com/pkg/errors"
 )
 

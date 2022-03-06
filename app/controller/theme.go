@@ -5,11 +5,11 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/theme"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/vtheme"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/theme"
+	"admini.dev/app/util"
+	"admini.dev/views/vtheme"
 )
 
 func ThemeList(rc *fasthttp.RequestCtx) {

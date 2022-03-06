@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap/buffer"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 const timeFormat = "15:04:05.000000"

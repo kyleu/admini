@@ -5,10 +5,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/action"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/source"
+	"admini.dev/app/util"
 )
 
 const SourceProjectPrefix = "__"

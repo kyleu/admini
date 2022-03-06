@@ -8,8 +8,8 @@ package vauth
 
 //line views/vauth/Authentication.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/lib/auth"
+	"admini.dev/app"
+	"admini.dev/app/lib/auth"
 )
 
 //line views/vauth/Authentication.html:7

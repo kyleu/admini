@@ -6,7 +6,7 @@ import (
 	"os"
 	"sort"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 var (

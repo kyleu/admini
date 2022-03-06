@@ -6,10 +6,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/lib/database"
-	"github.com/kyleu/admini/app/lib/filter"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/result"
+	"admini.dev/app/lib/database"
+	"admini.dev/app/lib/filter"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/result"
 )
 
 func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options) (*result.Result, error) {

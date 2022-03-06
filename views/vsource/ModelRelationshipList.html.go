@@ -6,11 +6,11 @@ package vsource
 
 //line views/vsource/ModelRelationshipList.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/components/fieldview"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/util"
+	"admini.dev/views/components/fieldview"
 )
 
 //line views/vsource/ModelRelationshipList.html:9

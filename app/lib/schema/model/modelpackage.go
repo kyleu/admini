@@ -2,7 +2,7 @@
 package model
 
 import (
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 type Package struct {

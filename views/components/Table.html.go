@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/vutil"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/vutil"
 )
 
 //line views/components/Table.html:11

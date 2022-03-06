@@ -22,7 +22,7 @@ docker run -p 14000:14000 ghcr.io/kyleu/admini:latest-debug
 
 ### go install
 ```shell
-go install github.com/kyleu/admini@latest
+go install admini.dev@latest
 ```
 
 ### Source code

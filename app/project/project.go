@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/kyleu/admini/app/action"
+	"admini.dev/app/action"
 )
 
 type Project struct {

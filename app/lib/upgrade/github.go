@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 func createGithubClient() *github.Client {

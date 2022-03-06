@@ -4,7 +4,7 @@ package telemetry
 import (
 	"go.opentelemetry.io/otel/attribute"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 type Attribute struct {

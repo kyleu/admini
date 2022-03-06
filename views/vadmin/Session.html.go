@@ -10,9 +10,9 @@ package vadmin
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/layout"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/layout"
 )
 
 //line views/vadmin/Session.html:10

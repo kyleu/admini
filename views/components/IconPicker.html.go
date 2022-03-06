@@ -8,9 +8,9 @@ package components
 
 //line views/components/IconPicker.html:2
 import (
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/vutil"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/util"
+	"admini.dev/views/vutil"
 )
 
 //line views/components/IconPicker.html:8

@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	types2 "github.com/kyleu/admini/app/lib/types"
+	types2 "admini.dev/app/lib/types"
 	"go.uber.org/zap"
 )
 

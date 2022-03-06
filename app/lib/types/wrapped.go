@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 type Wrapped struct {

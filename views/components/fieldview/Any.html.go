@@ -10,7 +10,7 @@ package fieldview
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/lib/types"
+	"admini.dev/app/lib/types"
 )
 
 //line views/components/fieldview/Any.html:8

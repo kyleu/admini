@@ -4,9 +4,9 @@ package site
 import (
 	"context"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/lib/menu"
-	"github.com/kyleu/admini/app/lib/user"
+	"admini.dev/app"
+	"admini.dev/app/lib/menu"
+	"admini.dev/app/lib/user"
 )
 
 const (

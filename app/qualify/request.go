@@ -1,7 +1,7 @@
 package qualify
 
 import (
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 type Request struct {

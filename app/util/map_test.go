@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 func assert(t *testing.T, name string, a interface{}, b interface{}, err error, messages ...string) {

@@ -10,7 +10,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"gopkg.in/yaml.v2"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 const (

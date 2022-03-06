@@ -6,10 +6,10 @@ package vaction
 
 //line views/vaction/Sources.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/layout"
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/layout"
 )
 
 //line views/vaction/Sources.html:8

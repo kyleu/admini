@@ -6,8 +6,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/schema/field"
+	"admini.dev/app/util"
 )
 
 type Model struct {

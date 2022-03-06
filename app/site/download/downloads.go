@@ -4,7 +4,7 @@ package download
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 func GetLinks(version string) Links {

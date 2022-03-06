@@ -3,9 +3,9 @@ package workspace
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/layout"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/layout"
 )
 
 type Result struct {

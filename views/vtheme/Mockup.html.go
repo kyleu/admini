@@ -10,11 +10,11 @@ package vtheme
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/theme"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/vutil"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/theme"
+	"admini.dev/app/util"
+	"admini.dev/views/components"
+	"admini.dev/views/vutil"
 )
 
 //line views/vtheme/Mockup.html:12

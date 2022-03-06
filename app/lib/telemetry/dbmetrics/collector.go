@@ -6,7 +6,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 type StatsGetter interface {

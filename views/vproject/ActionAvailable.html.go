@@ -6,15 +6,15 @@ package vproject
 
 //line views/vproject/ActionAvailable.html:1
 import (
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/project"
+	"admini.dev/app/source"
+	"admini.dev/views/vutil"
 	"fmt"
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/views/vutil"
 )
 
 //line views/vproject/ActionAvailable.html:13

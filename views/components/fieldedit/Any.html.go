@@ -10,7 +10,7 @@ package fieldedit
 import (
 	"fmt"
 
-	"github.com/kyleu/admini/app/lib/types"
+	"admini.dev/app/lib/types"
 )
 
 //line views/components/fieldedit/Any.html:8

@@ -2,7 +2,7 @@
 package search
 
 import (
-	"github.com/kyleu/admini/app/lib/filter"
+	"admini.dev/app/lib/filter"
 )
 
 type Params struct {

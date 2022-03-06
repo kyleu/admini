@@ -5,15 +5,15 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/kyleu/admini/app/lib/types"
+	"admini.dev/app/lib/types"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/database"
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/queries/qpostgres"
+	"admini.dev/app/lib/database"
+	"admini.dev/app/lib/schema/field"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/util"
+	"admini.dev/queries/qpostgres"
 )
 
 type enumResult struct {

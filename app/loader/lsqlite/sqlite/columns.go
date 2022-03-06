@@ -8,10 +8,10 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/database"
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/queries/qsqlite"
+	"admini.dev/app/lib/database"
+	"admini.dev/app/lib/schema/field"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/queries/qsqlite"
 )
 
 type columnResult struct {

@@ -6,15 +6,15 @@ package vsource
 
 //line views/vsource/Edit.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/loader/lmysql"
-	"github.com/kyleu/admini/app/loader/lpostgres"
-	"github.com/kyleu/admini/app/loader/lsqlite"
-	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/layout"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/loader/lmysql"
+	"admini.dev/app/loader/lpostgres"
+	"admini.dev/app/loader/lsqlite"
+	"admini.dev/app/source"
+	"admini.dev/views/components"
+	"admini.dev/views/layout"
 )
 
 //line views/vsource/Edit.html:13

@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"github.com/kyleu/admini/app/lib/schema"
+	"admini.dev/app/lib/schema"
 )
 
 func loadScalars() (schema.Scalars, error) {

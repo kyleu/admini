@@ -11,10 +11,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/filesystem"
-	"github.com/kyleu/admini/views/components"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/filesystem"
+	"admini.dev/views/components"
 )
 
 //line views/vfile/List.html:12

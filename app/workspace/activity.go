@@ -4,10 +4,10 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/vaction"
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/vaction"
 )
 
 func sourceActivity(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {

@@ -8,12 +8,12 @@ package vsite
 
 //line views/vsite/Download.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/site/download"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/layout"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/site/download"
+	"admini.dev/app/util"
+	"admini.dev/views/components"
+	"admini.dev/views/layout"
 )
 
 //line views/vsite/Download.html:11

@@ -8,8 +8,8 @@ package components
 
 //line views/components/ExpandCollapse.html:2
 import (
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/vutil"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/vutil"
 )
 
 //line views/components/ExpandCollapse.html:7

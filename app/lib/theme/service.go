@@ -7,8 +7,8 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/filesystem"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/filesystem"
+	"admini.dev/app/util"
 )
 
 const KeyNew = "new"

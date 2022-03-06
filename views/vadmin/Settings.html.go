@@ -8,13 +8,13 @@ package vadmin
 
 //line views/vadmin/Settings.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/user"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/layout"
-	"github.com/kyleu/admini/views/vauth"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/user"
+	"admini.dev/app/util"
+	"admini.dev/views/components"
+	"admini.dev/views/layout"
+	"admini.dev/views/vauth"
 	"runtime"
 )
 

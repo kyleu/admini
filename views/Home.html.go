@@ -8,16 +8,16 @@ package views
 
 //line views/Home.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/sandbox"
-	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/app/source"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/layout"
-	"github.com/kyleu/admini/views/vproject"
-	"github.com/kyleu/admini/views/vsource"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/sandbox"
+	"admini.dev/app/project"
+	"admini.dev/app/source"
+	"admini.dev/app/util"
+	"admini.dev/views/components"
+	"admini.dev/views/layout"
+	"admini.dev/views/vproject"
+	"admini.dev/views/vsource"
 )
 
 //line views/Home.html:15

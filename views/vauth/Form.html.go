@@ -8,10 +8,10 @@ package vauth
 
 //line views/vauth/Form.html:2
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/auth"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/auth"
+	"admini.dev/app/util"
 )
 
 //line views/vauth/Form.html:9

@@ -6,10 +6,10 @@ package vproject
 
 //line views/vproject/Table.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/project"
-	"github.com/kyleu/admini/views/components"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/project"
+	"admini.dev/views/components"
 )
 
 //line views/vproject/Table.html:8

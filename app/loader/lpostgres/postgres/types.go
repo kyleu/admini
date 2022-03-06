@@ -3,11 +3,11 @@ package postgres
 import (
 	"strings"
 
-	types2 "github.com/kyleu/admini/app/lib/types"
+	types2 "admini.dev/app/lib/types"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/util"
 )
 
 func TypeForName(t string, enums model.Models, logger *zap.SugaredLogger) *types2.Wrapped {

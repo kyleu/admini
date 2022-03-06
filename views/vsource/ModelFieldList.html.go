@@ -6,13 +6,13 @@ package vsource
 
 //line views/vsource/ModelFieldList.html:1
 import (
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/util"
+	"admini.dev/views/components"
+	"admini.dev/views/components/fieldview"
 	"fmt"
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/components/fieldview"
 )
 
 //line views/vsource/ModelFieldList.html:11

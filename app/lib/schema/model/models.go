@@ -4,7 +4,7 @@ package model
 import (
 	"sort"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 type Models []*Model

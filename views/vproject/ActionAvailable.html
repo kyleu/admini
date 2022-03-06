@@ -1,13 +1,13 @@
 {% import (
   "fmt"
-  "github.com/kyleu/admini/app"
-  "github.com/kyleu/admini/app/action"
-  "github.com/kyleu/admini/app/controller/cutil"
-  "github.com/kyleu/admini/app/lib/schema/model"
-  "github.com/kyleu/admini/app/project"
-  "github.com/kyleu/admini/app/lib/schema"
-  "github.com/kyleu/admini/app/source"
-  "github.com/kyleu/admini/views/vutil"
+  "admini.dev/app"
+  "admini.dev/app/action"
+  "admini.dev/app/controller/cutil"
+  "admini.dev/app/lib/schema/model"
+  "admini.dev/app/project"
+  "admini.dev/app/lib/schema"
+  "admini.dev/app/source"
+  "admini.dev/views/vutil"
 ) %}
 
 {% func ActionAvailable(v *project.View, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}

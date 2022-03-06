@@ -6,20 +6,20 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/site/download"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/doc"
-	"github.com/kyleu/admini/views/layout"
-	"github.com/kyleu/admini/views/vsite"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/site/download"
+	"admini.dev/app/util"
+	"admini.dev/doc"
+	"admini.dev/views/layout"
+	"admini.dev/views/vsite"
 )
 
 func Handle(path []string, rc *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) (string, layout.Page, []string, error) {
 	if len(path) == 0 {
 		msg := "\n  " +
-			"<meta name=\"go-import\" content=\"github.com/kyleu/admini git %s\">\n  " +
-			"<meta name=\"go-source\" content=\"github.com/kyleu/admini %s %s/tree/master{/dir} %s/blob/master{/dir}/{file}#L{line}\">"
+			"<meta name=\"go-import\" content=\"admini.dev git %s\">\n  " +
+			"<meta name=\"go-source\" content=\"admini.dev %s %s/tree/master{/dir} %s/blob/master{/dir}/{file}#L{line}\">"
 		ps.HeaderContent = fmt.Sprintf(msg, util.AppSource, util.AppSource, util.AppSource, util.AppSource)
 		ps.Data = siteData("Welcome to the marketing site!")
 		return "", &vsite.Index{}, path, nil
@@ -30,7 +30,7 @@ func Handle(path []string, rc *fasthttp.RequestCtx, as *app.State, ps *cutil.Pag
 	switch path[0] {
 	case keyDownload:
 		dls := download.GetLinks(as.BuildInfo.Version)
-		ps.Data = map[string]interface{}{"base": "https://github.com/kyleu/admini/releases/download/v" + as.BuildInfo.Version, "links": dls}
+		ps.Data = map[string]interface{}{"base": "https://admini.dev/releases/download/v" + as.BuildInfo.Version, "links": dls}
 		page = &vsite.Download{Links: dls}
 	case keyInstall:
 		page, err = mdTemplate("Installation", "This static page contains installation instructions", "installation.md", ps)

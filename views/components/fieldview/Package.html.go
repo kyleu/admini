@@ -8,7 +8,7 @@ package fieldview
 
 //line views/components/fieldview/Package.html:2
 import (
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 //line views/components/fieldview/Package.html:6

@@ -7,9 +7,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/lib/filesystem"
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/filesystem"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/util"
 )
 
 func (s *Service) LoadSchema(key string) (*schema.Schema, error) {

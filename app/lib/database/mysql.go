@@ -13,8 +13,8 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/telemetry"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/telemetry"
+	"admini.dev/app/util"
 )
 
 var typeMySQL = &DBType{Key: "mysql", Title: "MySQL", Quote: "`", Placeholder: "?", SupportsReturning: false}

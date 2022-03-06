@@ -6,8 +6,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/util"
 )
 
 type Source struct {

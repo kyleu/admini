@@ -6,11 +6,11 @@ package vproject
 
 //line views/vproject/ActionList.html:1
 import (
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/vutil"
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/components"
+	"admini.dev/views/vutil"
 )
 
 //line views/vproject/ActionList.html:9

@@ -6,13 +6,13 @@ package vmodel
 
 //line views/vmodel/Edit.html:1
 import (
+	"admini.dev/app"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/views/components/fieldedit"
+	"admini.dev/views/layout"
 	"fmt"
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/views/components/fieldedit"
-	"github.com/kyleu/admini/views/layout"
 	"strings"
 )
 

@@ -8,7 +8,7 @@ package fieldview
 
 //line views/components/fieldview/Code.html:2
 import (
-	"github.com/kyleu/admini/app/controller/cutil"
+	"admini.dev/app/controller/cutil"
 )
 
 //line views/components/fieldview/Code.html:6

@@ -1,12 +1,12 @@
 {% import (
-  "github.com/kyleu/admini/app/action"
-  "github.com/kyleu/admini/app/controller/cutil"
-  "github.com/kyleu/admini/app/qualify"
-  "github.com/kyleu/admini/app/lib/schema/field"
-  "github.com/kyleu/admini/app/lib/schema/model"
-  "github.com/kyleu/admini/views/components"
-  "github.com/kyleu/admini/views/components/fieldview"
-  "github.com/kyleu/admini/views/vutil"
+  "admini.dev/app/action"
+  "admini.dev/app/controller/cutil"
+  "admini.dev/app/qualify"
+  "admini.dev/app/lib/schema/field"
+  "admini.dev/app/lib/schema/model"
+  "admini.dev/views/components"
+  "admini.dev/views/components/fieldview"
+  "admini.dev/views/vutil"
 ) %}
 
 {% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool) %}{% stripspace %}

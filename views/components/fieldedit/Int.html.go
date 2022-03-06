@@ -8,7 +8,7 @@ package fieldedit
 
 //line views/components/fieldedit/Int.html:2
 import (
-	"github.com/kyleu/admini/views/components"
+	"admini.dev/views/components"
 )
 
 //line views/components/fieldedit/Int.html:6

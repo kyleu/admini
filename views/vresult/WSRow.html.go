@@ -6,14 +6,14 @@ package vresult
 
 //line views/vresult/WSRow.html:1
 import (
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/qualify"
-	"github.com/kyleu/admini/views/components"
-	"github.com/kyleu/admini/views/components/fieldview"
-	"github.com/kyleu/admini/views/vutil"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/lib/schema/field"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/qualify"
+	"admini.dev/views/components"
+	"admini.dev/views/components/fieldview"
+	"admini.dev/views/vutil"
 )
 
 //line views/vresult/WSRow.html:12

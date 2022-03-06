@@ -6,12 +6,12 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"github.com/kyleu/admini/app/lib/filter"
-	"github.com/kyleu/admini/app/lib/schema"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/loader"
-	"github.com/kyleu/admini/app/result"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/filter"
+	"admini.dev/app/lib/schema"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/loader"
+	"admini.dev/app/result"
+	"admini.dev/app/util"
 )
 
 type Loader struct {

@@ -8,9 +8,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/kyleu/admini/app/lib/schema/field"
-	"github.com/kyleu/admini/app/lib/schema/model"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/schema/field"
+	"admini.dev/app/lib/schema/model"
+	"admini.dev/app/util"
 )
 
 const (

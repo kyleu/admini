@@ -5,8 +5,8 @@ import (
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app/lib/telemetry/httpmetrics"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/telemetry/httpmetrics"
+	"admini.dev/app/util"
 )
 
 //nolint

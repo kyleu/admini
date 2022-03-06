@@ -4,7 +4,7 @@ package types
 import (
 	"strings"
 
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/util"
 )
 
 const KeyReference = "reference"

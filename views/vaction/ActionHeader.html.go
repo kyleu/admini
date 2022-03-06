@@ -6,9 +6,9 @@ package vaction
 
 //line views/vaction/ActionHeader.html:1
 import (
-	"github.com/kyleu/admini/app/action"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/views/components"
+	"admini.dev/app/action"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/views/components"
 )
 
 //line views/vaction/ActionHeader.html:7

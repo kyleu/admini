@@ -4,8 +4,8 @@ package result_test
 import (
 	"testing"
 
-	"github.com/kyleu/admini/app/lib/search/result"
-	"github.com/kyleu/admini/app/util"
+	"admini.dev/app/lib/search/result"
+	"admini.dev/app/util"
 )
 
 var splitTests = []struct {

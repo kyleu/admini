@@ -6,10 +6,10 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"github.com/kyleu/admini/app"
-	"github.com/kyleu/admini/app/controller/cutil"
-	"github.com/kyleu/admini/app/util"
-	"github.com/kyleu/admini/views/vsource"
+	"admini.dev/app"
+	"admini.dev/app/controller/cutil"
+	"admini.dev/app/util"
+	"admini.dev/views/vsource"
 )
 
 const sourceKey = "source"
