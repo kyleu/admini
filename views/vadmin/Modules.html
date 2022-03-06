@@ -3,16 +3,29 @@
   "runtime/debug"
 
   "github.com/kyleu/admini/app"
+  "github.com/kyleu/admini/app/util"
   "github.com/kyleu/admini/app/controller/cutil"
   "github.com/kyleu/admini/views/layout"
 ) %}
 
 {% code type Modules struct {
   layout.Basic
-  Mods []*debug.Module
+  Info *util.DebugInfo
 } %}
 
 {% func (p *Modules) Body(as *app.State, ps *cutil.PageState) %}
+  <div class="card">
+    <h3>{%s util.AppName %} v{%s as.BuildInfo.Version %}</h3>
+    <ul class="mt">
+      {%- for _, k := range p.Info.Tags.Order -%}
+      <li><strong>{%s k %}</strong>: {%s p.Info.Tags.GetSimple(k) %}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  {%= moduleList(p.Info.Mods) %}
+{% endfunc %}
+
+{% func moduleList(Mods []*debug.Module) %}
   <div class="card">
     <h3>Go Modules</h3>
     <table class="mt">
@@ -23,7 +36,7 @@
         </tr>
       </thead>
       <tbody>
-        {%- for _, m := range p.Mods -%}
+        {%- for _, m := range Mods -%}
         <tr>
           <td><a target="_blank" rel="noopener noreferrer" href="https://{%s m.Path %}">{%s m.Path %}</a></td>
           <td title="{%s m.Sum %}">{%s m.Version %}</td>
@@ -33,4 +46,3 @@
     </table>
   </div>
 {% endfunc %}
-

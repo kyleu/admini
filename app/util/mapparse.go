@@ -26,7 +26,7 @@ func (m ValueMap) ParseArray(path string, allowMissing bool, allowEmpty bool, al
 		if (!allowEmpty) && len(t) == 0 {
 			return nil, errors.New("empty array")
 		}
-		return InterfaceArrayFromStrings(t), nil
+		return InterfaceArray(t), nil
 	case []int:
 		if (!allowEmpty) && len(t) == 0 {
 			return nil, errors.New("empty array")
