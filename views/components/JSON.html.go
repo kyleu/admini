@@ -8,8 +8,8 @@ package components
 
 //line views/components/JSON.html:2
 import (
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/util"
 )
 
 //line views/components/JSON.html:7

@@ -7,14 +7,14 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/schema/field"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/loader/lpostgres/postgres"
-	"admini.dev/app/result"
+	"admini.dev/admini/app/lib/schema/field"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/loader/lpostgres/postgres"
+	"admini.dev/admini/app/result"
 )
 
 func ParseResult(
-	title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger,
+		title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger,
 ) (*result.Result, error) {
 	fields, err := parseColumns(rows, enums, logger)
 	if err != nil {

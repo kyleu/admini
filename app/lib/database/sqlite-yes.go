@@ -15,7 +15,7 @@ import (
 	// load sqlite driver.
 	_ "modernc.org/sqlite"
 
-	"admini.dev/app/lib/telemetry"
+	"admini.dev/admini/app/lib/telemetry"
 )
 
 const SQLiteEnabled = true

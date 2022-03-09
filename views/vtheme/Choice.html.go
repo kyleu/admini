@@ -8,9 +8,9 @@ package vtheme
 
 //line views/vtheme/Choice.html:2
 import (
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/theme"
-	"admini.dev/views/vutil"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/theme"
+	"admini.dev/admini/views/vutil"
 )
 
 //line views/vtheme/Choice.html:8

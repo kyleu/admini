@@ -7,7 +7,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app/lib/telemetry"
+	"admini.dev/admini/app/lib/telemetry"
 )
 
 type Metrics struct {

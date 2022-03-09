@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 type Theme struct {

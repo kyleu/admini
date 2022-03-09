@@ -8,7 +8,7 @@ package fieldview
 
 //line views/components/fieldview/Package.html:2
 import (
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 //line views/components/fieldview/Package.html:6

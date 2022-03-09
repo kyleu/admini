@@ -10,7 +10,7 @@ package fieldedit
 import (
 	"fmt"
 
-	"admini.dev/app/lib/types"
+	"admini.dev/admini/app/lib/types"
 )
 
 //line views/components/fieldedit/Any.html:8

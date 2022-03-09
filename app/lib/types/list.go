@@ -4,7 +4,7 @@ package types
 import (
 	"fmt"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 const KeyList = "list"

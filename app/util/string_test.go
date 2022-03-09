@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 type ToTitleTest struct {

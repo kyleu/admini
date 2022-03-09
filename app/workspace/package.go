@@ -1,10 +1,10 @@
 package workspace
 
 import (
-	"admini.dev/app/action"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/views/vaction"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/views/vaction"
 )
 
 func processPackage(req *cutil.WorkspaceRequest, act *action.Action, t *model.Package) (*Result, error) {

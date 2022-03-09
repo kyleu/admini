@@ -2,7 +2,7 @@
 package cutil
 
 import (
-	"admini.dev/app/lib/menu"
+	"admini.dev/admini/app/lib/menu"
 )
 
 type Breadcrumbs []string

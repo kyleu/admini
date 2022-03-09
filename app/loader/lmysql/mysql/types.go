@@ -3,7 +3,7 @@ package mysql
 import (
 	"strings"
 
-	types2 "admini.dev/app/lib/types"
+	types2 "admini.dev/admini/app/lib/types"
 	"go.uber.org/zap"
 )
 

@@ -8,7 +8,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 const MaxRowsDefault = 100

@@ -1,10 +1,10 @@
 package lmock
 
 import (
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/result"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/result"
+	"admini.dev/admini/app/util"
 )
 
 type mockObj struct {

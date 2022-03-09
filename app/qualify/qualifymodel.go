@@ -3,9 +3,9 @@ package qualify
 import (
 	"github.com/pkg/errors"
 
-	"admini.dev/app/action"
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/util"
 )
 
 func qualifyModel(req *Request, act *action.Action, srcKey string, modelPkg util.Pkg, schemata schema.Schemata) (Qualifications, error) {

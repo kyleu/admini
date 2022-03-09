@@ -10,9 +10,9 @@ package components
 import (
 	"fmt"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/util"
 )
 
 //line views/components/SVG.html:10

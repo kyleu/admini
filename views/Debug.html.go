@@ -8,10 +8,10 @@ package views
 
 //line views/Debug.html:2
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/views/components"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/layout"
 )
 
 //line views/Debug.html:9

@@ -7,10 +7,10 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app/action"
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/project"
-	"admini.dev/app/source"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/project"
+	"admini.dev/admini/app/source"
 )
 
 type WorkspaceRequest struct {

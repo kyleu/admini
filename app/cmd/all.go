@@ -7,7 +7,7 @@ import (
 	"github.com/muesli/coral"
 	"github.com/pkg/errors"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 const keyAll = "all"

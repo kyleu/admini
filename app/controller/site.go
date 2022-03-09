@@ -5,11 +5,11 @@ import (
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/telemetry/httpmetrics"
-	"admini.dev/app/site"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/telemetry/httpmetrics"
+	"admini.dev/admini/app/site"
+	"admini.dev/admini/app/util"
 )
 
 func SiteRoutes() fasthttp.RequestHandler {

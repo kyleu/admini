@@ -8,7 +8,7 @@ package fieldview
 
 //line views/components/fieldview/Option.html:2
 import (
-	"admini.dev/app/lib/types"
+	"admini.dev/admini/app/lib/types"
 )
 
 //line views/components/fieldview/Option.html:6

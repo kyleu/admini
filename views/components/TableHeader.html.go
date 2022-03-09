@@ -10,8 +10,8 @@ package components
 import (
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/filter"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/filter"
 )
 
 //line views/components/TableHeader.html:9

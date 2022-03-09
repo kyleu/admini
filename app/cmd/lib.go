@@ -4,8 +4,8 @@ package cmd
 import (
 	"github.com/pkg/errors"
 
-	"admini.dev/app"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/util"
 )
 
 // Lib starts the application as a library, returning the actual TCP port the server is listening on (as an int32 to make interop easier).

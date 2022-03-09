@@ -6,10 +6,10 @@ package vproject
 
 //line views/vproject/Table.html:1
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/project"
-	"admini.dev/views/components"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/project"
+	"admini.dev/admini/views/components"
 )
 
 //line views/vproject/Table.html:8

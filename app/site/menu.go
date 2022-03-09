@@ -4,9 +4,9 @@ package site
 import (
 	"context"
 
-	"admini.dev/app"
-	"admini.dev/app/lib/menu"
-	"admini.dev/app/lib/user"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/app/lib/user"
 )
 
 const (

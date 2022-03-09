@@ -8,10 +8,10 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/user"
-	"admini.dev/app/site"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/user"
+	"admini.dev/admini/app/site"
 )
 
 const (

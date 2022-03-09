@@ -8,12 +8,12 @@ package vsearch
 
 //line views/vsearch/Results.html:2
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/search"
-	"admini.dev/app/lib/search/result"
-	"admini.dev/app/util"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/search"
+	"admini.dev/admini/app/lib/search/result"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views/layout"
 )
 
 //line views/vsearch/Results.html:11

@@ -3,7 +3,7 @@ package loader
 import (
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/schema"
+	"admini.dev/admini/app/lib/schema"
 )
 
 type loaderFn = func(key string, cfg []byte) (Loader, error)

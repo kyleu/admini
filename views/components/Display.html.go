@@ -12,7 +12,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 //line views/components/Display.html:10

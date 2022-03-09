@@ -6,13 +6,13 @@ package vsource
 
 //line views/vsource/ModelDetail.html:1
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/source"
-	"admini.dev/views/components"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/source"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/layout"
 	"path/filepath"
 )
 

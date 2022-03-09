@@ -6,8 +6,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"admini.dev/app"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/util"
 )
 
 var testbed = &Sandbox{Key: "testbed", Title: "Testbed", Icon: "star", Run: onTestbed}

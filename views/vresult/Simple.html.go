@@ -6,15 +6,15 @@ package vresult
 
 //line views/vresult/Simple.html:1
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/filter"
-	"admini.dev/app/lib/schema/field"
-	"admini.dev/app/result"
-	"admini.dev/app/util"
-	"admini.dev/views/components"
-	"admini.dev/views/components/fieldview"
-	"admini.dev/views/vutil"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/filter"
+	"admini.dev/admini/app/lib/schema/field"
+	"admini.dev/admini/app/result"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/vutil"
 	"fmt"
 )
 

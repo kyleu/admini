@@ -8,10 +8,10 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/menu"
-	"admini.dev/app/lib/telemetry"
-	"admini.dev/app/lib/user"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/lib/user"
+	"admini.dev/admini/app/util"
 )
 
 type PageState struct {

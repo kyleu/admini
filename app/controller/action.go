@@ -4,12 +4,12 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app"
-	"admini.dev/app/action"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/project"
-	"admini.dev/app/util"
-	"admini.dev/views/vproject"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/project"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views/vproject"
 )
 
 func ActionEdit(rc *fasthttp.RequestCtx) {

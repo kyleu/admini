@@ -6,10 +6,10 @@ package vaction
 
 //line views/vaction/Result.html:1
 import (
-	"admini.dev/app/action"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/views/components"
-	"admini.dev/views/vutil"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/vutil"
 )
 
 //line views/vaction/Result.html:8

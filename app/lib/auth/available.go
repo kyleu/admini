@@ -6,7 +6,7 @@ import (
 	"os"
 	"sort"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 var (

@@ -11,10 +11,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/filesystem"
-	"admini.dev/views/components"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/filesystem"
+	"admini.dev/admini/views/components"
 )
 
 //line views/vfile/List.html:12

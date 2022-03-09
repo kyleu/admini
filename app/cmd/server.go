@@ -11,11 +11,11 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"admini.dev/app"
-	"admini.dev/app/controller"
-	"admini.dev/app/lib/filesystem"
-	"admini.dev/app/lib/telemetry"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
+	"admini.dev/admini/app/lib/filesystem"
+	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/util"
 )
 
 const keyServer = "server"

@@ -6,8 +6,8 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/database"
-	"admini.dev/app/lib/schema"
+	"admini.dev/admini/app/lib/database"
+	"admini.dev/admini/app/lib/schema"
 )
 
 func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {

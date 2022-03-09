@@ -6,11 +6,11 @@ package vaction
 
 //line views/vaction/Package.html:1
 import (
-	"admini.dev/app"
-	"admini.dev/app/action"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/views/layout"
 )
 
 //line views/vaction/Package.html:9

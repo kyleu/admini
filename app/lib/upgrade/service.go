@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 type Service struct {

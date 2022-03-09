@@ -12,8 +12,8 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/telemetry"
-	"admini.dev/app/lib/telemetry/dbmetrics"
+	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/lib/telemetry/dbmetrics"
 )
 
 type DBType struct {

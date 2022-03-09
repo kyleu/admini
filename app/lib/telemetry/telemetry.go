@@ -14,7 +14,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 var (

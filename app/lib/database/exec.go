@@ -10,7 +10,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 func (s *Service) Insert(ctx context.Context, q string, tx *sqlx.Tx, values ...interface{}) error {

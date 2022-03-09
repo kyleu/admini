@@ -1,13 +1,13 @@
 {% import (
   "fmt"
-  "admini.dev/app/action"
-  "admini.dev/app/controller/cutil"
-  "admini.dev/app/lib/filter"
-  "admini.dev/app/result"
-  "admini.dev/app/lib/schema/field"
-  "admini.dev/app/lib/schema/model"
-  "admini.dev/views/components"
-  "admini.dev/views/vutil"
+  "admini.dev/admini/app/action"
+  "admini.dev/admini/app/controller/cutil"
+  "admini.dev/admini/app/lib/filter"
+  "admini.dev/admini/app/result"
+  "admini.dev/admini/app/lib/schema/field"
+  "admini.dev/admini/app/lib/schema/model"
+  "admini.dev/admini/views/components"
+  "admini.dev/admini/views/vutil"
 ) %}
 
 {% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, opts *filter.Options) %}{% stripspace %}

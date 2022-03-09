@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"admini.dev/app/action"
+	"admini.dev/admini/app/action"
 )
 
 type Project struct {

@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"unicode/utf8"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
 )
 
 //line views/vfile/Detail.html:10

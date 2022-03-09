@@ -12,12 +12,12 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/util"
-	"admini.dev/views"
-	"admini.dev/views/layout"
-	"admini.dev/views/verror"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views"
+	"admini.dev/admini/views/layout"
+	"admini.dev/admini/views/verror"
 )
 
 var initialIcons = []string{"searchbox"}

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	types2 "admini.dev/app/lib/types"
+	types2 "admini.dev/admini/app/lib/types"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/schema/field"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/schema/field"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/util"
 )
 
 func (s *Schema) Hack(logger *zap.SugaredLogger) (string, error) {

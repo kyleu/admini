@@ -1,12 +1,12 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package main
+package main // import admini.dev/admini
 
 import (
 	"os"
 
-	"admini.dev/app"
-	"admini.dev/app/cmd"
-	"admini.dev/app/lib/log"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/cmd"
+	"admini.dev/admini/app/lib/log"
 )
 
 var (

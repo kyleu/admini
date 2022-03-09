@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 func setState(rc *fasthttp.RequestCtx) string {

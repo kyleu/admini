@@ -4,8 +4,8 @@ package result_test
 import (
 	"testing"
 
-	"admini.dev/app/lib/search/result"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/search/result"
+	"admini.dev/admini/app/util"
 )
 
 var splitTests = []struct {

@@ -6,8 +6,8 @@ import (
 
 	"github.com/webview/webview"
 
-	"admini.dev/app/cmd"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/cmd"
+	"admini.dev/admini/app/util"
 )
 
 func main() {

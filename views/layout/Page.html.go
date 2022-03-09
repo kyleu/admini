@@ -10,8 +10,8 @@ package layout
 
 //line views/layout/Page.html:4
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
 )
 
 //line views/layout/Page.html:9

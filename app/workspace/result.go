@@ -3,9 +3,9 @@ package workspace
 import (
 	"fmt"
 
-	"admini.dev/app/action"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/views/layout"
 )
 
 type Result struct {

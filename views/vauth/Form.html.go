@@ -8,10 +8,10 @@ package vauth
 
 //line views/vauth/Form.html:2
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/auth"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/auth"
+	"admini.dev/admini/app/util"
 )
 
 //line views/vauth/Form.html:9

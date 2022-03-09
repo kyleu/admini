@@ -61,7 +61,7 @@ import (
 	"github.com/markbates/goth/providers/yandex"
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/auth/msfix"
+	"admini.dev/admini/app/lib/auth/msfix"
 )
 
 // nolint

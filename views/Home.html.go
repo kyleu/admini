@@ -8,16 +8,16 @@ package views
 
 //line views/Home.html:2
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/sandbox"
-	"admini.dev/app/project"
-	"admini.dev/app/source"
-	"admini.dev/app/util"
-	"admini.dev/views/components"
-	"admini.dev/views/layout"
-	"admini.dev/views/vproject"
-	"admini.dev/views/vsource"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/sandbox"
+	"admini.dev/admini/app/project"
+	"admini.dev/admini/app/source"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/layout"
+	"admini.dev/admini/views/vproject"
+	"admini.dev/admini/views/vsource"
 )
 
 //line views/Home.html:15

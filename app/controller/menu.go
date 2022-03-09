@@ -4,11 +4,11 @@ package controller
 import (
 	"context"
 
-	"admini.dev/app"
-	"admini.dev/app/lib/menu"
-	"admini.dev/app/lib/sandbox"
-	"admini.dev/app/lib/telemetry"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/app/lib/sandbox"
+	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/util"
 )
 
 func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State) (menu.Items, error) {

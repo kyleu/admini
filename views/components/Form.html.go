@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"admini.dev/app/util"
-	"admini.dev/views/vutil"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views/vutil"
 )
 
 //line views/components/Form.html:10

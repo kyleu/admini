@@ -6,10 +6,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/database"
-	"admini.dev/app/lib/filter"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/result"
+	"admini.dev/admini/app/lib/database"
+	"admini.dev/admini/app/lib/filter"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/result"
 )
 
 func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options) (*result.Result, error) {

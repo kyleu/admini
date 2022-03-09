@@ -11,7 +11,7 @@ import (
 	"github.com/alecthomas/chroma/styles"
 	"github.com/pkg/errors"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 var (

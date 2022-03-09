@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"admini.dev/app/action"
+	"admini.dev/admini/app/action"
 )
 
 type Qualification struct {

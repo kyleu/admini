@@ -6,15 +6,15 @@ package vsource
 
 //line views/vsource/Detail.html:1
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/source"
-	"admini.dev/app/util"
-	"admini.dev/views/components"
-	"admini.dev/views/layout"
-	"admini.dev/views/vutil"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/source"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/layout"
+	"admini.dev/admini/views/vutil"
 )
 
 //line views/vsource/Detail.html:13

@@ -8,7 +8,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"gopkg.in/yaml.v2"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 func ParseForm(rc *fasthttp.RequestCtx) (util.ValueMap, error) {

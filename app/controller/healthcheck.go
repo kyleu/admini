@@ -4,7 +4,7 @@ package controller
 import (
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app/controller/cutil"
+	"admini.dev/admini/app/controller/cutil"
 )
 
 func Healthcheck(rc *fasthttp.RequestCtx) {

@@ -10,10 +10,10 @@ package layout
 import (
 	"strings"
 
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/menu"
-	"admini.dev/views/components"
-	"admini.dev/views/vutil"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/vutil"
 )
 
 //line views/layout/Menu.html:11

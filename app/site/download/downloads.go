@@ -4,7 +4,7 @@ package download
 import (
 	"fmt"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 func GetLinks(version string) Links {

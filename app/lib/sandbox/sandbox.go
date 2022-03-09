@@ -7,8 +7,8 @@ import (
 
 	"go.uber.org/zap"
 
-	"admini.dev/app"
-	"admini.dev/app/lib/menu"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/lib/menu"
 )
 
 type runFn func(ctx context.Context, st *app.State, logger *zap.SugaredLogger) (interface{}, error)

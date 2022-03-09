@@ -6,10 +6,10 @@ package vsource
 
 //line views/vsource/Hack.html:1
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/schema"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/views/layout"
 )
 
 //line views/vsource/Hack.html:8

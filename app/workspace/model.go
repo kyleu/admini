@@ -7,13 +7,13 @@ import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app"
-	"admini.dev/app/action"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/filter"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/loader"
-	"admini.dev/app/source"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/filter"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/loader"
+	"admini.dev/admini/app/source"
 )
 
 func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, additional []string, as *app.State) (*Result, error) {

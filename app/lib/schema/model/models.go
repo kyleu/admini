@@ -4,7 +4,7 @@ package model
 import (
 	"sort"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 type Models []*Model

@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/schema/field"
+	"admini.dev/admini/app/lib/schema/field"
 )
 
 func (m *Model) AddField(f *field.Field) error {

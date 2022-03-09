@@ -7,8 +7,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/lib/types"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/lib/types"
 )
 
 const (

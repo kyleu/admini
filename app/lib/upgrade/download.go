@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-github/v39/github"
 	"github.com/pkg/errors"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 func assetFor(version semver.Version) string {

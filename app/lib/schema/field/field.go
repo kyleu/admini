@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"time"
 
-	"admini.dev/app/lib/types"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/types"
+	"admini.dev/admini/app/util"
 )
 
 type Field struct {

@@ -8,12 +8,12 @@ package vtheme
 
 //line views/vtheme/Edit.html:2
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/theme"
-	"admini.dev/app/util"
-	"admini.dev/views/components"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/theme"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/layout"
 )
 
 //line views/vtheme/Edit.html:11

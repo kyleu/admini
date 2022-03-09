@@ -4,15 +4,15 @@ package app
 import (
 	"context"
 
-	"admini.dev/app/lib/database"
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/loader"
-	"admini.dev/app/loader/lmock"
-	"admini.dev/app/loader/lmysql"
-	"admini.dev/app/loader/lpostgres"
-	"admini.dev/app/loader/lsqlite"
-	"admini.dev/app/project"
-	"admini.dev/app/source"
+	"admini.dev/admini/app/lib/database"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/loader"
+	"admini.dev/admini/app/loader/lmock"
+	"admini.dev/admini/app/loader/lmysql"
+	"admini.dev/admini/app/loader/lpostgres"
+	"admini.dev/admini/app/loader/lsqlite"
+	"admini.dev/admini/app/project"
+	"admini.dev/admini/app/source"
 )
 
 type Services struct {

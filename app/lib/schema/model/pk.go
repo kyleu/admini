@@ -5,8 +5,8 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/schema/field"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/schema/field"
+	"admini.dev/admini/app/util"
 )
 
 func (m *Model) GetPK(logger *zap.SugaredLogger) []string {

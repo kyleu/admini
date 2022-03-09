@@ -7,11 +7,11 @@ import (
 
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/auth"
-	"admini.dev/app/lib/filesystem"
-	"admini.dev/app/lib/telemetry"
-	"admini.dev/app/lib/theme"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/auth"
+	"admini.dev/admini/app/lib/filesystem"
+	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/lib/theme"
+	"admini.dev/admini/app/util"
 )
 
 type BuildInfo struct {

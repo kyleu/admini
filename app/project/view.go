@@ -5,8 +5,8 @@ import (
 
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/source"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/source"
 )
 
 type View struct {

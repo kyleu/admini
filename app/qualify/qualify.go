@@ -1,13 +1,13 @@
 package qualify
 
 import (
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/schema/model"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/schema/model"
 	"github.com/pkg/errors"
 
-	"admini.dev/app/action"
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/util"
 )
 
 func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequest, m *model.Model, result []interface{}) (Qualifications, error) {

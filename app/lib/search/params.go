@@ -2,7 +2,7 @@
 package search
 
 import (
-	"admini.dev/app/lib/filter"
+	"admini.dev/admini/app/lib/filter"
 )
 
 type Params struct {

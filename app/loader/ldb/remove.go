@@ -8,12 +8,12 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/database"
-	"admini.dev/app/lib/schema/model"
+	"admini.dev/admini/app/lib/database"
+	"admini.dev/admini/app/lib/schema/model"
 )
 
 func Remove(
-	ctx context.Context, db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger,
+		ctx context.Context, db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger,
 ) (int, error) {
 	if len(fields) == 0 {
 		return 0, errors.New("must provide at least one column")

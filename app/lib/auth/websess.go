@@ -5,9 +5,9 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/user"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/user"
+	"admini.dev/admini/app/util"
 )
 
 const WebAuthKey = "auth"

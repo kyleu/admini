@@ -7,14 +7,13 @@
   "admini.dev/admini/views/layout"
 ) %}
 
-{% code type Index struct { layout.Basic } %}
+{% code type GoSource struct { layout.Basic } %}
 
-{% func (p *Index) Body(as *app.State, ps *cutil.PageState) %}
+{% func (p *GoSource) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>{%= components.SVGRefIcon(`app`, ps) %}{%s util.AppName %}</h3>
-    <p>Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface</p>
+    <h3>{%= components.SVGRefIcon(`app`, ps) %} {%s util.AppName %}</h3>
+    <pre>go install admini.dev/admini@latest</pre>
     <p>
-      <a href="/download"><button>Download</button></a>
       <a href="https://github.com/kyleu/admini"><button>Source Code</button></a>
     </p>
   </div>

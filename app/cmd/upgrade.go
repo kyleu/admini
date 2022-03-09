@@ -6,9 +6,9 @@ import (
 
 	"github.com/muesli/coral"
 
-	"admini.dev/app/lib/log"
-	"admini.dev/app/lib/upgrade"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/log"
+	"admini.dev/admini/app/lib/upgrade"
+	"admini.dev/admini/app/util"
 )
 
 var (

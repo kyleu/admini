@@ -11,9 +11,9 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"admini.dev/app"
-	"admini.dev/app/lib/log"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/lib/log"
+	"admini.dev/admini/app/util"
 )
 
 var (

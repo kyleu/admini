@@ -4,7 +4,7 @@ package types
 import (
 	"strings"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 const KeyReference = "reference"

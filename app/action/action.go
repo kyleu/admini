@@ -3,7 +3,7 @@ package action
 import (
 	"fmt"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 const defaultIcon = "app"

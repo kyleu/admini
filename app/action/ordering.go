@@ -1,7 +1,7 @@
 package action
 
 import (
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 	"github.com/pkg/errors"
 )
 

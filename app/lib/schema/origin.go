@@ -2,7 +2,7 @@
 package schema
 
 import (
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 type Origin struct {

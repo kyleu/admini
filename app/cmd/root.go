@@ -6,7 +6,7 @@ import (
 
 	"github.com/muesli/coral"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 func rootF(*coral.Command, []string) error {

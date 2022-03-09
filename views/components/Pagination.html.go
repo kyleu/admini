@@ -10,7 +10,7 @@ package components
 import (
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app/lib/filter"
+	"admini.dev/admini/app/lib/filter"
 )
 
 //line views/components/Pagination.html:8

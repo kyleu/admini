@@ -7,13 +7,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"admini.dev/app"
-	"admini.dev/app/action"
-	"admini.dev/app/lib/menu"
-	"admini.dev/app/lib/schema"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/project"
-	"admini.dev/app/util"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/project"
+	"admini.dev/admini/app/util"
 )
 
 func ProjectMenu(as *app.State, prj *project.View) (menu.Items, error) {

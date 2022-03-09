@@ -2,7 +2,7 @@
 package model
 
 import (
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 type Type struct {

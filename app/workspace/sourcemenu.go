@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"admini.dev/app/lib/menu"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/util"
 )
 
 var menuItemBack = &menu.Item{Key: "_back", Title: "Back to " + util.AppName, Description: "Return to " + util.AppName, Icon: "backward", Route: "/"}

@@ -10,7 +10,7 @@ package fieldedit
 import (
 	"fmt"
 
-	"admini.dev/views/components"
+	"admini.dev/admini/views/components"
 )
 
 //line views/components/fieldedit/String.html:8

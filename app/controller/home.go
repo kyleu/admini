@@ -6,10 +6,10 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/util"
-	"admini.dev/views"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/util"
+	"admini.dev/admini/views"
 )
 
 var homeContent = util.ValueMap{

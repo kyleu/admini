@@ -4,7 +4,7 @@ package cmd
 import (
 	"go.uber.org/zap"
 
-	"admini.dev/app"
+	"admini.dev/admini/app"
 )
 
 func Run(bi *app.BuildInfo) (*zap.SugaredLogger, error) {

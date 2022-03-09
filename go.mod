@@ -1,7 +1,7 @@
 // $PF_IGNORE$
-module admini.dev
+module admini.dev/admini
 
-go 1.18
+go 1.17
 
 require (
 	github.com/alecthomas/chroma v0.9.2
@@ -23,7 +23,7 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51
 	github.com/kirsle/configdir v0.0.0-20170128060238-e45d2f54772f
 	github.com/markbates/going v1.0.3
-	github.com/markbates/goth v1.68.0
+	github.com/markbates/goth v1.69.0
 	github.com/muesli/coral v1.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.7.1

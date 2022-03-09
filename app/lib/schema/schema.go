@@ -4,8 +4,8 @@ package schema
 import (
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/util"
 )
 
 type Schema struct {

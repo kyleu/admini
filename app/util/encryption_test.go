@@ -4,7 +4,7 @@ package util_test
 import (
 	"testing"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 var hashTests = []struct {

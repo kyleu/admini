@@ -8,15 +8,15 @@ package vprofile
 
 //line views/vprofile/Profile.html:2
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/auth"
-	"admini.dev/app/lib/theme"
-	"admini.dev/app/lib/user"
-	"admini.dev/views/components"
-	"admini.dev/views/layout"
-	"admini.dev/views/vauth"
-	"admini.dev/views/vtheme"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/auth"
+	"admini.dev/admini/app/lib/theme"
+	"admini.dev/admini/app/lib/user"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/layout"
+	"admini.dev/admini/views/vauth"
+	"admini.dev/admini/views/vtheme"
 )
 
 //line views/vprofile/Profile.html:14

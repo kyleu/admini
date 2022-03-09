@@ -7,7 +7,7 @@ import (
 
 	"go.uber.org/zap"
 
-	"admini.dev/app/util"
+	"admini.dev/admini/app/util"
 )
 
 type SQLiteParams struct {

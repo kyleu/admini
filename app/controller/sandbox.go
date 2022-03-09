@@ -5,10 +5,10 @@ import (
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/sandbox"
-	"admini.dev/views/vsandbox"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/sandbox"
+	"admini.dev/admini/views/vsandbox"
 )
 
 func SandboxList(rc *fasthttp.RequestCtx) {

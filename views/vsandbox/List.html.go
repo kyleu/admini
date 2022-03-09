@@ -8,10 +8,10 @@ package vsandbox
 
 //line views/vsandbox/List.html:2
 import (
-	"admini.dev/app"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/sandbox"
-	"admini.dev/views/layout"
+	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/sandbox"
+	"admini.dev/admini/views/layout"
 )
 
 //line views/vsandbox/List.html:9

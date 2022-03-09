@@ -6,9 +6,9 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/database"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/result"
+	"admini.dev/admini/app/lib/database"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/result"
 )
 
 func Query(ctx context.Context, db *database.Service, sql string, enums model.Models, logger *zap.SugaredLogger) (*result.Result, error) {

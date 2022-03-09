@@ -3,7 +3,7 @@
   "name": "Admini",
   "icon": "compass",
   "version": "0.1.40",
-  "package": "admini.dev",
+  "package": "admini.dev/admini",
   "port": 14000,
   "modules": [
     "android",

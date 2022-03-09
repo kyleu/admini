@@ -13,8 +13,8 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	"admini.dev/app/lib/telemetry"
-	"admini.dev/app/util"
+	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/util"
 )
 
 const defaultSchema = "public"

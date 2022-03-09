@@ -7,9 +7,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"admini.dev/app/lib/database"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/queries/qsqlite"
+	"admini.dev/admini/app/lib/database"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/queries/qsqlite"
 )
 
 type foreignKeyResult struct {

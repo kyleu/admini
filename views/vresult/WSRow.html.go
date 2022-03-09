@@ -6,14 +6,14 @@ package vresult
 
 //line views/vresult/WSRow.html:1
 import (
-	"admini.dev/app/action"
-	"admini.dev/app/controller/cutil"
-	"admini.dev/app/lib/schema/field"
-	"admini.dev/app/lib/schema/model"
-	"admini.dev/app/qualify"
-	"admini.dev/views/components"
-	"admini.dev/views/components/fieldview"
-	"admini.dev/views/vutil"
+	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/schema/field"
+	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/qualify"
+	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/vutil"
 )
 
 //line views/vresult/WSRow.html:12
