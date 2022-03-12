@@ -3,7 +3,6 @@ package auth
 
 import (
 	"fmt"
-	"os"
 	"sort"
 
 	"admini.dev/admini/app/util"
@@ -23,7 +22,7 @@ const (
 
 func initAvailable() {
 	if AvailableProviderNames == nil {
-		openIDConnectName := os.Getenv(OpenIDConnectKey + "_name")
+		openIDConnectName := util.GetEnv(OpenIDConnectKey + "_name")
 		if openIDConnectName == "" {
 			openIDConnectName = "OpenID Connect"
 		}

@@ -2,16 +2,16 @@
 package theme
 
 import (
-	"os"
+	"admini.dev/admini/app/util"
 )
 
 var ThemeDefault = func() *Theme {
 	nbl := "#8eb6bd"
-	if o := os.Getenv("app_nav_color_light"); o != "" {
+	if o := util.GetEnv("app_nav_color_light"); o != "" {
 		nbl = o
 	}
 	nbd := "#495f64"
-	if o := os.Getenv("app_nav_color_dark"); o != "" {
+	if o := util.GetEnv("app_nav_color_dark"); o != "" {
 		nbd = o
 	}
 
