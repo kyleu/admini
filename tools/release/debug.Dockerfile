@@ -26,4 +26,4 @@ WORKDIR /
 
 ENTRYPOINT ["/admini", "-a", "0.0.0.0"]
 
-# COPY admini /
+COPY admini /
