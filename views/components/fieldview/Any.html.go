@@ -27,7 +27,7 @@ var (
 )
 
 //line views/components/fieldview/Any.html:8
-func StreamAny(qw422016 *qt422016.Writer, x interface{}, t *types.Wrapped) {
+func StreamAny(qw422016 *qt422016.Writer, x any, t *types.Wrapped) {
 //line views/components/fieldview/Any.html:9
 	switch t.Key() {
 //line views/components/fieldview/Any.html:10
@@ -160,7 +160,7 @@ func StreamAny(qw422016 *qt422016.Writer, x interface{}, t *types.Wrapped) {
 }
 
 //line views/components/fieldview/Any.html:69
-func WriteAny(qq422016 qtio422016.Writer, x interface{}, t *types.Wrapped) {
+func WriteAny(qq422016 qtio422016.Writer, x any, t *types.Wrapped) {
 //line views/components/fieldview/Any.html:69
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/components/fieldview/Any.html:69
@@ -171,7 +171,7 @@ func WriteAny(qq422016 qtio422016.Writer, x interface{}, t *types.Wrapped) {
 }
 
 //line views/components/fieldview/Any.html:69
-func Any(x interface{}, t *types.Wrapped) string {
+func Any(x any, t *types.Wrapped) string {
 //line views/components/fieldview/Any.html:69
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/components/fieldview/Any.html:69
@@ -186,7 +186,7 @@ func Any(x interface{}, t *types.Wrapped) string {
 }
 
 //line views/components/fieldview/Any.html:71
-func StreamDefault(qw422016 *qt422016.Writer, x interface{}, t string) {
+func StreamDefault(qw422016 *qt422016.Writer, x any, t string) {
 //line views/components/fieldview/Any.html:72
 	msg := fmt.Sprintf("unhandled type: %s (%T)", t, x)
 
@@ -204,7 +204,7 @@ func StreamDefault(qw422016 *qt422016.Writer, x interface{}, t string) {
 }
 
 //line views/components/fieldview/Any.html:74
-func WriteDefault(qq422016 qtio422016.Writer, x interface{}, t string) {
+func WriteDefault(qq422016 qtio422016.Writer, x any, t string) {
 //line views/components/fieldview/Any.html:74
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/components/fieldview/Any.html:74
@@ -215,7 +215,7 @@ func WriteDefault(qq422016 qtio422016.Writer, x interface{}, t string) {
 }
 
 //line views/components/fieldview/Any.html:74
-func Default(x interface{}, t string) string {
+func Default(x any, t string) string {
 //line views/components/fieldview/Any.html:74
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/components/fieldview/Any.html:74

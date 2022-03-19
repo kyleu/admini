@@ -60,7 +60,7 @@ func SourceExample(rc *fasthttp.RequestCtx) {
 		}
 
 		ret := as.Services.Sources.NewSource("example", "Example", "star", "Example music database", schema.OriginSQLite)
-		ret.Config = []byte(util.ToJSON(map[string]interface{}{"file": fpath}))
+		ret.Config = []byte(util.ToJSON(map[string]any{"file": fpath}))
 		err = as.Services.Sources.Save(ret, false)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save example database")

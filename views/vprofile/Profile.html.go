@@ -125,27 +125,11 @@ func (p *Profile) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil
               </label>
             </td>
           </tr>
-          <tr>
-            <th class="shrink"><label>Theme</label></th>
-            <td>
-              <div class="right">
-                <a href="/theme">Edit Themes</a>
-              </div>
-`)
-//line views/vprofile/Profile.html:71
-	sel := ps.Profile.Theme
-	if sel == "" {
-		sel = "default"
-	}
-
-//line views/vprofile/Profile.html:75
-	qw422016.N().S(`              `)
-//line views/vprofile/Profile.html:76
-	vtheme.StreamChoice(qw422016, as.Themes.All(), sel, 3, ps)
-//line views/vprofile/Profile.html:76
+          `)
+//line views/vprofile/Profile.html:64
+	vtheme.StreamChoicePanel(qw422016, as.Themes.All(), 5, ps)
+//line views/vprofile/Profile.html:64
 	qw422016.N().S(`
-            </td>
-          </tr>
         </tbody>
       </table>
       <div class="mt">
@@ -156,41 +140,41 @@ func (p *Profile) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil
   </form>
 
   `)
-//line views/vprofile/Profile.html:88
+//line views/vprofile/Profile.html:74
 	components.StreamJSONModal(qw422016, "profile", "Profile JSON", p.Profile, 1)
-//line views/vprofile/Profile.html:88
+//line views/vprofile/Profile.html:74
 	qw422016.N().S(`
   `)
-//line views/vprofile/Profile.html:89
+//line views/vprofile/Profile.html:75
 	components.StreamJSONModal(qw422016, "theme", "Theme JSON", p.Theme, 1)
-//line views/vprofile/Profile.html:89
+//line views/vprofile/Profile.html:75
 	qw422016.N().S(`
 `)
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 }
 
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 func (p *Profile) WriteBody(qq422016 qtio422016.Writer, as *app.State, ps *cutil.PageState) {
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	p.StreamBody(qw422016, as, ps)
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	qt422016.ReleaseWriter(qw422016)
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 }
 
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 func (p *Profile) Body(as *app.State, ps *cutil.PageState) string {
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	p.WriteBody(qb422016, as, ps)
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	qs422016 := string(qb422016.B)
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 	return qs422016
-//line views/vprofile/Profile.html:90
+//line views/vprofile/Profile.html:76
 }

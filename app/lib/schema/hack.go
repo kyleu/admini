@@ -32,9 +32,9 @@ func hackModel(m *model.Model, logger *zap.SugaredLogger) util.ValueMap {
 		"description": m.Description(),
 		"icon":        "star",
 		"name":        m.Key,
-		"ordering":    []interface{}{},
+		"ordering":    []any{},
 		"package":     strings.ToLower(m.Key),
-		"search":      []interface{}{},
+		"search":      []any{},
 	}
 }
 

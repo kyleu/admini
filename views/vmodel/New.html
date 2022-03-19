@@ -12,7 +12,7 @@
   Req *cutil.WorkspaceRequest
   Act *action.Action
   Model *model.Model
-  Defaults []interface{}
+  Defaults []any
 } %}
 
 {% func (p *New) Body(as *app.State, ps *cutil.PageState) %}

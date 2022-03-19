@@ -56,7 +56,7 @@
   </table>
 {% endstripspace %}{% endfunc %}
 
-{% func simpleRow(idx int, row []interface{}, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
+{% func simpleRow(idx int, row []any, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <tr>
     {% if showNum %}

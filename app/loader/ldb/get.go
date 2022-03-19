@@ -13,7 +13,7 @@ import (
 	"admini.dev/admini/app/result"
 )
 
-func Get(ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, logger *zap.SugaredLogger) (*result.Result, error) {
+func Get(ctx context.Context, db *database.Service, m *model.Model, ids []any, logger *zap.SugaredLogger) (*result.Result, error) {
 	q, err := modelGetByPKQuery(db.Type, m, logger)
 	if err != nil {
 		return nil, err

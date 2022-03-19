@@ -60,7 +60,7 @@ func ProjectTest(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to qualify project [%s]", key)
 		}
 
-		var models []interface{}
+		var models []any
 		for _, s := range v.Schemata {
 			for _, m := range s.Models {
 				if true {

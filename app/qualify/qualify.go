@@ -10,7 +10,7 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequest, m *model.Model, result []interface{}) (Qualifications, error) {
+func Handle(rel *model.Relationship, act *action.Action, wr *cutil.WorkspaceRequest, m *model.Model, result []any) (Qualifications, error) {
 	rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, result)
 	if err != nil {
 		return nil, err

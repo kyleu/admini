@@ -40,7 +40,7 @@ func (l *Loader) Schema(context.Context) (*schema.Schema, error) {
 	return o.Schema, nil
 }
 
-func (l *Loader) Connection(context.Context) (interface{}, error) {
+func (l *Loader) Connection(context.Context) (any, error) {
 	return nil, nil
 }
 
@@ -57,7 +57,7 @@ func (l *Loader) Count(context.Context, *model.Model) (int, error) {
 	return 1000, nil
 }
 
-func (l *Loader) Get(context.Context, *model.Model, []interface{}) (*result.Result, error) {
+func (l *Loader) Get(context.Context, *model.Model, []any) (*result.Result, error) {
 	return nil, errors.New("mock not implemented")
 }
 
@@ -65,18 +65,18 @@ func (l *Loader) Query(context.Context, model.Models, string) (*result.Result, e
 	return nil, errors.New("mock not implemented")
 }
 
-func (l *Loader) Add(context.Context, *model.Model, util.ValueMap) ([]interface{}, error) {
+func (l *Loader) Add(context.Context, *model.Model, util.ValueMap) ([]any, error) {
 	return nil, errors.New("mock not implemented")
 }
 
-func (l *Loader) Save(context.Context, *model.Model, []interface{}, util.ValueMap) ([]interface{}, error) {
+func (l *Loader) Save(context.Context, *model.Model, []any, util.ValueMap) ([]any, error) {
 	return nil, errors.New("mock not implemented")
 }
 
-func (l *Loader) Remove(context.Context, *model.Model, []string, []interface{}, int) (int, error) {
+func (l *Loader) Remove(context.Context, *model.Model, []string, []any, int) (int, error) {
 	return 0, errors.New("mock not implemented")
 }
 
-func (l *Loader) Default(context.Context, *model.Model) ([]interface{}, error) {
+func (l *Loader) Default(context.Context, *model.Model) ([]any, error) {
 	return nil, errors.New("mock not implemented")
 }

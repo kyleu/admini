@@ -12,11 +12,11 @@ type Result struct {
 	Title       string      `json:"title"`
 	Redirect    string      `json:"redirect,omitempty"`
 	Breadcrumbs []string    `json:"bc"`
-	Data        interface{} `json:"data"`
+	Data        any         `json:"data"`
 	Page        layout.Page `json:"page"`
 }
 
-func NewResult(title string, bc []string, req *cutil.WorkspaceRequest, act *action.Action, data interface{}, page layout.Page) *Result {
+func NewResult(title string, bc []string, req *cutil.WorkspaceRequest, act *action.Action, data any, page layout.Page) *Result {
 	if title == "" && act != nil {
 		title = act.Name()
 	}

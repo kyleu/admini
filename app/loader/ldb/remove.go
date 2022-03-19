@@ -13,7 +13,7 @@ import (
 )
 
 func Remove(
-		ctx context.Context, db *database.Service, m *model.Model, fields []string, values []interface{}, expected int, logger *zap.SugaredLogger,
+		ctx context.Context, db *database.Service, m *model.Model, fields []string, values []any, expected int, logger *zap.SugaredLogger,
 ) (int, error) {
 	if len(fields) == 0 {
 		return 0, errors.New("must provide at least one column")

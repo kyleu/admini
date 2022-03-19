@@ -3,6 +3,7 @@ package schema
 
 import (
 	"github.com/pkg/errors"
+	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
@@ -38,7 +39,7 @@ func (s *Schema) AddPath(path string) bool {
 	if path == "" {
 		return false
 	}
-	if util.StringArrayContains(s.Paths, path) {
+	if slices.Contains(s.Paths, path) {
 		return false
 	}
 	s.Paths = append(s.Paths, path)

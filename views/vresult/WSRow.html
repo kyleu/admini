@@ -9,7 +9,7 @@
   "admini.dev/admini/views/vutil"
 ) %}
 
-{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool) %}{% stripspace %}
+{% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, indent int, showNum bool) %}{% stripspace %}
   {%= vutil.Indent(true, indent) %}
   <tr>
     {% if showNum %}
@@ -33,7 +33,7 @@
   </tr>
 {% endstripspace %}{% endfunc %}
 
-{% func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) %}{% stripspace %}
+{% func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) %}{% stripspace %}
   {%code col := row[fIdx] %}
   {%= vutil.Indent(true, indent + 1) %}
   {% if header %}<th>{% else %}<td>{% endif %}
@@ -79,7 +79,7 @@
   {% if !header %}</td>{% else %}</th>{% endif %}
 {% endstripspace %}{% endfunc %}
 
-{% func cell(ws *cutil.WorkspaceRequest, act *action.Action, row []interface{}, fields field.Fields, m *model.Model, f *field.Field, col interface{}) %}{% stripspace %}
+{% func cell(ws *cutil.WorkspaceRequest, act *action.Action, row []any, fields field.Fields, m *model.Model, f *field.Field, col any) %}{% stripspace %}
   {% if m.IsPK(f.Key, ws.PS.Logger) %}
     {% code
       rowPK, err := model.GetStrings(fields, m.GetPK(ws.PS.Logger), row)

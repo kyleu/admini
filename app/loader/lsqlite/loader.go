@@ -40,7 +40,7 @@ func (l *Loader) Schema(ctx context.Context) (*schema.Schema, error) {
 	return sqlite.LoadDatabaseSchema(ctx, l.db, l.logger)
 }
 
-func (l *Loader) Connection(ctx context.Context) (interface{}, error) {
+func (l *Loader) Connection(ctx context.Context) (any, error) {
 	return l.db, nil
 }
 
@@ -52,7 +52,7 @@ func (l *Loader) Count(ctx context.Context, m *model.Model) (int, error) {
 	return ldb.Count(ctx, l.db, m)
 }
 
-func (l *Loader) Get(ctx context.Context, m *model.Model, ids []interface{}) (*result.Result, error) {
+func (l *Loader) Get(ctx context.Context, m *model.Model, ids []any) (*result.Result, error) {
 	return ldb.Get(ctx, l.db, m, ids, l.logger)
 }
 
@@ -60,20 +60,20 @@ func (l *Loader) Query(ctx context.Context, enums model.Models, sql string) (*re
 	return ldb.Query(ctx, l.db, sql, enums, l.logger)
 }
 
-func (l *Loader) Add(ctx context.Context, m *model.Model, changes util.ValueMap) ([]interface{}, error) {
+func (l *Loader) Add(ctx context.Context, m *model.Model, changes util.ValueMap) ([]any, error) {
 	return ldb.Add(ctx, l.db, m, changes, l.logger)
 }
 
-func (l *Loader) Save(ctx context.Context, m *model.Model, ids []interface{}, changes util.ValueMap) ([]interface{}, error) {
+func (l *Loader) Save(ctx context.Context, m *model.Model, ids []any, changes util.ValueMap) ([]any, error) {
 	return ldb.Save(ctx, l.db, m, ids, changes, l.logger)
 }
 
-func (l *Loader) Remove(ctx context.Context, m *model.Model, fields []string, values []interface{}, expected int) (int, error) {
+func (l *Loader) Remove(ctx context.Context, m *model.Model, fields []string, values []any, expected int) (int, error) {
 	return ldb.Remove(ctx, l.db, m, fields, values, expected, l.logger)
 }
 
-func (l *Loader) Default(ctx context.Context, m *model.Model) ([]interface{}, error) {
-	ret := make([]interface{}, 0, len(m.Fields))
+func (l *Loader) Default(ctx context.Context, m *model.Model) ([]any, error) {
+	ret := make([]any, 0, len(m.Fields))
 	for _, f := range m.Fields {
 		ret = append(ret, f.Default)
 	}

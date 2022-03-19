@@ -10,6 +10,6 @@ type Request struct {
 	Params util.ValueMap `json:"params,omitempty"`
 }
 
-func NewRequest(t string, a string, params ...interface{}) *Request {
+func NewRequest(t string, a string, params ...any) *Request {
 	return &Request{Type: t, Action: a, Params: util.ValueMapFor(params...)}
 }

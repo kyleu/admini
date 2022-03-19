@@ -19,7 +19,7 @@ func GetSource(act *Action, schemata schema.Schemata) (*model.Package, error) {
 	return sch.ModelsByPackage(), nil
 }
 
-func GetItem(act *Action, schemata schema.Schemata, key string) (interface{}, []string, error) {
+func GetItem(act *Action, schemata schema.Schemata, key string) (any, []string, error) {
 	sch, err := GetSource(act, schemata)
 	if err != nil {
 		return nil, nil, err

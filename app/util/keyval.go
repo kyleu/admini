@@ -38,4 +38,3 @@ func (k KeyTypeDescs) Array() [][]string {
 	}
 	return ret
 }
-

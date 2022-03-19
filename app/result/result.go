@@ -20,12 +20,12 @@ type Result struct {
 	Count    int                `json:"count,omitempty"`
 	Query    string             `json:"query,omitempty"`
 	Fields   field.Fields       `json:"fields"`
-	Data     [][]interface{}    `json:"data"`
+	Data     [][]any            `json:"data"`
 	Timing   *Timing            `json:"timing,omitempty"`
 	Children map[string]*Result `json:"children,omitempty"`
 }
 
-func NewResult(title string, count int, q string, fields field.Fields, data [][]interface{}, timing *Timing) *Result {
+func NewResult(title string, count int, q string, fields field.Fields, data [][]any, timing *Timing) *Result {
 	return &Result{Title: title, Count: count, Query: q, Fields: fields, Data: data, Timing: timing}
 }
 
@@ -48,7 +48,7 @@ func (r *Result) Debug() string {
 	return sb.String()
 }
 
-func (r *Result) SingleRow() (field.Fields, []interface{}, error) {
+func (r *Result) SingleRow() (field.Fields, []any, error) {
 	if len(r.Data) == 0 {
 		return nil, nil, errors.New("empty data")
 	}

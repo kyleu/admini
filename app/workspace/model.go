@@ -40,8 +40,8 @@ func processModel(req *cutil.WorkspaceRequest, act *action.Action, srcKey string
 	}
 }
 
-func getModel(ctx context.Context, m *model.Model, idStrings []string, ld loader.Loader) ([]interface{}, error) {
-	ids := make([]interface{}, 0, len(idStrings))
+func getModel(ctx context.Context, m *model.Model, idStrings []string, ld loader.Loader) ([]any, error) {
+	ids := make([]any, 0, len(idStrings))
 	for _, x := range idStrings {
 		ids = append(ids, x)
 	}

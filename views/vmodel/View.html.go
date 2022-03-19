@@ -36,7 +36,7 @@ type View struct {
 	Req    *cutil.WorkspaceRequest
 	Act    *action.Action
 	Model  *model.Model
-	Result []interface{}
+	Result []any
 }
 
 //line views/vmodel/View.html:21

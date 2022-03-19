@@ -33,7 +33,7 @@ type New struct {
 	Req      *cutil.WorkspaceRequest
 	Act      *action.Action
 	Model    *model.Model
-	Defaults []interface{}
+	Defaults []any
 }
 
 //line views/vmodel/New.html:18

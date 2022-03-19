@@ -25,7 +25,7 @@ var (
 )
 
 //line views/components/fieldview/Option.html:6
-func StreamOption(qw422016 *qt422016.Writer, x interface{}, t *types.Option) {
+func StreamOption(qw422016 *qt422016.Writer, x any, t *types.Option) {
 //line views/components/fieldview/Option.html:7
 	if x == nil {
 //line views/components/fieldview/Option.html:7
@@ -40,7 +40,7 @@ func StreamOption(qw422016 *qt422016.Writer, x interface{}, t *types.Option) {
 }
 
 //line views/components/fieldview/Option.html:12
-func WriteOption(qq422016 qtio422016.Writer, x interface{}, t *types.Option) {
+func WriteOption(qq422016 qtio422016.Writer, x any, t *types.Option) {
 //line views/components/fieldview/Option.html:12
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/components/fieldview/Option.html:12
@@ -51,7 +51,7 @@ func WriteOption(qq422016 qtio422016.Writer, x interface{}, t *types.Option) {
 }
 
 //line views/components/fieldview/Option.html:12
-func Option(x interface{}, t *types.Option) string {
+func Option(x any, t *types.Option) string {
 //line views/components/fieldview/Option.html:12
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/components/fieldview/Option.html:12

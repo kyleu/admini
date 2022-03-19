@@ -18,7 +18,7 @@ type WorkspaceRequest struct {
 	K        string               `json:"k"`
 	RC       *fasthttp.RequestCtx `json:"-"`
 	PS       *PageState           `json:"-"`
-	Item     interface{}          `json:"item,omitempty"`
+	Item     any                  `json:"item,omitempty"`
 	Path     []string             `json:"path,omitempty"`
 	Project  *project.Project     `json:"-"`
 	Sources  source.Sources       `json:"-"`

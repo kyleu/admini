@@ -30,7 +30,7 @@ var (
 )
 
 //line views/vresult/WSRow.html:12
-func StreamWSRow(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool) {
+func StreamWSRow(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, indent int, showNum bool) {
 //line views/vresult/WSRow.html:13
 	vutil.StreamIndent(qw422016, true, indent)
 //line views/vresult/WSRow.html:13
@@ -79,7 +79,7 @@ func StreamWSRow(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *act
 }
 
 //line views/vresult/WSRow.html:34
-func WriteWSRow(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool) {
+func WriteWSRow(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, indent int, showNum bool) {
 //line views/vresult/WSRow.html:34
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/vresult/WSRow.html:34
@@ -90,7 +90,7 @@ func WriteWSRow(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *act
 }
 
 //line views/vresult/WSRow.html:34
-func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, indent int, showNum bool) string {
+func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, indent int, showNum bool) string {
 //line views/vresult/WSRow.html:34
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/vresult/WSRow.html:34
@@ -105,7 +105,7 @@ func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interf
 }
 
 //line views/vresult/WSRow.html:36
-func streamrow(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) {
+func streamrow(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) {
 //line views/vresult/WSRow.html:37
 	col := row[fIdx]
 
@@ -209,7 +209,7 @@ func streamrow(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *actio
 }
 
 //line views/vresult/WSRow.html:80
-func writerow(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) {
+func writerow(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) {
 //line views/vresult/WSRow.html:80
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/vresult/WSRow.html:80
@@ -220,7 +220,7 @@ func writerow(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *actio
 }
 
 //line views/vresult/WSRow.html:80
-func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interface{}, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) string {
+func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) string {
 //line views/vresult/WSRow.html:80
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/vresult/WSRow.html:80
@@ -235,7 +235,7 @@ func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []interfac
 }
 
 //line views/vresult/WSRow.html:82
-func streamcell(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, row []interface{}, fields field.Fields, m *model.Model, f *field.Field, col interface{}) {
+func streamcell(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, row []any, fields field.Fields, m *model.Model, f *field.Field, col any) {
 //line views/vresult/WSRow.html:83
 	if m.IsPK(f.Key, ws.PS.Logger) {
 //line views/vresult/WSRow.html:85
@@ -265,7 +265,7 @@ func streamcell(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *acti
 }
 
 //line views/vresult/WSRow.html:97
-func writecell(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, row []interface{}, fields field.Fields, m *model.Model, f *field.Field, col interface{}) {
+func writecell(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *action.Action, row []any, fields field.Fields, m *model.Model, f *field.Field, col any) {
 //line views/vresult/WSRow.html:97
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/vresult/WSRow.html:97
@@ -276,7 +276,7 @@ func writecell(qq422016 qtio422016.Writer, ws *cutil.WorkspaceRequest, act *acti
 }
 
 //line views/vresult/WSRow.html:97
-func cell(ws *cutil.WorkspaceRequest, act *action.Action, row []interface{}, fields field.Fields, m *model.Model, f *field.Field, col interface{}) string {
+func cell(ws *cutil.WorkspaceRequest, act *action.Action, row []any, fields field.Fields, m *model.Model, f *field.Field, col any) string {
 //line views/vresult/WSRow.html:97
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/vresult/WSRow.html:97

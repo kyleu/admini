@@ -14,7 +14,7 @@
   Req *cutil.WorkspaceRequest
   Act *action.Action
   Model *model.Model
-  Result []interface{}
+  Result []any
 } %}
 
 {% func (p *Edit) Body(as *app.State, ps *cutil.PageState) %}

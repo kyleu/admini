@@ -29,7 +29,7 @@ func (cr *columnResult) IsNullable() bool {
 }
 
 func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger) *field.Field {
-	var d interface{}
+	var d any
 	if cr.Default.Valid {
 		d = cr.Default.String
 	}

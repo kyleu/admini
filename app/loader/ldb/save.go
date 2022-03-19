@@ -15,8 +15,8 @@ import (
 )
 
 func Save(
-		ctx context.Context, db *database.Service, m *model.Model, ids []interface{}, changes util.ValueMap, logger *zap.SugaredLogger,
-) ([]interface{}, error) {
+		ctx context.Context, db *database.Service, m *model.Model, ids []any, changes util.ValueMap, logger *zap.SugaredLogger,
+) ([]any, error) {
 	cols, vals := changes.KeysAndValues()
 
 	pk := m.GetPK(logger)
@@ -36,7 +36,7 @@ func Save(
 		if err != nil {
 			return nil, errors.Wrapf(err, "unable to save [%s] with primary key [%s]", m.Name(), strings.Join(pk, "::"))
 		}
-		ret := make([]interface{}, 0, len(out))
+		ret := make([]any, 0, len(out))
 		for _, p := range pk {
 			ret = append(ret, out[p])
 		}
@@ -58,7 +58,7 @@ func Save(
 	return loadAfterEdit(ctx, pk, ids, m, tx, db)
 }
 
-func loadAfterEdit(ctx context.Context, pk []string, pkVals []interface{}, m *model.Model, tx *sqlx.Tx, db *database.Service) ([]interface{}, error) {
+func loadAfterEdit(ctx context.Context, pk []string, pkVals []any, m *model.Model, tx *sqlx.Tx, db *database.Service) ([]any, error) {
 	wc := make([]string, 0, len(pk))
 	for idx, x := range pk {
 		if db.Type.Placeholder == "?" {
@@ -73,7 +73,7 @@ func loadAfterEdit(ctx context.Context, pk []string, pkVals []interface{}, m *mo
 		_ = tx.Rollback()
 		return nil, errors.Wrap(err, "unable to select newly-inserted row")
 	}
-	ret := make([]interface{}, 0, len(pk))
+	ret := make([]any, 0, len(pk))
 	for _, p := range pk {
 		ret = append(ret, out[p])
 	}

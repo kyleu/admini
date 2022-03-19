@@ -49,8 +49,8 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	return ret, nil
 }
 
-func getRelationData(req *cutil.WorkspaceRequest, m *model.Model, data []interface{}, sourceKey string, as *app.State) ([]*util.OrderedMap, error) {
-	ret := make([]*util.OrderedMap, 0, len(m.Relationships))
+func getRelationData(req *cutil.WorkspaceRequest, m *model.Model, data []any, sourceKey string, as *app.State) ([]*util.OrderedMap[any], error) {
+	ret := make([]*util.OrderedMap[any], 0, len(m.Relationships))
 	for _, rel := range m.Relationships {
 		rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, data)
 		if err != nil {

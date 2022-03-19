@@ -27,7 +27,7 @@ var (
 )
 
 //line views/components/fieldedit/Any.html:8
-func StreamAny(qw422016 *qt422016.Writer, x interface{}, t *types.Wrapped, k string) {
+func StreamAny(qw422016 *qt422016.Writer, x any, t *types.Wrapped, k string) {
 //line views/components/fieldedit/Any.html:9
 	switch t.Key() {
 //line views/components/fieldedit/Any.html:10
@@ -160,7 +160,7 @@ func StreamAny(qw422016 *qt422016.Writer, x interface{}, t *types.Wrapped, k str
 }
 
 //line views/components/fieldedit/Any.html:69
-func WriteAny(qq422016 qtio422016.Writer, x interface{}, t *types.Wrapped, k string) {
+func WriteAny(qq422016 qtio422016.Writer, x any, t *types.Wrapped, k string) {
 //line views/components/fieldedit/Any.html:69
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/components/fieldedit/Any.html:69
@@ -171,7 +171,7 @@ func WriteAny(qq422016 qtio422016.Writer, x interface{}, t *types.Wrapped, k str
 }
 
 //line views/components/fieldedit/Any.html:69
-func Any(x interface{}, t *types.Wrapped, k string) string {
+func Any(x any, t *types.Wrapped, k string) string {
 //line views/components/fieldedit/Any.html:69
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/components/fieldedit/Any.html:69
@@ -186,7 +186,7 @@ func Any(x interface{}, t *types.Wrapped, k string) string {
 }
 
 //line views/components/fieldedit/Any.html:71
-func StreamDefault(qw422016 *qt422016.Writer, x interface{}, t types.Type, k string) {
+func StreamDefault(qw422016 *qt422016.Writer, x any, t types.Type, k string) {
 //line views/components/fieldedit/Any.html:73
 	msg := fmt.Sprintf("unhandled type: %s (%T)", t.String(), x)
 	if x == nil {
@@ -211,7 +211,7 @@ func StreamDefault(qw422016 *qt422016.Writer, x interface{}, t types.Type, k str
 }
 
 //line views/components/fieldedit/Any.html:79
-func WriteDefault(qq422016 qtio422016.Writer, x interface{}, t types.Type, k string) {
+func WriteDefault(qq422016 qtio422016.Writer, x any, t types.Type, k string) {
 //line views/components/fieldedit/Any.html:79
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/components/fieldedit/Any.html:79
@@ -222,7 +222,7 @@ func WriteDefault(qq422016 qtio422016.Writer, x interface{}, t types.Type, k str
 }
 
 //line views/components/fieldedit/Any.html:79
-func Default(x interface{}, t types.Type, k string) string {
+func Default(x any, t types.Type, k string) string {
 //line views/components/fieldedit/Any.html:79
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/components/fieldedit/Any.html:79

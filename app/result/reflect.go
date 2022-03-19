@@ -9,7 +9,7 @@ import (
 	"admini.dev/admini/app/lib/schema/field"
 )
 
-func FromReflection(title string, t ...interface{}) (*Result, error) {
+func FromReflection(title string, t ...any) (*Result, error) {
 	if len(t) == 0 {
 		return nil, errors.New("empty input when building result")
 	}
@@ -21,7 +21,7 @@ func FromReflection(title string, t ...interface{}) (*Result, error) {
 		return nil, errors.Wrapf(err, "unable to calculate fields for [%T]", first)
 	}
 
-	data := make([][]interface{}, 0, len(t))
+	data := make([][]any, 0, len(t))
 	for _, x := range t {
 		v, err := getValues(x)
 		if err != nil {
@@ -36,18 +36,18 @@ func FromReflection(title string, t ...interface{}) (*Result, error) {
 	return ret, nil
 }
 
-func getValues(x interface{}) ([]interface{}, error) {
+func getValues(x any) ([]any, error) {
 	return valuesOf(reflect.ValueOf(x))
 }
 
-func valuesOf(v reflect.Value) ([]interface{}, error) {
+func valuesOf(v reflect.Value) ([]any, error) {
 	if v.Kind() == reflect.Ptr {
 		return valuesOf(v.Elem())
 	}
 
 	t := v.Type()
 
-	ret := make([]interface{}, 0, t.NumField())
+	ret := make([]any, 0, t.NumField())
 	for i := 0; i < t.NumField(); i++ {
 		f := v.Field(i)
 		ret = append(ret, f.Interface())
@@ -55,7 +55,7 @@ func valuesOf(v reflect.Value) ([]interface{}, error) {
 	return ret, nil
 }
 
-func getFields(x interface{}) (field.Fields, error) {
+func getFields(x any) (field.Fields, error) {
 	return fieldsOf(reflect.ValueOf(x))
 }
 

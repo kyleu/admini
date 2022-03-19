@@ -187,7 +187,7 @@ func simpleTable(r *result.Result, indent int, showNum bool, params *filter.Para
 }
 
 //line views/vresult/Simple.html:59
-func streamsimpleRow(qw422016 *qt422016.Writer, idx int, row []interface{}, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) {
+func streamsimpleRow(qw422016 *qt422016.Writer, idx int, row []any, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) {
 //line views/vresult/Simple.html:60
 	vutil.StreamIndent(qw422016, true, indent)
 //line views/vresult/Simple.html:60
@@ -231,7 +231,7 @@ func streamsimpleRow(qw422016 *qt422016.Writer, idx int, row []interface{}, fiel
 }
 
 //line views/vresult/Simple.html:76
-func writesimpleRow(qq422016 qtio422016.Writer, idx int, row []interface{}, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) {
+func writesimpleRow(qq422016 qtio422016.Writer, idx int, row []any, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) {
 //line views/vresult/Simple.html:76
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/vresult/Simple.html:76
@@ -242,7 +242,7 @@ func writesimpleRow(qq422016 qtio422016.Writer, idx int, row []interface{}, fiel
 }
 
 //line views/vresult/Simple.html:76
-func simpleRow(idx int, row []interface{}, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) string {
+func simpleRow(idx int, row []any, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) string {
 //line views/vresult/Simple.html:76
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/vresult/Simple.html:76

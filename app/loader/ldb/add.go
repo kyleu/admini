@@ -11,7 +11,7 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-func Add(ctx context.Context, db *database.Service, m *model.Model, changes util.ValueMap, logger *zap.SugaredLogger) ([]interface{}, error) {
+func Add(ctx context.Context, db *database.Service, m *model.Model, changes util.ValueMap, logger *zap.SugaredLogger) ([]any, error) {
 	columns, data := changes.KeysAndValues()
 	pk := m.GetPK(logger)
 
@@ -21,7 +21,7 @@ func Add(ctx context.Context, db *database.Service, m *model.Model, changes util
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to insert row reurning primary key")
 		}
-		ret := make([]interface{}, 0, len(out))
+		ret := make([]any, 0, len(out))
 		for _, p := range pk {
 			ret = append(ret, out[p])
 		}
@@ -38,7 +38,7 @@ func Add(ctx context.Context, db *database.Service, m *model.Model, changes util
 		return nil, errors.Wrap(err, "unable to insert row")
 	}
 
-	pkVals := make([]interface{}, 0, len(pk))
+	pkVals := make([]any, 0, len(pk))
 	for _, x := range pk {
 		hit := false
 		for idx, c := range columns {

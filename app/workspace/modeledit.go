@@ -54,7 +54,7 @@ func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	ids := make([]interface{}, 0, len(idStrings))
+	ids := make([]any, 0, len(idStrings))
 	for _, s := range idStrings {
 		ids = append(ids, s)
 	}
@@ -81,7 +81,7 @@ func processModelDelete(req *cutil.WorkspaceRequest, act *action.Action, srcKey 
 		return ErrResult(req, act, err)
 	}
 
-	vals := make([]interface{}, 0, len(idStrings))
+	vals := make([]any, 0, len(idStrings))
 	for _, s := range idStrings {
 		vals = append(vals, s)
 	}

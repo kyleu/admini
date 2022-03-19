@@ -25,7 +25,7 @@ var (
 )
 
 //line views/components/fieldedit/Option.html:6
-func StreamOption(qw422016 *qt422016.Writer, x interface{}, t *types.Option, k string) {
+func StreamOption(qw422016 *qt422016.Writer, x any, t *types.Option, k string) {
 //line views/components/fieldedit/Option.html:7
 	switch t.V.Key() {
 //line views/components/fieldedit/Option.html:8
@@ -46,7 +46,7 @@ func StreamOption(qw422016 *qt422016.Writer, x interface{}, t *types.Option, k s
 }
 
 //line views/components/fieldedit/Option.html:16
-func WriteOption(qq422016 qtio422016.Writer, x interface{}, t *types.Option, k string) {
+func WriteOption(qq422016 qtio422016.Writer, x any, t *types.Option, k string) {
 //line views/components/fieldedit/Option.html:16
 	qw422016 := qt422016.AcquireWriter(qq422016)
 //line views/components/fieldedit/Option.html:16
@@ -57,7 +57,7 @@ func WriteOption(qq422016 qtio422016.Writer, x interface{}, t *types.Option, k s
 }
 
 //line views/components/fieldedit/Option.html:16
-func Option(x interface{}, t *types.Option, k string) string {
+func Option(x any, t *types.Option, k string) string {
 //line views/components/fieldedit/Option.html:16
 	qb422016 := qt422016.AcquireByteBuffer()
 //line views/components/fieldedit/Option.html:16

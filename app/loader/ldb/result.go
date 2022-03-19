@@ -65,8 +65,8 @@ func parseColumns(rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger
 	return fs, nil
 }
 
-func parseRows(rows *sqlx.Rows) ([][]interface{}, error) {
-	var data [][]interface{}
+func parseRows(rows *sqlx.Rows) ([][]any, error) {
+	var data [][]any
 	for rows.Next() {
 		d, err := rows.SliceScan()
 		if err != nil {
