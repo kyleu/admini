@@ -57,7 +57,7 @@
       "msb": "#8eb6bd",
       "mbd": "rgba(77, 77, 77, .7)",
       "ok": "#008000",
-      "err": "#FF0000"
+      "err": "#ff0000"
     },
     "dark": {
       "brd": "1px solid #666666",
@@ -76,7 +76,7 @@
       "msb": "#333333",
       "mbd": "rgba(33, 33, 33, .7)",
       "ok": "#008000",
-      "err": "#FF0000"
+      "err": "#ff0000"
     }
   },
   "build": {
@@ -92,7 +92,6 @@
     "linuxARM": true,
     "linuxMIPS": true,
     "linuxOdd": true,
-    "aix": true,
     "dragonfly": true,
     "illumos": true,
     "freeBSD": true,
