@@ -3,21 +3,23 @@ package database
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"admini.dev/admini/app/util"
 )
 
-func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, values ...any) (*sqlx.Rows, error) {
+func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (*sqlx.Rows, error) {
 	const op = "query"
-	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
+	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var ret *sqlx.Rows
 	var err error
-	defer s.complete(q, op, span, now, err)
-	s.logQuery("running raw query", q, values)
+	defer s.complete(q, op, span, now, logger, err)
+	s.logQuery(ctx, "running raw query", q, logger, values)
 	if tx == nil {
 		ret, err = s.db.QueryxContext(ctx, q, values...)
 		return ret, err
@@ -26,8 +28,8 @@ func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, values ...an
 	return ret, err
 }
 
-func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, values ...any) ([]util.ValueMap, error) {
-	rows, err := s.Query(ctx, q, tx, values...)
+func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) ([]util.ValueMap, error) {
+	rows, err := s.Query(ctx, q, tx, logger, values...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,11 +50,11 @@ func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, values .
 	return ret, nil
 }
 
-func (s *Service) Query2DArray(ctx context.Context, q string, tx *sqlx.Tx, values ...any) ([][]any, error) {
+func (s *Service) Query2DArray(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) ([][]any, error) {
 	var err error
 	var slice []any
 
-	rows, err := s.Query(ctx, q, tx, values...)
+	rows, err := s.Query(ctx, q, tx, logger, values...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,9 +74,9 @@ func (s *Service) Query2DArray(ctx context.Context, q string, tx *sqlx.Tx, value
 	return ret, nil
 }
 
-func (s *Service) QueryKVMap(ctx context.Context, q string, tx *sqlx.Tx, values ...any) (util.ValueMap, error) {
+func (s *Service) QueryKVMap(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (util.ValueMap, error) {
 	msg := `must provide two columns, a string key named "k" and value "v"`
-	maps, err := s.QueryRows(ctx, q, tx, values...)
+	maps, err := s.QueryRows(ctx, q, tx, logger, values...)
 	if err != nil {
 		return nil, err
 	}
@@ -97,13 +99,13 @@ func (s *Service) QueryKVMap(ctx context.Context, q string, tx *sqlx.Tx, values 
 	return ret, nil
 }
 
-func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, values ...any) (util.ValueMap, error) {
-	rows, err := s.QueryRows(ctx, q, tx, values...)
+func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (util.ValueMap, error) {
+	rows, err := s.QueryRows(ctx, q, tx, logger, values...)
 	if err != nil {
 		return nil, err
 	}
 	if len(rows) == 0 {
-		return nil, errors.New("no rows returned from query")
+		return nil, errors.Wrap(sql.ErrNoRows, "no rows returned from query")
 	}
 	if len(rows) < 1 {
 		return nil, errors.New("more than one row returned from query")
@@ -111,12 +113,12 @@ func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, val
 	return rows[0], nil
 }
 
-func (s *Service) Select(ctx context.Context, dest any, q string, tx *sqlx.Tx, values ...any) error {
+func (s *Service) Select(ctx context.Context, dest any, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) error {
 	const op = "select"
-	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
+	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
-	defer s.complete(q, op, span, now, err)
-	s.logQuery(fmt.Sprintf("selecting rows of type [%T]", dest), q, values)
+	defer s.complete(q, op, span, now, logger, err)
+	s.logQuery(ctx, fmt.Sprintf("selecting rows of type [%T]", dest), q, logger, values)
 	if tx == nil {
 		err = s.db.SelectContext(ctx, dest, q, values...)
 		return err
@@ -125,12 +127,12 @@ func (s *Service) Select(ctx context.Context, dest any, q string, tx *sqlx.Tx, v
 	return err
 }
 
-func (s *Service) Get(ctx context.Context, dto any, q string, tx *sqlx.Tx, values ...any) error {
+func (s *Service) Get(ctx context.Context, dto any, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) error {
 	const op = "get"
-	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
+	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
-	defer s.complete(q, op, span, now, err)
-	s.logQuery(fmt.Sprintf("getting single row of type [%T]", dto), q, values)
+	defer s.complete(q, op, span, now, logger, err)
+	s.logQuery(ctx, fmt.Sprintf("getting single row of type [%T]", dto), q, logger, values)
 	if tx == nil {
 		return s.db.GetContext(ctx, dto, q, values...)
 	}
@@ -141,13 +143,13 @@ type singleIntResult struct {
 	X *int64 `db:"x"`
 }
 
-func (s *Service) SingleInt(ctx context.Context, q string, tx *sqlx.Tx, values ...any) (int64, error) {
+func (s *Service) SingleInt(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (int64, error) {
 	const op = "single-int"
-	now, ctx, span := s.newSpan(ctx, "db:"+op, q)
+	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
-	defer s.complete(q, op, span, now, err)
+	defer s.complete(q, op, span, now, logger, err)
 	x := &singleIntResult{}
-	err = s.Get(ctx, x, q, tx, values...)
+	err = s.Get(ctx, x, q, tx, logger, values...)
 	if err != nil {
 		return -1, err
 	}
@@ -155,4 +157,21 @@ func (s *Service) SingleInt(ctx context.Context, q string, tx *sqlx.Tx, values .
 		return 0, nil
 	}
 	return *x.X, nil
+}
+
+type singleBoolResult struct {
+	X bool `db:"x"`
+}
+
+func (s *Service) SingleBool(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (bool, error) {
+	const op = "single-bool"
+	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
+	var err error
+	defer s.complete(q, op, span, now, logger, err)
+	x := &singleBoolResult{}
+	err = s.Get(ctx, x, q, tx, logger, values...)
+	if err != nil {
+		return false, err
+	}
+	return x.X, nil
 }

@@ -45,7 +45,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 
 func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var cols []*columnResult
-	err := db.Select(ctx, &cols, qmysql.ListColumns(db.DatabaseName), nil)
+	err := db.Select(ctx, &cols, qmysql.ListColumns(db.DatabaseName), nil, logger)
 	if err != nil {
 		return errors.Wrap(err, "can't list columns")
 	}

@@ -13,7 +13,7 @@ import (
 )
 
 func Remove(
-		ctx context.Context, db *database.Service, m *model.Model, fields []string, values []any, expected int, logger *zap.SugaredLogger,
+	ctx context.Context, db *database.Service, m *model.Model, fields []string, values []any, expected int, logger *zap.SugaredLogger,
 ) (int, error) {
 	if len(fields) == 0 {
 		return 0, errors.New("must provide at least one column")
@@ -34,7 +34,7 @@ func Remove(
 	}
 	q := database.SQLDelete(m.Path().Quoted(db.Type.Quote), where.String())
 
-	rowsAffected, err := db.Delete(ctx, q, nil, expected, values...)
+	rowsAffected, err := db.Delete(ctx, q, nil, expected, logger, values...)
 	if err != nil {
 		return 0, errors.Wrap(err, "error deleting rows")
 	}

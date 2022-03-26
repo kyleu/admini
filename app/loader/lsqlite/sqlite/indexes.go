@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
@@ -17,9 +18,9 @@ type indexResult struct {
 	ColumnName  string `db:"cn"`
 }
 
-func loadIndexes(ctx context.Context, models model.Models, db *database.Service) error {
+func loadIndexes(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var idxs []*indexResult
-	err := db.Select(ctx, &idxs, qsqlite.ListIndexes(db.SchemaName), nil)
+	err := db.Select(ctx, &idxs, qsqlite.ListIndexes(db.SchemaName), nil, logger)
 	if err != nil {
 		return errors.Wrap(err, "can't list indexes")
 	}

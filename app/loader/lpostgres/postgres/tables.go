@@ -36,7 +36,7 @@ func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 
 func loadTables(ctx context.Context, enums model.Models, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
 	var tables []*tableResult
-	err := db.Select(ctx, &tables, qpostgres.ListTables(db.SchemaName), nil)
+	err := db.Select(ctx, &tables, qpostgres.ListTables(db.SchemaName), nil, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list tables")
 	}

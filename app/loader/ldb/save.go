@@ -15,7 +15,7 @@ import (
 )
 
 func Save(
-		ctx context.Context, db *database.Service, m *model.Model, ids []any, changes util.ValueMap, logger *zap.SugaredLogger,
+	ctx context.Context, db *database.Service, m *model.Model, ids []any, changes util.ValueMap, logger *zap.SugaredLogger,
 ) ([]any, error) {
 	cols, vals := changes.KeysAndValues()
 
@@ -32,7 +32,7 @@ func Save(
 
 	if db.Type.SupportsReturning {
 		q := database.SQLUpdateReturning(m.Key, cols, strings.Join(where, " and "), pk, db.Type.Placeholder)
-		out, err := db.QuerySingleRow(ctx, q, nil, append(vals, ids...)...)
+		out, err := db.QuerySingleRow(ctx, q, nil, logger, append(vals, ids...)...)
 		if err != nil {
 			return nil, errors.Wrapf(err, "unable to save [%s] with primary key [%s]", m.Name(), strings.Join(pk, "::"))
 		}
@@ -43,22 +43,24 @@ func Save(
 		return ret, nil
 	}
 
-	tx, err := db.StartTransaction()
+	tx, err := db.StartTransaction(logger)
 	if err != nil {
 		return nil, err
 	}
 
 	uq := database.SQLUpdate(m.Key, cols, strings.Join(where, " and "), db.Type.Placeholder)
-	_, err = db.Exec(ctx, uq, tx, -1, append(vals, ids...)...)
+	_, err = db.Exec(ctx, uq, tx, -1, logger, append(vals, ids...)...)
 	if err != nil {
 		_ = tx.Rollback()
 		return nil, errors.Wrap(err, "unable to insert row")
 	}
 
-	return loadAfterEdit(ctx, pk, ids, m, tx, db)
+	return loadAfterEdit(ctx, pk, ids, m, tx, db, logger)
 }
 
-func loadAfterEdit(ctx context.Context, pk []string, pkVals []any, m *model.Model, tx *sqlx.Tx, db *database.Service) ([]any, error) {
+func loadAfterEdit(
+	ctx context.Context, pk []string, pkVals []any, m *model.Model, tx *sqlx.Tx, db *database.Service, logger *zap.SugaredLogger,
+) ([]any, error) {
 	wc := make([]string, 0, len(pk))
 	for idx, x := range pk {
 		if db.Type.Placeholder == "?" {
@@ -68,7 +70,7 @@ func loadAfterEdit(ctx context.Context, pk []string, pkVals []any, m *model.Mode
 		}
 	}
 	sq := database.SQLSelectSimple(strings.Join(pk, ", "), m.Path().Quoted(db.Type.Quote), strings.Join(wc, " and "))
-	out, err := db.QuerySingleRow(ctx, sq, tx, pkVals...)
+	out, err := db.QuerySingleRow(ctx, sq, tx, logger, pkVals...)
 	if err != nil {
 		_ = tx.Rollback()
 		return nil, errors.Wrap(err, "unable to select newly-inserted row")

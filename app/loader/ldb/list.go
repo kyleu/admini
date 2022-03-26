@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/filter"
@@ -12,19 +13,19 @@ import (
 	"admini.dev/admini/app/result"
 )
 
-func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options) (*result.Result, error) {
+func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options, logger *zap.SugaredLogger) (*result.Result, error) {
 	p := opts.Params
 	if p != nil && p.Limit == 0 {
 		p.Limit = filter.MaxRowsDefault
 	}
 	q := modelListQuery(db.Type, m, p)
-	rows, err := db.Query(ctx, q, nil)
+	rows, err := db.Query(ctx, q, nil, logger)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
 	defer func() { _ = rows.Close() }()
 
-	count, err := Count(ctx, db, m)
+	count, err := Count(ctx, db, m, logger)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error constructing result for [%s]", m.String())
 	}
@@ -38,12 +39,12 @@ func List(ctx context.Context, db *database.Service, m *model.Model, opts *filte
 	return ret, nil
 }
 
-func Count(ctx context.Context, db *database.Service, m *model.Model) (int, error) {
+func Count(ctx context.Context, db *database.Service, m *model.Model, logger *zap.SugaredLogger) (int, error) {
 	q := modelCountQuery(db.Type, m)
 	c := struct {
 		C int `db:"c"`
 	}{}
-	if err := db.Get(ctx, &c, q, nil); err != nil {
+	if err := db.Get(ctx, &c, q, nil, logger); err != nil {
 		return 0, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}
 	return c.C, nil

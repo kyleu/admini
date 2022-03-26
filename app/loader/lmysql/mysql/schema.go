@@ -24,12 +24,12 @@ func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.S
 		return nil, errors.Wrap(err, "can't load columns")
 	}
 
-	err = loadIndexes(ctx, tables, db)
+	err = loadIndexes(ctx, tables, db, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load indexes")
 	}
 
-	err = loadForeignKeys(ctx, tables, db)
+	err = loadForeignKeys(ctx, tables, db, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't load foreign keys")
 	}

@@ -18,7 +18,7 @@ func Get(ctx context.Context, db *database.Service, m *model.Model, ids []any, l
 	if err != nil {
 		return nil, err
 	}
-	rows, err := db.Query(ctx, q, nil, ids...)
+	rows, err := db.Query(ctx, q, nil, logger, ids...)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error listing models for [%s]", m.String())
 	}

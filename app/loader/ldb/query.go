@@ -12,7 +12,7 @@ import (
 )
 
 func Query(ctx context.Context, db *database.Service, sql string, enums model.Models, logger *zap.SugaredLogger) (*result.Result, error) {
-	rows, err := db.Query(ctx, sql, nil)
+	rows, err := db.Query(ctx, sql, nil, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error running SQL")
 	}

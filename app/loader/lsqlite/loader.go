@@ -45,11 +45,11 @@ func (l *Loader) Connection(ctx context.Context) (any, error) {
 }
 
 func (l *Loader) List(ctx context.Context, m *model.Model, opts *filter.Options) (*result.Result, error) {
-	return ldb.List(ctx, l.db, m, opts)
+	return ldb.List(ctx, l.db, m, opts, l.logger)
 }
 
 func (l *Loader) Count(ctx context.Context, m *model.Model) (int, error) {
-	return ldb.Count(ctx, l.db, m)
+	return ldb.Count(ctx, l.db, m, l.logger)
 }
 
 func (l *Loader) Get(ctx context.Context, m *model.Model, ids []any) (*result.Result, error) {
@@ -99,7 +99,7 @@ func openDatabase(ctx context.Context, key string, cfg []byte, logger *zap.Sugar
 		return nil, errors.Wrap(err, "error opening database")
 	}
 
-	_, err = db.SingleInt(ctx, "select 1 as x", nil)
+	_, err = db.SingleInt(ctx, "select 1 as x", nil, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "error connecting to database")
 	}

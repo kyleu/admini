@@ -46,7 +46,7 @@ func (t *enumResult) ToModel() *model.Model {
 
 func loadEnums(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
 	var enums []*enumResult
-	err := db.Select(ctx, &enums, qpostgres.ListTypes(db.SchemaName), nil)
+	err := db.Select(ctx, &enums, qpostgres.ListTypes(db.SchemaName), nil, logger)
 	if err != nil {
 		return nil, errors.Wrap(err, "can't list enums")
 	}

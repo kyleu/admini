@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
@@ -30,9 +31,9 @@ func (r indexResult) AsIndex() *model.Index {
 	}
 }
 
-func loadIndexes(ctx context.Context, models model.Models, db *database.Service) error {
+func loadIndexes(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
 	var idxs []*indexResult
-	err := db.Select(ctx, &idxs, qmysql.ListIndexes(db.DatabaseName), nil)
+	err := db.Select(ctx, &idxs, qmysql.ListIndexes(db.DatabaseName), nil, logger)
 	if err != nil {
 		return errors.Wrap(err, "can't list indexes")
 	}
