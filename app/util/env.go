@@ -2,6 +2,7 @@
 package util
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -25,7 +26,6 @@ func ReplaceEnvVars(s string, logger *zap.SugaredLogger) string {
 			}
 
 			o := GetEnv(n)
-			// logger.Debug(fmt.Sprintf("Replacing [%v] in address (original: %v, env[%v]: (%v), default: %v)", s, orig, n, o, d))
 			if o == "" {
 				o = d
 			}
@@ -51,4 +51,8 @@ func GetEnv(name string, defaultValue ...string) string {
 		}
 	}
 	return strings.Join(defaultValue, "")
+}
+
+func GetEnvBool(name string, defaultValue bool) bool {
+	return GetEnv(name, fmt.Sprint(defaultValue)) == BoolTrue
 }

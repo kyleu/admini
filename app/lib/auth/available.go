@@ -3,7 +3,8 @@ package auth
 
 import (
 	"fmt"
-	"sort"
+
+	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/util"
 )
@@ -18,6 +19,7 @@ const (
 	microsoftKey     = "microsoft"
 	nextcloudKey     = "nextcloud"
 	OpenIDConnectKey = "openid_connect"
+	wecomKey         = "wecom"
 )
 
 func initAvailable() {
@@ -27,34 +29,27 @@ func initAvailable() {
 			openIDConnectName = "OpenID Connect"
 		}
 		AvailableProviderNames = map[string]string{
-			"amazon": "Amazon", "apple": "Apple", auth0Key: "Auth0", "azuread": "Azure AD",
-			"battlenet": "Battlenet", "bitbucket": "Bitbucket", "box": "Box",
+			"amazon": "Amazon", auth0Key: "Auth0", "azuread": "Azure AD",
+			"battlenet": "Battlenet", "bitbucket": "Bitbucket", "box": "Box", "cloudfoundry": "Cloud Foundry",
 			"dailymotion": "Dailymotion", "deezer": "Deezer", "digitalocean": "Digital Ocean", "discord": "Discord", "dropbox": "Dropbox",
-			"eveonline": "Eve Online",
-			"facebook":  "Facebook", "fitbit": "Fitbit",
+			"eveonline": "Eve Online", "facebook": "Facebook", "fitbit": "Fitbit",
 			"gitea": "Gitea", "github": "Github", "gitlab": "Gitlab", "google": "Google", "gplus": "Google Plus",
-			"heroku":    "Heroku",
-			"instagram": "Instagram", "intercom": "Intercom",
-			"kakao":  "Kakao",
+			"heroku": "Heroku", "influxcloud": "InfluxCloud", "instagram": "Instagram", "intercom": "Intercom", "kakao": "Kakao",
 			"lastfm": "Last FM", "line": "LINE", "linkedin": "Linkedin",
-			"mastodon": "Mastodon", "meetup": "Meetup.com", microsoftKey: "Microsoft", "microsoftonline": "Microsoft Online",
+			"mailru": "Mailru", "mastodon": "Mastodon", "meetup": "Meetup.com", microsoftKey: "Microsoft", "microsoftonline": "Microsoft Online",
 			"naver": "Naver", nextcloudKey: "NextCloud",
-			"okta": "Okta", "onedrive": "Onedrive", OpenIDConnectKey: openIDConnectName,
-			"paypal":     "Paypal",
+			"okta": "Okta", "onedrive": "Onedrive", OpenIDConnectKey: openIDConnectName, "oura": "Oura", "paypal": "Paypal",
 			"salesforce": "Salesforce", "seatalk": "SeaTalk", "shopify": "Shopify", "slack": "Slack",
 			"soundcloud": "SoundCloud", "spotify": "Spotify", "steam": "Steam", "strava": "Strava", "stripe": "Stripe",
-			"twitch": "Twitch", "twitter": "Twitter", "typetalk": "Typetalk",
-			"uber":  "Uber",
-			"vk":    "VK",
-			"wepay": "Wepay",
-			"xero":  "Xero",
-			"yahoo": "Yahoo", "yammer": "Yammer", "yandex": "Yandex",
+			"tumblr": "Tumblr", "twitch": "Twitch", "twitter": "Twitter", "typetalk": "Typetalk",
+			"uber": "Uber", "vk": "VK", "wecom": "WeCom", "wepay": "Wepay", "xero": "Xero",
+			"yahoo": "Yahoo", "yammer": "Yammer", "yandex": "Yandex", "zoom": "Zoom",
 		}
 		AvailableProviderKeys = nil
 		for k := range AvailableProviderNames {
 			AvailableProviderKeys = append(AvailableProviderKeys, k)
 		}
-		sort.Strings(AvailableProviderKeys)
+		slices.Sort(AvailableProviderKeys)
 	}
 }
 
@@ -76,6 +71,8 @@ func ProviderUsage(id string, enabled bool) string {
 		keys = append(keys, "\"nextcloud_url\"")
 	case OpenIDConnectKey:
 		keys = append(keys, "\"openid_connect_url\"", "\"openid_connect_name\"")
+	case wecomKey:
+		keys = append(keys, "\"wecom_agent_id\"")
 	}
 	return fmt.Sprintf("To enable %s, set %s as environment variables", n, util.StringArrayOxfordComma(keys, "and"))
 }

@@ -46,14 +46,14 @@ func NewService(typ *DBType, key string, dbName string, schName string, username
 	}
 
 	ret := &Service{Key: key, DatabaseName: dbName, SchemaName: schName, Username: username, Debug: debug, Type: typ, db: db, metrics: m}
-	err = ret.Healthcheck(db)
+	err = ret.Healthcheck(dbName, db)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to run healthcheck")
 	}
 	return ret, nil
 }
 
-func (s *Service) Healthcheck(db *sqlx.DB) error {
+func (s *Service) Healthcheck(dbName string, db *sqlx.DB) error {
 	q := "select 1"
 	res, err := db.Query(q)
 	if err != nil || res.Err() != nil {

@@ -3,10 +3,10 @@ package schema
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/pkg/errors"
+	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/lib/schema/field"
 	"admini.dev/admini/app/lib/schema/model"
@@ -19,10 +19,10 @@ const (
 )
 
 type Override struct {
-	Type string      `json:"type,omitempty"`
-	Path util.Pkg    `json:"path,omitempty"`
-	Prop string      `json:"prop,omitempty"`
-	Val  any `json:"val,omitempty"`
+	Type string   `json:"type,omitempty"`
+	Path util.Pkg `json:"path,omitempty"`
+	Prop string   `json:"prop,omitempty"`
+	Val  any      `json:"val,omitempty"`
 }
 
 func NewOverride(typ string, path util.Pkg, prop string, val any) *Override {
@@ -46,9 +46,7 @@ func (o Overrides) Purge(path util.Pkg) Overrides {
 }
 
 func (o Overrides) Sort() {
-	sort.Slice(o, func(i, j int) bool {
-		l := o[i]
-		r := o[j]
+	slices.SortFunc(o, func(l *Override, r *Override) bool {
 		if !l.Path.Equals(r.Path) {
 			for idx, p := range l.Path {
 				if idx >= len(r.Path) {
