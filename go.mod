@@ -29,7 +29,6 @@ require (
 	github.com/prometheus/client_golang v1.12.1
 	github.com/valyala/fasthttp v1.34.0
 	github.com/valyala/quicktemplate v1.7.0
-	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.29.0
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.29.0
 	go.opentelemetry.io/otel v1.4.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.0.0
@@ -39,7 +38,6 @@ require (
 	golang.org/x/exp v0.0.0-20220317015231-48e79f11773a
 	golang.org/x/mobile v0.0.0-20190719004257-d2bd2a29d028
 	golang.org/x/oauth2 v0.0.0-20210514164344-f6687ab2804c
-	google.golang.org/grpc v1.45.0
 	gopkg.in/yaml.v2 v2.4.0
 	modernc.org/sqlite v1.15.1
 )
@@ -54,7 +52,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.2 // indirect
 	github.com/go-logr/logr v1.2.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/golang-jwt/jwt/v4 v4.2.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
@@ -67,7 +64,6 @@ require (
 	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
 	github.com/jackc/pgtype v1.10.0 // indirect
 	github.com/klauspost/compress v1.15.1 // indirect
-	github.com/lestrrat-go/jwx v0.9.0 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -95,6 +91,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20210602131652-f16073e35f0c // indirect
+	google.golang.org/grpc v1.45.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	lukechampine.com/uint128 v1.2.0 // indirect
 	modernc.org/cc/v3 v3.35.24 // indirect
