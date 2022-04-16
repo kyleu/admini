@@ -6,7 +6,7 @@ Download any package from the [release page](https://github.com/kyleu/admini/rel
 
 ### Homebrew
 ```
-brew install kyleu/kyleu/admini 
+brew install kyleu/kyleu/admini
 ```
 
 ### deb, rpm and apk packages

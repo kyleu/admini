@@ -19,12 +19,14 @@ func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.
 	var ret *sqlx.Rows
 	var err error
 	defer s.complete(q, op, span, now, logger, err)
-	s.logQuery(ctx, "running raw query", q, logger, values)
+	f := s.logQuery(ctx, "running raw query", q, logger, values)
 	if tx == nil {
 		ret, err = s.db.QueryxContext(ctx, q, values...)
+		defer f(0, "ran raw query without transaction", err)
 		return ret, err
 	}
 	ret, err = tx.QueryxContext(ctx, q, values...)
+	defer f(0, "ran raw query with transaction", err)
 	return ret, err
 }
 
@@ -118,12 +120,14 @@ func (s *Service) Select(ctx context.Context, dest any, q string, tx *sqlx.Tx, l
 	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
 	defer s.complete(q, op, span, now, logger, err)
-	s.logQuery(ctx, fmt.Sprintf("selecting rows of type [%T]", dest), q, logger, values)
+	f := s.logQuery(ctx, fmt.Sprintf("selecting rows of type [%T]", dest), q, logger, values)
 	if tx == nil {
 		err = s.db.SelectContext(ctx, dest, q, values...)
+		defer f(0, "ran select query without transaction", err, dest)
 		return err
 	}
 	err = tx.SelectContext(ctx, dest, q, values...)
+	defer f(0, "ran select query with transaction", err, dest)
 	return err
 }
 
@@ -132,11 +136,23 @@ func (s *Service) Get(ctx context.Context, dto any, q string, tx *sqlx.Tx, logge
 	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
 	defer s.complete(q, op, span, now, logger, err)
-	s.logQuery(ctx, fmt.Sprintf("getting single row of type [%T]", dto), q, logger, values)
+	f := s.logQuery(ctx, fmt.Sprintf("getting single row of type [%T]", dto), q, logger, values)
 	if tx == nil {
-		return s.db.GetContext(ctx, dto, q, values...)
+		err = s.db.GetContext(ctx, dto, q, values...)
+		count := 0
+		if dto != nil {
+			count = 1
+		}
+		defer f(count, "ran [get] query without transaction", err, dto)
+	} else {
+		err = tx.GetContext(ctx, dto, q, values...)
+		count := 0
+		if dto != nil {
+			count = 1
+		}
+		defer f(count, "ran [get] query with transaction", err, dto)
 	}
-	return tx.GetContext(ctx, dto, q, values...)
+	return err
 }
 
 type singleIntResult struct {

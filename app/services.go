@@ -34,3 +34,7 @@ func NewServices(ctx context.Context, st *State) (*Services, error) {
 
 	return &Services{Sources: ss, Projects: ps, Loaders: ls}, nil
 }
+
+func (s *Services) Close(_ context.Context) error {
+	return nil
+}
