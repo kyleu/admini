@@ -53,7 +53,7 @@ func CompleteUserAuth(prv *Provider, rc *fasthttp.RequestCtx, websess util.Value
 
 	u, err := g.FetchUser(sess)
 	if err == nil {
-		return addToSession(u.Provider, u.Email, rc, websess, logger)
+		return addToSession(u.Provider, u.Email, u.AccessToken, rc, websess, logger)
 	}
 
 	_, err = sess.Authorize(g, &params{q: rc.Request.URI().QueryArgs()})
@@ -71,7 +71,7 @@ func CompleteUserAuth(prv *Provider, rc *fasthttp.RequestCtx, websess util.Value
 		return nil, nil, err
 	}
 
-	return addToSession(gu.Provider, gu.Email, rc, websess, logger)
+	return addToSession(gu.Provider, gu.Email, gu.AccessToken, rc, websess, logger)
 }
 
 func gothFor(rc *fasthttp.RequestCtx, prv *Provider) (goth.Provider, error) {

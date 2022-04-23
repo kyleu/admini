@@ -1,5 +1,5 @@
 <!--- Content managed by Project Forge, see [projectforge.md] for details. -->
-# [oauth]
+# OAuth
 
 This is a module for [Project Forge](https://projectforge.dev). It provides logins and session management for many OAuth providers.
 

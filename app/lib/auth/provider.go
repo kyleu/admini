@@ -12,10 +12,11 @@ import (
 )
 
 type Provider struct {
-	ID     string `json:"id"`
-	Title  string `json:"title"`
-	Key    string `json:"-"`
-	Secret string `json:"-"`
+	ID     string   `json:"id"`
+	Title  string   `json:"title"`
+	Key    string   `json:"-"`
+	Secret string   `json:"-"`
+	Scopes []string `json:"-"`
 }
 
 func (p *Provider) Goth(proto string, host string) (goth.Provider, error) {
@@ -35,7 +36,7 @@ func (p *Provider) Goth(proto string, host string) (goth.Provider, error) {
 	}
 	u = strings.TrimSuffix(u, "/")
 	cb := fmt.Sprintf("%s/auth/callback/%s", u, p.ID)
-	gothPrv, err := toGoth(p.ID, p.Key, p.Secret, cb)
+	gothPrv, err := toGoth(p.ID, p.Key, p.Secret, cb, p.Scopes...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,8 +103,9 @@ func (s *Service) load() error {
 	for _, k := range AvailableProviderKeys {
 		envKey := util.GetEnv(k + "_key")
 		envSecret := util.GetEnv(k + "_secret")
+		envScopes := util.StringSplitAndTrim(util.GetEnv(k+"_scopes"), ",")
 		if envKey != "" {
-			ret = append(ret, &Provider{ID: k, Title: AvailableProviderNames[k], Key: envKey, Secret: envSecret})
+			ret = append(ret, &Provider{ID: k, Title: AvailableProviderNames[k], Key: envKey, Secret: envSecret, Scopes: envScopes})
 		}
 	}
 

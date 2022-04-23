@@ -1,5 +1,5 @@
 <!--- Content managed by Project Forge, see [projectforge.md] for details. -->
-# [notarize]
+# Notarize
 
 This is a module for [Project Forge](https://projectforge.dev). It sends files to Apple for notarization.
 
