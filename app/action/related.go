@@ -1,10 +1,11 @@
 package action
 
 import (
+	"github.com/pkg/errors"
+
 	"admini.dev/admini/app/lib/schema"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
-	"github.com/pkg/errors"
 )
 
 func GetSource(act *Action, schemata schema.Schemata) (*model.Package, error) {

@@ -11,9 +11,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-
-	// load sqlite driver.
-	_ "modernc.org/sqlite"
+	_ "modernc.org/sqlite" // load sqlite driver.
 
 	"admini.dev/admini/app/lib/telemetry"
 )

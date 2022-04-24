@@ -1,6 +1,8 @@
 package workspace
 
 import (
+	"github.com/pkg/errors"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
@@ -9,7 +11,6 @@ import (
 	"admini.dev/admini/app/util"
 	"admini.dev/admini/views/vaction"
 	"admini.dev/admini/views/vworkspace"
-	"github.com/pkg/errors"
 )
 
 func ActionHandler(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (*Result, error) {

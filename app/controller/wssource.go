@@ -3,9 +3,8 @@ package controller
 import (
 	"fmt"
 
-	"github.com/valyala/fasthttp"
-
 	"github.com/pkg/errors"
+	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"

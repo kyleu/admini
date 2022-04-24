@@ -1,12 +1,12 @@
 package qualify
 
 import (
-	"admini.dev/admini/app/controller/cutil"
-	"admini.dev/admini/app/lib/schema/model"
 	"github.com/pkg/errors"
 
 	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema"
+	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
 )
 

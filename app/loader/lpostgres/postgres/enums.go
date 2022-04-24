@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"strings"
 
-	"admini.dev/admini/app/lib/types"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/field"
 	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/lib/types"
 	"admini.dev/admini/app/util"
 	"admini.dev/admini/queries/qpostgres"
 )

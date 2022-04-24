@@ -1,8 +1,9 @@
 package action
 
 import (
-	"admini.dev/admini/app/util"
 	"github.com/pkg/errors"
+
+	"admini.dev/admini/app/util"
 )
 
 type Ordering struct {

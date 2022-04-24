@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"admini.dev/admini/app/util"
 	"github.com/pkg/errors"
+
+	"admini.dev/admini/app/util"
 )
 
 func newAction(args []string, title string, typ *Type, pkg util.Pkg) (*Action, error) {

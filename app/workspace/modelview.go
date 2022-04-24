@@ -3,13 +3,14 @@ package workspace
 import (
 	"strings"
 
+	"github.com/pkg/errors"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
 	"admini.dev/admini/views/vmodel"
-	"github.com/pkg/errors"
 )
 
 func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string, as *app.State) (*Result, error) {
