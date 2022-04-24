@@ -3,102 +3,103 @@ package mysql
 import (
 	"strings"
 
-	types2 "admini.dev/admini/app/lib/types"
 	"go.uber.org/zap"
+
+	"admini.dev/admini/app/lib/types"
 )
 
-func TypeForName(t string, logger *zap.SugaredLogger) *types2.Wrapped {
+func TypeForName(t string, logger *zap.SugaredLogger) *types.Wrapped {
 	if strings.HasPrefix(t, "_") {
-		return types2.NewList(TypeForName(t[1:], logger))
+		return types.NewList(TypeForName(t[1:], logger))
 	}
 	return typeFor(t, nil, logger)
 }
 
 // nolint
-func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *types2.Wrapped {
+func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *types.Wrapped {
 	if cr != nil && cr.Nullable == "YES" {
 		cr.Nullable = "NO"
-		return types2.NewOption(typeFor(t, cr, logger))
+		return types.NewOption(typeFor(t, cr, logger))
 	}
 	if strings.HasPrefix(t, "_") {
-		return types2.NewList(typeFor(t[1:], cr, logger))
+		return types.NewList(typeFor(t[1:], cr, logger))
 	}
 	// TODO: limit to MySQL types
 	switch strings.ToLower(t) {
 	case "bit":
 		if cr != nil && cr.CharLength.Valid {
-			return types2.NewListSized(types2.NewBit(), int(cr.CharLength.Int64))
+			return types.NewListSized(types.NewBit(), int(cr.CharLength.Int64))
 		}
-		return types2.NewBit()
+		return types.NewBit()
 	case "varbit", "bit varying":
-		return types2.NewList(types2.NewBit())
+		return types.NewList(types.NewBit())
 	case "bool", "boolean":
-		return types2.NewBool()
+		return types.NewBool()
 	case "bpchar":
 		return stringFor(cr)
 	case "bytea":
-		return types2.NewList(types2.NewByte())
+		return types.NewList(types.NewByte())
 	case "char", "character":
-		return types2.NewChar()
+		return types.NewChar()
 	case "character varying", "varchar":
 		return stringFor(cr)
 	case "date":
-		return types2.NewDate()
+		return types.NewDate()
 	case "daterange":
-		return types2.NewRange(types2.NewDate())
+		return types.NewRange(types.NewDate())
 	case "float4", "real", "float":
-		return types2.NewFloat(32)
+		return types.NewFloat(32)
 	case "float8", "double precision", "double":
-		return types2.NewFloat(64)
+		return types.NewFloat(64)
 	case "hstore":
-		return types2.NewMap(types2.NewString(), types2.NewString())
+		return types.NewMap(types.NewString(), types.NewString())
 	case "int2", "smallint":
-		return types2.NewInt(16)
+		return types.NewInt(16)
 	case "int2range":
-		return types2.NewRange(types2.NewInt(16))
+		return types.NewRange(types.NewInt(16))
 	case "int4", "integer", "int", "mediumint":
-		return types2.NewInt(32)
+		return types.NewInt(32)
 	case "int4range":
-		return types2.NewRange(types2.NewInt(32))
+		return types.NewRange(types.NewInt(32))
 	case "int8", "bigint":
-		return types2.NewInt(64)
+		return types.NewInt(64)
 	case "int8range":
-		return types2.NewRange(types2.NewInt(64))
+		return types.NewRange(types.NewInt(64))
 	case "json":
-		return types2.NewJSON()
+		return types.NewJSON()
 	case "jsonb":
-		return types2.NewJSON()
+		return types.NewJSON()
 	case "name":
 		return stringFor(cr)
 	case "numeric", "decimal":
 		// return schematypes.NewNumeric()
 	case "numrange":
-		return types2.NewRange(types2.NewFloat(64))
+		return types.NewRange(types.NewFloat(64))
 	case "oid":
-		return types2.NewInt(32)
+		return types.NewInt(32)
 	case "text":
 		return stringFor(cr)
 	case "time", "time without time zone":
-		return types2.NewTime()
+		return types.NewTime()
 	case "timetz", "time with time zone":
 		// return schematypes.NewTimeTZ()
 	case "timestamp", "timestamp without time zone", "datetime":
-		return types2.NewTimestamp()
+		return types.NewTimestamp()
 	case "timestamptz", "timestamp with time zone":
-		return types2.NewTimestampZoned()
+		return types.NewTimestampZoned()
 	case "uuid":
-		return types2.NewUUID()
+		return types.NewUUID()
 	case "USER-DEFINED":
-		return types2.NewReference()
+		return types.NewReference()
 	}
 	logger.Warn("unhandled MySQL type: [" + t + "]")
-	return types2.NewUnknown(t)
+	return types.NewUnknown(t)
 }
 
-func stringFor(cr *columnResult) *types2.Wrapped {
+func stringFor(cr *columnResult) *types.Wrapped {
 	max := 0
 	if cr != nil && cr.CharLength.Valid {
 		max = int(cr.CharLength.Int64)
 	}
-	return types2.NewStringArgs(0, max, "")
+	return types.NewStringArgs(0, max, "")
 }
