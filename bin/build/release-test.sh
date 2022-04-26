@@ -9,6 +9,7 @@ cd $dir/../..
 
 [[ -f "$HOME/bin/oauth" ]] && . $HOME/bin/oauth
 
+export GOAMD64=v1
 export PUBLISH_TEST=true
 goreleaser -f ./tools/release/.goreleaser.yml --snapshot --timeout 60m --skip-publish --rm-dist
 unset PUBLISH_TEST
