@@ -9,28 +9,18 @@ All variable names can be set in uppercase or lowercase
 | `app_display_name_append`     | string | added to the end of the UI title                                                     |
 | `app_nav_color_dark`          | string | sets the navigation color for users with dark mode, defaults to theme color          |
 | `app_nav_color_light`         | string | sets the navigation color for users with light mode, defaults to theme color         |
-| `db_database`                 | string | database for the default PostgreSQL connection                                       |
 | `db_database`                 | string | database for the default MySQL connection                                            |
-| `db_debug`                    | bool   | when set, logs all database interactions                                             |
-| `db_debug`                    | bool   | when set, logs all database interactions                                             |
 | `db_debug`                    | bool   | when set, logs all database interactions                                             |
 | `db_file`                     | string | filename and path for the default SQLite connection                                  |
 | `db_host`                     | string | hostname for the default MySQL connection, defaults to `localhost`                   |
-| `db_host`                     | string | hostname for the default PostgreSQL connection, defaults to `localhost`              |
 | `db_password`                 | string | password for the default MySQL connection                                            |
-| `db_password`                 | string | password for the default PostgreSQL connection                                       |
 | `db_port`                     | int    | port for the default MySQL connection, defaults to `3306`                            |
-| `db_port`                     | int    | port for the default PostgreSQL connection, defaults to `3306`                       |
 | `db_schema`                   | string | schema for the default MySQL connection                                              |
-| `db_schema`                   | string | schema for the default SQLite connection                                             |
-| `db_schema`                   | string | schema for the default PostgreSQL connection                                         |
 | `db_ssl`                      | bool   | when set, uses SSL sessions for connections                                          |
-| `db_user`                     | string | user for the default PostgreSQL connection                                           |
 | `db_user`                     | string | user for the default MySQL connection                                                |
 | `logging_format`              | string | When set to `json`, forces the logging format                                        |
 | `logging_level`               | string | minimum logging level to display, one of [`debug`, `info`, `warn`, `error`]          |
 | `max_connections`             | int    | max connection count for the default MySQL connection                                |
-| `max_connections`             | int    | max connection count for the default PostgreSQL connection                           |
 | `oauth_protocol`              | string | protocol to use for OAuth callbacks, defaults to the request's hostname              |
 | `oauth_redirect`              | string | final URL to use for OAuth callbacks, overrides other options                        |
 | `openid_connect_name`         | string | when OpenID is enabled, this controls the display name                               |

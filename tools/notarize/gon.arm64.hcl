@@ -1,5 +1,5 @@
 # Content managed by Project Forge, see [projectforge.md] for details.
-source = ["./build/dist/darwin_darwin_arm64_v1/admini"]
+source = ["./build/dist/darwin_darwin_arm64/admini"]
 bundle_id = "com.kyleu.admini"
 
 apple_id {
