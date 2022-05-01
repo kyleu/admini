@@ -24,7 +24,7 @@
     "upgrade"
   ],
   "ignore": [
-    "data"
+    "^data"
   ],
   "info": {
     "org": "kyleu",

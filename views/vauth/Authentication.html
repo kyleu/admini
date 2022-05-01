@@ -1,10 +1,12 @@
 <!-- Content managed by Project Forge, see [projectforge.md] for details. -->
 {% import (
   "admini.dev/admini/app"
+  "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/auth"
+  "admini.dev/admini/views/components"
 ) %}
 
-{% func Authentication(as *app.State) %}
+{% func Authentication(as *app.State, ps *cutil.PageState) %}
   {%- code
     prvs, err := as.Auth.Providers()
     if err != nil {
@@ -13,7 +15,7 @@
   -%}
   <div class="card">
     <div class="right"><a href="#modal-available"><button type="button">Available</button></a></div>
-    <h3>Authentication</h3>
+    <h3>{%= components.SVGRefIcon(`user`, ps) %}Authentication</h3>
     {%- if len(prvs) == 0 -%}
     <em class="mt">no authentication providers configured, why not <a href="#modal-available">add one</a>?</em>
     {%- else -%}
