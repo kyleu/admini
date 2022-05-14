@@ -4,14 +4,14 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema"
 	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/util"
 )
 
-func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (*schema.Schema, error) {
+func LoadDatabaseSchema(ctx context.Context, db *database.Service, logger util.Logger) (*schema.Schema, error) {
 	metadata := loadMetadata(ctx, db)
 
 	scalars, err := loadScalars()

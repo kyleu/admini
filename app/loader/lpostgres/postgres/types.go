@@ -3,14 +3,12 @@ package postgres
 import (
 	"strings"
 
-	"go.uber.org/zap"
-
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/lib/types"
 	"admini.dev/admini/app/util"
 )
 
-func TypeForName(t string, enums model.Models, logger *zap.SugaredLogger) *types.Wrapped {
+func TypeForName(t string, enums model.Models, logger util.Logger) *types.Wrapped {
 	if strings.HasPrefix(t, "_") {
 		return types.NewList(TypeForName(t[1:], enums, logger))
 	}
@@ -18,7 +16,7 @@ func TypeForName(t string, enums model.Models, logger *zap.SugaredLogger) *types
 }
 
 // nolint
-func typeFor(t string, cr *columnResult, enums model.Models, logger *zap.SugaredLogger) *types.Wrapped {
+func typeFor(t string, cr *columnResult, enums model.Models, logger util.Logger) *types.Wrapped {
 	if cr != nil && cr.Nullable == pgYes {
 		cr.Nullable = pgNo
 		return types.NewOption(typeFor(t, cr, enums, logger))

@@ -5,15 +5,15 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/filter"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/result"
+	"admini.dev/admini/app/util"
 )
 
-func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options, logger *zap.SugaredLogger) (*result.Result, error) {
+func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options, logger util.Logger) (*result.Result, error) {
 	p := opts.Params
 	if p != nil && p.Limit == 0 {
 		p.Limit = filter.MaxRowsDefault
@@ -39,7 +39,7 @@ func List(ctx context.Context, db *database.Service, m *model.Model, opts *filte
 	return ret, nil
 }
 
-func Count(ctx context.Context, db *database.Service, m *model.Model, logger *zap.SugaredLogger) (int, error) {
+func Count(ctx context.Context, db *database.Service, m *model.Model, logger util.Logger) (int, error) {
 	q := modelCountQuery(db.Type, m)
 	c := struct {
 		C int `db:"c"`

@@ -4,13 +4,12 @@ import (
 	"strconv"
 	"strings"
 
-	"go.uber.org/zap"
-
 	"admini.dev/admini/app/lib/types"
+	"admini.dev/admini/app/util"
 )
 
 // nolint
-func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *types.Wrapped {
+func typeFor(t string, cr *columnResult, logger util.Logger) *types.Wrapped {
 	if cr != nil && cr.NotNull == 0 {
 		cr.NotNull = 1
 		return types.NewOption(typeFor(t, cr, logger))

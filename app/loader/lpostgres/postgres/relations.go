@@ -5,7 +5,6 @@ import (
 	"sort"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
@@ -35,7 +34,7 @@ func (r foreignKeyResults) Sort() {
 	})
 }
 
-func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service, logger util.Logger) error {
 	keys := foreignKeyResults{}
 	err := db.Select(ctx, &keys, qpostgres.ListForeignKeys(db.SchemaName), nil, logger)
 	if err != nil {

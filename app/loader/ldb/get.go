@@ -6,14 +6,14 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/result"
+	"admini.dev/admini/app/util"
 )
 
-func Get(ctx context.Context, db *database.Service, m *model.Model, ids []any, logger *zap.SugaredLogger) (*result.Result, error) {
+func Get(ctx context.Context, db *database.Service, m *model.Model, ids []any, logger util.Logger) (*result.Result, error) {
 	q, err := modelGetByPKQuery(db.Type, m, logger)
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func Get(ctx context.Context, db *database.Service, m *model.Model, ids []any, l
 	return ret, nil
 }
 
-func modelGetByPKQuery(typ *database.DBType, m *model.Model, logger *zap.SugaredLogger) (string, error) {
+func modelGetByPKQuery(typ *database.DBType, m *model.Model, logger util.Logger) (string, error) {
 	cols, tbl := forTable(typ, m)
 	pk := m.GetPK(logger)
 	if len(pk) == 0 {

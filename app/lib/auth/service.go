@@ -2,16 +2,16 @@
 package auth
 
 import (
-	"go.uber.org/zap"
+	"admini.dev/admini/app/util"
 )
 
 type Service struct {
 	baseURL   string
 	providers Providers
-	logger    *zap.SugaredLogger
+	logger    util.Logger
 }
 
-func NewService(baseURL string, logger *zap.SugaredLogger) *Service {
+func NewService(baseURL string, logger util.Logger) *Service {
 	ret := &Service{baseURL: baseURL, logger: logger}
 	_ = ret.load()
 	return ret

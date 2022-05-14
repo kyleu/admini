@@ -3,7 +3,6 @@ package controller
 
 import (
 	"github.com/valyala/fasthttp"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
@@ -16,7 +15,7 @@ import (
 func loadPageState(rc *fasthttp.RequestCtx, key string, as *app.State) *cutil.PageState {
 	ctx := httpmetrics.ExtractHeaders(rc, as.Logger)
 	traceCtx, span, logger := telemetry.StartSpan(ctx, "http:"+key, as.Logger)
-	span.Attribute("path", rc.Request.URI().Path())
+	span.Attribute("path", string(rc.Request.URI().Path()))
 	httpmetrics.InjectHTTP(rc, span)
 
 	session, flashes, prof, accts := loadSession(rc, logger)
@@ -31,7 +30,7 @@ func loadPageState(rc *fasthttp.RequestCtx, key string, as *app.State) *cutil.Pa
 	}
 }
 
-func loadSession(rc *fasthttp.RequestCtx, logger *zap.SugaredLogger) (util.ValueMap, []string, *user.Profile, user.Accounts) {
+func loadSession(rc *fasthttp.RequestCtx, logger util.Logger) (util.ValueMap, []string, *user.Profile, user.Accounts) {
 	sessionBytes := rc.Request.Header.Cookie(util.AppKey)
 	session := util.ValueMap{}
 	if len(sessionBytes) > 0 {

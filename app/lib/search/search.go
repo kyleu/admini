@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/lib/search/result"
@@ -14,9 +13,9 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-type Provider func(context.Context, *app.State, *Params, *zap.SugaredLogger) (result.Results, error)
+type Provider func(context.Context, *app.State, *Params, util.Logger) (result.Results, error)
 
-func Search(ctx context.Context, as *app.State, params *Params, logger *zap.SugaredLogger) (result.Results, []error) {
+func Search(ctx context.Context, as *app.State, params *Params, logger util.Logger) (result.Results, []error) {
 	ctx, span, logger := telemetry.StartSpan(ctx, "search", logger)
 	defer span.Complete()
 
@@ -25,10 +24,10 @@ func Search(ctx context.Context, as *app.State, params *Params, logger *zap.Suga
 	}
 	var allProviders []Provider
 	// $PF_SECTION_START(search_functions)$
-	projectFunc := func(ctx context.Context, as *app.State, p *Params, logger *zap.SugaredLogger) (result.Results, error) {
+	projectFunc := func(ctx context.Context, as *app.State, p *Params, logger util.Logger) (result.Results, error) {
 		return as.Services.Projects.Search(ctx, p.Q)
 	}
-	sourceFunc := func(ctx context.Context, as *app.State, p *Params, logger *zap.SugaredLogger) (result.Results, error) {
+	sourceFunc := func(ctx context.Context, as *app.State, p *Params, logger util.Logger) (result.Results, error) {
 		return as.Services.Sources.Search(p.Q)
 	}
 	allProviders = append(allProviders, projectFunc, sourceFunc)

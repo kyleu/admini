@@ -20,10 +20,10 @@ import (
 type Loader struct {
 	key    string
 	db     *database.Service
-	logger *zap.SugaredLogger
+	logger util.Logger
 }
 
-func NewLoader(ctx context.Context, logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
+func NewLoader(ctx context.Context, logger util.Logger) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
 		log := logger.With(zap.String("service", "loader.mysql"), zap.String("source", key))
 		db, err := openDatabase(ctx, key, cfg, log)
@@ -89,7 +89,7 @@ func LoadConfig(cfg []byte) (*database.MySQLParams, error) {
 	return params, nil
 }
 
-func openDatabase(ctx context.Context, key string, cfg []byte, logger *zap.SugaredLogger) (*database.Service, error) {
+func openDatabase(ctx context.Context, key string, cfg []byte, logger util.Logger) (*database.Service, error) {
 	params, err := LoadConfig(cfg)
 	if err != nil {
 		return nil, err

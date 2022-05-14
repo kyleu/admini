@@ -16,10 +16,10 @@ import (
 
 type Loader struct {
 	key    string
-	logger *zap.SugaredLogger
+	logger util.Logger
 }
 
-func NewLoader(_ context.Context, logger *zap.SugaredLogger) func(key string, cfg []byte) (loader.Loader, error) {
+func NewLoader(_ context.Context, logger util.Logger) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
 		ret := &Loader{
 			key:    key,

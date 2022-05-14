@@ -3,14 +3,16 @@ package watcher
 import (
 	"github.com/fsnotify/fsnotify"
 	"go.uber.org/zap"
+
+	"admini.dev/admini/app/util"
 )
 
 type Service struct {
 	watcher *fsnotify.Watcher
-	logger  *zap.SugaredLogger
+	logger  util.Logger
 }
 
-func NewService(path string, logger *zap.SugaredLogger) (*Service, error) {
+func NewService(path string, logger util.Logger) (*Service, error) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		return nil, err

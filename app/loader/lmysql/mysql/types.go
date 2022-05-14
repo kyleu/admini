@@ -3,12 +3,11 @@ package mysql
 import (
 	"strings"
 
-	"go.uber.org/zap"
-
 	"admini.dev/admini/app/lib/types"
+	"admini.dev/admini/app/util"
 )
 
-func TypeForName(t string, logger *zap.SugaredLogger) *types.Wrapped {
+func TypeForName(t string, logger util.Logger) *types.Wrapped {
 	if strings.HasPrefix(t, "_") {
 		return types.NewList(TypeForName(t[1:], logger))
 	}
@@ -16,7 +15,7 @@ func TypeForName(t string, logger *zap.SugaredLogger) *types.Wrapped {
 }
 
 // nolint
-func typeFor(t string, cr *columnResult, logger *zap.SugaredLogger) *types.Wrapped {
+func typeFor(t string, cr *columnResult, logger util.Logger) *types.Wrapped {
 	if cr != nil && cr.Nullable == "YES" {
 		cr.Nullable = "NO"
 		return types.NewOption(typeFor(t, cr, logger))

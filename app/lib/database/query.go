@@ -8,12 +8,11 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/util"
 )
 
-func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (*sqlx.Rows, error) {
+func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, logger util.Logger, values ...any) (*sqlx.Rows, error) {
 	const op = "query"
 	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var ret *sqlx.Rows
@@ -30,7 +29,7 @@ func (s *Service) Query(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.
 	return ret, err
 }
 
-func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) ([]util.ValueMap, error) {
+func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, logger util.Logger, values ...any) ([]util.ValueMap, error) {
 	rows, err := s.Query(ctx, q, tx, logger, values...)
 	if err != nil {
 		return nil, err
@@ -52,7 +51,7 @@ func (s *Service) QueryRows(ctx context.Context, q string, tx *sqlx.Tx, logger *
 	return ret, nil
 }
 
-func (s *Service) Query2DArray(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) ([][]any, error) {
+func (s *Service) Query2DArray(ctx context.Context, q string, tx *sqlx.Tx, logger util.Logger, values ...any) ([][]any, error) {
 	var err error
 	var slice []any
 
@@ -76,7 +75,7 @@ func (s *Service) Query2DArray(ctx context.Context, q string, tx *sqlx.Tx, logge
 	return ret, nil
 }
 
-func (s *Service) QueryKVMap(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (util.ValueMap, error) {
+func (s *Service) QueryKVMap(ctx context.Context, q string, tx *sqlx.Tx, logger util.Logger, values ...any) (util.ValueMap, error) {
 	msg := `must provide two columns, a string key named "k" and value "v"`
 	maps, err := s.QueryRows(ctx, q, tx, logger, values...)
 	if err != nil {
@@ -101,7 +100,7 @@ func (s *Service) QueryKVMap(ctx context.Context, q string, tx *sqlx.Tx, logger 
 	return ret, nil
 }
 
-func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (util.ValueMap, error) {
+func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, logger util.Logger, values ...any) (util.ValueMap, error) {
 	rows, err := s.QueryRows(ctx, q, tx, logger, values...)
 	if err != nil {
 		return nil, err
@@ -115,7 +114,7 @@ func (s *Service) QuerySingleRow(ctx context.Context, q string, tx *sqlx.Tx, log
 	return rows[0], nil
 }
 
-func (s *Service) Select(ctx context.Context, dest any, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) error {
+func (s *Service) Select(ctx context.Context, dest any, q string, tx *sqlx.Tx, logger util.Logger, values ...any) error {
 	const op = "select"
 	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
@@ -131,7 +130,7 @@ func (s *Service) Select(ctx context.Context, dest any, q string, tx *sqlx.Tx, l
 	return err
 }
 
-func (s *Service) Get(ctx context.Context, dto any, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) error {
+func (s *Service) Get(ctx context.Context, dto any, q string, tx *sqlx.Tx, logger util.Logger, values ...any) error {
 	const op = "get"
 	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
@@ -159,7 +158,7 @@ type singleIntResult struct {
 	X *int64 `db:"x"`
 }
 
-func (s *Service) SingleInt(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (int64, error) {
+func (s *Service) SingleInt(ctx context.Context, q string, tx *sqlx.Tx, logger util.Logger, values ...any) (int64, error) {
 	const op = "single-int"
 	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error
@@ -179,7 +178,7 @@ type singleBoolResult struct {
 	X bool `db:"x"`
 }
 
-func (s *Service) SingleBool(ctx context.Context, q string, tx *sqlx.Tx, logger *zap.SugaredLogger, values ...any) (bool, error) {
+func (s *Service) SingleBool(ctx context.Context, q string, tx *sqlx.Tx, logger util.Logger, values ...any) (bool, error) {
 	const op = "single-bool"
 	now, ctx, span, logger := s.newSpan(ctx, "db:"+op, q, logger)
 	var err error

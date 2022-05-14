@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	"go.uber.org/zap"
-
 	"admini.dev/admini/app/lib/auth"
 	"admini.dev/admini/app/lib/filesystem"
 	"admini.dev/admini/app/lib/telemetry"
@@ -36,7 +34,7 @@ type State struct {
 	Files     filesystem.FileLoader
 	Auth      *auth.Service
 	Themes    *theme.Service
-	Logger    *zap.SugaredLogger
+	Logger    util.Logger
 	Services  *Services
 	Started   time.Time
 }
@@ -45,7 +43,7 @@ func (s State) Close(ctx context.Context) error {
 	return s.Services.Close(ctx)
 }
 
-func NewState(debug bool, bi *BuildInfo, f filesystem.FileLoader, enableTelemetry bool, logger *zap.SugaredLogger) (*State, error) {
+func NewState(debug bool, bi *BuildInfo, f filesystem.FileLoader, enableTelemetry bool, logger util.Logger) (*State, error) {
 	loc, err := time.LoadLocation("UTC")
 	if err != nil {
 		return nil, err

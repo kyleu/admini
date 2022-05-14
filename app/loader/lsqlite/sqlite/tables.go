@@ -4,10 +4,10 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/util"
 	"admini.dev/admini/queries/qsqlite"
 )
 
@@ -16,7 +16,7 @@ type tableResult struct {
 	Type string `db:"t"`
 }
 
-func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
+func (t tableResult) ToModel(logger util.Logger) *model.Model {
 	ret := model.NewModel(nil, t.Name)
 	switch t.Type {
 	case "table":
@@ -30,7 +30,7 @@ func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 	return ret
 }
 
-func loadTables(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
+func loadTables(ctx context.Context, db *database.Service, logger util.Logger) (model.Models, error) {
 	var tables []*tableResult
 	err := db.Select(ctx, &tables, qsqlite.ListTables(db.SchemaName), nil, logger)
 	if err != nil {

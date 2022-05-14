@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"strings"
 
-	"go.uber.org/zap"
 	"golang.org/x/exp/slices"
+
+	"admini.dev/admini/app/util"
 )
 
 const permPrefix = "perm: "
 
 var (
-	PermissionsLogger *zap.SugaredLogger
+	PermissionsLogger util.Logger
 	perms             Permissions
 )
 

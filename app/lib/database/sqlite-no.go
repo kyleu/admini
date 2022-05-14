@@ -8,11 +8,12 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
+
+	"admini.dev/admini/app/util"
 )
 
 const SQLiteEnabled = false
 
-func OpenSQLiteDatabase(ctx context.Context, key string, params *SQLiteParams, logger *zap.SugaredLogger) (*Service, error) {
+func OpenSQLiteDatabase(ctx context.Context, key string, params *SQLiteParams, logger util.Logger) (*Service, error) {
 	return nil, errors.New("SQLite is not enabled in this build")
 }

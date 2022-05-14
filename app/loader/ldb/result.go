@@ -5,16 +5,16 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/schema/field"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/loader/lpostgres/postgres"
 	"admini.dev/admini/app/result"
+	"admini.dev/admini/app/util"
 )
 
 func ParseResult(
-		title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger,
+	title string, count int, q string, timing *result.Timing, rows *sqlx.Rows, enums model.Models, logger util.Logger,
 ) (*result.Result, error) {
 	fields, err := parseColumns(rows, enums, logger)
 	if err != nil {
@@ -48,7 +48,7 @@ func ParseResultFields(title string, count int, q string, timing *result.Timing,
 	return ret, nil
 }
 
-func parseColumns(rows *sqlx.Rows, enums model.Models, logger *zap.SugaredLogger) (field.Fields, error) {
+func parseColumns(rows *sqlx.Rows, enums model.Models, logger util.Logger) (field.Fields, error) {
 	cts, err := rows.ColumnTypes()
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to determine column types")
@@ -78,7 +78,7 @@ func parseRows(rows *sqlx.Rows) ([][]any, error) {
 	return data, nil
 }
 
-func fieldFor(ct *sql.ColumnType, enums model.Models, logger *zap.SugaredLogger) (*field.Field, error) {
+func fieldFor(ct *sql.ColumnType, enums model.Models, logger util.Logger) (*field.Field, error) {
 	return &field.Field{
 		Key:  ct.Name(),
 		Type: postgres.TypeForName(ct.DatabaseTypeName(), enums, logger),

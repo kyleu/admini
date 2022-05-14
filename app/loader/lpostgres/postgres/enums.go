@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/field"
@@ -44,7 +43,7 @@ func (t *enumResult) ToModel() *model.Model {
 	return ret
 }
 
-func loadEnums(ctx context.Context, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
+func loadEnums(ctx context.Context, db *database.Service, logger util.Logger) (model.Models, error) {
 	var enums []*enumResult
 	err := db.Select(ctx, &enums, qpostgres.ListTypes(db.SchemaName), nil, logger)
 	if err != nil {

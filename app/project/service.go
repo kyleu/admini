@@ -20,10 +20,10 @@ type Service struct {
 	files   filesystem.FileLoader
 	sources *source.Service
 	loaders *loader.Service
-	logger  *zap.SugaredLogger
+	logger  util.Logger
 }
 
-func NewService(files filesystem.FileLoader, sources *source.Service, ld *loader.Service, logger *zap.SugaredLogger) *Service {
+func NewService(files filesystem.FileLoader, sources *source.Service, ld *loader.Service, logger util.Logger) *Service {
 	log := logger.With(zap.String("service", "project"))
 	return &Service{root: "project", files: files, sources: sources, loaders: ld, logger: log}
 }

@@ -5,13 +5,12 @@ import (
 	"context"
 	"fmt"
 
-	"go.uber.org/zap"
-
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/app/util"
 )
 
-type runFn func(ctx context.Context, st *app.State, logger *zap.SugaredLogger) (any, error)
+type runFn func(ctx context.Context, st *app.State, logger util.Logger) (any, error)
 
 type Sandbox struct {
 	Key   string `json:"key,omitempty"`

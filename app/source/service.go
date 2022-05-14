@@ -20,10 +20,10 @@ type Service struct {
 	schemaCache map[string]*schema.Schema
 	files       filesystem.FileLoader
 	loaders     *loader.Service
-	logger      *zap.SugaredLogger
+	logger      util.Logger
 }
 
-func NewService(files filesystem.FileLoader, ld *loader.Service, logger *zap.SugaredLogger) *Service {
+func NewService(files filesystem.FileLoader, ld *loader.Service, logger util.Logger) *Service {
 	log := logger.With(zap.String("service", "source"))
 	return &Service{root: "source", schemaCache: map[string]*schema.Schema{}, files: files, loaders: ld, logger: log}
 }

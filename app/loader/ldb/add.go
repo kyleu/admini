@@ -4,14 +4,13 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
 )
 
-func Add(ctx context.Context, db *database.Service, m *model.Model, changes util.ValueMap, logger *zap.SugaredLogger) ([]any, error) {
+func Add(ctx context.Context, db *database.Service, m *model.Model, changes util.ValueMap, logger util.Logger) ([]any, error) {
 	columns, data := changes.KeysAndValues()
 	pk := m.GetPK(logger)
 

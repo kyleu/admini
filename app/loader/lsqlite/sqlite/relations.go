@@ -6,10 +6,10 @@ import (
 	"sort"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/util"
 	"admini.dev/admini/queries/qsqlite"
 )
 
@@ -36,7 +36,7 @@ func (r foreignKeyResults) Sort() {
 	})
 }
 
-func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadForeignKeys(ctx context.Context, models model.Models, db *database.Service, logger util.Logger) error {
 	keys := foreignKeyResults{}
 	err := db.Select(ctx, &keys, qsqlite.ListForeignKeys(db.SchemaName), nil, logger)
 	if err != nil {

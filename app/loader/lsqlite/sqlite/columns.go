@@ -6,11 +6,11 @@ import (
 	"sort"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/field"
 	"admini.dev/admini/app/lib/schema/model"
+	"admini.dev/admini/app/util"
 	"admini.dev/admini/queries/qsqlite"
 )
 
@@ -28,7 +28,7 @@ func (cr *columnResult) IsNullable() bool {
 	return cr.NotNull == 0
 }
 
-func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger) *field.Field {
+func (cr *columnResult) AsField(readOnlyOverride bool, logger util.Logger) *field.Field {
 	var d any
 	if cr.Default.Valid {
 		d = cr.Default.String
@@ -42,7 +42,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 	}
 }
 
-func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger util.Logger) error {
 	var cols []*columnResult
 	err := db.Select(ctx, &cols, qsqlite.ListColumns(db.SchemaName), nil, logger)
 	if err != nil {

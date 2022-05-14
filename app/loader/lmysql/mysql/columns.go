@@ -5,7 +5,6 @@ import (
 	"database/sql"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/field"
@@ -29,7 +28,7 @@ type columnResult struct {
 	DatetimePrecision sql.NullInt64  `db:"DATETIME_PRECISION"`
 }
 
-func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger) *field.Field {
+func (cr *columnResult) AsField(readOnlyOverride bool, logger util.Logger) *field.Field {
 	var d any
 	if cr.Default.Valid {
 		d = cr.Default.String
@@ -43,7 +42,7 @@ func (cr *columnResult) AsField(readOnlyOverride bool, logger *zap.SugaredLogger
 	}
 }
 
-func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger *zap.SugaredLogger) error {
+func loadColumns(ctx context.Context, models model.Models, db *database.Service, logger util.Logger) error {
 	var cols []*columnResult
 	err := db.Select(ctx, &cols, qmysql.ListColumns(db.DatabaseName), nil, logger)
 	if err != nil {

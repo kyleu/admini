@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
@@ -19,7 +18,7 @@ type tableResult struct {
 	Owner  string `db:"owner"`
 }
 
-func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
+func (t tableResult) ToModel(logger util.Logger) *model.Model {
 	ret := model.NewModel(util.Pkg{t.Schema}, t.Name)
 
 	switch t.Type {
@@ -34,7 +33,7 @@ func (t tableResult) ToModel(logger *zap.SugaredLogger) *model.Model {
 	return ret
 }
 
-func loadTables(ctx context.Context, enums model.Models, db *database.Service, logger *zap.SugaredLogger) (model.Models, error) {
+func loadTables(ctx context.Context, enums model.Models, db *database.Service, logger util.Logger) (model.Models, error) {
 	var tables []*tableResult
 	err := db.Select(ctx, &tables, qpostgres.ListTables(db.SchemaName), nil, logger)
 	if err != nil {

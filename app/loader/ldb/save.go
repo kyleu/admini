@@ -7,7 +7,6 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/schema/model"
@@ -15,7 +14,7 @@ import (
 )
 
 func Save(
-	ctx context.Context, db *database.Service, m *model.Model, ids []any, changes util.ValueMap, logger *zap.SugaredLogger,
+	ctx context.Context, db *database.Service, m *model.Model, ids []any, changes util.ValueMap, logger util.Logger,
 ) ([]any, error) {
 	cols, vals := changes.KeysAndValues()
 
@@ -59,7 +58,7 @@ func Save(
 }
 
 func loadAfterEdit(
-	ctx context.Context, pk []string, pkVals []any, m *model.Model, tx *sqlx.Tx, db *database.Service, logger *zap.SugaredLogger,
+	ctx context.Context, pk []string, pkVals []any, m *model.Model, tx *sqlx.Tx, db *database.Service, logger util.Logger,
 ) ([]any, error) {
 	wc := make([]string, 0, len(pk))
 	for idx, x := range pk {
