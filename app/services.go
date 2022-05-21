@@ -13,6 +13,7 @@ import (
 	"admini.dev/admini/app/loader/lsqlite"
 	"admini.dev/admini/app/project"
 	"admini.dev/admini/app/source"
+	"admini.dev/admini/app/util"
 )
 
 type Services struct {
@@ -35,6 +36,6 @@ func NewServices(ctx context.Context, st *State) (*Services, error) {
 	return &Services{Sources: ss, Projects: ps, Loaders: ls}, nil
 }
 
-func (s *Services) Close(_ context.Context) error {
+func (s *Services) Close(_ context.Context, logger util.Logger) error {
 	return nil
 }

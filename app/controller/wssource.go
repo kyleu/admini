@@ -14,7 +14,7 @@ import (
 
 func WorkspaceSource(rc *fasthttp.RequestCtx) {
 	actWorkspace("workspace.source", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		sourceKey, err := RCRequiredString(rc, "key", false)
+		sourceKey, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}

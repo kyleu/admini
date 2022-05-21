@@ -123,7 +123,7 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 }
 
 func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State) (*source.Source, *schema.Schema, *model.Model, error) {
-	key, err := RCRequiredString(rc, "key", false)
+	key, err := cutil.RCRequiredString(rc, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -135,7 +135,7 @@ func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State) (*source.Source, *s
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load schema for source [%s]", key)
 	}
-	path, err := RCRequiredString(rc, "path", false)
+	path, err := cutil.RCRequiredString(rc, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

@@ -23,7 +23,7 @@ func actWorkspace(key string, rc *fasthttp.RequestCtx, f func(as *app.State, ps 
 
 func WorkspaceProject(rc *fasthttp.RequestCtx) {
 	actWorkspace("workspace", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		projectKey, err := RCRequiredString(rc, "key", false)
+		projectKey, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}

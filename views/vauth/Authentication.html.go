@@ -33,7 +33,7 @@ func StreamAuthentication(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
 	qw422016.N().S(`
 `)
 //line views/vauth/Authentication.html:11
-	prvs, err := as.Auth.Providers()
+	prvs, err := as.Auth.Providers(ps.Logger)
 	if err != nil {
 		panic(err)
 	}

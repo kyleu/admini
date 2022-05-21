@@ -1,7 +1,7 @@
 # Content managed by Project Forge, see [projectforge.md] for details.
 # https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-* kyle@kyleu.com
+* @kyleu
 
 # $PF_SECTION_START(codeowners)$
 # $PF_SECTION_END(codeowners)$

@@ -28,7 +28,7 @@ func ProjectList(rc *fasthttp.RequestCtx) {
 
 func ProjectDetail(rc *fasthttp.RequestCtx) {
 	act("project.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := RCRequiredString(rc, "key", false)
+		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -44,7 +44,7 @@ func ProjectDetail(rc *fasthttp.RequestCtx) {
 
 func ProjectTest(rc *fasthttp.RequestCtx) {
 	act("project.test", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := RCRequiredString(rc, "key", false)
+		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
 		}

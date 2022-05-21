@@ -26,7 +26,7 @@ func ActionEdit(rc *fasthttp.RequestCtx) {
 }
 
 func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *action.Action, []string, error) {
-	key, err := RCRequiredString(rc, "key", false)
+	key, err := cutil.RCRequiredString(rc, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -35,7 +35,7 @@ func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *acti
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}
 
-	path, err := RCRequiredString(rc, "path", false)
+	path, err := cutil.RCRequiredString(rc, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
