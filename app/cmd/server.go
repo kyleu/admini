@@ -12,8 +12,6 @@ import (
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
-	"admini.dev/admini/app/lib/filesystem"
-	"admini.dev/admini/app/lib/telemetry"
 	"admini.dev/admini/app/util"
 )
 
@@ -51,21 +49,11 @@ func startServer(flags *Flags) error {
 
 func loadServer(flags *Flags, logger util.Logger) (*app.State, fasthttp.RequestHandler, util.Logger, error) {
 	r := controller.AppRoutes()
-	f := filesystem.NewFileSystem(flags.ConfigDir, logger)
-	telemetryDisabled := util.GetEnvBool("disable_telemetry", false)
-	st, err := app.NewState(flags.Debug, _buildInfo, f, !telemetryDisabled, logger)
+
+	st, err := buildDefaultAppState(flags, logger)
 	if err != nil {
 		return nil, nil, logger, err
 	}
-
-	ctx, span, logger := telemetry.StartSpan(context.Background(), "app:init", logger)
-	defer span.Complete()
-
-	svcs, err := app.NewServices(ctx, st)
-	if err != nil {
-		return nil, nil, nil, errors.Wrap(err, "error creating services")
-	}
-	st.Services = svcs
 
 	controller.SetAppState(st)
 
