@@ -10,6 +10,7 @@
     "core",
     "database",
     "desktop",
+    "filesystem",
     "ios",
     "marketing",
     "mysql",
@@ -25,6 +26,9 @@
   ],
   "ignore": [
     "^data"
+  ],
+  "tags": [
+    "kyleu"
   ],
   "info": {
     "org": "kyleu",

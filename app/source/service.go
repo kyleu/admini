@@ -133,7 +133,7 @@ func (s *Service) Delete(key string) error {
 }
 
 func (s *Service) reloadSourceCache() error {
-	dirs := s.files.ListDirectories(s.root)
+	dirs := s.files.ListDirectories(s.root, nil)
 	ret := make(Sources, 0, len(dirs))
 
 	for _, dir := range dirs {

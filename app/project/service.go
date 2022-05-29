@@ -53,7 +53,7 @@ func (s *Service) Search(ctx context.Context, q string) (result.Results, error) 
 }
 
 func (s *Service) reloadCache() error {
-	files := s.files.ListJSON(s.root, true)
+	files := s.files.ListJSON(s.root, nil, true)
 	ret := make(Projects, 0, len(files))
 
 	for _, key := range files {
