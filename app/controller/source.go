@@ -1,8 +1,10 @@
 package controller
 
 import (
+	"context"
 	"fmt"
 
+	"admini.dev/admini/app/lib/menu"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
@@ -16,7 +18,7 @@ const sourceKey = "source"
 
 func SourceList(rc *fasthttp.RequestCtx) {
 	act("source.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		s, err := as.Services.Sources.List()
+		s, err := as.Services.Sources.List(ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source list")
 		}
@@ -32,7 +34,7 @@ func SourceDetail(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		src, err := as.Services.Sources.Load(key, false)
+		src, err := as.Services.Sources.Load(key, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
@@ -52,7 +54,7 @@ func SourceRefresh(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		_, elapsedMillis, err := as.Services.Sources.SchemaRefresh(ps.Context, key)
+		_, elapsedMillis, err := as.Services.Sources.SchemaRefresh(ps.Context, key, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to  refresh schema for source [%s]", key)
 		}
@@ -79,4 +81,23 @@ func SourceHack(rc *fasthttp.RequestCtx) {
 		ps.Data = ret
 		return render(rc, as, &vsource.Hack{Schema: sch, Result: ret}, ps, "sources", key, "hack")
 	})
+}
+
+func sourceItems(ctx context.Context, as *app.State, logger util.Logger) menu.Items {
+	ss, err := as.Services.Sources.List(logger)
+	if err != nil {
+		return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}
+	}
+
+	srcMenu := make(menu.Items, 0, len(ss))
+	for _, s := range ss {
+		srcMenu = append(srcMenu, &menu.Item{
+			Key:         s.Key,
+			Title:       s.Name(),
+			Icon:        s.IconWithFallback(),
+			Description: s.Description,
+			Route:       "/source/" + s.Key,
+		})
+	}
+	return srcMenu
 }

@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"context"
 	"fmt"
 
+	"admini.dev/admini/app/lib/menu"
+	"admini.dev/admini/app/util"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
@@ -17,7 +20,7 @@ func ProjectNew(rc *fasthttp.RequestCtx) {
 		ps.Title = "New Project"
 		p := &project.Project{}
 		ps.Data = p
-		avail, err := as.Services.Sources.List()
+		avail, err := as.Services.Sources.List(ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
@@ -43,7 +46,7 @@ func ProjectInsert(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 		ret := &project.Project{Key: key, Title: title, Icon: icon, Description: description, Sources: sources}
-		err = as.Services.Projects.Save(ret, false)
+		err = as.Services.Projects.Save(ret, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
@@ -57,14 +60,14 @@ func ProjectEdit(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		prj, err := as.Services.Projects.LoadRequired(key, false)
+		prj, err := as.Services.Projects.LoadRequired(key, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
 		ps.Title = fmt.Sprintf("Edit [%s]", prj.Name())
 		ps.Data = prj
 
-		avail, err := as.Services.Sources.List()
+		avail, err := as.Services.Sources.List(ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
@@ -84,7 +87,7 @@ func ProjectSave(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		prj, err := as.Services.Projects.LoadRequired(key, false)
+		prj, err := as.Services.Projects.LoadRequired(key, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
@@ -97,7 +100,7 @@ func ProjectSave(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		err = as.Services.Projects.Save(prj, true)
+		err = as.Services.Projects.Save(prj, true, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to save project [%s]", key)
 		}
@@ -113,7 +116,7 @@ func ProjectDelete(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		err = as.Services.Projects.Delete(key)
+		err = as.Services.Projects.Delete(key, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to delete project [%s]", key)
 		}
@@ -121,4 +124,23 @@ func ProjectDelete(rc *fasthttp.RequestCtx) {
 		msg := fmt.Sprintf(`deleted project %q`, key)
 		return flashAndRedir(true, msg, "/project", rc, ps)
 	})
+}
+
+func projectItems(ctx context.Context, as *app.State, logger util.Logger) menu.Items {
+	ps, err := as.Services.Projects.List(ctx, logger)
+	if err != nil {
+		return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}
+	}
+
+	prjMenu := make(menu.Items, 0, len(ps))
+	for _, p := range ps {
+		prjMenu = append(prjMenu, &menu.Item{
+			Key:         p.Key,
+			Title:       p.Name(),
+			Icon:        p.IconWithFallback(),
+			Description: p.Description,
+			Route:       "/project/" + p.Key,
+		})
+	}
+	return prjMenu
 }

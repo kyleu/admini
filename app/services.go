@@ -29,9 +29,9 @@ func NewServices(ctx context.Context, st *State) (*Services, error) {
 	if database.SQLiteEnabled {
 		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, st.Logger))
 	}
-	ls.Set(schema.OriginMock, lmock.NewLoader(ctx, st.Logger))
-	ss := source.NewService(st.Files, ls, st.Logger)
-	ps := project.NewService(st.Files, ss, ls, st.Logger)
+	ls.Set(schema.OriginMock, lmock.NewLoader(ctx))
+	ss := source.NewService(st.Files, ls)
+	ps := project.NewService(st.Files, ss, ls)
 
 	return &Services{Sources: ss, Projects: ps, Loaders: ls}, nil
 }

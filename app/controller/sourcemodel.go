@@ -18,7 +18,7 @@ import (
 
 func SourceModelDetail(rc *fasthttp.RequestCtx) {
 	act("source.model.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		src, sch, m, err := loadSourceModel(rc, as)
+		src, sch, m, err := loadSourceModel(rc, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "")
 		}
@@ -32,7 +32,7 @@ func SourceModelDetail(rc *fasthttp.RequestCtx) {
 
 func SourceModelSave(rc *fasthttp.RequestCtx) {
 	act("source.model.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		src, _, m, err := loadSourceModel(rc, as)
+		src, _, m, err := loadSourceModel(rc, as, ps.Logger)
 		if err != nil {
 			return "", err
 		}
@@ -122,12 +122,12 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 	return m, ret, nil
 }
 
-func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State) (*source.Source, *schema.Schema, *model.Model, error) {
+func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State, logger util.Logger) (*source.Source, *schema.Schema, *model.Model, error) {
 	key, err := cutil.RCRequiredString(rc, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	src, err := as.Services.Sources.Load(key, false)
+	src, err := as.Services.Sources.Load(key, false, logger)
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load source [%s]", key)
 	}

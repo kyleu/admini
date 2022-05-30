@@ -16,7 +16,7 @@ import (
 
 func ProjectList(rc *fasthttp.RequestCtx) {
 	act("project.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, err := as.Services.Projects.List(ps.Context)
+		p, err := as.Services.Projects.List(ps.Context, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project list")
 		}
@@ -32,7 +32,7 @@ func ProjectDetail(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		prj, err := as.Services.Projects.LoadView(key)
+		prj, err := as.Services.Projects.LoadView(key, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
@@ -48,7 +48,7 @@ func ProjectTest(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		v, err := as.Services.Projects.LoadView(key)
+		v, err := as.Services.Projects.LoadView(key, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}

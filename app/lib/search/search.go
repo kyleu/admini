@@ -25,10 +25,10 @@ func Search(ctx context.Context, as *app.State, params *Params, logger util.Logg
 	var allProviders []Provider
 	// $PF_SECTION_START(search_functions)$
 	projectFunc := func(ctx context.Context, as *app.State, p *Params, logger util.Logger) (result.Results, error) {
-		return as.Services.Projects.Search(ctx, p.Q)
+		return as.Services.Projects.Search(ctx, p.Q, logger)
 	}
 	sourceFunc := func(ctx context.Context, as *app.State, p *Params, logger util.Logger) (result.Results, error) {
-		return as.Services.Sources.Search(p.Q)
+		return as.Services.Sources.Search(p.Q, logger)
 	}
 	allProviders = append(allProviders, projectFunc, sourceFunc)
 	// $PF_SECTION_END(search_functions)$

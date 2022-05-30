@@ -59,9 +59,9 @@ func (s *Service) SaveSchema(key string, sch *schema.Schema) error {
 	return nil
 }
 
-func (s *Service) SchemaRefresh(ctx context.Context, key string) (*schema.Schema, float64, error) {
+func (s *Service) SchemaRefresh(ctx context.Context, key string, logger util.Logger) (*schema.Schema, float64, error) {
 	startNanos := time.Now().UnixNano()
-	source, err := s.Load(key, false)
+	source, err := s.Load(key, false, logger)
 	if err != nil {
 		return nil, 0, errors.Wrapf(err, "can't load source with key [%s]", key)
 	}

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/filter"
 	"admini.dev/admini/app/lib/schema"
@@ -16,16 +15,11 @@ import (
 
 type Loader struct {
 	key    string
-	logger util.Logger
 }
 
-func NewLoader(_ context.Context, logger util.Logger) func(key string, cfg []byte) (loader.Loader, error) {
+func NewLoader(_ context.Context) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
-		ret := &Loader{
-			key:    key,
-			logger: logger.With(zap.String("service", "loader.mock"), zap.String("source", key)),
-		}
-		return ret, nil
+		return &Loader{key:    key}, nil
 	}
 }
 

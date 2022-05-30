@@ -4,7 +4,6 @@ import (
 	"path/filepath"
 
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/filesystem"
@@ -20,17 +19,15 @@ type Service struct {
 	schemaCache map[string]*schema.Schema
 	files       filesystem.FileLoader
 	loaders     *loader.Service
-	logger      util.Logger
 }
 
-func NewService(files filesystem.FileLoader, ld *loader.Service, logger util.Logger) *Service {
-	log := logger.With(zap.String("service", "source"))
-	return &Service{root: "source", schemaCache: map[string]*schema.Schema{}, files: files, loaders: ld, logger: log}
+func NewService(files filesystem.FileLoader, ld *loader.Service) *Service {
+	return &Service{root: "source", schemaCache: map[string]*schema.Schema{}, files: files, loaders: ld}
 }
 
-func (s *Service) List() (Sources, error) {
+func (s *Service) List(logger util.Logger) (Sources, error) {
 	if s.cache == nil {
-		err := s.reloadSourceCache()
+		err := s.reloadSourceCache(logger)
 		if err != nil {
 			return nil, err
 		}
@@ -38,9 +35,9 @@ func (s *Service) List() (Sources, error) {
 	return s.cache, nil
 }
 
-func (s *Service) Search(q string) (result.Results, error) {
+func (s *Service) Search(q string, logger util.Logger) (result.Results, error) {
 	ret := result.Results{}
-	ps, err := s.List()
+	ps, err := s.List(logger)
 	if err != nil {
 		return nil, err
 	}
@@ -67,10 +64,10 @@ func (s *Service) NewSource(key string, title string, icon string, description s
 	return ret
 }
 
-func (s *Service) Load(key string, force bool) (*Source, error) {
+func (s *Service) Load(key string, force bool, logger util.Logger) (*Source, error) {
 	if !force {
 		if s.cache == nil {
-			err := s.reloadSourceCache()
+			err := s.reloadSourceCache(logger)
 			if err != nil {
 				return nil, err
 			}
@@ -97,7 +94,7 @@ func (s *Service) Load(key string, force bool) (*Source, error) {
 	return ret, nil
 }
 
-func (s *Service) Save(src *Source, overwrite bool) error {
+func (s *Service) Save(src *Source, overwrite bool, logger util.Logger) error {
 	p := filepath.Join(s.root, src.Key)
 	if !overwrite && s.files.Exists(p) {
 		return errors.Errorf("source [%s] already exists", src.Key)
@@ -108,36 +105,36 @@ func (s *Service) Save(src *Source, overwrite bool) error {
 	if err != nil {
 		return errors.Wrapf(err, "unable to save schema [%s]", src.Key)
 	}
-	err = s.reloadSourceCache()
+	err = s.reloadSourceCache(logger)
 	if err != nil {
 		return errors.Wrap(err, "unable to load schemata")
 	}
 	return nil
 }
 
-func (s *Service) Delete(key string) error {
+func (s *Service) Delete(key string, logger util.Logger) error {
 	p := filepath.Join(s.root, key)
 	if !s.files.Exists(p) {
 		return errors.Errorf("source [%s] doesn't exist", key)
 	}
-	err := s.files.RemoveRecursive(p)
+	err := s.files.RemoveRecursive(p, logger)
 	if err != nil {
 		return errors.Wrap(err, "unable to remove source files")
 	}
 	delete(s.schemaCache, key)
-	err = s.reloadSourceCache()
+	err = s.reloadSourceCache(logger)
 	if err != nil {
 		return errors.Wrap(err, "unable to load sources")
 	}
 	return nil
 }
 
-func (s *Service) reloadSourceCache() error {
-	dirs := s.files.ListDirectories(s.root, nil)
+func (s *Service) reloadSourceCache(logger util.Logger) error {
+	dirs := s.files.ListDirectories(s.root, nil, logger)
 	ret := make(Sources, 0, len(dirs))
 
 	for _, dir := range dirs {
-		src, err := s.Load(dir, true)
+		src, err := s.Load(dir, true, logger)
 		if err != nil {
 			return errors.Wrapf(err, "unable to load source [%s]", dir)
 		}

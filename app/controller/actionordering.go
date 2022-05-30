@@ -19,7 +19,7 @@ func ActionOrdering(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		prj, err := as.Services.Projects.LoadRequired(key, false)
+		prj, err := as.Services.Projects.LoadRequired(key, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
@@ -41,13 +41,13 @@ func ActionOrdering(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		err = as.Services.Projects.Save(prj, true)
+		err = as.Services.Projects.Save(prj, true, ps.Logger)
 		if err != nil {
 			return "", err
 		}
 		elapsedMillis := float64((time.Now().UnixNano()-startNanos)/int64(time.Microsecond)) / float64(1000)
 
-		_, err = as.Services.Projects.LoadRequired(prj.Key, true)
+		_, err = as.Services.Projects.LoadRequired(prj.Key, true, ps.Logger)
 		if err != nil {
 			return "", err
 		}

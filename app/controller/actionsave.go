@@ -13,7 +13,7 @@ import (
 
 func ActionSave(rc *fasthttp.RequestCtx) {
 	act("action.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, a, _, err := loadAction(rc, as)
+		p, a, _, err := loadAction(rc, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
 		}
@@ -56,7 +56,7 @@ func ActionSave(rc *fasthttp.RequestCtx) {
 		// p.Actions.Set(a)
 		p.Actions = acts
 
-		err = as.Services.Projects.Save(p, true)
+		err = as.Services.Projects.Save(p, true, ps.Logger)
 		if err != nil {
 			return "", err
 		}

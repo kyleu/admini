@@ -61,7 +61,7 @@ func SourceExample(rc *fasthttp.RequestCtx) {
 
 		ret := as.Services.Sources.NewSource("example", "Example", "star", "Example music database", schema.OriginSQLite)
 		ret.Config = []byte(util.ToJSON(map[string]any{"file": fpath}))
-		err = as.Services.Sources.Save(ret, false)
+		err = as.Services.Sources.Save(ret, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save example database")
 		}
@@ -86,7 +86,7 @@ func SourceInsert(rc *fasthttp.RequestCtx) {
 		description := frm.GetStringOpt("description")
 		typ := frm.GetStringOpt("type")
 		ret := as.Services.Sources.NewSource(key, title, icon, description, schema.OriginFromString(typ))
-		err = as.Services.Sources.Save(ret, false)
+		err = as.Services.Sources.Save(ret, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
@@ -100,7 +100,7 @@ func SourceEdit(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		src, err := as.Services.Sources.Load(key, false)
+		src, err := as.Services.Sources.Load(key, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
@@ -129,7 +129,7 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		src, err := as.Services.Sources.Load(key, false)
+		src, err := as.Services.Sources.Load(key, false, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load source [%s]", key)
 		}
@@ -178,7 +178,7 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 			return "", errors.Errorf("unable to parse config for source type [%s]", src.Type.String())
 		}
 
-		err = as.Services.Sources.Save(src, true)
+		err = as.Services.Sources.Save(src, true, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to save source [%s]", key)
 		}
@@ -194,7 +194,7 @@ func SourceDelete(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", err
 		}
-		err = as.Services.Sources.Delete(key)
+		err = as.Services.Sources.Delete(key, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to delete source [%s]", key)
 		}

@@ -14,7 +14,7 @@ import (
 
 func ActionEdit(rc *fasthttp.RequestCtx) {
 	act("action.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, a, _, err := loadAction(rc, as)
+		p, a, _, err := loadAction(rc, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
 		}
@@ -25,12 +25,12 @@ func ActionEdit(rc *fasthttp.RequestCtx) {
 	})
 }
 
-func loadAction(rc *fasthttp.RequestCtx, as *app.State) (*project.Project, *action.Action, []string, error) {
+func loadAction(rc *fasthttp.RequestCtx, as *app.State, logger util.Logger) (*project.Project, *action.Action, []string, error) {
 	key, err := cutil.RCRequiredString(rc, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	p, err := as.Services.Projects.Load(key, false)
+	p, err := as.Services.Projects.Load(key, false, logger)
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}

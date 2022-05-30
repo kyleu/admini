@@ -28,7 +28,7 @@ func WorkspaceSource(rc *fasthttp.RequestCtx) {
 			return ersp("provided path [%s] is not part of the source workspace", path)
 		}
 
-		pv, err := as.Services.Projects.LoadSourceProject(sourceKey)
+		pv, err := as.Services.Projects.LoadSourceProject(sourceKey, ps.Logger)
 		if err != nil {
 			return "", errors.Wrapf(err, "error loading source and schema info [%s]", path)
 		}

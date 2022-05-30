@@ -13,8 +13,8 @@ import (
 
 const SourceProjectPrefix = "__"
 
-func (s *Service) LoadSourceProject(srcKey string) (*View, error) {
-	src, err := s.sources.Load(srcKey, false)
+func (s *Service) LoadSourceProject(srcKey string, logger util.Logger) (*View, error) {
+	src, err := s.sources.Load(srcKey, false, logger)
 	if err != nil {
 		return nil, err
 	}
