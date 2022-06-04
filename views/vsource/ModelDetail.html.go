@@ -6,6 +6,8 @@ package vsource
 
 //line views/vsource/ModelDetail.html:1
 import (
+	"path/filepath"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema"
@@ -13,23 +15,22 @@ import (
 	"admini.dev/admini/app/source"
 	"admini.dev/admini/views/components"
 	"admini.dev/admini/views/layout"
-	"path/filepath"
 )
 
-//line views/vsource/ModelDetail.html:12
+//line views/vsource/ModelDetail.html:13
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line views/vsource/ModelDetail.html:12
+//line views/vsource/ModelDetail.html:13
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line views/vsource/ModelDetail.html:12
+//line views/vsource/ModelDetail.html:13
 type ModelDetail struct {
 	layout.Basic
 	Source *source.Source
@@ -37,78 +38,78 @@ type ModelDetail struct {
 	Model  *model.Model
 }
 
-//line views/vsource/ModelDetail.html:19
+//line views/vsource/ModelDetail.html:20
 func (p *ModelDetail) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.PageState) {
-//line views/vsource/ModelDetail.html:19
+//line views/vsource/ModelDetail.html:20
 	qw422016.N().S(`
   <form action="" method="post" enctype="application/x-www-form-urlencoded">
     <div class="card">
       <div class="right">
         <a href="/s/`)
-//line views/vsource/ModelDetail.html:23
+//line views/vsource/ModelDetail.html:24
 	qw422016.E().S(p.Source.Key)
-//line views/vsource/ModelDetail.html:23
+//line views/vsource/ModelDetail.html:24
 	qw422016.N().S(`/`)
-//line views/vsource/ModelDetail.html:23
+//line views/vsource/ModelDetail.html:24
 	qw422016.E().S(filepath.Join(p.Model.Path()...))
-//line views/vsource/ModelDetail.html:23
+//line views/vsource/ModelDetail.html:24
 	qw422016.N().S(`"><button type="button">View</button></a>
       </div>
       <h3>`)
-//line views/vsource/ModelDetail.html:25
+//line views/vsource/ModelDetail.html:26
 	qw422016.E().S(p.Model.Name())
-//line views/vsource/ModelDetail.html:25
+//line views/vsource/ModelDetail.html:26
 	qw422016.N().S(`</h3>
       <em><a href="/source/`)
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 	qw422016.E().S(p.Source.Key)
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 	qw422016.N().S(`">`)
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 	qw422016.E().S(p.Source.Key)
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 	qw422016.N().S(`</a>`)
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 	if len(p.Model.Pkg) > 0 {
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 		qw422016.N().S(`@`)
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 		qw422016.E().S(p.Model.Pkg.ToPath())
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 	}
-//line views/vsource/ModelDetail.html:26
+//line views/vsource/ModelDetail.html:27
 	qw422016.N().S(`</em>
     </div>
 `)
-//line views/vsource/ModelDetail.html:28
+//line views/vsource/ModelDetail.html:29
 	m := p.Model
 
-//line views/vsource/ModelDetail.html:28
+//line views/vsource/ModelDetail.html:29
 	qw422016.N().S(`    <div class="card">
       <table>
         <tbody>
           <tr>
             <th class="shrink"><label for="input-`)
-//line views/vsource/ModelDetail.html:33
+//line views/vsource/ModelDetail.html:34
 	qw422016.E().S(schema.KeyTitle)
-//line views/vsource/ModelDetail.html:33
+//line views/vsource/ModelDetail.html:34
 	qw422016.N().S(`">Title</label></th>
             <td>`)
-//line views/vsource/ModelDetail.html:34
+//line views/vsource/ModelDetail.html:35
 	components.StreamFormInput(qw422016, "title", "input-"+schema.KeyTitle, m.Name())
-//line views/vsource/ModelDetail.html:34
+//line views/vsource/ModelDetail.html:35
 	qw422016.N().S(`</td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-`)
-//line views/vsource/ModelDetail.html:37
+//line views/vsource/ModelDetail.html:38
 	qw422016.E().S(schema.KeyPlural)
-//line views/vsource/ModelDetail.html:37
+//line views/vsource/ModelDetail.html:38
 	qw422016.N().S(`">Plural</label></th>
             <td>`)
-//line views/vsource/ModelDetail.html:38
+//line views/vsource/ModelDetail.html:39
 	components.StreamFormInput(qw422016, "plural", "input-"+schema.KeyPlural, m.PluralName())
-//line views/vsource/ModelDetail.html:38
+//line views/vsource/ModelDetail.html:39
 	qw422016.N().S(`</td>
           </tr>
         </tbody>
@@ -119,42 +120,42 @@ func (p *ModelDetail) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *c
       </div>
     </div>
 `)
-//line views/vsource/ModelDetail.html:47
-	StreamModelFieldList(qw422016, m, as, ps)
 //line views/vsource/ModelDetail.html:48
-	StreamModelIndexList(qw422016, m, as, ps)
+	StreamModelFieldList(qw422016, m, as, ps)
 //line views/vsource/ModelDetail.html:49
+	StreamModelIndexList(qw422016, m, as, ps)
+//line views/vsource/ModelDetail.html:50
 	StreamModelRelationshipList(qw422016, m, as, ps)
-//line views/vsource/ModelDetail.html:50
+//line views/vsource/ModelDetail.html:51
 	StreamModelReferenceList(qw422016, m, as, ps)
-//line views/vsource/ModelDetail.html:50
+//line views/vsource/ModelDetail.html:51
 	qw422016.N().S(`  </form>
 `)
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 }
 
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 func (p *ModelDetail) WriteBody(qq422016 qtio422016.Writer, as *app.State, ps *cutil.PageState) {
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	p.StreamBody(qw422016, as, ps)
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	qt422016.ReleaseWriter(qw422016)
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 }
 
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 func (p *ModelDetail) Body(as *app.State, ps *cutil.PageState) string {
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	p.WriteBody(qb422016, as, ps)
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	qs422016 := string(qb422016.B)
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 	return qs422016
-//line views/vsource/ModelDetail.html:52
+//line views/vsource/ModelDetail.html:53
 }

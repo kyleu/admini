@@ -11,9 +11,9 @@ require (
 	github.com/fasthttp/router v1.4.9
 	github.com/fsnotify/fsnotify v1.5.4
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/go-ini/ini v1.66.4
+	github.com/go-ini/ini v1.66.6
 	github.com/go-sql-driver/mysql v1.6.0
-	github.com/gomarkdown/markdown v0.0.0-20220510115730-2372b9aa33e5
+	github.com/gomarkdown/markdown v0.0.0-20220527210340-c82b80a9daf2
 	github.com/google/go-github/v39 v39.2.0
 	github.com/google/uuid v1.3.0
 	github.com/iancoleman/strcase v0.2.0
@@ -73,7 +73,7 @@ require (
 	github.com/prometheus/common v0.34.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
-	github.com/savsgio/gotils v0.0.0-20220401102855-e56b59f40436 // indirect
+	github.com/savsgio/gotils v0.0.0-20220530130905-52f3993e8d6d // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.7.0 // indirect
@@ -90,7 +90,7 @@ require (
 	golang.org/x/tools v0.1.10 // indirect
 	golang.org/x/xerrors v0.0.0-20220517211312-f3a8303e98df // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20220527130721-00d5c0f3be58 // indirect
+	google.golang.org/genproto v0.0.0-20220531134929-86cf59382f1b // indirect
 	google.golang.org/grpc v1.46.2 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	lukechampine.com/uint128 v1.2.0 // indirect

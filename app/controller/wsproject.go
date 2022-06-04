@@ -17,7 +17,7 @@ import (
 
 func actWorkspace(key string, rc *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	as := _currentAppState
-	ps := loadPageState(rc, key, as)
+	ps := loadPageState(rc, key, _currentAppRootLogger)
 	actComplete(key, as, ps, rc, f)
 }
 

@@ -22,12 +22,12 @@ type Services struct {
 	Loaders  *loader.Service
 }
 
-func NewServices(ctx context.Context, st *State) (*Services, error) {
+func NewServices(ctx context.Context, st *State, logger util.Logger) (*Services, error) {
 	ls := loader.NewService()
-	ls.Set(schema.OriginMySQL, lmysql.NewLoader(ctx, st.Logger))
-	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(ctx, st.Logger))
+	ls.Set(schema.OriginMySQL, lmysql.NewLoader(ctx, logger))
+	ls.Set(schema.OriginPostgres, lpostgres.NewLoader(ctx, logger))
 	if database.SQLiteEnabled {
-		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, st.Logger))
+		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, logger))
 	}
 	ls.Set(schema.OriginMock, lmock.NewLoader(ctx))
 	ss := source.NewService(st.Files, ls)

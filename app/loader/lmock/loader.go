@@ -14,12 +14,12 @@ import (
 )
 
 type Loader struct {
-	key    string
+	key string
 }
 
 func NewLoader(_ context.Context) func(key string, cfg []byte) (loader.Loader, error) {
 	return func(key string, cfg []byte) (loader.Loader, error) {
-		return &Loader{key:    key}, nil
+		return &Loader{key: key}, nil
 	}
 }
 

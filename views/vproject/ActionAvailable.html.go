@@ -6,6 +6,8 @@ package vproject
 
 //line views/vproject/ActionAvailable.html:1
 import (
+	"fmt"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
@@ -14,236 +16,235 @@ import (
 	"admini.dev/admini/app/project"
 	"admini.dev/admini/app/source"
 	"admini.dev/admini/views/vutil"
-	"fmt"
 )
 
-//line views/vproject/ActionAvailable.html:13
+//line views/vproject/ActionAvailable.html:14
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line views/vproject/ActionAvailable.html:13
+//line views/vproject/ActionAvailable.html:14
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line views/vproject/ActionAvailable.html:13
+//line views/vproject/ActionAvailable.html:14
 func StreamActionAvailable(qw422016 *qt422016.Writer, v *project.View, as *app.State, ps *cutil.PageState, indent int) {
-//line views/vproject/ActionAvailable.html:13
+//line views/vproject/ActionAvailable.html:14
 	qw422016.N().S(`<div class="container">`)
-//line views/vproject/ActionAvailable.html:15
-	streamitemTemplate(qw422016, action.TypeFolder, `folder`, `New Folder`, indent)
 //line views/vproject/ActionAvailable.html:16
-	streamitemTemplate(qw422016, action.TypeStatic, action.TypeStatic.Key, `Static Content`, indent)
+	streamitemTemplate(qw422016, action.TypeFolder, `folder`, `New Folder`, indent)
 //line views/vproject/ActionAvailable.html:17
-	streamitemTemplate(qw422016, action.TypeSeparator, action.TypeSeparator.Key, `Separator`, indent)
+	streamitemTemplate(qw422016, action.TypeStatic, action.TypeStatic.Key, `Static Content`, indent)
 //line views/vproject/ActionAvailable.html:18
-	streamitemTemplate(qw422016, action.TypeAll, action.TypeAll.Key, `All Sources`, indent)
+	streamitemTemplate(qw422016, action.TypeSeparator, action.TypeSeparator.Key, `Separator`, indent)
 //line views/vproject/ActionAvailable.html:19
-	for _, src := range v.Sources {
+	streamitemTemplate(qw422016, action.TypeAll, action.TypeAll.Key, `All Sources`, indent)
 //line views/vproject/ActionAvailable.html:20
+	for _, src := range v.Sources {
+//line views/vproject/ActionAvailable.html:21
 		streamitemSchema(qw422016, src, v.Schemata.Get(src.Key), indent)
-//line views/vproject/ActionAvailable.html:21
+//line views/vproject/ActionAvailable.html:22
 	}
-//line views/vproject/ActionAvailable.html:21
+//line views/vproject/ActionAvailable.html:22
 	qw422016.N().S(`</div>`)
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 }
 
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 func WriteActionAvailable(qq422016 qtio422016.Writer, v *project.View, as *app.State, ps *cutil.PageState, indent int) {
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	StreamActionAvailable(qw422016, v, as, ps, indent)
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	qt422016.ReleaseWriter(qw422016)
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 }
 
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 func ActionAvailable(v *project.View, as *app.State, ps *cutil.PageState, indent int) string {
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	WriteActionAvailable(qb422016, v, as, ps, indent)
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	qs422016 := string(qb422016.B)
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 	return qs422016
-//line views/vproject/ActionAvailable.html:23
+//line views/vproject/ActionAvailable.html:24
 }
 
-//line views/vproject/ActionAvailable.html:25
-func streamitemSchema(qw422016 *qt422016.Writer, src *source.Source, sch *schema.Schema, indent int) {
 //line views/vproject/ActionAvailable.html:26
-	streamitemTemplate(qw422016, action.TypeSource, `source/`+src.Key, src.Name(), 5)
+func streamitemSchema(qw422016 *qt422016.Writer, src *source.Source, sch *schema.Schema, indent int) {
 //line views/vproject/ActionAvailable.html:27
-	streamitemTemplate(qw422016, action.TypeActivity, `activity/`+src.Key+"/sql", "SQL Playground", 5)
+	streamitemTemplate(qw422016, action.TypeSource, `source/`+src.Key, src.Name(), 5)
 //line views/vproject/ActionAvailable.html:28
+	streamitemTemplate(qw422016, action.TypeActivity, `activity/`+src.Key+"/sql", "SQL Playground", 5)
+//line views/vproject/ActionAvailable.html:29
 	streamitemModelPackage(qw422016, src, sch.ModelsByPackage(), false, 5)
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 }
 
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 func writeitemSchema(qq422016 qtio422016.Writer, src *source.Source, sch *schema.Schema, indent int) {
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	streamitemSchema(qw422016, src, sch, indent)
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	qt422016.ReleaseWriter(qw422016)
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 }
 
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 func itemSchema(src *source.Source, sch *schema.Schema, indent int) string {
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	writeitemSchema(qb422016, src, sch, indent)
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	qs422016 := string(qb422016.B)
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 	return qs422016
-//line views/vproject/ActionAvailable.html:29
+//line views/vproject/ActionAvailable.html:30
 }
 
-//line views/vproject/ActionAvailable.html:31
-func streamitemModelPackage(qw422016 *qt422016.Writer, src *source.Source, pkg *model.Package, showRoot bool, indent int) {
 //line views/vproject/ActionAvailable.html:32
-	if showRoot {
+func streamitemModelPackage(qw422016 *qt422016.Writer, src *source.Source, pkg *model.Package, showRoot bool, indent int) {
 //line views/vproject/ActionAvailable.html:33
-		streamitemTemplate(qw422016, action.TypePackage, fmt.Sprintf("package/%s/%s", src.Key, pkg.PathString()), pkg.Key, indent)
+	if showRoot {
 //line views/vproject/ActionAvailable.html:34
-	}
+		streamitemTemplate(qw422016, action.TypePackage, fmt.Sprintf("package/%s/%s", src.Key, pkg.PathString()), pkg.Key, indent)
 //line views/vproject/ActionAvailable.html:35
-	for _, p := range pkg.ChildPackages {
+	}
 //line views/vproject/ActionAvailable.html:36
-		vutil.StreamIndent(qw422016, true, indent)
+	for _, p := range pkg.ChildPackages {
 //line views/vproject/ActionAvailable.html:37
-		streamitemModelPackage(qw422016, src, p, true, indent)
-//line views/vproject/ActionAvailable.html:38
-	}
-//line views/vproject/ActionAvailable.html:39
-	for _, m := range pkg.ChildModels {
-//line views/vproject/ActionAvailable.html:40
 		vutil.StreamIndent(qw422016, true, indent)
-//line views/vproject/ActionAvailable.html:41
-		streamitemTemplate(qw422016, action.TypeModel, fmt.Sprintf("model/%s/%s", src.Key, m.PathString()), m.Name(), indent)
-//line views/vproject/ActionAvailable.html:42
+//line views/vproject/ActionAvailable.html:38
+		streamitemModelPackage(qw422016, src, p, true, indent)
+//line views/vproject/ActionAvailable.html:39
 	}
+//line views/vproject/ActionAvailable.html:40
+	for _, m := range pkg.ChildModels {
+//line views/vproject/ActionAvailable.html:41
+		vutil.StreamIndent(qw422016, true, indent)
+//line views/vproject/ActionAvailable.html:42
+		streamitemTemplate(qw422016, action.TypeModel, fmt.Sprintf("model/%s/%s", src.Key, m.PathString()), m.Name(), indent)
 //line views/vproject/ActionAvailable.html:43
+	}
+//line views/vproject/ActionAvailable.html:44
 }
 
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 func writeitemModelPackage(qq422016 qtio422016.Writer, src *source.Source, pkg *model.Package, showRoot bool, indent int) {
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	streamitemModelPackage(qw422016, src, pkg, showRoot, indent)
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	qt422016.ReleaseWriter(qw422016)
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 }
 
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 func itemModelPackage(src *source.Source, pkg *model.Package, showRoot bool, indent int) string {
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	writeitemModelPackage(qb422016, src, pkg, showRoot, indent)
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	qs422016 := string(qb422016.B)
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 	return qs422016
-//line views/vproject/ActionAvailable.html:43
+//line views/vproject/ActionAvailable.html:44
 }
 
-//line views/vproject/ActionAvailable.html:45
+//line views/vproject/ActionAvailable.html:46
 func streamitemTemplate(qw422016 *qt422016.Writer, t *action.Type, path string, title string, indent int) {
-//line views/vproject/ActionAvailable.html:45
+//line views/vproject/ActionAvailable.html:46
 	qw422016.N().S(`<div class="item`)
-//line views/vproject/ActionAvailable.html:46
+//line views/vproject/ActionAvailable.html:47
 	qw422016.N().S(` `)
-//line views/vproject/ActionAvailable.html:46
+//line views/vproject/ActionAvailable.html:47
 	qw422016.E().S(t.Key)
-//line views/vproject/ActionAvailable.html:46
+//line views/vproject/ActionAvailable.html:47
 	qw422016.N().S(`" data-key="_new" data-title="`)
-//line views/vproject/ActionAvailable.html:46
+//line views/vproject/ActionAvailable.html:47
 	qw422016.E().S(title)
-//line views/vproject/ActionAvailable.html:46
+//line views/vproject/ActionAvailable.html:47
 	qw422016.N().S(`" data-original-path="`)
-//line views/vproject/ActionAvailable.html:46
+//line views/vproject/ActionAvailable.html:47
 	qw422016.E().S(path)
-//line views/vproject/ActionAvailable.html:46
+//line views/vproject/ActionAvailable.html:47
 	qw422016.N().S(`">`)
-//line views/vproject/ActionAvailable.html:47
+//line views/vproject/ActionAvailable.html:48
 	vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vproject/ActionAvailable.html:47
+//line views/vproject/ActionAvailable.html:48
 	qw422016.N().S(`<div class="content">`)
-//line views/vproject/ActionAvailable.html:49
+//line views/vproject/ActionAvailable.html:50
 	vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vproject/ActionAvailable.html:49
+//line views/vproject/ActionAvailable.html:50
 	qw422016.N().S(`<div class="handle">≡</div>`)
-//line views/vproject/ActionAvailable.html:51
+//line views/vproject/ActionAvailable.html:52
 	vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vproject/ActionAvailable.html:51
+//line views/vproject/ActionAvailable.html:52
 	qw422016.N().S(`<div class="title">`)
-//line views/vproject/ActionAvailable.html:52
+//line views/vproject/ActionAvailable.html:53
 	qw422016.E().S(title)
-//line views/vproject/ActionAvailable.html:52
-	qw422016.N().S(`</div>`)
 //line views/vproject/ActionAvailable.html:53
+	qw422016.N().S(`</div>`)
+//line views/vproject/ActionAvailable.html:54
 	vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vproject/ActionAvailable.html:53
+//line views/vproject/ActionAvailable.html:54
 	qw422016.N().S(`<div class="remove">×</div>`)
-//line views/vproject/ActionAvailable.html:55
+//line views/vproject/ActionAvailable.html:56
 	vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vproject/ActionAvailable.html:55
+//line views/vproject/ActionAvailable.html:56
 	qw422016.N().S(`</div>`)
-//line views/vproject/ActionAvailable.html:57
+//line views/vproject/ActionAvailable.html:58
 	vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vproject/ActionAvailable.html:57
+//line views/vproject/ActionAvailable.html:58
 	qw422016.N().S(`<div class="container"></div>`)
-//line views/vproject/ActionAvailable.html:59
+//line views/vproject/ActionAvailable.html:60
 	vutil.StreamIndent(qw422016, true, indent)
-//line views/vproject/ActionAvailable.html:59
+//line views/vproject/ActionAvailable.html:60
 	qw422016.N().S(`</div>`)
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 }
 
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 func writeitemTemplate(qq422016 qtio422016.Writer, t *action.Type, path string, title string, indent int) {
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	streamitemTemplate(qw422016, t, path, title, indent)
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	qt422016.ReleaseWriter(qw422016)
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 }
 
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 func itemTemplate(t *action.Type, path string, title string, indent int) string {
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	writeitemTemplate(qb422016, t, path, title, indent)
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	qs422016 := string(qb422016.B)
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 	return qs422016
-//line views/vproject/ActionAvailable.html:61
+//line views/vproject/ActionAvailable.html:62
 }

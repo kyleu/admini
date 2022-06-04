@@ -6,30 +6,31 @@ package vmodel
 
 //line views/vmodel/Edit.html:1
 import (
+	"fmt"
+	"strings"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/views/components/fieldedit"
 	"admini.dev/admini/views/layout"
-	"fmt"
-	"strings"
 )
 
-//line views/vmodel/Edit.html:12
+//line views/vmodel/Edit.html:13
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line views/vmodel/Edit.html:12
+//line views/vmodel/Edit.html:13
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line views/vmodel/Edit.html:12
+//line views/vmodel/Edit.html:13
 type Edit struct {
 	layout.Basic
 	Req    *cutil.WorkspaceRequest
@@ -38,79 +39,79 @@ type Edit struct {
 	Result []any
 }
 
-//line views/vmodel/Edit.html:20
+//line views/vmodel/Edit.html:21
 func (p *Edit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.PageState) {
-//line views/vmodel/Edit.html:20
+//line views/vmodel/Edit.html:21
 	qw422016.N().S(`
   <div class="card">
     `)
-//line views/vmodel/Edit.html:23
+//line views/vmodel/Edit.html:24
 	rowPK, err := model.GetStrings(p.Model.Fields, p.Model.GetPK(ps.Logger), p.Result)
 	if err != nil {
 		panic(err)
 	}
 	confirm := fmt.Sprintf("Are you sure you wish to delete %s [%s]?", p.Model.Name(), strings.Join(rowPK, ":"))
 
-//line views/vmodel/Edit.html:28
+//line views/vmodel/Edit.html:29
 	qw422016.N().S(`
     <div class="right"><a href="`)
-//line views/vmodel/Edit.html:29
+//line views/vmodel/Edit.html:30
 	qw422016.E().S(p.Req.RouteAct(p.Act, 1+len(rowPK), append([]string{`d`}, rowPK...)...))
-//line views/vmodel/Edit.html:29
+//line views/vmodel/Edit.html:30
 	qw422016.N().S(`" onclick="return confirm('`)
-//line views/vmodel/Edit.html:29
+//line views/vmodel/Edit.html:30
 	qw422016.E().S(confirm)
-//line views/vmodel/Edit.html:29
+//line views/vmodel/Edit.html:30
 	qw422016.N().S(`');"><button>Delete</button></a></div>
     <h3>Edit <a href="`)
-//line views/vmodel/Edit.html:30
+//line views/vmodel/Edit.html:31
 	qw422016.E().S(p.Req.RouteAct(p.Act, 1+len(rowPK), append([]string{`v`}, rowPK...)...))
-//line views/vmodel/Edit.html:30
+//line views/vmodel/Edit.html:31
 	qw422016.N().S(`">`)
-//line views/vmodel/Edit.html:30
+//line views/vmodel/Edit.html:31
 	qw422016.E().S(strings.Join(rowPK, "/"))
-//line views/vmodel/Edit.html:30
+//line views/vmodel/Edit.html:31
 	qw422016.N().S(`</a></h3>
     <em><a href="`)
-//line views/vmodel/Edit.html:31
+//line views/vmodel/Edit.html:32
 	qw422016.E().S(p.Req.RouteAct(p.Act, 1+len(rowPK)))
-//line views/vmodel/Edit.html:31
+//line views/vmodel/Edit.html:32
 	qw422016.N().S(`">`)
-//line views/vmodel/Edit.html:31
+//line views/vmodel/Edit.html:32
 	qw422016.E().S(p.Model.Name())
-//line views/vmodel/Edit.html:31
+//line views/vmodel/Edit.html:32
 	qw422016.N().S(`</a></em>
     <form class="mt" action="`)
-//line views/vmodel/Edit.html:32
+//line views/vmodel/Edit.html:33
 	qw422016.E().S(p.Req.RouteAct(p.Act, 0))
-//line views/vmodel/Edit.html:32
+//line views/vmodel/Edit.html:33
 	qw422016.N().S(`" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">
         <tbody>
 `)
-//line views/vmodel/Edit.html:35
+//line views/vmodel/Edit.html:36
 	for idx, f := range p.Model.Fields {
-//line views/vmodel/Edit.html:35
+//line views/vmodel/Edit.html:36
 		qw422016.N().S(`          <tr>
             <th class="shrink"><label><input type="checkbox" value="true" name="`)
-//line views/vmodel/Edit.html:37
+//line views/vmodel/Edit.html:38
 		qw422016.E().S(f.Key)
-//line views/vmodel/Edit.html:37
+//line views/vmodel/Edit.html:38
 		qw422016.N().S(`--selected" /> `)
-//line views/vmodel/Edit.html:37
+//line views/vmodel/Edit.html:38
 		qw422016.E().S(f.Key)
-//line views/vmodel/Edit.html:37
+//line views/vmodel/Edit.html:38
 		qw422016.N().S(`</label></th>
             <td>`)
-//line views/vmodel/Edit.html:38
+//line views/vmodel/Edit.html:39
 		fieldedit.StreamAny(qw422016, p.Result[idx], f.Type, f.Key)
-//line views/vmodel/Edit.html:38
+//line views/vmodel/Edit.html:39
 		qw422016.N().S(`</td>
           </tr>
 `)
-//line views/vmodel/Edit.html:40
+//line views/vmodel/Edit.html:41
 	}
-//line views/vmodel/Edit.html:40
+//line views/vmodel/Edit.html:41
 	qw422016.N().S(`        </tbody>
       </table>
       <div class="mt">
@@ -120,31 +121,31 @@ func (p *Edit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
     </form>
   </div>
 `)
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 }
 
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 func (p *Edit) WriteBody(qq422016 qtio422016.Writer, as *app.State, ps *cutil.PageState) {
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	p.StreamBody(qw422016, as, ps)
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	qt422016.ReleaseWriter(qw422016)
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 }
 
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 func (p *Edit) Body(as *app.State, ps *cutil.PageState) string {
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	p.WriteBody(qb422016, as, ps)
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	qs422016 := string(qb422016.B)
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 	return qs422016
-//line views/vmodel/Edit.html:49
+//line views/vmodel/Edit.html:50
 }

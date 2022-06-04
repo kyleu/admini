@@ -3,11 +3,11 @@ package project
 import (
 	"strings"
 
-	"admini.dev/admini/app/util"
 	"github.com/pkg/errors"
 
 	"admini.dev/admini/app/lib/schema"
 	"admini.dev/admini/app/source"
+	"admini.dev/admini/app/util"
 )
 
 type View struct {
