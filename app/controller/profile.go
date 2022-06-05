@@ -54,7 +54,7 @@ func ProfileSave(rc *fasthttp.RequestCtx) {
 	act("profile.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(rc)
 		if err != nil {
-			return "", errors.Wrap(err, "unable to parse form")
+			return "", err
 		}
 
 		n := ps.Profile.Clone()
