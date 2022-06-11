@@ -1,11 +1,10 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package controller
+package cutil
 
 import (
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app/controller/csession"
-	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/telemetry"
 	"admini.dev/admini/app/lib/telemetry/httpmetrics"
 	"admini.dev/admini/app/lib/user"
@@ -14,7 +13,7 @@ import (
 
 var initialIcons = []string{"searchbox"}
 
-func loadPageState(rc *fasthttp.RequestCtx, key string, logger util.Logger) *cutil.PageState {
+func LoadPageState(rc *fasthttp.RequestCtx, key string, logger util.Logger) *PageState {
 	ctx, logger := httpmetrics.ExtractHeaders(rc, logger)
 	traceCtx, span, logger := telemetry.StartSpan(ctx, "http:"+key, logger)
 	span.Attribute("path", string(rc.Request.URI().Path()))
@@ -25,7 +24,7 @@ func loadPageState(rc *fasthttp.RequestCtx, key string, logger util.Logger) *cut
 	isAuthed, _ := user.Check("/", accts)
 	isAdmin, _ := user.Check("/admin", accts)
 
-	return &cutil.PageState{
+	return &PageState{
 		Method: string(rc.Method()), URI: rc.Request.URI(), Flashes: flashes, Session: session,
 		Profile: prof, Accounts: accts, Authed: isAuthed, Admin: isAdmin,
 		Icons: initialIcons, Context: traceCtx, Span: span, Logger: logger,
@@ -55,7 +54,7 @@ func loadSession(rc *fasthttp.RequestCtx, logger util.Logger) (util.ValueMap, []
 		}
 	}
 
-	prof, err := LoadProfile(session)
+	prof, err := loadProfile(session)
 	if err != nil {
 		logger.Warnf("can't load profile: %+v", err)
 	}
@@ -72,7 +71,7 @@ func loadSession(rc *fasthttp.RequestCtx, logger util.Logger) (util.ValueMap, []
 	return session, flashes, prof, accts
 }
 
-func LoadProfile(session util.ValueMap) (*user.Profile, error) {
+func loadProfile(session util.ValueMap) (*user.Profile, error) {
 	x, ok := session["profile"]
 	if !ok {
 		return user.DefaultProfile.Clone(), nil

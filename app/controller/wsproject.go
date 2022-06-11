@@ -17,7 +17,7 @@ import (
 
 func actWorkspace(key string, rc *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	as := _currentAppState
-	ps := loadPageState(rc, key, _currentAppRootLogger)
+	ps := cutil.LoadPageState(rc, key, _currentAppRootLogger)
 	actComplete(key, as, ps, rc, f)
 }
 
@@ -47,8 +47,8 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 		ps.RootIcon = pv.Project.IconWithFallback()
 		ps.RootPath = fmt.Sprintf("/x/%s", pv.Project.Key)
 		ps.RootTitle = pv.Project.Name()
-		ps.SearchPath = DefaultSearchPath
-		ps.ProfilePath = DefaultProfilePath
+		ps.SearchPath = cutil.DefaultSearchPath
+		ps.ProfilePath = cutil.DefaultProfilePath
 
 		m, err := workspace.ProjectMenu(as, pv)
 		if err != nil {

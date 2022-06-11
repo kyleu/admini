@@ -7,6 +7,7 @@ import (
 
 	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/clib"
+	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/telemetry/httpmetrics"
 )
 
@@ -15,8 +16,8 @@ func SiteRoutes() fasthttp.RequestHandler {
 
 	r.GET("/", controller.Site)
 
-	r.GET(controller.DefaultProfilePath, clib.ProfileSite)
-	r.POST(controller.DefaultProfilePath, clib.ProfileSave)
+	r.GET(cutil.DefaultProfilePath, clib.ProfileSite)
+	r.POST(cutil.DefaultProfilePath, clib.ProfileSave)
 	r.GET("/auth/{key}", clib.AuthDetail)
 	r.GET("/auth/callback/{key}", clib.AuthCallback)
 	r.GET("/auth/logout/{key}", clib.AuthLogout)

@@ -39,8 +39,8 @@ func WorkspaceSource(rc *fasthttp.RequestCtx) {
 		ps.RootIcon = pv.Project.IconWithFallback()
 		ps.RootPath = fmt.Sprintf("/s/%s", sourceKey)
 		ps.RootTitle = pv.Project.Name()
-		ps.SearchPath = DefaultSearchPath
-		ps.ProfilePath = DefaultProfilePath
+		ps.SearchPath = cutil.DefaultSearchPath
+		ps.ProfilePath = cutil.DefaultProfilePath
 
 		m, err := workspace.ProjectMenu(as, pv)
 		if err != nil {

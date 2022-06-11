@@ -7,11 +7,29 @@ import (
 
 	"github.com/valyala/fasthttp"
 
+	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cmenu"
 	"admini.dev/admini/app/lib/menu"
 	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/lib/theme"
 	"admini.dev/admini/app/lib/user"
 	"admini.dev/admini/app/util"
+)
+
+const (
+	DefaultSearchPath  = "/search"
+	DefaultProfilePath = "/profile"
+	defaultIcon        = "app"
+)
+
+var (
+	defaultRootTitleAppend = util.GetEnv("app_display_name_append")
+	defaultRootTitle       = func() string {
+		if tmp := util.GetEnv("app_display_name"); tmp != "" {
+			return tmp
+		}
+		return util.AppName
+	}()
 )
 
 type PageState struct {
@@ -64,6 +82,38 @@ func (p *PageState) User() string {
 		return "anonymous"
 	}
 	return p.Accounts[0].Email
+}
+
+func (p *PageState) Clean(as *app.State) error {
+	if p.Profile != nil && p.Profile.Theme == "" {
+		p.Profile.Theme = theme.ThemeDefault.Key
+	}
+	if p.RootIcon == "" {
+		p.RootIcon = defaultIcon
+	}
+	if p.RootPath == "" {
+		p.RootPath = "/"
+	}
+	if p.RootTitle == "" {
+		p.RootTitle = defaultRootTitle
+	}
+	if defaultRootTitleAppend != "" {
+		p.RootTitle += " " + defaultRootTitleAppend
+	}
+	if p.SearchPath == "" {
+		p.SearchPath = DefaultSearchPath
+	}
+	if p.ProfilePath == "" {
+		p.ProfilePath = DefaultProfilePath
+	}
+	if len(p.Menu) == 0 {
+		m, err := cmenu.MenuFor(p.Context, p.Authed, p.Admin, as, p.Logger)
+		if err != nil {
+			return err
+		}
+		p.Menu = m
+	}
+	return nil
 }
 
 func (p *PageState) Close() {
