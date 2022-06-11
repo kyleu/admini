@@ -30,10 +30,10 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 
 		paths := util.StringSplitAndTrim(string(rc.Path()), "/")
 		if len(paths) < 2 {
-			return ersp("no project provided in path [%s]", string(rc.Path()))
+			return ERsp("no project provided in path [%s]", string(rc.Path()))
 		}
 		if paths[0] != "x" {
-			return ersp("provided path [%s] is not part of the project workspace", string(rc.Path()))
+			return ERsp("provided path [%s] is not part of the project workspace", string(rc.Path()))
 		}
 
 		pv, err := as.Services.Projects.LoadView(projectKey, ps.Logger)
@@ -47,8 +47,8 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 		ps.RootIcon = pv.Project.IconWithFallback()
 		ps.RootPath = fmt.Sprintf("/x/%s", pv.Project.Key)
 		ps.RootTitle = pv.Project.Name()
-		ps.SearchPath = defaultSearchPath
-		ps.ProfilePath = defaultProfilePath
+		ps.SearchPath = DefaultSearchPath
+		ps.ProfilePath = DefaultProfilePath
 
 		m, err := workspace.ProjectMenu(as, pv)
 		if err != nil {
@@ -83,12 +83,12 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.
 	}
 
 	if res.Redirect != "" {
-		return flashAndRedir(true, res.Title, res.Redirect, rc, req.PS)
+		return FlashAndRedir(true, res.Title, res.Redirect, rc, req.PS)
 	}
 
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
 	req.PS.SearchPath = req.Route("search")
 
-	return render(req.RC, as, res.Page, req.PS, res.Breadcrumbs...)
+	return Render(req.RC, as, res.Page, req.PS, res.Breadcrumbs...)
 }

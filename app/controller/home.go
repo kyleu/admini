@@ -22,16 +22,16 @@ var homeContent = util.ValueMap{
 }
 
 func Home(rc *fasthttp.RequestCtx) {
-	act("home", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	Act("home", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		projects, _ := as.Services.Projects.List(ps.Context, ps.Logger)
 		sources, _ := as.Services.Sources.List(ps.Logger)
 		ps.Data = homeContent
-		return render(rc, as, &views.Home{Sources: sources, Projects: projects}, ps)
+		return Render(rc, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
 }
 
 func Refresh(rc *fasthttp.RequestCtx) {
-	act("refresh", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	Act("refresh", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		redir := "/"
 		ref := string(rc.Request.Header.Peek("Referer"))
 		if ref != "" {
@@ -45,6 +45,6 @@ func Refresh(rc *fasthttp.RequestCtx) {
 		as.Services.Sources.Clear()
 		as.Services.Projects.Clear()
 		const msg = "Cleared all caches"
-		return flashAndRedir(true, msg, redir, rc, ps)
+		return FlashAndRedir(true, msg, redir, rc, ps)
 	})
 }

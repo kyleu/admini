@@ -11,6 +11,7 @@ import (
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
+	"admini.dev/admini/app/controller/routes"
 	"admini.dev/admini/app/lib/filesystem"
 	"admini.dev/admini/app/util"
 )
@@ -40,7 +41,7 @@ func startSite(flags *Flags) error {
 }
 
 func loadSite(flags *Flags, logger util.Logger) (fasthttp.RequestHandler, util.Logger, error) {
-	r := controller.SiteRoutes()
+	r := routes.SiteRoutes()
 	f := filesystem.NewFileSystem(flags.ConfigDir)
 
 	telemetryDisabled := util.GetEnvBool("disable_telemetry", false)

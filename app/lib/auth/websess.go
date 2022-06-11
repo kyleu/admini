@@ -4,7 +4,7 @@ package auth
 import (
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/controller/csession"
 	"admini.dev/admini/app/lib/user"
 	"admini.dev/admini/app/util"
 )
@@ -39,7 +39,7 @@ func removeProviderData(rc *fasthttp.RequestCtx, websess util.ValueMap, logger u
 		}
 	}
 	if dirty {
-		return cutil.SaveSession(rc, websess, logger)
+		return csession.SaveSession(rc, websess, logger)
 	}
 	return nil
 }

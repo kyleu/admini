@@ -1,5 +1,5 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package cutil
+package csession
 
 import (
 	"github.com/pkg/errors"

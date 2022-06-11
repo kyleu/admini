@@ -4,7 +4,7 @@ package auth
 import (
 	"github.com/valyala/fasthttp"
 
-	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/controller/csession"
 	"admini.dev/admini/app/lib/user"
 	"admini.dev/admini/app/util"
 )
@@ -25,7 +25,7 @@ func getAuthURL(prv *Provider, rc *fasthttp.RequestCtx, websess util.ValueMap, l
 		return "", err
 	}
 
-	err = cutil.StoreInSession(prv.ID, sess.Marshal(), rc, websess, logger)
+	err = csession.StoreInSession(prv.ID, sess.Marshal(), rc, websess, logger)
 	if err != nil {
 		return "", err
 	}
@@ -34,7 +34,7 @@ func getAuthURL(prv *Provider, rc *fasthttp.RequestCtx, websess util.ValueMap, l
 }
 
 func getCurrentAuths(websess util.ValueMap) user.Accounts {
-	authS, err := cutil.GetFromSession(WebAuthKey, websess)
+	authS, err := csession.GetFromSession(WebAuthKey, websess)
 	var ret user.Accounts
 	if err == nil && authS != "" {
 		ret = user.AccountsFromString(authS)
@@ -45,7 +45,7 @@ func getCurrentAuths(websess util.ValueMap) user.Accounts {
 func setCurrentAuths(s user.Accounts, rc *fasthttp.RequestCtx, websess util.ValueMap, logger util.Logger) error {
 	s.Sort()
 	if len(s) == 0 {
-		return cutil.RemoveFromSession(WebAuthKey, rc, websess, logger)
+		return csession.RemoveFromSession(WebAuthKey, rc, websess, logger)
 	}
-	return cutil.StoreInSession(WebAuthKey, s.String(), rc, websess, logger)
+	return csession.StoreInSession(WebAuthKey, s.String(), rc, websess, logger)
 }

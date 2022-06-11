@@ -1,5 +1,5 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package controller
+package clib
 
 import (
 	"net/url"
@@ -8,21 +8,21 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
+	"admini.dev/admini/app/controller/csession"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/theme"
-	"admini.dev/admini/app/lib/user"
-	"admini.dev/admini/app/util"
 	"admini.dev/admini/views/vprofile"
 )
 
 func Profile(rc *fasthttp.RequestCtx) {
-	act("profile", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("profile", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		return profileAction(rc, as, ps)
 	})
 }
 
 func ProfileSite(rc *fasthttp.RequestCtx) {
-	actSite("profile", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.ActSite("profile", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		return profileAction(rc, as, ps)
 	})
 }
@@ -41,17 +41,17 @@ func profileAction(rc *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) 
 	ref := string(rc.Request.Header.Peek("Referer"))
 	if ref != "" {
 		u, err := url.Parse(ref)
-		if err == nil && u != nil && u.Path != defaultProfilePath {
+		if err == nil && u != nil && u.Path != controller.DefaultProfilePath {
 			redir = u.Path
 		}
 	}
 
 	page := &vprofile.Profile{Profile: ps.Profile, Theme: thm, Providers: prvs, Referrer: redir}
-	return render(rc, as, page, ps, "Profile")
+	return controller.Render(rc, as, page, ps, "Profile")
 }
 
 func ProfileSave(rc *fasthttp.RequestCtx) {
-	act("profile.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("profile.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", err
@@ -61,7 +61,7 @@ func ProfileSave(rc *fasthttp.RequestCtx) {
 
 		referrer := frm.GetStringOpt("referrer")
 		if referrer == "" {
-			referrer = defaultProfilePath
+			referrer = controller.DefaultProfilePath
 		}
 
 		n.Name = frm.GetStringOpt("name")
@@ -71,28 +71,11 @@ func ProfileSave(rc *fasthttp.RequestCtx) {
 			n.Theme = ""
 		}
 
-		err = cutil.SaveProfile(n, rc, ps.Session, ps.Logger)
+		err = csession.SaveProfile(n, rc, ps.Session, ps.Logger)
 		if err != nil {
 			return "", err
 		}
 
-		return returnToReferrer("Saved profile", referrer, rc, ps)
+		return controller.ReturnToReferrer("Saved profile", referrer, rc, ps)
 	})
-}
-
-func loadProfile(session util.ValueMap) (*user.Profile, error) {
-	x, ok := session["profile"]
-	if !ok {
-		return user.DefaultProfile.Clone(), nil
-	}
-	s, ok := x.(string)
-	if !ok {
-		return user.DefaultProfile.Clone(), nil
-	}
-	p := &user.Profile{}
-	err := util.FromJSON([]byte(s), p)
-	if err != nil {
-		return nil, err
-	}
-	return p, nil
 }

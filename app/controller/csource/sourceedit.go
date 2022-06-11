@@ -1,4 +1,4 @@
-package controller
+package csource
 
 import (
 	"bytes"
@@ -12,6 +12,7 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/database"
 	"admini.dev/admini/app/lib/filesystem"
@@ -23,17 +24,17 @@ import (
 )
 
 func SourceNew(rc *fasthttp.RequestCtx) {
-	act("source.new", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.new", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "New Source"
 		t := schema.OriginPostgres
 		s := &source.Source{Type: t}
 		ps.Data = s
-		return render(rc, as, &vsource.New{Origin: t}, ps, "sources", "New")
+		return controller.Render(rc, as, &vsource.New{Origin: t}, ps, "sources", "New")
 	})
 }
 
 func SourceExample(rc *fasthttp.RequestCtx) {
-	act("source.example", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.example", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "Example Database"
 
 		data, _, err := assets.EmbedAsset("example.sqlite.gz")
@@ -66,12 +67,12 @@ func SourceExample(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrap(err, "unable to save example database")
 		}
 		ps.Data = ret
-		return flashAndRedir(true, "saved example source", "/source/example", rc, ps)
+		return controller.FlashAndRedir(true, "saved example source", "/source/example", rc, ps)
 	})
 }
 
 func SourceInsert(rc *fasthttp.RequestCtx) {
-	act("source.insert", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.insert", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
@@ -79,7 +80,7 @@ func SourceInsert(rc *fasthttp.RequestCtx) {
 
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return flashAndRedir(false, err.Error(), "/source/_new", rc, ps)
+			return controller.FlashAndRedir(false, err.Error(), "/source/_new", rc, ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")
@@ -90,12 +91,12 @@ func SourceInsert(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
-		return flashAndRedir(true, "saved new source", fmt.Sprintf("/source/%s", key), rc, ps)
+		return controller.FlashAndRedir(true, "saved new source", fmt.Sprintf("/source/%s", key), rc, ps)
 	})
 }
 
 func SourceEdit(rc *fasthttp.RequestCtx) {
-	act("source.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -110,16 +111,16 @@ func SourceEdit(rc *fasthttp.RequestCtx) {
 		switch src.Type {
 		case schema.OriginPostgres, schema.OriginSQLite, schema.OriginMySQL:
 			page := &vsource.Edit{Source: src}
-			return render(rc, as, page, ps, "sources", src.Key, "Edit")
+			return controller.Render(rc, as, page, ps, "sources", src.Key, "Edit")
 		default:
 			msg := fmt.Sprintf("unhandled source type [%s]", src.Type.String())
-			return flashAndRedir(false, msg, "/source", rc, ps)
+			return controller.FlashAndRedir(false, msg, "/source", rc, ps)
 		}
 	})
 }
 
 func SourceSave(rc *fasthttp.RequestCtx) {
-	act("source.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
@@ -184,12 +185,12 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`saved source %q`, key)
-		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), rc, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), rc, ps)
 	})
 }
 
 func SourceDelete(rc *fasthttp.RequestCtx) {
-	act("source.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -200,6 +201,6 @@ func SourceDelete(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`deleted source %q`, key)
-		return flashAndRedir(true, msg, "/source", rc, ps)
+		return controller.FlashAndRedir(true, msg, "/source", rc, ps)
 	})
 }

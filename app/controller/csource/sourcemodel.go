@@ -1,4 +1,4 @@
-package controller
+package csource
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema"
 	"admini.dev/admini/app/lib/schema/model"
@@ -17,7 +18,7 @@ import (
 )
 
 func SourceModelDetail(rc *fasthttp.RequestCtx) {
-	act("source.model.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.model.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		src, sch, m, err := loadSourceModel(rc, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "")
@@ -26,12 +27,12 @@ func SourceModelDetail(rc *fasthttp.RequestCtx) {
 		ps.Title = src.Name()
 		ps.Data = util.ValueMap{sourceKey: src, "schema": sch}
 		page := &vsource.ModelDetail{Source: src, Schema: sch, Model: m}
-		return render(rc, as, page, ps, "sources", src.Key)
+		return controller.Render(rc, as, page, ps, "sources", src.Key)
 	})
 }
 
 func SourceModelSave(rc *fasthttp.RequestCtx) {
-	act("source.model.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("source.model.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		src, _, m, err := loadSourceModel(rc, as, ps.Logger)
 		if err != nil {
 			return "", err
@@ -63,7 +64,7 @@ func SourceModelSave(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf("saved model [%s] with [%d] overrides", m.Name(), len(overrides))
-		return flashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), rc, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), rc, ps)
 	})
 }
 

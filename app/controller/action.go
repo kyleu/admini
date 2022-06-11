@@ -13,7 +13,7 @@ import (
 )
 
 func ActionEdit(rc *fasthttp.RequestCtx) {
-	act("action.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	Act("action.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		p, a, _, err := loadAction(rc, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
@@ -21,7 +21,7 @@ func ActionEdit(rc *fasthttp.RequestCtx) {
 		ps.Title = a.Name()
 		ps.Data = a
 		page := &vproject.ActionEdit{Project: p, Act: a}
-		return render(rc, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
+		return Render(rc, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
 	})
 }
 

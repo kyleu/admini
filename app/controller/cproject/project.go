@@ -1,4 +1,4 @@
-package controller
+package cproject
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
+	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/qualify"
 	"admini.dev/admini/app/util"
@@ -15,19 +16,19 @@ import (
 )
 
 func ProjectList(rc *fasthttp.RequestCtx) {
-	act("project.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		p, err := as.Services.Projects.List(ps.Context, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project list")
 		}
 		ps.Title = "Projects"
 		ps.Data = p
-		return render(rc, as, &vproject.List{Projects: p}, ps, "projects")
+		return controller.Render(rc, as, &vproject.List{Projects: p}, ps, "projects")
 	})
 }
 
 func ProjectDetail(rc *fasthttp.RequestCtx) {
-	act("project.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -38,12 +39,12 @@ func ProjectDetail(rc *fasthttp.RequestCtx) {
 		}
 		ps.Title = prj.Project.Name()
 		ps.Data = prj.Project
-		return render(rc, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
+		return controller.Render(rc, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
 	})
 }
 
 func ProjectTest(rc *fasthttp.RequestCtx) {
-	act("project.test", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.test", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -77,6 +78,6 @@ func ProjectTest(rc *fasthttp.RequestCtx) {
 		}
 
 		view := &vproject.Test{Message: fmt.Sprintf("Project [%s]: OK", v.Project.Key)}
-		return render(rc, as, view, ps, "projects", v.Project.Key, "test")
+		return controller.Render(rc, as, view, ps, "projects", v.Project.Key, "test")
 	})
 }

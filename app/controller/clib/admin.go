@@ -1,5 +1,5 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package controller
+package clib
 
 import (
 	"fmt"
@@ -12,18 +12,21 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/user"
 	"admini.dev/admini/app/util"
 	"admini.dev/admini/views/vadmin"
 )
 
+var AppRoutesList map[string][]string
+
 func Admin(rc *fasthttp.RequestCtx) {
-	act("admin", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("admin", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		path := util.StringSplitAndTrim(strings.TrimPrefix(string(rc.URI().Path()), "/admin"), "/")
 		if len(path) == 0 {
 			ps.Title = "Administration"
-			return render(rc, as, &vadmin.Settings{Perms: user.GetPermissions()}, ps, "admin")
+			return controller.Render(rc, as, &vadmin.Settings{Perms: user.GetPermissions()}, ps, "admin")
 		}
 		switch path[0] {
 		case "cpu":
@@ -33,10 +36,10 @@ func Admin(rc *fasthttp.RequestCtx) {
 				if err != nil {
 					return "", err
 				}
-				return flashAndRedir(true, "started CPU profile", "/admin", rc, ps)
+				return controller.FlashAndRedir(true, "started CPU profile", "/admin", rc, ps)
 			case "stop":
 				pprof.StopCPUProfile()
-				return flashAndRedir(true, "stopped CPU profile", "/admin", rc, ps)
+				return controller.FlashAndRedir(true, "stopped CPU profile", "/admin", rc, ps)
 			default:
 				return "", errors.Errorf("unhandled CPU profile action [%s]", path[1])
 			}
@@ -44,18 +47,18 @@ func Admin(rc *fasthttp.RequestCtx) {
 			timer := util.TimerStart()
 			runtime.GC()
 			msg := fmt.Sprintf("ran garbage collection in [%s]", timer.EndString())
-			return flashAndRedir(true, msg, "/admin", rc, ps)
+			return controller.FlashAndRedir(true, msg, "/admin", rc, ps)
 		case "heap":
 			err := takeHeapProfile()
 			if err != nil {
 				return "", err
 			}
-			return flashAndRedir(true, "wrote heap profile", "/admin", rc, ps)
+			return controller.FlashAndRedir(true, "wrote heap profile", "/admin", rc, ps)
 		case "memusage":
 			x := &runtime.MemStats{}
 			runtime.ReadMemStats(x)
 			ps.Data = x
-			return render(rc, as, &vadmin.MemUsage{Mem: x}, ps, "admin", "Memory Usage")
+			return controller.Render(rc, as, &vadmin.MemUsage{Mem: x}, ps, "admin", "Memory Usage")
 		case "modules":
 			di, err := util.GetDebugInfo()
 			if err != nil {
@@ -63,19 +66,19 @@ func Admin(rc *fasthttp.RequestCtx) {
 			}
 			ps.Title = "Modules"
 			ps.Data = di
-			return render(rc, as, &vadmin.Modules{Info: di}, ps, "admin", "Modules")
+			return controller.Render(rc, as, &vadmin.Modules{Info: di}, ps, "admin", "Modules")
 		case "request":
 			ps.Title = "Request Debug"
 			ps.Data = cutil.RequestCtxToMap(rc, nil)
-			return render(rc, as, &vadmin.Request{RC: rc}, ps, "admin", "Request")
+			return controller.Render(rc, as, &vadmin.Request{RC: rc}, ps, "admin", "Request")
 		case "routes":
 			ps.Title = "HTTP Routes"
 			ps.Data = AppRoutesList
-			return render(rc, as, &vadmin.Routes{Routes: AppRoutesList}, ps, "admin", "Request")
+			return controller.Render(rc, as, &vadmin.Routes{Routes: AppRoutesList}, ps, "admin", "Request")
 		case "session":
 			ps.Title = "Session Debug"
 			ps.Data = ps.Session
-			return render(rc, as, &vadmin.Session{}, ps, "admin", "Session")
+			return controller.Render(rc, as, &vadmin.Session{}, ps, "admin", "Session")
 		// $PF_SECTION_START(admin-actions)$
 		// $PF_SECTION_END(admin-actions)$
 		default:

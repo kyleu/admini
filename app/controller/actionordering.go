@@ -14,7 +14,7 @@ import (
 )
 
 func ActionOrdering(rc *fasthttp.RequestCtx) {
-	act("action.ordering", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	Act("action.ordering", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -53,6 +53,6 @@ func ActionOrdering(rc *fasthttp.RequestCtx) {
 		}
 		count := prj.Actions.Size()
 		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.StringPlural(count, "action"), elapsedMillis)
-		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
+		return FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }

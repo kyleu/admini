@@ -7,6 +7,7 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller/cmenu"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/theme"
 	"admini.dev/admini/app/util"
@@ -17,7 +18,7 @@ var (
 	_currentAppState       *app.State
 	_currentAppRootLogger  util.Logger
 	_currentSiteState      *app.State
-	_currentSiteRootLogger  util.Logger
+	_currentSiteRootLogger util.Logger
 	defaultRootTitleAppend = util.GetEnv("app_display_name_append")
 	defaultRootTitle       = func() string {
 		if tmp := util.GetEnv("app_display_name"); tmp != "" {
@@ -58,7 +59,7 @@ func handleError(key string, as *app.State, ps *cutil.PageState, rc *fasthttp.Re
 		return "", cleanErr
 	}
 
-	redir, renderErr := render(rc, as, &verror.Error{Err: util.GetErrorDetail(err)}, ps)
+	redir, renderErr := Render(rc, as, &verror.Error{Err: util.GetErrorDetail(err)}, ps)
 	if renderErr != nil {
 		msg := fmt.Sprintf("error while running error handler: %+v", renderErr)
 		ps.Logger.Error(msg)
@@ -85,13 +86,13 @@ func clean(as *app.State, ps *cutil.PageState) error {
 		ps.RootTitle += " " + defaultRootTitleAppend
 	}
 	if ps.SearchPath == "" {
-		ps.SearchPath = defaultSearchPath
+		ps.SearchPath = DefaultSearchPath
 	}
 	if ps.ProfilePath == "" {
-		ps.ProfilePath = defaultProfilePath
+		ps.ProfilePath = DefaultProfilePath
 	}
 	if len(ps.Menu) == 0 {
-		m, err := MenuFor(ps.Context, ps.Authed, ps.Admin, as, ps.Logger)
+		m, err := cmenu.MenuFor(ps.Context, ps.Authed, ps.Admin, as, ps.Logger)
 		if err != nil {
 			return err
 		}

@@ -22,10 +22,10 @@ func WorkspaceSource(rc *fasthttp.RequestCtx) {
 		path := string(rc.Request.URI().Path())
 		paths := util.StringSplitAndTrim(path, "/")
 		if len(paths) < 2 {
-			return ersp("no source provided in path [%s]", path)
+			return ERsp("no source provided in path [%s]", path)
 		}
 		if paths[0] != "s" {
-			return ersp("provided path [%s] is not part of the source workspace", path)
+			return ERsp("provided path [%s] is not part of the source workspace", path)
 		}
 
 		pv, err := as.Services.Projects.LoadSourceProject(sourceKey, ps.Logger)
@@ -39,8 +39,8 @@ func WorkspaceSource(rc *fasthttp.RequestCtx) {
 		ps.RootIcon = pv.Project.IconWithFallback()
 		ps.RootPath = fmt.Sprintf("/s/%s", sourceKey)
 		ps.RootTitle = pv.Project.Name()
-		ps.SearchPath = defaultSearchPath
-		ps.ProfilePath = defaultProfilePath
+		ps.SearchPath = DefaultSearchPath
+		ps.ProfilePath = DefaultProfilePath
 
 		m, err := workspace.ProjectMenu(as, pv)
 		if err != nil {

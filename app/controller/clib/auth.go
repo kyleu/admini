@@ -1,5 +1,5 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package controller
+package clib
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/auth"
 	"admini.dev/admini/app/util"
@@ -16,7 +17,7 @@ import (
 const signinMsg = "signed in using %s as [%s]"
 
 func AuthDetail(rc *fasthttp.RequestCtx) {
-	act("auth.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("auth.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		prv, err := getProvider(as, rc, ps.Logger)
 		if err != nil {
 			return "", err
@@ -24,14 +25,14 @@ func AuthDetail(rc *fasthttp.RequestCtx) {
 		u, _, err := auth.CompleteUserAuth(prv, rc, ps.Session, ps.Logger)
 		if err == nil {
 			msg := fmt.Sprintf(signinMsg, auth.AvailableProviderNames[prv.ID], u.Email)
-			return returnToReferrer(msg, defaultProfilePath, rc, ps)
+			return controller.ReturnToReferrer(msg, controller.DefaultProfilePath, rc, ps)
 		}
 		return auth.BeginAuthHandler(prv, rc, ps.Session, ps.Logger)
 	})
 }
 
 func AuthCallback(rc *fasthttp.RequestCtx) {
-	act("auth.callback", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("auth.callback", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		prv, err := getProvider(as, rc, ps.Logger)
 		if err != nil {
 			return "", err
@@ -41,12 +42,12 @@ func AuthCallback(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 		msg := fmt.Sprintf(signinMsg, auth.AvailableProviderNames[prv.ID], u.Email)
-		return returnToReferrer(msg, defaultProfilePath, rc, ps)
+		return controller.ReturnToReferrer(msg, controller.DefaultProfilePath, rc, ps)
 	})
 }
 
 func AuthLogout(rc *fasthttp.RequestCtx) {
-	act("auth.logout", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("auth.logout", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err

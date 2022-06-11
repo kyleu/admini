@@ -12,7 +12,7 @@ import (
 )
 
 func ActionSave(rc *fasthttp.RequestCtx) {
-	act("action.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	Act("action.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		p, a, _, err := loadAction(rc, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
@@ -61,6 +61,6 @@ func ActionSave(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		return flashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), rc, ps)
+		return FlashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), rc, ps)
 	})
 }

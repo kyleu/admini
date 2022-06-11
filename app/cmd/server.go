@@ -12,6 +12,7 @@ import (
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
+	"admini.dev/admini/app/controller/routes"
 	"admini.dev/admini/app/util"
 )
 
@@ -48,7 +49,7 @@ func startServer(flags *Flags) error {
 }
 
 func loadServer(flags *Flags, logger util.Logger) (*app.State, fasthttp.RequestHandler, util.Logger, error) {
-	r := controller.AppRoutes()
+	r := routes.AppRoutes()
 
 	st, err := buildDefaultAppState(flags, logger)
 	if err != nil {

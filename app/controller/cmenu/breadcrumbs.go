@@ -1,5 +1,5 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package cutil
+package cmenu
 
 import (
 	"admini.dev/admini/app/lib/menu"

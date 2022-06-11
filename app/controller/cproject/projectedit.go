@@ -1,22 +1,20 @@
-package controller
+package cproject
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cutil"
-	"admini.dev/admini/app/lib/menu"
 	"admini.dev/admini/app/project"
-	"admini.dev/admini/app/util"
 	"admini.dev/admini/views/vproject"
 )
 
 func ProjectNew(rc *fasthttp.RequestCtx) {
-	act("project.new", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.new", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "New Project"
 		p := &project.Project{}
 		ps.Data = p
@@ -24,19 +22,19 @@ func ProjectNew(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return render(rc, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
+		return controller.Render(rc, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
 	})
 }
 
 func ProjectInsert(rc *fasthttp.RequestCtx) {
-	act("project.insert", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.insert", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return flashAndRedir(false, err.Error(), "/project/_new", rc, ps)
+			return controller.FlashAndRedir(false, err.Error(), "/project/_new", rc, ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")
@@ -50,12 +48,12 @@ func ProjectInsert(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
-		return flashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), rc, ps)
+		return controller.FlashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }
 
 func ProjectEdit(rc *fasthttp.RequestCtx) {
-	act("project.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -71,12 +69,12 @@ func ProjectEdit(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return render(rc, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
+		return controller.Render(rc, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
 	})
 }
 
 func ProjectSave(rc *fasthttp.RequestCtx) {
-	act("project.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		frm, err := cutil.ParseForm(rc)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
@@ -106,12 +104,12 @@ func ProjectSave(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`saved project %q`, key)
-		return flashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
 	})
 }
 
 func ProjectDelete(rc *fasthttp.RequestCtx) {
-	act("project.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("project.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -122,25 +120,6 @@ func ProjectDelete(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`deleted project %q`, key)
-		return flashAndRedir(true, msg, "/project", rc, ps)
+		return controller.FlashAndRedir(true, msg, "/project", rc, ps)
 	})
-}
-
-func projectItems(ctx context.Context, as *app.State, logger util.Logger) menu.Items {
-	ps, err := as.Services.Projects.List(ctx, logger)
-	if err != nil {
-		return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}
-	}
-
-	prjMenu := make(menu.Items, 0, len(ps))
-	for _, p := range ps {
-		prjMenu = append(prjMenu, &menu.Item{
-			Key:         p.Key,
-			Title:       p.Name(),
-			Icon:        p.IconWithFallback(),
-			Description: p.Description,
-			Route:       "/project/" + p.Key,
-		})
-	}
-	return prjMenu
 }

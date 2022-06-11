@@ -3,6 +3,7 @@
   "strings"
 
   "admini.dev/admini/app"
+  "admini.dev/admini/app/controller/cmenu"
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/menu"
   "admini.dev/admini/views/components"
@@ -26,7 +27,7 @@
   {%= Menu(ps) %}{% endif %}
 </nav>{% endfunc %}
 
-{% func NavItems(m menu.Items, breadcrumbs cutil.Breadcrumbs) %}{% stripspace %}
+{% func NavItems(m menu.Items, breadcrumbs cmenu.Breadcrumbs) %}{% stripspace %}
   {% for idx, bc := range breadcrumbs %}
     {% code
       i := m.GetByPath(breadcrumbs[:idx + 1])

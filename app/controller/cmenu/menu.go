@@ -1,5 +1,5 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package controller
+package cmenu
 
 import (
 	"context"

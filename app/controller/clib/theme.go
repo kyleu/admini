@@ -1,11 +1,13 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
-package controller
+package clib
 
 import (
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
+	"admini.dev/admini/app/controller"
+	"admini.dev/admini/app/controller/csession"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/theme"
 	"admini.dev/admini/app/util"
@@ -13,16 +15,16 @@ import (
 )
 
 func ThemeList(rc *fasthttp.RequestCtx) {
-	act("theme.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("theme.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "Themes"
 		x := as.Themes.All(ps.Logger)
 		ps.Data = x
-		return render(rc, as, &vtheme.List{Themes: x}, ps, "admin", "Themes")
+		return controller.Render(rc, as, &vtheme.List{Themes: x}, ps, "admin", "Themes")
 	})
 }
 
 func ThemeEdit(rc *fasthttp.RequestCtx) {
-	act("theme.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("theme.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -39,12 +41,12 @@ func ThemeEdit(rc *fasthttp.RequestCtx) {
 		ps.Data = t
 		ps.Title = "Edit theme [" + t.Key + "]"
 		page := &vtheme.Edit{Theme: t}
-		return render(rc, as, page, ps, "admin", "Themes||/admin/theme", t.Key)
+		return controller.Render(rc, as, page, ps, "admin", "Themes||/admin/theme", t.Key)
 	})
 }
 
 func ThemeSave(rc *fasthttp.RequestCtx) {
-	act("theme.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+	controller.Act("theme.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		key, err := cutil.RCRequiredString(rc, "key", false)
 		if err != nil {
 			return "", err
@@ -75,11 +77,11 @@ func ThemeSave(rc *fasthttp.RequestCtx) {
 		}
 
 		ps.Profile.Theme = newKey
-		err = cutil.SaveProfile(ps.Profile, rc, ps.Session, ps.Logger)
+		err = csession.SaveProfile(ps.Profile, rc, ps.Session, ps.Logger)
 		if err != nil {
 			return "", err
 		}
 
-		return returnToReferrer("saved changes to theme ["+newKey+"]", "/", rc, ps)
+		return controller.ReturnToReferrer("saved changes to theme ["+newKey+"]", "/", rc, ps)
 	})
 }
