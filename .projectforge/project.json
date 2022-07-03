@@ -2,7 +2,7 @@
   "key": "admini",
   "name": "Admini",
   "icon": "compass",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "package": "admini.dev/admini",
   "port": 14000,
   "modules": [
@@ -88,6 +88,7 @@
     "publish": true,
     "desktop": true,
     "signing": true,
+    "notarize": true,
     "android": true,
     "iOS": true,
     "wasm": true,
