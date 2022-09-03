@@ -1,7 +1,7 @@
 // $PF_IGNORE$
 module admini.dev/admini
 
-go 1.18
+go 1.19
 
 require (
 	github.com/alecthomas/chroma v0.10.0
