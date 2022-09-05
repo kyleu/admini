@@ -29,11 +29,11 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 		return ErrResult(req, act, err)
 	}
 
-	//kids, err := getRelationData(req, m, data, srcKey, as)
-	//if err != nil {
+	// kids, err := GetRelationData(req, m, data, srcKey, as)
+	// if err != nil {
 	//	return nil, errors.Wrap(err, "unable to load relation objects")
 	//}
-	//if len(kids) > 0 {
+	// if len(kids) > 0 {
 	//	obj.Append("relatedModels", kids)
 	//}
 
@@ -50,7 +50,7 @@ func processModelView(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 	return ret, nil
 }
 
-func getRelationData(req *cutil.WorkspaceRequest, m *model.Model, data []any, sourceKey string, as *app.State) ([]*util.OrderedMap[any], error) {
+func GetRelationData(req *cutil.WorkspaceRequest, m *model.Model, data []any, sourceKey string, as *app.State) ([]*util.OrderedMap[any], error) {
 	ret := make([]*util.OrderedMap[any], 0, len(m.Relationships))
 	for _, rel := range m.Relationships {
 		rowFK, err := model.GetStrings(m.Fields, rel.SourceFields, data)

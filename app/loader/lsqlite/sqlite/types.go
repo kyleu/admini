@@ -8,7 +8,6 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-// nolint
 func typeFor(t string, cr *columnResult, logger util.Logger) *types.Wrapped {
 	if cr != nil && cr.NotNull == 0 {
 		cr.NotNull = 1

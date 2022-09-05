@@ -1,9 +1,10 @@
 package routes
 
 import (
+	"github.com/fasthttp/router"
+
 	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cproject"
-	"github.com/fasthttp/router"
 )
 
 func projectRoutes(r *router.Router) {

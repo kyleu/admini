@@ -12,7 +12,6 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-// nolint
 func AppRoutes() fasthttp.RequestHandler {
 	r := router.New()
 

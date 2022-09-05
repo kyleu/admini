@@ -14,7 +14,7 @@ func TypeForName(t string, logger util.Logger) *types.Wrapped {
 	return typeFor(t, nil, logger)
 }
 
-// nolint
+//nolint:cyclop, gocyclo
 func typeFor(t string, cr *columnResult, logger util.Logger) *types.Wrapped {
 	if cr != nil && cr.Nullable == "YES" {
 		cr.Nullable = "NO"

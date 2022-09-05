@@ -1,8 +1,9 @@
 package routes
 
 import (
-	"admini.dev/admini/app/controller/csource"
 	"github.com/fasthttp/router"
+
+	"admini.dev/admini/app/controller/csource"
 )
 
 func sourceRoutes(r *router.Router) {

@@ -70,7 +70,7 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-// nolint
+//nolint:cyclop, funlen, gocyclo, maintidx
 func toGoth(id string, k string, s string, c string, scopes ...string) (goth.Provider, error) {
 	switch id {
 	case "amazon":

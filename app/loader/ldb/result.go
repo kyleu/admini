@@ -34,8 +34,8 @@ func ParseResultFields(title string, count int, q string, timing *result.Timing,
 				if _, ok := x.([]uint8); ok {
 					f := fields[colIdx]
 					if row[colIdx] != nil {
-						s := string(row[colIdx].([]uint8))
-						row[colIdx] = f.Type.From(s)
+						b, _ := row[colIdx].([]uint8)
+						row[colIdx] = f.Type.From(string(b))
 					}
 				}
 			}

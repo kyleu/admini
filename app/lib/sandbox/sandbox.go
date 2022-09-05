@@ -30,8 +30,9 @@ func (s Sandboxes) Get(key string) *Sandbox {
 	return nil
 }
 
-// nolint
 // $PF_SECTION_START(sandboxes)$
+//
+//nolint:stylecheck
 var AllSandboxes = Sandboxes{testbed}
 
 // $PF_SECTION_END(sandboxes)$

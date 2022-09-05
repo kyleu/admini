@@ -15,7 +15,7 @@ func TypeForName(t string, enums model.Models, logger util.Logger) *types.Wrappe
 	return typeFor(t, nil, enums, logger)
 }
 
-// nolint
+//nolint:cyclop, funlen, gocyclo
 func typeFor(t string, cr *columnResult, enums model.Models, logger util.Logger) *types.Wrapped {
 	if cr != nil && cr.Nullable == pgYes {
 		cr.Nullable = pgNo

@@ -23,7 +23,7 @@ type WorkspaceRequest struct {
 	Project  *project.Project     `json:"-"`
 	Sources  source.Sources       `json:"-"`
 	Schemata schema.Schemata      `json:"-"`
-	Context  context.Context      `json:"-"`
+	Context  context.Context      `json:"-"` //nolint:containedctx // properly closed, never directly used
 }
 
 func (r *WorkspaceRequest) Route(path ...string) string {
