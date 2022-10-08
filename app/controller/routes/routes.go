@@ -5,6 +5,7 @@ import (
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
 
+	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/clib"
 	"admini.dev/admini/app/controller/cutil"
@@ -12,7 +13,7 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-func AppRoutes(logger util.Logger) fasthttp.RequestHandler {
+func AppRoutes(as *app.State, logger util.Logger) fasthttp.RequestHandler {
 	r := router.New()
 
 	r.GET("/", controller.Home)

@@ -46,16 +46,12 @@ checksum:
 dockers:
   -
     image_templates:
-      - "ghcr.io/kyleu/admini:{{ .Major }}"
-      - "ghcr.io/kyleu/admini:{{ .Major }}.{{ .Minor }}"
-      - "ghcr.io/kyleu/admini:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+      - "ghcr.io/kyleu/admini:{{ trimprefix .Tag \"v\" }}"
       - "ghcr.io/kyleu/admini:latest"
     dockerfile: ./tools/release/Dockerfile
   -
     image_templates:
-      - "ghcr.io/kyleu/admini:{{ .Major }}-debug"
-      - "ghcr.io/kyleu/admini:{{ .Major }}.{{ .Minor }}-debug"
-      - "ghcr.io/kyleu/admini:{{ .Major }}.{{ .Minor }}.{{ .Patch }}-debug"
+      - "ghcr.io/kyleu/admini:{{ trimprefix .Tag \"v\" }}-debug"
       - "ghcr.io/kyleu/admini:latest-debug"
     dockerfile: ./tools/release/debug.Dockerfile
 
