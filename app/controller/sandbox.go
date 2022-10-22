@@ -3,7 +3,6 @@ package controller
 
 import (
 	"github.com/valyala/fasthttp"
-	"go.uber.org/zap"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
@@ -35,7 +34,7 @@ func SandboxRun(rc *fasthttp.RequestCtx) {
 		ctx, span, logger := telemetry.StartSpan(ps.Context, "sandbox."+key, ps.Logger)
 		defer span.Complete()
 
-		ret, err := sb.Run(ctx, as, logger.With(zap.String("sandbox", key)))
+		ret, err := sb.Run(ctx, as, logger.With("sandbox", key))
 		if err != nil {
 			return "", err
 		}

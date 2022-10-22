@@ -35,7 +35,7 @@
     "authorID": "kyleu",
     "authorName": "Kyle U",
     "authorEmail": "kyle@kyleu.com",
-    "license": "Proprietary",
+    "license": "MIT",
     "homepage": "https://admini.dev",
     "sourcecode": "https://github.com/kyleu/admini",
     "summary": "Use Admini to explore and manage your data as fast and easily as possible",

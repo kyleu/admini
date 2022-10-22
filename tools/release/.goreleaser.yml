@@ -23,7 +23,7 @@ brews:
     folder: Formula
     homepage: "https://admini.dev"
     description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
-    license: "Proprietary"
+    license: "MIT"
     skip_upload: "false"
     install: "bin.install \"admini\""
 
@@ -63,7 +63,7 @@ nfpms:
     homepage: "https://admini.dev}"
     maintainer: "Kyle U <kyle@kyleu.com>"
     description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
-    license: "Proprietary"
+    license: "MIT"
     replacements: *replacements
     formats:
       - apk
@@ -102,7 +102,7 @@ snapcrafts:
     description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     grade: stable
     confinement: strict
-    license: "Proprietary"
+    license: "MIT"
 
 snapshot:
   name_template: "{{ .Tag }}"

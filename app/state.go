@@ -38,10 +38,6 @@ type State struct {
 	Started   time.Time
 }
 
-func (s State) Close(ctx context.Context, logger util.Logger) error {
-	return s.Services.Close(ctx, logger)
-}
-
 func NewState(debug bool, bi *BuildInfo, f filesystem.FileLoader, enableTelemetry bool, logger util.Logger) (*State, error) {
 	loc, err := time.LoadLocation("UTC")
 	if err != nil {
@@ -61,4 +57,8 @@ func NewState(debug bool, bi *BuildInfo, f filesystem.FileLoader, enableTelemetr
 		Themes:    ts,
 		Started:   time.Now(),
 	}, nil
+}
+
+func (s State) Close(ctx context.Context, logger util.Logger) error {
+	return s.Services.Close(ctx, logger)
 }
