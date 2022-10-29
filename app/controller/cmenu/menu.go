@@ -8,15 +8,17 @@ import (
 	"admini.dev/admini/app/lib/menu"
 	"admini.dev/admini/app/lib/sandbox"
 	"admini.dev/admini/app/lib/telemetry"
+	"admini.dev/admini/app/lib/user"
 	"admini.dev/admini/app/util"
 )
 
-func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State, logger util.Logger) (menu.Items, error) {
+func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, profile *user.Profile, as *app.State, logger util.Logger) (menu.Items, any, error) {
 	ctx, span, logger := telemetry.StartSpan(ctx, "menu:generate", logger)
 	defer span.Complete()
 	_ = logger
 
 	var ret menu.Items
+	var data any
 	// $PF_SECTION_START(routes_start)$
 	prj := &menu.Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: "/project", Children: projectItems(ctx, as, logger)}
 	srcDesc := "Sources of data"
@@ -35,5 +37,5 @@ func MenuFor(ctx context.Context, isAuthed bool, isAdmin bool, as *app.State, lo
 	const aboutDesc = "Get assistance and advice for using " + util.AppName
 	ret = append(ret, &menu.Item{Key: "about", Title: "About", Description: aboutDesc, Icon: "question", Route: "/about"})
 	// $PF_SECTION_END(routes_end)$
-	return ret, nil
+	return ret, data, nil
 }
