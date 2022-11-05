@@ -74,9 +74,8 @@ func loaderFor(req *cutil.WorkspaceRequest, srcKey string, as *app.State) (*sour
 }
 
 func optionsFor(req *cutil.WorkspaceRequest) filter.OptionsMap {
-	p := cutil.ParamSetFromRequest(req.RC)
 	ret := filter.OptionsMap{}
-	for k, v := range p {
+	for k, v := range req.PS.Params {
 		ret[k] = &filter.Options{Sort: nil, Filter: nil, Group: nil, Params: v}
 	}
 	return ret
