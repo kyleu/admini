@@ -11,4 +11,7 @@ const (
 	AppURL     = "https://admini.dev"
 	AppSource  = "https://github.com/kyleu/admini"
 	AppLegal   = `Built by <a href="mailto:kyle@kyleu.com">Kyle U</a>, all rights reserved`
+
+	// $PF_SECTION_START(keys)$
+	// $PF_SECTION_END(keys)$.
 )
