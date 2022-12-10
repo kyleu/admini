@@ -65,7 +65,7 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
 	qw422016.N().S(`
           `)
 //line views/vproject/New.html:26
-	components.StreamTableCheckbox(qw422016, "sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), true, 5)
+	components.StreamTableCheckbox(qw422016, "sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5)
 //line views/vproject/New.html:26
 	qw422016.N().S(`
         </tbody>

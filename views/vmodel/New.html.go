@@ -46,12 +46,12 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
 	qw422016.E().S(p.Model.Name())
 //line views/vmodel/New.html:20
 	qw422016.N().S(`</h3>
-    <form class="mt" action="`)
+    <form action="`)
 //line views/vmodel/New.html:21
 	qw422016.E().S(p.Req.RouteAct(p.Act, 0))
 //line views/vmodel/New.html:21
 	qw422016.N().S(`" method="post" enctype="application/x-www-form-urlencoded">
-      <table>
+      <table class="mt expanded">
         <tbody>
           `)
 //line views/vmodel/New.html:24
