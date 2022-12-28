@@ -37,12 +37,12 @@ func (s *Service) List(logger util.Logger) (Sources, error) {
 
 func (s *Service) Search(q string, logger util.Logger) (result.Results, error) {
 	ret := result.Results{}
-	ps, err := s.List(logger)
+	srcs, err := s.List(logger)
 	if err != nil {
 		return nil, err
 	}
-	for _, p := range ps {
-		if res := result.NewResult("source", p.Key, p.WebPath(), p.Name(), p.IconWithFallback(), p, q); len(res.Matches) > 0 {
+	for _, src := range srcs {
+		if res := result.NewResult("source", src.Key, src.WebPath(), src.Name(), src.IconWithFallback(), src, src, q); len(res.Matches) > 0 {
 			ret = append(ret, res)
 		}
 	}

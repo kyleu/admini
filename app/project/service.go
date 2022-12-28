@@ -42,7 +42,7 @@ func (s *Service) Search(ctx context.Context, q string, logger util.Logger) (res
 		return nil, err
 	}
 	for _, p := range ps {
-		if res := result.NewResult("project", p.Key, p.WebPath(), p.Name(), p.IconWithFallback(), p, q); len(res.Matches) > 0 {
+		if res := result.NewResult("project", p.Key, p.WebPath(), p.Name(), p.IconWithFallback(), p, p, q); len(res.Matches) > 0 {
 			ret = append(ret, res)
 		}
 	}
