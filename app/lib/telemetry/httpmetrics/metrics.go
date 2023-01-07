@@ -2,9 +2,10 @@
 package httpmetrics
 
 import (
+	"sync"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/valyala/fasthttp"
-	"sync"
 
 	"admini.dev/admini/app/lib/telemetry"
 	"admini.dev/admini/app/util"
