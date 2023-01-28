@@ -12,17 +12,33 @@ import {editorInit} from "./editor";
 import {themeInit} from "./theme";
 import {appInit} from "./app";
 
+declare global {
+  interface Window {
+    "admini": {
+      relativeTime: (time: string, el?: HTMLElement) => string;
+      autocomplete: (el: HTMLInputElement, url: string, field: string, title: (x: any) => string, val: (x: any) => string) => void;
+      setSiblingToNull: (el: HTMLElement) => void;
+      initForm: (frm: HTMLFormElement) => void;
+      flash: (key: string, level: string, msg: string) => void;
+      tags: (el: HTMLElement) => void;
+    };
+  }
+}
+
 export function init(): void {
-  (window as any).admini = {};
+  const [s, i] = editorInit();
+  window.admini = {
+    relativeTime: timeInit(),
+    autocomplete: autocompleteInit(),
+    setSiblingToNull: s,
+    initForm: i,
+    flash: flashInit(),
+    tags: tagsInit()
+  };
   menuInit();
   modeInit();
-  flashInit();
   linkInit();
-  timeInit();
-  autocompleteInit();
   modalInit();
-  tagsInit();
-  editorInit();
   themeInit();
   appInit();
 }

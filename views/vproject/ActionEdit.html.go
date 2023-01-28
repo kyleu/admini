@@ -70,7 +70,7 @@ func (p *ActionEdit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cu
         <tbody>
           `)
 //line views/vproject/ActionEdit.html:25
-	components.StreamTableInput(qw422016, "key", "Key", p.Act.Key, 5)
+	components.StreamTableInput(qw422016, "key", "", "Key", p.Act.Key, 5)
 //line views/vproject/ActionEdit.html:25
 	qw422016.N().S(`
 `)
@@ -79,7 +79,7 @@ func (p *ActionEdit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cu
 //line views/vproject/ActionEdit.html:26
 		qw422016.N().S(`          `)
 //line views/vproject/ActionEdit.html:27
-		components.StreamTableInput(qw422016, "title", "Title", p.Act.Title, 5)
+		components.StreamTableInput(qw422016, "title", "", "Title", p.Act.Title, 5)
 //line views/vproject/ActionEdit.html:27
 		qw422016.N().S(`
           `)
@@ -89,7 +89,7 @@ func (p *ActionEdit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cu
 		qw422016.N().S(`
           `)
 //line views/vproject/ActionEdit.html:29
-		components.StreamTableTextarea(qw422016, "description", "Description", 8, p.Act.Description, 5)
+		components.StreamTableTextarea(qw422016, "description", "", "Description", 8, p.Act.Description, 5)
 //line views/vproject/ActionEdit.html:29
 		qw422016.N().S(`
 `)
@@ -106,12 +106,12 @@ func (p *ActionEdit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cu
 //line views/vproject/ActionEdit.html:36
 		qw422016.N().S(`          `)
 //line views/vproject/ActionEdit.html:37
-		components.StreamTableSelect(qw422016, "format", "Format", format, []string{"html", "text", "code"}, []string{"HTML", "Text", "Code"}, 5)
+		components.StreamTableSelect(qw422016, "format", "", "Format", format, []string{"html", "text", "code"}, []string{"HTML", "Text", "Code"}, 5)
 //line views/vproject/ActionEdit.html:37
 		qw422016.N().S(`
           `)
 //line views/vproject/ActionEdit.html:38
-		components.StreamTableTextarea(qw422016, "content", "Content", 8, content, 5)
+		components.StreamTableTextarea(qw422016, "content", "", "Content", 8, content, 5)
 //line views/vproject/ActionEdit.html:38
 		qw422016.N().S(`
 `)

@@ -24,9 +24,9 @@
     <form class="mt" action="/source/{%s p.Source.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">
         <tbody>
-          {%= components.TableInput("title", "Title", p.Source.Title, 5) %}
+          {%= components.TableInput("title", "", "Title", p.Source.Title, 5) %}
           {%= components.TableIcons("icon", "Icon", p.Source.Icon, ps, 5) %}
-          {%= components.TableInput("description", "Description", p.Source.Description, 5) %}
+          {%= components.TableInput("description", "", "Description", p.Source.Description, 5) %}
           {%- switch p.Source.Type -%}
           {%- case schema.OriginMySQL -%}
           {%= mySQLFields(p.Source.Config, 5) %}
@@ -49,12 +49,12 @@
   {% code
     cfg, _ := lpostgres.LoadConfig(b)
   %}
-  {%= components.TableInput("host", "Host", cfg.Host, indent) %}
-  {%= components.TableInputNumber("port", "Port", cfg.Port, indent) %}
-  {%= components.TableInput("username", "Username", cfg.Username, indent) %}
-  {%= components.TableInput("password", "Password", cfg.Password, indent) %}
-  {%= components.TableInput("database", "Database", cfg.Database, indent) %}
-  {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}
+  {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
+  {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
+  {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
+  {%= components.TableInput("password", "", "Password", cfg.Password, indent) %}
+  {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
+  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
   {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}
 
@@ -62,12 +62,12 @@
   {% code
     cfg, _ := lmysql.LoadConfig(b)
   %}
-  {%= components.TableInput("host", "Host", cfg.Host, indent) %}
-  {%= components.TableInputNumber("port", "Port", cfg.Port, indent) %}
-  {%= components.TableInput("username", "Username", cfg.Username, indent) %}
-  {%= components.TableInput("password", "Password", cfg.Password, indent) %}
-  {%= components.TableInput("database", "Database", cfg.Database, indent) %}
-  {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}
+  {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
+  {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
+  {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
+  {%= components.TableInput("password", "", "Password", cfg.Password, indent) %}
+  {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
+  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
   {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}
 
@@ -79,7 +79,7 @@
       panic(err)
     }
   %}
-  {%= components.TableInput("file", "File", cfg.File, indent) %}
-  {%= components.TableInput("schema", "Schema", cfg.Schema, indent) %}
+  {%= components.TableInput("file", "", "File", cfg.File, indent) %}
+  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
   {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}

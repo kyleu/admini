@@ -45,12 +45,12 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
         <tbody>
           `)
 //line views/vproject/New.html:22
-	components.StreamTableInput(qw422016, "key", "Key", "", 5)
+	components.StreamTableInput(qw422016, "key", "", "Key", "", 5)
 //line views/vproject/New.html:22
 	qw422016.N().S(`
           `)
 //line views/vproject/New.html:23
-	components.StreamTableInput(qw422016, "title", "Title", "", 5)
+	components.StreamTableInput(qw422016, "title", "", "Title", "", 5)
 //line views/vproject/New.html:23
 	qw422016.N().S(`
           `)
@@ -60,7 +60,7 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
 	qw422016.N().S(`
           `)
 //line views/vproject/New.html:25
-	components.StreamTableInput(qw422016, "description", "Description", "", 5)
+	components.StreamTableInput(qw422016, "description", "", "Description", "", 5)
 //line views/vproject/New.html:25
 	qw422016.N().S(`
           `)

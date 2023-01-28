@@ -19,10 +19,10 @@
     <form class="mt expanded" action="/project" method="post" enctype="application/x-www-form-urlencoded">
       <table>
         <tbody>
-          {%= components.TableInput("key", "Key", "", 5) %}
-          {%= components.TableInput("title", "Title", "", 5) %}
+          {%= components.TableInput("key", "", "Key", "", 5) %}
+          {%= components.TableInput("title", "", "Title", "", 5) %}
           {%= components.TableIcons("icon", "Icon", "", ps, 5) %}
-          {%= components.TableInput("description", "Description", "", 5) %}
+          {%= components.TableInput("description", "", "Description", "", 5) %}
           {%= components.TableCheckbox("sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5) %}
         </tbody>
       </table>
