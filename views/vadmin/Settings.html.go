@@ -99,8 +99,8 @@ func (p *Settings) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cuti
 //line views/vadmin/Settings.html:28
 	qw422016.N().S(`  </div>
 
-  <div class="flex-wrap" style="align-items: stretch;">
-    <div class="card" style="flex-grow: 1;">
+  <div class="flex-wrap flex-align-stretch">
+    <div class="card flex-grow-1">
       <h3>`)
 //line views/vadmin/Settings.html:33
 	components.StreamSVGRefIcon(qw422016, `archive`, ps)
@@ -112,7 +112,7 @@ func (p *Settings) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cuti
         <li><a href="/theme">Edit Themes</a></li>
       </ul>
     </div>
-    <div class="card" style="flex-grow: 1;">
+    <div class="card flex-grow-1">
       <h3>`)
 //line views/vadmin/Settings.html:41
 	components.StreamSVGRefIcon(qw422016, `bolt`, ps)
@@ -125,7 +125,7 @@ func (p *Settings) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cuti
         <li><a href="/admin/request">Debug HTTP request</a></li>
       </ul>
     </div>
-    <div class="card" style="flex-grow: 1;">
+    <div class="card flex-grow-1">
       <h3>`)
 //line views/vadmin/Settings.html:50
 	components.StreamSVGRefIcon(qw422016, `cog`, ps)
