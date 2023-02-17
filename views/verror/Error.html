@@ -4,6 +4,7 @@
 
   "admini.dev/admini/app"
   "admini.dev/admini/app/controller/cutil"
+  "admini.dev/admini/app/lib/user"
   "admini.dev/admini/app/util"
   "admini.dev/admini/views/layout"
 ) %}
@@ -40,10 +41,12 @@
   <div class="card">
     <h3>{%s ed.Message %}</h3>
     <em>Internal Server Error</em>
+    {%- if user.IsAdmin(ps.Accounts) -%}
     {%= errorStack(ed) %} {% code cause := ed.Cause %}
     {%- for cause != nil -%}
     <h3>Caused by</h3>
     <div>{%s cause.Message %}</div>{%= errorStack(cause) %}{% code cause = cause.Cause %}
     {%- endfor -%}
+    {%- endif -%}
   </div>
 {% endfunc %}
