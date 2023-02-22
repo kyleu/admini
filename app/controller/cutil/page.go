@@ -85,11 +85,20 @@ func (p *PageState) TitleString() string {
 	return fmt.Sprintf("%s - %s", p.Title, util.AppName)
 }
 
-func (p *PageState) User() string {
+func (p *PageState) Username() string {
+	return p.Profile.Name
+}
+
+func (p *PageState) AuthString() string {
+	n := p.Profile.String()
+	msg := fmt.Sprintf("signed in as %s", n)
 	if len(p.Accounts) == 0 {
-		return "anonymous"
+		if n == user.DefaultProfile.Name {
+			return "click to sign in"
+		}
+		return msg
 	}
-	return p.Accounts[0].Email
+	return fmt.Sprintf("%s using [%s]", msg, p.Accounts.TitleString())
 }
 
 func (p *PageState) Clean(rc *fasthttp.RequestCtx, as *app.State) error {

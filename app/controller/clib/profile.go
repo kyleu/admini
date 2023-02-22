@@ -59,9 +59,9 @@ func ProfileSave(rc *fasthttp.RequestCtx) {
 
 		n := ps.Profile.Clone()
 
-		referrer := frm.GetStringOpt("referrer")
-		if referrer == "" {
-			referrer = cutil.DefaultProfilePath
+		referrerDefault := frm.GetStringOpt("referrer")
+		if referrerDefault == "" {
+			referrerDefault = cutil.DefaultProfilePath
 		}
 
 		n.Name = frm.GetStringOpt("name")
@@ -76,6 +76,6 @@ func ProfileSave(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		return controller.ReturnToReferrer("Saved profile", referrer, rc, ps)
+		return controller.ReturnToReferrer("Saved profile", referrerDefault, rc, ps)
 	})
 }
