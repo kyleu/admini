@@ -9,6 +9,8 @@ import (
 	"admini.dev/admini/app/util"
 )
 
+var SkipControllerMetrics = util.GetEnvBool("controller_metrics_disabled", false)
+
 type CounterAndHistogram struct {
 	c *prometheus.CounterVec
 	h *prometheus.HistogramVec
