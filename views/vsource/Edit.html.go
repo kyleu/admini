@@ -12,106 +12,116 @@ import (
 	"admini.dev/admini/app/loader/lmysql"
 	"admini.dev/admini/app/loader/lpostgres"
 	"admini.dev/admini/app/loader/lsqlite"
+	"admini.dev/admini/app/loader/lsqlserver"
 	"admini.dev/admini/app/source"
 	"admini.dev/admini/views/components"
 	"admini.dev/admini/views/layout"
 )
 
-//line views/vsource/Edit.html:13
+//line views/vsource/Edit.html:14
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line views/vsource/Edit.html:13
+//line views/vsource/Edit.html:14
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line views/vsource/Edit.html:13
+//line views/vsource/Edit.html:14
 type Edit struct {
 	layout.Basic
 	Source *source.Source
 }
 
-//line views/vsource/Edit.html:18
+//line views/vsource/Edit.html:19
 func (p *Edit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.PageState) {
-//line views/vsource/Edit.html:18
+//line views/vsource/Edit.html:19
 	qw422016.N().S(`
   <div class="card">
     <div class="right">
       <a class="link-confirm" data-message="Are you sure you want to delete source [`)
-//line views/vsource/Edit.html:21
+//line views/vsource/Edit.html:22
 	qw422016.E().S(p.Source.Key)
-//line views/vsource/Edit.html:21
+//line views/vsource/Edit.html:22
 	qw422016.N().S(`]?" href="/source/`)
-//line views/vsource/Edit.html:21
+//line views/vsource/Edit.html:22
 	qw422016.E().S(p.Source.Key)
-//line views/vsource/Edit.html:21
+//line views/vsource/Edit.html:22
 	qw422016.N().S(`/delete">Delete Source</a>
     </div>
     <h3>Edit [`)
-//line views/vsource/Edit.html:23
+//line views/vsource/Edit.html:24
 	qw422016.E().S(p.Source.Key)
-//line views/vsource/Edit.html:23
+//line views/vsource/Edit.html:24
 	qw422016.N().S(`]</h3>
     <form class="mt" action="/source/`)
-//line views/vsource/Edit.html:24
+//line views/vsource/Edit.html:25
 	qw422016.E().S(p.Source.Key)
-//line views/vsource/Edit.html:24
+//line views/vsource/Edit.html:25
 	qw422016.N().S(`" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">
         <tbody>
           `)
-//line views/vsource/Edit.html:27
+//line views/vsource/Edit.html:28
 	components.StreamTableInput(qw422016, "title", "", "Title", p.Source.Title, 5)
-//line views/vsource/Edit.html:27
+//line views/vsource/Edit.html:28
 	qw422016.N().S(`
           `)
-//line views/vsource/Edit.html:28
+//line views/vsource/Edit.html:29
 	components.StreamTableIcons(qw422016, "icon", "Icon", p.Source.Icon, ps, 5)
-//line views/vsource/Edit.html:28
+//line views/vsource/Edit.html:29
 	qw422016.N().S(`
           `)
-//line views/vsource/Edit.html:29
+//line views/vsource/Edit.html:30
 	components.StreamTableInput(qw422016, "description", "", "Description", p.Source.Description, 5)
-//line views/vsource/Edit.html:29
+//line views/vsource/Edit.html:30
 	qw422016.N().S(`
 `)
-//line views/vsource/Edit.html:30
+//line views/vsource/Edit.html:31
 	switch p.Source.Type {
-//line views/vsource/Edit.html:31
+//line views/vsource/Edit.html:32
 	case schema.OriginMySQL:
-//line views/vsource/Edit.html:31
-		qw422016.N().S(`          `)
 //line views/vsource/Edit.html:32
+		qw422016.N().S(`          `)
+//line views/vsource/Edit.html:33
 		streammySQLFields(qw422016, p.Source.Config, 5)
-//line views/vsource/Edit.html:32
+//line views/vsource/Edit.html:33
 		qw422016.N().S(`
 `)
-//line views/vsource/Edit.html:33
+//line views/vsource/Edit.html:34
 	case schema.OriginPostgres:
-//line views/vsource/Edit.html:33
-		qw422016.N().S(`          `)
 //line views/vsource/Edit.html:34
+		qw422016.N().S(`          `)
+//line views/vsource/Edit.html:35
 		streampostgresFields(qw422016, p.Source.Config, 5)
-//line views/vsource/Edit.html:34
+//line views/vsource/Edit.html:35
 		qw422016.N().S(`
 `)
-//line views/vsource/Edit.html:35
+//line views/vsource/Edit.html:36
 	case schema.OriginSQLite:
-//line views/vsource/Edit.html:35
+//line views/vsource/Edit.html:36
 		qw422016.N().S(`          `)
-//line views/vsource/Edit.html:36
+//line views/vsource/Edit.html:37
 		streamsqliteFields(qw422016, p.Source.Config, 5)
-//line views/vsource/Edit.html:36
+//line views/vsource/Edit.html:37
 		qw422016.N().S(`
 `)
-//line views/vsource/Edit.html:37
+//line views/vsource/Edit.html:38
+	case schema.OriginSQLServer:
+//line views/vsource/Edit.html:38
+		qw422016.N().S(`          `)
+//line views/vsource/Edit.html:39
+		streamsqlServerFields(qw422016, p.Source.Config, 5)
+//line views/vsource/Edit.html:39
+		qw422016.N().S(`
+`)
+//line views/vsource/Edit.html:40
 	}
-//line views/vsource/Edit.html:37
+//line views/vsource/Edit.html:40
 	qw422016.N().S(`        </tbody>
       </table>
       <div class="mt">
@@ -121,171 +131,219 @@ func (p *Edit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
     </form>
   </div>
 `)
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 }
 
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 func (p *Edit) WriteBody(qq422016 qtio422016.Writer, as *app.State, ps *cutil.PageState) {
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	p.StreamBody(qw422016, as, ps)
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	qt422016.ReleaseWriter(qw422016)
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 }
 
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 func (p *Edit) Body(as *app.State, ps *cutil.PageState) string {
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	p.WriteBody(qb422016, as, ps)
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	qs422016 := string(qb422016.B)
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 	return qs422016
-//line views/vsource/Edit.html:46
+//line views/vsource/Edit.html:49
 }
 
-//line views/vsource/Edit.html:48
+//line views/vsource/Edit.html:51
 func streampostgresFields(qw422016 *qt422016.Writer, b []byte, indent int) {
-//line views/vsource/Edit.html:50
+//line views/vsource/Edit.html:53
 	cfg, _ := lpostgres.LoadConfig(b)
 
-//line views/vsource/Edit.html:52
-	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
-//line views/vsource/Edit.html:53
-	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
-//line views/vsource/Edit.html:54
-	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
 //line views/vsource/Edit.html:55
-	components.StreamTableInput(qw422016, "password", "", "Password", cfg.Password, indent)
+	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
 //line views/vsource/Edit.html:56
-	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
 //line views/vsource/Edit.html:57
-	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
+	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
 //line views/vsource/Edit.html:58
-	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+	components.StreamTableInputPassword(qw422016, "password", "", "Password", cfg.Password, indent)
 //line views/vsource/Edit.html:59
-}
-
-//line views/vsource/Edit.html:59
-func writepostgresFields(qq422016 qtio422016.Writer, b []byte, indent int) {
-//line views/vsource/Edit.html:59
-	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vsource/Edit.html:59
-	streampostgresFields(qw422016, b, indent)
-//line views/vsource/Edit.html:59
-	qt422016.ReleaseWriter(qw422016)
-//line views/vsource/Edit.html:59
-}
-
-//line views/vsource/Edit.html:59
-func postgresFields(b []byte, indent int) string {
-//line views/vsource/Edit.html:59
-	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vsource/Edit.html:59
-	writepostgresFields(qb422016, b, indent)
-//line views/vsource/Edit.html:59
-	qs422016 := string(qb422016.B)
-//line views/vsource/Edit.html:59
-	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vsource/Edit.html:59
-	return qs422016
-//line views/vsource/Edit.html:59
-}
-
+	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+//line views/vsource/Edit.html:60
+	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
 //line views/vsource/Edit.html:61
+	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+//line views/vsource/Edit.html:62
+}
+
+//line views/vsource/Edit.html:62
+func writepostgresFields(qq422016 qtio422016.Writer, b []byte, indent int) {
+//line views/vsource/Edit.html:62
+	qw422016 := qt422016.AcquireWriter(qq422016)
+//line views/vsource/Edit.html:62
+	streampostgresFields(qw422016, b, indent)
+//line views/vsource/Edit.html:62
+	qt422016.ReleaseWriter(qw422016)
+//line views/vsource/Edit.html:62
+}
+
+//line views/vsource/Edit.html:62
+func postgresFields(b []byte, indent int) string {
+//line views/vsource/Edit.html:62
+	qb422016 := qt422016.AcquireByteBuffer()
+//line views/vsource/Edit.html:62
+	writepostgresFields(qb422016, b, indent)
+//line views/vsource/Edit.html:62
+	qs422016 := string(qb422016.B)
+//line views/vsource/Edit.html:62
+	qt422016.ReleaseByteBuffer(qb422016)
+//line views/vsource/Edit.html:62
+	return qs422016
+//line views/vsource/Edit.html:62
+}
+
+//line views/vsource/Edit.html:64
 func streammySQLFields(qw422016 *qt422016.Writer, b []byte, indent int) {
-//line views/vsource/Edit.html:63
+//line views/vsource/Edit.html:66
 	cfg, _ := lmysql.LoadConfig(b)
 
-//line views/vsource/Edit.html:65
-	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
-//line views/vsource/Edit.html:66
-	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
-//line views/vsource/Edit.html:67
-	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
 //line views/vsource/Edit.html:68
-	components.StreamTableInput(qw422016, "password", "", "Password", cfg.Password, indent)
+	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
 //line views/vsource/Edit.html:69
-	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
 //line views/vsource/Edit.html:70
-	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
+	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
 //line views/vsource/Edit.html:71
-	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+	components.StreamTableInputPassword(qw422016, "password", "", "Password", cfg.Password, indent)
 //line views/vsource/Edit.html:72
-}
-
-//line views/vsource/Edit.html:72
-func writemySQLFields(qq422016 qtio422016.Writer, b []byte, indent int) {
-//line views/vsource/Edit.html:72
-	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vsource/Edit.html:72
-	streammySQLFields(qw422016, b, indent)
-//line views/vsource/Edit.html:72
-	qt422016.ReleaseWriter(qw422016)
-//line views/vsource/Edit.html:72
-}
-
-//line views/vsource/Edit.html:72
-func mySQLFields(b []byte, indent int) string {
-//line views/vsource/Edit.html:72
-	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vsource/Edit.html:72
-	writemySQLFields(qb422016, b, indent)
-//line views/vsource/Edit.html:72
-	qs422016 := string(qb422016.B)
-//line views/vsource/Edit.html:72
-	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vsource/Edit.html:72
-	return qs422016
-//line views/vsource/Edit.html:72
-}
-
+	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+//line views/vsource/Edit.html:73
+	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
 //line views/vsource/Edit.html:74
+	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+//line views/vsource/Edit.html:75
+}
+
+//line views/vsource/Edit.html:75
+func writemySQLFields(qq422016 qtio422016.Writer, b []byte, indent int) {
+//line views/vsource/Edit.html:75
+	qw422016 := qt422016.AcquireWriter(qq422016)
+//line views/vsource/Edit.html:75
+	streammySQLFields(qw422016, b, indent)
+//line views/vsource/Edit.html:75
+	qt422016.ReleaseWriter(qw422016)
+//line views/vsource/Edit.html:75
+}
+
+//line views/vsource/Edit.html:75
+func mySQLFields(b []byte, indent int) string {
+//line views/vsource/Edit.html:75
+	qb422016 := qt422016.AcquireByteBuffer()
+//line views/vsource/Edit.html:75
+	writemySQLFields(qb422016, b, indent)
+//line views/vsource/Edit.html:75
+	qs422016 := string(qb422016.B)
+//line views/vsource/Edit.html:75
+	qt422016.ReleaseByteBuffer(qb422016)
+//line views/vsource/Edit.html:75
+	return qs422016
+//line views/vsource/Edit.html:75
+}
+
+//line views/vsource/Edit.html:77
 func streamsqliteFields(qw422016 *qt422016.Writer, b []byte, indent int) {
-//line views/vsource/Edit.html:76
+//line views/vsource/Edit.html:79
 	println(len(b))
 	cfg, err := lsqlite.LoadConfig(b)
 	if err != nil {
 		panic(err)
 	}
 
-//line views/vsource/Edit.html:82
+//line views/vsource/Edit.html:85
 	components.StreamTableInput(qw422016, "file", "", "File", cfg.File, indent)
-//line views/vsource/Edit.html:83
+//line views/vsource/Edit.html:86
 	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
-//line views/vsource/Edit.html:84
+//line views/vsource/Edit.html:87
 	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 }
 
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 func writesqliteFields(qq422016 qtio422016.Writer, b []byte, indent int) {
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	streamsqliteFields(qw422016, b, indent)
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	qt422016.ReleaseWriter(qw422016)
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 }
 
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 func sqliteFields(b []byte, indent int) string {
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	writesqliteFields(qb422016, b, indent)
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	qs422016 := string(qb422016.B)
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
 	return qs422016
-//line views/vsource/Edit.html:85
+//line views/vsource/Edit.html:88
+}
+
+//line views/vsource/Edit.html:90
+func streamsqlServerFields(qw422016 *qt422016.Writer, b []byte, indent int) {
+//line views/vsource/Edit.html:92
+	cfg, _ := lsqlserver.LoadConfig(b)
+
+//line views/vsource/Edit.html:94
+	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
+//line views/vsource/Edit.html:95
+	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
+//line views/vsource/Edit.html:96
+	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
+//line views/vsource/Edit.html:97
+	components.StreamTableInputPassword(qw422016, "password", "", "Password", cfg.Password, indent)
+//line views/vsource/Edit.html:98
+	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+//line views/vsource/Edit.html:99
+	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
+//line views/vsource/Edit.html:100
+	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+//line views/vsource/Edit.html:101
+}
+
+//line views/vsource/Edit.html:101
+func writesqlServerFields(qq422016 qtio422016.Writer, b []byte, indent int) {
+//line views/vsource/Edit.html:101
+	qw422016 := qt422016.AcquireWriter(qq422016)
+//line views/vsource/Edit.html:101
+	streamsqlServerFields(qw422016, b, indent)
+//line views/vsource/Edit.html:101
+	qt422016.ReleaseWriter(qw422016)
+//line views/vsource/Edit.html:101
+}
+
+//line views/vsource/Edit.html:101
+func sqlServerFields(b []byte, indent int) string {
+//line views/vsource/Edit.html:101
+	qb422016 := qt422016.AcquireByteBuffer()
+//line views/vsource/Edit.html:101
+	writesqlServerFields(qb422016, b, indent)
+//line views/vsource/Edit.html:101
+	qs422016 := string(qb422016.B)
+//line views/vsource/Edit.html:101
+	qt422016.ReleaseByteBuffer(qb422016)
+//line views/vsource/Edit.html:101
+	return qs422016
+//line views/vsource/Edit.html:101
 }

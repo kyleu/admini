@@ -21,5 +21,6 @@ The following modules were used to build this project:
 - [schema](./doc/module/schema.md)
 - [search](./doc/module/search.md)
 - [sqlite](./doc/module/sqlite.md)
+- [sqlserver](./doc/module/sqlserver.md)
 - [types](./doc/module/types.md)
 - [upgrade](./doc/module/upgrade.md)

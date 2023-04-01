@@ -21,6 +21,7 @@
     "schema",
     "search",
     "sqlite",
+    "sqlserver",
     "types",
     "upgrade"
   ],

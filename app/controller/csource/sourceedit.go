@@ -109,7 +109,7 @@ func SourceEdit(rc *fasthttp.RequestCtx) {
 		ps.Data = src
 
 		switch src.Type {
-		case schema.OriginPostgres, schema.OriginSQLite, schema.OriginMySQL:
+		case schema.OriginPostgres, schema.OriginSQLite, schema.OriginMySQL, schema.OriginSQLServer:
 			page := &vsource.Edit{Source: src}
 			return controller.Render(rc, as, page, ps, "sources", src.Key, "Edit")
 		default:
@@ -155,10 +155,9 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 
 			src.Config = util.ToJSONBytes(params, true)
 		case schema.OriginPostgres:
-			ps := frm.GetStringOpt("port")
 			params := &database.PostgresParams{}
 			params.Host = frm.GetStringOpt("host")
-			if ps != "" {
+			if ps := frm.GetStringOpt("port"); ps != "" {
 				params.Port, _ = strconv.Atoi(ps)
 			}
 			params.Username = frm.GetStringOpt("username")
@@ -171,6 +170,19 @@ func SourceSave(rc *fasthttp.RequestCtx) {
 		case schema.OriginSQLite:
 			params := &database.SQLiteParams{}
 			params.File = frm.GetStringOpt("file")
+			params.Schema = frm.GetStringOpt("schema")
+			params.Debug, _ = frm.GetBool("debug", true)
+
+			src.Config = util.ToJSONBytes(params, true)
+		case schema.OriginSQLServer:
+			params := &database.SQLServerParams{}
+			params.Host = frm.GetStringOpt("host")
+			if ps := frm.GetStringOpt("port"); ps != "" {
+				params.Port, _ = strconv.Atoi(ps)
+			}
+			params.Username = frm.GetStringOpt("username")
+			params.Password = frm.GetStringOpt("password")
+			params.Database = frm.GetStringOpt("database")
 			params.Schema = frm.GetStringOpt("schema")
 			params.Debug, _ = frm.GetBool("debug", true)
 

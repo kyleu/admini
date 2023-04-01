@@ -6,6 +6,7 @@ require (
 	github.com/alecthomas/chroma v0.10.0
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
 	github.com/coreos/go-semver v0.3.1
+	github.com/denisenkom/go-mssqldb v0.12.3
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fasthttp/router v1.4.17
 	github.com/fsnotify/fsnotify v1.6.0
@@ -52,6 +53,8 @@ require (
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
+	github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe // indirect
+	github.com/golang-sql/sqlexp v0.1.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2 // indirect

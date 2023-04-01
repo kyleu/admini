@@ -4,6 +4,7 @@
   "admini.dev/admini/app/loader/lmysql"
   "admini.dev/admini/app/loader/lpostgres"
   "admini.dev/admini/app/loader/lsqlite"
+  "admini.dev/admini/app/loader/lsqlserver"
   "admini.dev/admini/app/lib/schema"
   "admini.dev/admini/app/source"
   "admini.dev/admini/views/components"
@@ -34,6 +35,8 @@
           {%= postgresFields(p.Source.Config, 5) %}
           {%- case schema.OriginSQLite -%}
           {%= sqliteFields(p.Source.Config, 5) %}
+          {%- case schema.OriginSQLServer -%}
+          {%= sqlServerFields(p.Source.Config, 5) %}
           {%- endswitch -%}
         </tbody>
       </table>
@@ -52,7 +55,7 @@
   {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
   {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
   {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
-  {%= components.TableInput("password", "", "Password", cfg.Password, indent) %}
+  {%= components.TableInputPassword("password", "", "Password", cfg.Password, indent) %}
   {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
   {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
   {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
@@ -65,7 +68,7 @@
   {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
   {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
   {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
-  {%= components.TableInput("password", "", "Password", cfg.Password, indent) %}
+  {%= components.TableInputPassword("password", "", "Password", cfg.Password, indent) %}
   {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
   {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
   {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
@@ -80,6 +83,19 @@
     }
   %}
   {%= components.TableInput("file", "", "File", cfg.File, indent) %}
+  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
+  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+{% endstripspace %}{% endfunc %}
+
+{% func sqlServerFields(b []byte, indent int) %}{% stripspace %}
+  {% code
+    cfg, _ := lsqlserver.LoadConfig(b)
+  %}
+  {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
+  {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
+  {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
+  {%= components.TableInputPassword("password", "", "Password", cfg.Password, indent) %}
+  {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
   {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
   {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}

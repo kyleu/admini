@@ -36,17 +36,22 @@ func SQLSelectGrouped(columns string, tables string, where string, groupBy strin
 		orderByClause = " order by " + orderBy
 	}
 
+	prefix := ""
 	limitClause := ""
 	if limit > 0 {
-		limitClause = fmt.Sprintf(" limit %d", limit)
+		if len(orderBy) == 0 {
+			prefix = fmt.Sprintf("top %d ", limit)
+		} else {
+			limitClause = fmt.Sprintf(" fetch next %d rows only", limit)
+		}
 	}
 
 	offsetClause := ""
-	if offset > 0 {
-		offsetClause = fmt.Sprintf(" offset %d", offset)
+	if len(orderBy) > 0 && offset > 0 {
+		offsetClause = fmt.Sprintf(" offset %d rows", offset)
 	}
 
-	return "select " + columns + " from " + tables + whereClause + groupByClause + orderByClause + limitClause + offsetClause
+	return "select " + prefix + columns + " from " + tables + whereClause + groupByClause + orderByClause + limitClause + offsetClause
 }
 
 func SQLInsert(table string, columns []string, rows int, placeholder string) string {
@@ -58,10 +63,13 @@ func SQLInsert(table string, columns []string, rows int, placeholder string) str
 	for i := 0; i < rows; i++ {
 		var ph []string
 		for idx := range columns {
-			if placeholder == "?" {
-				ph = append(ph, "?")
-			} else {
+			switch placeholder {
+			case "$", "":
 				ph = append(ph, fmt.Sprintf("$%d", (i*len(columns))+idx+1))
+			case "?":
+				ph = append(ph, "?")
+			case "@":
+				ph = append(ph, fmt.Sprintf("@p%d", (i*len(columns))+idx+1))
 			}
 		}
 		placeholders = append(placeholders, "("+strings.Join(ph, ", ")+")")
@@ -85,10 +93,13 @@ func SQLUpdate(table string, columns []string, where string, placeholder string)
 
 	stmts := make([]string, 0, len(columns))
 	for i, col := range columns {
-		if placeholder == "?" {
-			stmts = append(stmts, fmt.Sprintf("%s = ?", col))
-		} else {
+		switch placeholder {
+		case "$", "":
 			stmts = append(stmts, fmt.Sprintf("%s = $%d", col, i+1))
+		case "?":
+			stmts = append(stmts, fmt.Sprintf("%s = ?", col))
+		case "@":
+			stmts = append(stmts, fmt.Sprintf("%s = @p%d", col, i+1))
 		}
 	}
 	return fmt.Sprintf("update %s set %s%s", table, strings.Join(stmts, ", "), whereClause)
@@ -121,14 +132,19 @@ func SQLDelete(table string, where string) string {
 	return "delete from " + table + whereSpaces + where
 }
 
-func SQLInClause(column string, numParams int, offset int) string {
+func SQLInClause(column string, numParams int, offset int, placeholder string) string {
 	resBuilder := strings.Builder{}
 	for index := 0; index < numParams; index++ {
 		if index == 0 {
 			resBuilder.WriteString(column + " in ")
-			resBuilder.WriteString(fmt.Sprintf("($%d", offset+1))
-		} else {
+		}
+		switch placeholder {
+		case "$", "":
 			resBuilder.WriteString(fmt.Sprintf(", $%d", index+offset+1))
+		case "?":
+			resBuilder.WriteString("?")
+		case "@":
+			resBuilder.WriteString(fmt.Sprintf(", @p%d", index+offset+1))
 		}
 	}
 	resBuilder.WriteString(")")

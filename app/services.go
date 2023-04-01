@@ -10,6 +10,7 @@ import (
 	"admini.dev/admini/app/loader/lmysql"
 	"admini.dev/admini/app/loader/lpostgres"
 	"admini.dev/admini/app/loader/lsqlite"
+	"admini.dev/admini/app/loader/lsqlserver"
 	"admini.dev/admini/app/project"
 	"admini.dev/admini/app/source"
 	"admini.dev/admini/app/util"
@@ -28,6 +29,7 @@ func NewServices(ctx context.Context, st *State, logger util.Logger) (*Services,
 	if database.SQLiteEnabled {
 		ls.Set(schema.OriginSQLite, lsqlite.NewLoader(ctx, logger))
 	}
+	ls.Set(schema.OriginSQLServer, lsqlserver.NewLoader(ctx, logger))
 	ls.Set(schema.OriginMock, lmock.NewLoader(ctx))
 	ss := source.NewService(st.Files, ls)
 	ps := project.NewService(st.Files, ss, ls)
