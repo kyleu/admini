@@ -16,7 +16,7 @@ func (s *Schema) Hack(logger util.Logger) (string, error) {
 	for _, m := range s.Models {
 		if m.Type != model.TypeEnum {
 			md := hackModel(m, logger)
-			err := os.WriteFile("./tmp/"+m.Key+".json", util.ToJSONBytes(md, true), 0644)
+			err := os.WriteFile("./tmp/"+m.Key+".json", util.ToJSONBytes(md, true), 0o644)
 			if err != nil {
 				return "", err
 			}

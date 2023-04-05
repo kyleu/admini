@@ -15,7 +15,7 @@ func Add(ctx context.Context, db *database.Service, m *model.Model, changes util
 	pk := m.GetPK(logger)
 
 	if db.Type.SupportsReturning {
-		q := database.SQLInsertReturning(m.Path().Quoted(db.Type.Quote), columns, 1, pk, db.Type.Placeholder)
+		q := database.SQLInsertReturning(m.Path().Quoted(db.Type.Quote), columns, 1, pk, db.Placeholder())
 		out, err := db.QuerySingleRow(ctx, q, nil, logger, data...)
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to insert row reurning primary key")
@@ -31,7 +31,7 @@ func Add(ctx context.Context, db *database.Service, m *model.Model, changes util
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to open transaction")
 	}
-	iq := database.SQLInsert(m.Path().Quoted(db.Type.Quote), columns, 1, db.Type.Placeholder)
+	iq := database.SQLInsert(m.Path().Quoted(db.Type.Quote), columns, 1, db.Placeholder())
 	_, err = db.Exec(ctx, iq, tx, 1, logger, data...)
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to insert row")

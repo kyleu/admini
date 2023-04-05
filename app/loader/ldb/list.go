@@ -52,11 +52,11 @@ func Count(ctx context.Context, db *database.Service, m *model.Model, logger uti
 
 func modelListQuery(typ *database.DBType, m *model.Model, params *filter.Params) string {
 	cols, tbl := forTable(typ, m)
-	return database.SQLSelect(cols, tbl, "", params.OrderByString(), params.Limit, params.Offset)
+	return database.SQLSelect(cols, tbl, "", params.OrderByString(), params.Limit, params.Offset, typ.Placeholder)
 }
 
 func modelCountQuery(typ *database.DBType, m *model.Model) string {
-	return database.SQLSelectSimple("count(*) as c", m.Path().Quoted(typ.Quote))
+	return database.SQLSelectSimple("count(*) as c", m.Path().Quoted(typ.Quote), typ.Placeholder)
 }
 
 func forTable(typ *database.DBType, m *model.Model) (string, string) {

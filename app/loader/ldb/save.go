@@ -22,15 +22,18 @@ func Save(
 
 	where := make([]string, 0, len(pk))
 	for idx, x := range pk {
-		if db.Type.Placeholder == "?" {
+		switch db.Placeholder() {
+		case "?":
 			where = append(where, fmt.Sprintf("%s = ?", x))
-		} else {
+		case "@":
+			where = append(where, fmt.Sprintf("%s = @p%d", x, len(vals)+idx+1))
+		default:
 			where = append(where, fmt.Sprintf("%s = $%d", x, len(vals)+idx+1))
 		}
 	}
 
 	if db.Type.SupportsReturning {
-		q := database.SQLUpdateReturning(m.Key, cols, strings.Join(where, " and "), pk, db.Type.Placeholder)
+		q := database.SQLUpdateReturning(m.Key, cols, strings.Join(where, " and "), pk, db.Placeholder())
 		out, err := db.QuerySingleRow(ctx, q, nil, logger, append(vals, ids...)...)
 		if err != nil {
 			return nil, errors.Wrapf(err, "unable to save [%s] with primary key [%s]", m.Name(), strings.Join(pk, "::"))
@@ -47,7 +50,7 @@ func Save(
 		return nil, err
 	}
 
-	uq := database.SQLUpdate(m.Key, cols, strings.Join(where, " and "), db.Type.Placeholder)
+	uq := database.SQLUpdate(m.Key, cols, strings.Join(where, " and "), db.Placeholder())
 	_, err = db.Exec(ctx, uq, tx, -1, logger, append(vals, ids...)...)
 	if err != nil {
 		_ = tx.Rollback()
@@ -62,13 +65,13 @@ func loadAfterEdit(
 ) ([]any, error) {
 	wc := make([]string, 0, len(pk))
 	for idx, x := range pk {
-		if db.Type.Placeholder == "?" {
+		if db.Placeholder() == "?" {
 			wc = append(wc, fmt.Sprintf(`%s%s%s = ?`, db.Type.Quote, x, db.Type.Quote))
 		} else {
 			wc = append(wc, fmt.Sprintf(`%s%s%s = $%d`, db.Type.Quote, x, db.Type.Quote, idx+1))
 		}
 	}
-	sq := database.SQLSelectSimple(strings.Join(pk, ", "), m.Path().Quoted(db.Type.Quote), strings.Join(wc, " and "))
+	sq := database.SQLSelectSimple(strings.Join(pk, ", "), m.Path().Quoted(db.Type.Quote), db.Placeholder(), wc...)
 	out, err := db.QuerySingleRow(ctx, sq, tx, logger, pkVals...)
 	if err != nil {
 		_ = tx.Rollback()

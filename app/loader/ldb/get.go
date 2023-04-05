@@ -47,5 +47,5 @@ func modelGetByPKQuery(typ *database.DBType, m *model.Model, logger util.Logger)
 			where = append(where, fmt.Sprintf(`%s%s%s = $%d`, typ.Quote, pkf, typ.Quote, idx+1))
 		}
 	}
-	return database.SQLSelectSimple(cols, tbl, strings.Join(where, " and ")), nil
+	return database.SQLSelectSimple(cols, tbl, typ.Placeholder, strings.Join(where, " and ")), nil
 }
