@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/valyala/fasthttp"
-
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/site/download"
@@ -18,7 +16,7 @@ import (
 	"admini.dev/admini/views/vsite"
 )
 
-func Handle(path []string, rc *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) (string, layout.Page, []string, error) {
+func Handle(path []string, as *app.State, ps *cutil.PageState) (string, layout.Page, []string, error) {
 	if len(path) == 0 {
 		ps.Data = siteData("Welcome to the marketing site!")
 		return "", &vsite.Index{}, path, nil

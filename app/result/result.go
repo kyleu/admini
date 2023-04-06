@@ -35,7 +35,7 @@ func (r *Result) Size() int {
 
 func (r *Result) Debug() string {
 	sb := &strings.Builder{}
-	sb.WriteString(fmt.Sprintf("Result with [%d] fields and [%d] rows", len(r.Fields), len(r.Data)))
+	fmt.Fprintf(sb, "Result with [%d] fields and [%d] rows", len(r.Fields), len(r.Data))
 	if len(r.Fields) > 0 {
 		sb.WriteString(" - ")
 	}
