@@ -20,7 +20,15 @@
     <p>Coming soon...</p>
     {%- comment %}$PF_SECTION_END(help)${% endcomment -%}
   </div>
+  {%= SourceCode() %}
   {%= Feedback() %}
+{% endfunc %}
+
+{% func SourceCode() %}
+<div class="card">
+  <h3>Source Code</h3>
+  <p>The project is available on <a href="https://github.com/kyleu/admini" target="_blank">GitHub</a></p>
+</div>
 {% endfunc %}
 
 {% func Feedback() %}
