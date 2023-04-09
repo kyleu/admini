@@ -126,7 +126,7 @@ func (s *Service) newSpan(
 	return time.Now(), nc, span, logger
 }
 
-func (s *Service) complete(q string, op string, span *telemetry.Span, started time.Time, logger util.Logger, err error) {
+func (s *Service) complete(q string, op string, span *telemetry.Span, started time.Time, _ util.Logger, err error) {
 	if err != nil && span != nil {
 		span.OnError(err)
 	}
