@@ -2,6 +2,8 @@
 
 Use [admini](https://admini.dev) to explore and manage your data as fast and easily as possible 
 
+This application was built with help from [Project Forge](https://projectforge.dev)
+
 ## Download
 
 https://admini.dev/download
