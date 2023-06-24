@@ -21,11 +21,12 @@ Admini relies on a ton of open source projects. First among them is the [Go lang
 - [pkg/errors][15]
 - [prometheus][16]
 - [opentelemetry][17]
-- [sqlx][18]
-- [pgx][19]
-- [mysql][20]
-- [sqlite][21]
-- [xcodegen][22]
+- [lo][18]
+- [sqlx][19]
+- [pgx][20]
+- [mysql][21]
+- [sqlite][22]
+- [xcodegen][23]
 
 
 [1]: https://golang.org "What a great contribution to the world of engineering"
@@ -44,9 +45,10 @@ Admini relies on a ton of open source projects. First among them is the [Go lang
 [14]: https://github.com/kirsle/configdir "Provides access to OS-specific directories"
 [15]: https://github.com/pkg/errors "Errors with stack traces and detailed logging"
 [16]: https://github.com/prometheus/client_golang "Metrics for all aspects of the system"
-[17]: https://go.opentelemetry.io/otel "Telemetry for full system tracing"
-[18]: https://github.com/jmoiron/sqlx "Provides enhancements to the stdlib's sql package, super handy"
-[19]: https://github.com/jackc/pgx "Handles (most of) the crazy types that PostgreSQL supports"
-[20]: https://github.com/go-sql-driver/mysql "The Golang MySQL driver, does what it says on the tin"
-[21]: https://modernc.org/sqlite "A version of SQLite that was compiled to Go by a machine"
-[22]: https://github.com/yonaskolb/XcodeGen "Generates messy iOS XCode projects"
+[17]: https://github.com/samber/lo "Functional programming conveniences, used everywhere"
+[18]: https://go.opentelemetry.io/otel "Telemetry for full system tracing"
+[19]: https://github.com/jmoiron/sqlx "Provides enhancements to the stdlib's sql package, super handy"
+[20]: https://github.com/jackc/pgx "Handles (most of) the crazy types that PostgreSQL supports"
+[21]: https://github.com/go-sql-driver/mysql "The Golang MySQL driver, does what it says on the tin"
+[22]: https://modernc.org/sqlite "A version of SQLite that was compiled to Go by a machine"
+[23]: https://github.com/yonaskolb/XcodeGen "Generates messy iOS XCode projects"
