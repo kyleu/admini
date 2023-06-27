@@ -6,7 +6,9 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"github.com/samber/lo"
 
+	"admini.dev/admini/app/lib/schema/field"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/lib/types"
 )
@@ -36,24 +38,24 @@ func (v *ValidationResult) log(category string, modelKey string, msg string, lev
 
 func validateSchema(n string, s *Schema) *ValidationResult {
 	r := &ValidationResult{Schema: n}
-	for _, m := range s.Models {
+	lo.ForEach(s.Models, func(m *model.Model, _ int) {
 		r = validateModel(r, s, m)
-	}
+	})
 	return r
 }
 
 func validateModel(r *ValidationResult, s *Schema, m *model.Model) *ValidationResult {
 	encountered := map[string]bool{}
-	for _, f := range m.Fields {
+	lo.ForEach(m.Fields, func(f *field.Field, _ int) {
 		if encountered[f.Key] {
 			msg := fmt.Sprintf("%s [%s] field [%s] appears twice", m.Type.String(), m.Key, f.Key)
 			r.log(m.Type.Key, m.Key, msg, LevelError)
 		}
 		encountered[f.Key] = true
-	}
-	for _, v := range m.Fields {
+	})
+	lo.ForEach(m.Fields, func(v *field.Field, _ int) {
 		validateType(r, s, "model", m.Key, v.Key, v.Type)
-	}
+	})
 	return r
 }
 

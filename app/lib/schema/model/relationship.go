@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/samber/lo"
+
 	"admini.dev/admini/app/util"
 )
 
@@ -27,22 +29,19 @@ func (r *Relationship) Path() string {
 type Relationships []*Relationship
 
 func (s Relationships) Get(key string) *Relationship {
-	for _, x := range s {
-		if x.Key == key {
-			return x
-		}
-	}
-	return nil
+	return lo.FindOrElse(s, nil, func(x *Relationship) bool {
+		return x.Key == key
+	})
 }
 
 func (m *Model) ApplicableRelations(key string) Relationships {
 	ret := Relationships{}
-	for _, r := range m.Relationships {
-		for _, sf := range r.SourceFields {
+	lo.ForEach(m.Relationships, func(r *Relationship, _ int) {
+		lo.ForEach(r.SourceFields, func(sf string, _ int) {
 			if sf == key {
 				ret = append(ret, r)
 			}
-		}
-	}
+		})
+	})
 	return ret
 }

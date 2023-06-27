@@ -2,6 +2,8 @@
 package schema
 
 import (
+	"github.com/samber/lo"
+
 	"admini.dev/admini/app/util"
 )
 
@@ -16,10 +18,7 @@ type Scalar struct {
 type Scalars []*Scalar
 
 func (s Scalars) Get(pkg util.Pkg, key string) *Scalar {
-	for _, x := range s {
-		if x.Pkg.Equals(pkg) && x.Key == key {
-			return x
-		}
-	}
-	return nil
+	return lo.FindOrElse(s, nil, func(x *Scalar) bool {
+		return x.Pkg.Equals(pkg) && x.Key == key
+	})
 }

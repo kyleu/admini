@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/lib/schema/field"
@@ -36,13 +37,9 @@ func (o Override) String() string {
 type Overrides []*Override
 
 func (o Overrides) Purge(path util.Pkg) Overrides {
-	ret := make(Overrides, 0, len(o))
-	for _, x := range o {
-		if !(x.Path.StartsWith(path)) {
-			ret = append(ret, x)
-		}
-	}
-	return ret
+	return lo.Filter(o, func(x *Override, _ int) bool {
+		return !(x.Path.StartsWith(path))
+	})
 }
 
 func (o Overrides) Sort() {
