@@ -2,7 +2,6 @@
 package util
 
 const (
-	BoolTrue   = "true"
 	AppKey     = "admini"
 	AppName    = "Admini"
 	AppSummary = "Use Admini to explore and manage your data as fast and easily as possible"
@@ -11,6 +10,10 @@ const (
 	AppURL     = "https://admini.dev"
 	AppSource  = "https://github.com/kyleu/admini"
 	AppLegal   = `Built by <a href="mailto:kyle@kyleu.com">Kyle U</a>, all rights reserved`
+
+	BoolTrue   = "true"
+	KeyError   = "error"
+	KeyUnknown = "unknown"
 
 	// $PF_SECTION_START(keys)$
 	// $PF_SECTION_END(keys)$.
