@@ -1,7 +1,7 @@
 <!--- Content managed by Project Forge, see [projectforge.md] for details. -->
-# PostgreSQL
+# SQL Server
 
-This is a module for [Project Forge](https://projectforge.dev). It provides an API for accessing SQL Server databases.
+This is a module for [Project Forge](https://projectforge.dev). It provides an API for accessing Microsoft SQL Server databases.
 
 https://github.com/kyleu/projectforge/tree/master/module/sqlserver
 

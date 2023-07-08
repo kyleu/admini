@@ -22,6 +22,7 @@
     "search",
     "sqlite",
     "sqlserver",
+    "themecatalog",
     "types",
     "upgrade"
   ],
@@ -88,8 +89,8 @@
   "build": {
     "publish": true,
     "desktop": true,
-    "signing": true,
     "notarize": true,
+    "signing": true,
     "android": true,
     "iOS": true,
     "wasm": true,

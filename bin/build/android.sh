@@ -12,7 +12,7 @@ TGT=$1
 
 echo "building gomobile for Android..."
 mkdir -p build/dist/mobile_android_arm64
-time gomobile bind -o build/dist/mobile_android_arm64/admini.aar -target=android admini.dev/admini/app/cmd
+GOARCH=arm64 time gomobile bind -o build/dist/mobile_android_arm64/admini.aar -target=android admini.dev/admini/app/cmd
 echo "gomobile for Android completed successfully, building distribution..."
 cd "build/dist/mobile_android_arm64"
 zip -r "../admini_${TGT}_android_aar.zip" .
