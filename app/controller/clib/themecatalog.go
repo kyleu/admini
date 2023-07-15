@@ -15,6 +15,7 @@ import (
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/telemetry"
 	"admini.dev/admini/app/lib/theme"
+	"admini.dev/admini/app/util"
 	"admini.dev/admini/views"
 	"admini.dev/admini/views/vtheme"
 )
@@ -69,7 +70,7 @@ func ThemePalette(rc *fasthttp.RequestCtx) {
 		if string(rc.URI().QueryArgs().Peek("t")) == "go" {
 			ps.Data = strings.Join(lo.Map(x, func(t *theme.Theme, _ int) string {
 				return t.ToGo()
-			}), "\n")
+			}), util.StringDefaultLinebreak)
 			return controller.Render(rc, as, &views.Debug{}, ps, "Themes")
 		}
 		return controller.Render(rc, as, &vtheme.Add{Palette: pal, Themes: x}, ps, "Themes")
