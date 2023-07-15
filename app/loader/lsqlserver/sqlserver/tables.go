@@ -16,7 +16,7 @@ type tableResult struct {
 	Name   string `db:"table_name"`
 }
 
-func (t tableResult) ToModel(logger util.Logger) *model.Model {
+func (t tableResult) ToModel(_ util.Logger) *model.Model {
 	ret := model.NewModel(util.Pkg{t.Schema}, t.Name)
 	ret.Type = model.TypeStruct
 	return ret

@@ -40,7 +40,7 @@ func (l *Loader) Schema(ctx context.Context) (*schema.Schema, error) {
 	return mysql.LoadDatabaseSchema(ctx, l.db, l.logger)
 }
 
-func (l *Loader) Connection(ctx context.Context) (any, error) {
+func (l *Loader) Connection(_ context.Context) (any, error) {
 	return l.db, nil
 }
 
@@ -72,7 +72,7 @@ func (l *Loader) Remove(ctx context.Context, m *model.Model, fields []string, va
 	return ldb.Remove(ctx, l.db, m, fields, values, expected, l.logger)
 }
 
-func (l *Loader) Default(ctx context.Context, m *model.Model) ([]any, error) {
+func (l *Loader) Default(_ context.Context, m *model.Model) ([]any, error) {
 	ret := make([]any, 0, len(m.Fields))
 	for _, f := range m.Fields {
 		ret = append(ret, f.DefaultClean())

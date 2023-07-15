@@ -74,9 +74,9 @@ func SourceHack(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to load schema for source [%s]", key)
 		}
 		if string(rc.URI().QueryArgs().Peek("x")) == "svc" {
-			ret, err := sch.HackSvc(ps.Logger)
-			if err != nil {
-				return "", errors.Wrapf(err, "unable to run schema hack for source [%s]", key)
+			ret, e := sch.HackSvc(ps.Logger)
+			if e != nil {
+				return "", errors.Wrapf(e, "unable to run schema hack for source [%s]", key)
 			}
 			rc.Response.SetBodyRaw([]byte(ret))
 			return "", nil

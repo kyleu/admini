@@ -7,7 +7,7 @@ import (
 	"admini.dev/admini/app/lib/schema"
 )
 
-func loadMetadata(ctx context.Context, db *database.Service) *schema.Metadata {
+func loadMetadata(_ context.Context, db *database.Service) *schema.Metadata {
 	return &schema.Metadata{
 		Description: "",
 		Comments:    nil,

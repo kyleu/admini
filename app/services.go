@@ -37,6 +37,6 @@ func NewServices(ctx context.Context, st *State, logger util.Logger) (*Services,
 	return &Services{Sources: ss, Projects: ps, Loaders: ls}, nil
 }
 
-func (s *Services) Close(_ context.Context, logger util.Logger) error {
+func (s *Services) Close(_ context.Context, _ util.Logger) error {
 	return nil
 }

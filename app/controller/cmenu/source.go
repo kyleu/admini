@@ -8,7 +8,7 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-func sourceItems(ctx context.Context, as *app.State, logger util.Logger) menu.Items {
+func sourceItems(_ context.Context, as *app.State, logger util.Logger) menu.Items {
 	ss, err := as.Services.Sources.List(logger)
 	if err != nil {
 		return menu.Items{{Key: "error", Title: "Error", Description: err.Error()}}

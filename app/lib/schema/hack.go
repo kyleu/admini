@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"admini.dev/admini/app/lib/filesystem"
 	"admini.dev/admini/app/lib/schema/field"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/lib/types"
@@ -16,7 +17,7 @@ func (s *Schema) Hack(logger util.Logger) (string, error) {
 	for _, m := range s.Models {
 		if m.Type != model.TypeEnum {
 			md := hackModel(m, logger)
-			err := os.WriteFile("./tmp/"+m.Key+".json", util.ToJSONBytes(md, true), 0o644)
+			err := os.WriteFile("./tmp/"+m.Key+".json", util.ToJSONBytes(md, true), filesystem.DefaultMode)
 			if err != nil {
 				return "", err
 			}
@@ -26,7 +27,7 @@ func (s *Schema) Hack(logger util.Logger) (string, error) {
 	return util.ToJSON(ret), nil
 }
 
-func (s *Schema) HackSvc(logger util.Logger) (string, error) {
+func (s *Schema) HackSvc(_ util.Logger) (string, error) {
 	var ret string
 	for _, m := range s.Models {
 		if m.Type != model.TypeEnum {
