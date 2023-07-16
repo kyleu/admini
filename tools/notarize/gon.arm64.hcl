@@ -12,10 +12,10 @@ sign {
 }
 
 dmg {
-  output_path = "./build/dist/admini_0.2.12_darwin_arm64.dmg"
+  output_path = "./build/dist/admini_0.2.13_darwin_arm64.dmg"
   volume_name = "Admini"
 }
 
 zip {
-  output_path = "./build/dist/admini_0.2.12_darwin_arm64_notarized.zip"
+  output_path = "./build/dist/admini_0.2.13_darwin_arm64_notarized.zip"
 }
