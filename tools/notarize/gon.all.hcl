@@ -1,9 +1,9 @@
 # Content managed by Project Forge, see [projectforge.md] for details.
-source = ["./build/dist/darwin_darwin_amd64_v1/admini"]
+source = ["./build/dist/darwin_darwin_all/admini"]
 bundle_id = "com.kyleu.admini"
 
 notarize {
-  path = "./build/dist/admini_v0.2.13_darwin_amd64_desktop.dmg"
+  path = "./build/dist/admini_v0.2.13_darwin_all_desktop.dmg"
   bundle_id = "com.kyleu.admini"
 }
 
@@ -17,10 +17,10 @@ sign {
 }
 
 dmg {
-  output_path = "./build/dist/admini_v0.2.13_darwin_amd64.dmg"
+  output_path = "./build/dist/admini_v0.2.13_darwin_all.dmg"
   volume_name = "Admini"
 }
 
 zip {
-  output_path = "./build/dist/admini_v0.2.13_darwin_amd64_notarized.zip"
+  output_path = "./build/dist/admini_v0.2.13_darwin_all_notarized.zip"
 }
