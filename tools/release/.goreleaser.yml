@@ -110,6 +110,15 @@ universal_binaries:
 - id: "darwin"
   replace: false
   name_template: '{{ .ProjectName }}'
+  hooks:
+    # This is a good place to put one-time use scripts
+    post:
+      - "./bin/build/android.sh {{ .Version }}"
+      - "./bin/build/ios.sh {{ .Version }}"
+      - "./bin/build/desktop.release.sh {{ .Version }}"
+      - "./tools/notarize/notarize.sh"
+      # $PF_SECTION_START(extrascripts)$
+      # $PF_SECTION_END(extrascripts)$
 
 builds:
   - id: "darwin"
@@ -170,15 +179,6 @@ builds:
     goarch:
       - "amd64"
     mod_timestamp: "{{ .CommitTimestamp }}"
-    hooks:
-      # This build uses only one architecture, and is a good place to put one-time use scripts
-      post:
-        - "./bin/build/android.sh {{ .Version }}"
-        - "./bin/build/ios.sh {{ .Version }}"
-        - "./bin/build/desktop.release.sh {{ .Version }}"
-        - "./tools/notarize/notarize.sh"
-        # $PF_SECTION_START(extrascripts)$
-        # $PF_SECTION_END(extrascripts)$
 
   - id: "windows_386"
     goos:
