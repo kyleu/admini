@@ -14,7 +14,6 @@
     "ios",
     "marketing",
     "mysql",
-    "notarize",
     "oauth",
     "postgres",
     "sandbox",
@@ -89,7 +88,6 @@
   "build": {
     "publish": true,
     "desktop": true,
-    "notarize": true,
     "signing": true,
     "android": true,
     "iOS": true,
