@@ -2,7 +2,6 @@
   "admini.dev/admini/app"
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/project"
-  "admini.dev/admini/app/lib/sandbox"
   "admini.dev/admini/app/source"
   "admini.dev/admini/app/util"
   "admini.dev/admini/views/components"
@@ -40,14 +39,5 @@
     {%- else -%}
     {%-= vsource.Table(p.Sources, as, ps) -%}
     {%- endif -%}
-  </div>
-
-  <div class="card">
-    <h3><a href="/sandbox">Sandboxes</a></h3>
-    <ul>
-      {%- for _, s := range sandbox.AllSandboxes -%}
-      <li><a href="/sandbox/{%s s.Key %}">{%s s.Title %}</a></li>
-      {%- endfor -%}
-    </ul>
   </div>
 {% endfunc %}
