@@ -1,10 +1,6 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
 package model
 
-import (
-	"admini.dev/admini/app/util"
-)
-
 type Type struct {
 	Key    string
 	Title  string
