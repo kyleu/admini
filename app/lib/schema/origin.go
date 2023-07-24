@@ -3,8 +3,6 @@ package schema
 
 import (
 	"github.com/samber/lo"
-
-	"admini.dev/admini/app/util"
 )
 
 type Origin struct {
