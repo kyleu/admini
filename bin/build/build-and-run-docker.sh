@@ -10,6 +10,6 @@ cd $dir/../..
 echo "Building [linux amd64]..."
 GOOS=linux GOARCH=amd64 make build
 mv ./build/debug/admini .
-docker build -t=admini -f=./tools/release/Dockerfile .
+docker build -t=admini -f=./tools/release/Dockerfile.release .
 rm ./admini
 docker run -it admini
