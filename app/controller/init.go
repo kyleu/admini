@@ -16,12 +16,3 @@ func initApp(*app.State, util.Logger) {
 func initAppRequest(*app.State, *cutil.PageState) error {
 	return nil
 }
-
-// Initialize system dependencies for the marketing site.
-func initSite(*app.State, util.Logger) {
-}
-
-// Configure marketing site data for each request.
-func initSiteRequest(*app.State, *cutil.PageState) error {
-	return nil
-}
