@@ -6,6 +6,7 @@ import (
 
 	"github.com/valyala/fasthttp"
 
+	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/assets"
 )
 
@@ -34,6 +35,7 @@ func assetResponse(rc *fasthttp.RequestCtx, data []byte, contentType string, err
 	if err == nil {
 		rc.Response.Header.SetContentType(contentType)
 		rc.SetStatusCode(fasthttp.StatusOK)
+		cutil.WriteCORS(rc)
 		_, _ = rc.Write(data)
 	} else {
 		rc.Error(err.Error(), fasthttp.StatusNotFound)
