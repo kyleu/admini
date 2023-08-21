@@ -2,12 +2,13 @@
 package schema
 
 import (
+	"cmp"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/samber/lo"
-	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/lib/schema/field"
 	"admini.dev/admini/app/lib/schema/model"
@@ -43,27 +44,27 @@ func (o Overrides) Purge(path util.Pkg) Overrides {
 }
 
 func (o Overrides) Sort() {
-	slices.SortFunc(o, func(l *Override, r *Override) bool {
+	slices.SortFunc(o, func(l *Override, r *Override) int {
 		if !l.Path.Equals(r.Path) {
 			for idx, p := range l.Path {
 				if idx >= len(r.Path) {
-					return false
+					return -1
 				}
 				if p != r.Path[idx] {
-					return p < r.Path[idx]
+					return cmp.Compare(p, r.Path[idx])
 				}
 			}
 		}
 		if len(l.Path) != len(r.Path) {
-			return false
+			return -1
 		}
 		if l.Prop != r.Prop {
-			return l.Prop < r.Prop
+			return cmp.Compare(l.Prop, r.Prop)
 		}
 		if l.Type != r.Type {
-			return l.Type < r.Type
+			return cmp.Compare(l.Type, r.Type)
 		}
-		return true
+		return 0
 	})
 }
 

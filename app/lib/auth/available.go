@@ -3,9 +3,9 @@ package auth
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/samber/lo"
-	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/util"
 )

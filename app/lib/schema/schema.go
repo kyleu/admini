@@ -2,9 +2,10 @@
 package schema
 
 import (
+	"slices"
+
 	"github.com/pkg/errors"
 	"github.com/samber/lo"
-	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"

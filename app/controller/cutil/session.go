@@ -3,11 +3,11 @@ package cutil
 
 import (
 	"context"
+	"slices"
 	"strings"
 
 	"github.com/mileusna/useragent"
 	"github.com/valyala/fasthttp"
-	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/csession"

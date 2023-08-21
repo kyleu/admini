@@ -8,7 +8,7 @@ package vadmin
 
 //line views/vadmin/Sitemap.html:2
 import (
-	"golang.org/x/exp/slices"
+	"slices"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cmenu"

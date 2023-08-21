@@ -2,9 +2,8 @@
 package types
 
 import (
+	"slices"
 	"strings"
-
-	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/util"
 )

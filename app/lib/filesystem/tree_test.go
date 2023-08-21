@@ -2,9 +2,8 @@
 package filesystem_test
 
 import (
+	"slices"
 	"testing"
-
-	"golang.org/x/exp/slices"
 
 	"admini.dev/admini/app/lib/filesystem"
 )
