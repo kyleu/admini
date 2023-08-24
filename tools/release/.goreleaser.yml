@@ -29,13 +29,13 @@ changelog:
 checksum:
   name_template: "checksums.txt"
   extra_files:
-    - glob: "./build/dist/*_notarized.zip"
     - glob: "./build/dist/*_desktop.dmg"
     - glob: "./build/dist/*_desktop.zip"
     - glob: "./build/dist/*_aar.zip"
     - glob: "./build/dist/*_apk.zip"
     - glob: "./build/dist/*_framework.zip"
     - glob: "./build/dist/*_app.zip"
+    - glob: "./build/dist/*_notarized.zip"
     # $PF_SECTION_START(checksums)$
     # $PF_SECTION_END(checksums)$
 
@@ -76,13 +76,13 @@ release:
     - [Windows Intel 64 bit](https://github.com/kyleu/admini/releases/download/{{ .Tag }}/admini_{{ .Version }}_windows_amd64.zip)
 
   extra_files:
-    - glob: "./build/dist/*_notarized.zip"
     - glob: "./build/dist/*.dmg"
     - glob: "./build/dist/*_desktop.zip"
     - glob: "./build/dist/*_aar.zip"
     - glob: "./build/dist/*_apk.zip"
     - glob: "./build/dist/*_framework.zip"
     - glob: "./build/dist/*_app.zip"
+    - glob: "./build/dist/*_notarized.zip"
     # $PF_SECTION_START(releasefiles)$
     # $PF_SECTION_END(releasefiles)$
 
