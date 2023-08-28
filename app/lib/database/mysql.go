@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"strconv"
 
-	// load MySQL driver.
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
