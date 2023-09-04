@@ -13,6 +13,7 @@ import (
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cutil"
+	"admini.dev/admini/app/lib/log"
 	"admini.dev/admini/app/lib/user"
 	"admini.dev/admini/app/util"
 	"admini.dev/admini/views/vadmin"
@@ -57,6 +58,10 @@ func Admin(rc *fasthttp.RequestCtx) {
 				return "", err
 			}
 			return controller.FlashAndRedir(true, "wrote heap profile", "/admin", rc, ps)
+		case "logs":
+			x := util.DebugMemStats()
+			ps.Data = x
+			return controller.Render(rc, as, &vadmin.Logs{Logs: log.RecentLogs}, ps, "admin", "Recent Logs")
 		case "memusage":
 			x := util.DebugMemStats()
 			ps.Data = x
