@@ -56,7 +56,7 @@ dist: "build/dist"
 nfpms:
   -
     vendor: "Kyle U"
-    homepage: "https://admini.dev}"
+    homepage: "https://admini.dev"
     maintainer: "Kyle U <kyle@kyleu.com>"
     description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     license: "MIT"
