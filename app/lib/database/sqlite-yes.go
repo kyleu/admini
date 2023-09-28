@@ -1,6 +1,6 @@
 //go:build darwin || (!android && linux && 386) || (!android && linux && amd64) || (!android && linux && arm) || (!android && linux && arm64) || (!android && linux && riscv64) || (windows && amd64)
 
-// Content managed by Project Forge, see [projectforge.md] for details.
+// Package database - Content managed by Project Forge, see [projectforge.md] for details.
 package database
 
 import (

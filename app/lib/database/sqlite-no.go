@@ -1,6 +1,6 @@
 //go:build aix || android || dragonfly || freebsd || js || illumos || (linux && ppc64) || (linux && mips) || (linux && mipsle) || (linux && mips64) || (linux && mips64le) || (linux && ppc64) || (linux && ppc64le) || (linux && s390x) || (linux && loong64) || netbsd || openbsd || plan9 || solaris || (windows && 386) || (windows && arm) || (windows && arm64)
 
-// Content managed by Project Forge, see [projectforge.md] for details.
+// Package database - Content managed by Project Forge, see [projectforge.md] for details.
 package database
 
 import (

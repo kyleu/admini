@@ -1,4 +1,4 @@
-// Content managed by Project Forge, see [projectforge.md] for details.
+// Package model - Content managed by Project Forge, see [projectforge.md] for details.
 package model
 
 type Type struct {

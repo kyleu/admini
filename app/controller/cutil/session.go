@@ -1,4 +1,4 @@
-// Content managed by Project Forge, see [projectforge.md] for details.
+// Package cutil - Content managed by Project Forge, see [projectforge.md] for details.
 package cutil
 
 import (
@@ -49,7 +49,7 @@ func LoadPageState(as *app.State, rc *fasthttp.RequestCtx, key string, logger ut
 	isAdmin, _ := user.Check("/admin", accts)
 
 	return &PageState{
-		Method: string(rc.Method()), URI: rc.Request.URI(), Flashes: flashes, Session: session,
+		Action: key, Method: string(rc.Method()), URI: rc.Request.URI(), Flashes: flashes, Session: session,
 		OS: os, OSVersion: ua.OSVersion, Browser: browser, BrowserVersion: ua.Version, Platform: platform,
 		Profile: prof, Accounts: accts, Authed: isAuthed, Admin: isAdmin, Params: params,
 		Icons: slices.Clone(initialIcons), Started: util.TimeCurrent(), Logger: logger, Context: ctx, Span: span,
