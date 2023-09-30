@@ -203,7 +203,7 @@ func streamviewReferences(qw422016 *qt422016.Writer, refs model.References, ps *
 			qw422016.E().S(r.String())
 //line views/vmodel/View.html:70
 			qw422016.N().S(`</label>
-        <div class="bd-animated"><div><div>
+        <div class="bd"><div><div>
           <noscript>
             <style>.jsrequired { display: none } </style>
             <a href="">View `)
