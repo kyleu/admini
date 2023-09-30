@@ -68,7 +68,7 @@
       <li>
         <input id="{%s r.Key %}-count" type="checkbox" hidden />
         <label for="{%s r.Key %}-count">{%= components.ExpandCollapse(3, ps) %} {%s r.String() %}</label>
-        <div class="bd">
+        <div class="bd-animated"><div><div>
           <noscript>
             <style>.jsrequired { display: none } </style>
             <a href="">View {%s r.String() %}</a> (or enable JavaScript)
@@ -77,7 +77,7 @@
             <div class="relationship" data-key="{%s r.Key %}" data-pkg="{%s r.SourcePkg.String() %}" data-model="{%s r.SourceModel %}" data-fields="{%s strings.Join(r.SourceFields, `//`) %}">Loading...</div>
             <em>(nah, not really; soon though)</em>
           </div>
-        </div>
+        </div></div></div>
       </li>
       {%- endfor -%}
     </ul>
