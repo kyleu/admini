@@ -53,6 +53,7 @@ type PageState struct {
 	Admin          bool              `json:"admin,omitempty"`
 	Params         filter.ParamSet   `json:"params,omitempty"`
 	Icons          []string          `json:"icons,omitempty"`
+	DefaultNavIcon string            `json:"defaultNavIcon,omitempty"`
 	RootIcon       string            `json:"rootIcon,omitempty"`
 	RootPath       string            `json:"rootPath,omitempty"`
 	RootTitle      string            `json:"rootTitle,omitempty"`
