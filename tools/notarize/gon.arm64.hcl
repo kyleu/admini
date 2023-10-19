@@ -3,7 +3,7 @@ source = ["./build/dist/darwin_darwin_arm64/admini"]
 bundle_id = "com.kyleu.admini"
 
 notarize {
-  path = "./build/dist/admini_0.3.6_darwin_arm64_desktop.dmg"
+  path = "./build/dist/admini_0.3.7_darwin_arm64_desktop.dmg"
   bundle_id = "com.kyleu.admini"
 }
 
@@ -17,10 +17,10 @@ sign {
 }
 
 dmg {
-  output_path = "./build/dist/admini_0.3.6_darwin_arm64.dmg"
+  output_path = "./build/dist/admini_0.3.7_darwin_arm64.dmg"
   volume_name = "Admini"
 }
 
 zip {
-  output_path = "./build/dist/admini_0.3.6_darwin_arm64_notarized.zip"
+  output_path = "./build/dist/admini_0.3.7_darwin_arm64_notarized.zip"
 }
