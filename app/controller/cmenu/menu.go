@@ -17,13 +17,11 @@ func MenuFor(
 ) (menu.Items, any, error) {
 	var ret menu.Items
 	var data any
-	// $PF_SECTION_START(routes_start)$
+	// $PF_SECTION_START(routes)$
 	prj := &menu.Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: "/project", Children: projectItems(ctx, as, logger)}
 	srcDesc := "Sources of data"
 	src := &menu.Item{Key: "sources", Title: "Sources", Description: srcDesc, Icon: "database", Route: "/source", Children: sourceItems(ctx, as, logger)}
 	ret = append(ret, prj, menu.Separator, src, menu.Separator)
-	// $PF_SECTION_END(routes_start)$
-	// $PF_SECTION_START(routes_end)$
 	if isAdmin {
 		ret = append(ret,
 			sandbox.Menu(ctx),
@@ -34,6 +32,6 @@ func MenuFor(
 	}
 	const aboutDesc = "Get assistance and advice for using " + util.AppName
 	ret = append(ret, &menu.Item{Key: "about", Title: "About", Description: aboutDesc, Icon: "question", Route: "/about"})
-	// $PF_SECTION_END(routes_end)$
+	// $PF_SECTION_END(routes)$
 	return ret, data, nil
 }

@@ -2,23 +2,22 @@
   "admini.dev/admini/app/action"
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/views/components"
-  "admini.dev/admini/views/vutil"
 ) %}
 
 {% func ResultChildren(req *cutil.WorkspaceRequest, act *action.Action, indent int) %}{% stripspace %}
   {%- if len(act.Children) > 0 -%}
   <div class="card">
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <h3>Children</h3>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <ul>
     {%- for _, kid := range act.Children -%}
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       <li><a href="{%s req.RouteAct(kid, 0) %}">{%s kid.Name() %}</a></li>
     {%- endfor -%}
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     </ul>
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </div>
   {%- endif -%}
 {% endstripspace %}{% endfunc %}

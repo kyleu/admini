@@ -10,137 +10,136 @@ import (
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/views/components"
-	"admini.dev/admini/views/vutil"
 )
 
-//line views/vproject/ActionList.html:9
+//line views/vproject/ActionList.html:8
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line views/vproject/ActionList.html:9
+//line views/vproject/ActionList.html:8
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line views/vproject/ActionList.html:9
+//line views/vproject/ActionList.html:8
 func StreamActionList(qw422016 *qt422016.Writer, prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) {
-//line views/vproject/ActionList.html:9
+//line views/vproject/ActionList.html:8
 	qw422016.N().S(`<div class="item" data-key="`)
-//line views/vproject/ActionList.html:10
+//line views/vproject/ActionList.html:9
 	qw422016.E().S(act.Key)
-//line views/vproject/ActionList.html:10
+//line views/vproject/ActionList.html:9
 	qw422016.N().S(`" data-title="`)
-//line views/vproject/ActionList.html:10
+//line views/vproject/ActionList.html:9
 	qw422016.E().S(act.Title)
-//line views/vproject/ActionList.html:10
+//line views/vproject/ActionList.html:9
 	qw422016.N().S(`" data-original-path="`)
-//line views/vproject/ActionList.html:10
+//line views/vproject/ActionList.html:9
 	qw422016.E().S(act.Pkg.ToPath(act.Key))
-//line views/vproject/ActionList.html:10
+//line views/vproject/ActionList.html:9
 	qw422016.N().S(`">`)
-//line views/vproject/ActionList.html:11
-	vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vproject/ActionList.html:11
+//line views/vproject/ActionList.html:10
+	components.StreamIndent(qw422016, true, indent+1)
+//line views/vproject/ActionList.html:10
 	qw422016.N().S(`<div class="content">`)
-//line views/vproject/ActionList.html:13
-	vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vproject/ActionList.html:13
+//line views/vproject/ActionList.html:12
+	components.StreamIndent(qw422016, true, indent+2)
+//line views/vproject/ActionList.html:12
 	qw422016.N().S(`<div class="handle">≡</div>`)
-//line views/vproject/ActionList.html:15
-	vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vproject/ActionList.html:15
+//line views/vproject/ActionList.html:14
+	components.StreamIndent(qw422016, true, indent+2)
+//line views/vproject/ActionList.html:14
 	qw422016.N().S(`<div class="title">`)
-//line views/vproject/ActionList.html:17
+//line views/vproject/ActionList.html:16
 	if act.Type().Key == action.TypeSeparator.Key {
-//line views/vproject/ActionList.html:17
+//line views/vproject/ActionList.html:16
 		qw422016.N().S(`<em>Separator</em>`)
-//line views/vproject/ActionList.html:19
+//line views/vproject/ActionList.html:18
 	} else {
-//line views/vproject/ActionList.html:19
+//line views/vproject/ActionList.html:18
 		qw422016.N().S(`<a href="/project/`)
-//line views/vproject/ActionList.html:20
+//line views/vproject/ActionList.html:19
 		qw422016.E().S(prj)
-//line views/vproject/ActionList.html:20
+//line views/vproject/ActionList.html:19
 		qw422016.N().S(`/action/`)
-//line views/vproject/ActionList.html:20
+//line views/vproject/ActionList.html:19
 		qw422016.E().S(act.Pkg.ToPath(act.Key))
-//line views/vproject/ActionList.html:20
+//line views/vproject/ActionList.html:19
 		qw422016.N().S(`">`)
-//line views/vproject/ActionList.html:21
+//line views/vproject/ActionList.html:20
 		components.StreamSVGRef(qw422016, act.IconWithFallback(), 16, 16, "icon", ps)
-//line views/vproject/ActionList.html:22
+//line views/vproject/ActionList.html:21
 		qw422016.E().S(act.Name())
-//line views/vproject/ActionList.html:22
+//line views/vproject/ActionList.html:21
 		qw422016.N().S(`</a>`)
-//line views/vproject/ActionList.html:24
+//line views/vproject/ActionList.html:23
 	}
-//line views/vproject/ActionList.html:24
+//line views/vproject/ActionList.html:23
 	qw422016.N().S(`</div>`)
-//line views/vproject/ActionList.html:26
-	vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vproject/ActionList.html:26
+//line views/vproject/ActionList.html:25
+	components.StreamIndent(qw422016, true, indent+2)
+//line views/vproject/ActionList.html:25
 	qw422016.N().S(`<div class="remove">×</div>`)
-//line views/vproject/ActionList.html:28
-	vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vproject/ActionList.html:28
+//line views/vproject/ActionList.html:27
+	components.StreamIndent(qw422016, true, indent+1)
+//line views/vproject/ActionList.html:27
 	qw422016.N().S(`</div>`)
+//line views/vproject/ActionList.html:29
+	components.StreamIndent(qw422016, true, indent+1)
 //line views/vproject/ActionList.html:30
-	vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vproject/ActionList.html:31
 	if len(act.Children) == 0 {
-//line views/vproject/ActionList.html:31
+//line views/vproject/ActionList.html:30
 		qw422016.N().S(`<div class="container"></div>`)
-//line views/vproject/ActionList.html:33
+//line views/vproject/ActionList.html:32
 	} else {
-//line views/vproject/ActionList.html:33
+//line views/vproject/ActionList.html:32
 		qw422016.N().S(`<div class="container">`)
-//line views/vproject/ActionList.html:35
+//line views/vproject/ActionList.html:34
 		for _, kid := range act.Children {
+//line views/vproject/ActionList.html:35
+			components.StreamIndent(qw422016, true, indent+2)
 //line views/vproject/ActionList.html:36
-			vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vproject/ActionList.html:37
 			StreamActionList(qw422016, prj, kid, as, ps, indent+2)
-//line views/vproject/ActionList.html:38
+//line views/vproject/ActionList.html:37
 		}
-//line views/vproject/ActionList.html:39
-		vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vproject/ActionList.html:39
+//line views/vproject/ActionList.html:38
+		components.StreamIndent(qw422016, true, indent+1)
+//line views/vproject/ActionList.html:38
 		qw422016.N().S(`</div>`)
-//line views/vproject/ActionList.html:41
+//line views/vproject/ActionList.html:40
 	}
-//line views/vproject/ActionList.html:42
-	vutil.StreamIndent(qw422016, true, indent)
-//line views/vproject/ActionList.html:42
+//line views/vproject/ActionList.html:41
+	components.StreamIndent(qw422016, true, indent)
+//line views/vproject/ActionList.html:41
 	qw422016.N().S(`</div>`)
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 }
 
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 func WriteActionList(qq422016 qtio422016.Writer, prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) {
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	StreamActionList(qw422016, prj, act, as, ps, indent)
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	qt422016.ReleaseWriter(qw422016)
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 }
 
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 func ActionList(prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) string {
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	WriteActionList(qb422016, prj, act, as, ps, indent)
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	qs422016 := string(qb422016.B)
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 	return qs422016
-//line views/vproject/ActionList.html:44
+//line views/vproject/ActionList.html:43
 }

@@ -9,126 +9,125 @@ import (
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/views/components"
-	"admini.dev/admini/views/vutil"
 )
 
-//line views/vaction/Result.html:8
+//line views/vaction/Result.html:7
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line views/vaction/Result.html:8
+//line views/vaction/Result.html:7
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line views/vaction/Result.html:8
+//line views/vaction/Result.html:7
 func StreamResultChildren(qw422016 *qt422016.Writer, req *cutil.WorkspaceRequest, act *action.Action, indent int) {
-//line views/vaction/Result.html:9
+//line views/vaction/Result.html:8
 	if len(act.Children) > 0 {
-//line views/vaction/Result.html:9
+//line views/vaction/Result.html:8
 		qw422016.N().S(`<div class="card">`)
-//line views/vaction/Result.html:11
-		vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vaction/Result.html:11
+//line views/vaction/Result.html:10
+		components.StreamIndent(qw422016, true, indent+1)
+//line views/vaction/Result.html:10
 		qw422016.N().S(`<h3>Children</h3>`)
-//line views/vaction/Result.html:13
-		vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vaction/Result.html:13
+//line views/vaction/Result.html:12
+		components.StreamIndent(qw422016, true, indent+1)
+//line views/vaction/Result.html:12
 		qw422016.N().S(`<ul>`)
-//line views/vaction/Result.html:15
+//line views/vaction/Result.html:14
 		for _, kid := range act.Children {
-//line views/vaction/Result.html:16
-			vutil.StreamIndent(qw422016, true, indent+2)
-//line views/vaction/Result.html:16
+//line views/vaction/Result.html:15
+			components.StreamIndent(qw422016, true, indent+2)
+//line views/vaction/Result.html:15
 			qw422016.N().S(`<li><a href="`)
-//line views/vaction/Result.html:17
+//line views/vaction/Result.html:16
 			qw422016.E().S(req.RouteAct(kid, 0))
-//line views/vaction/Result.html:17
+//line views/vaction/Result.html:16
 			qw422016.N().S(`">`)
-//line views/vaction/Result.html:17
+//line views/vaction/Result.html:16
 			qw422016.E().S(kid.Name())
-//line views/vaction/Result.html:17
+//line views/vaction/Result.html:16
 			qw422016.N().S(`</a></li>`)
-//line views/vaction/Result.html:18
+//line views/vaction/Result.html:17
 		}
-//line views/vaction/Result.html:19
-		vutil.StreamIndent(qw422016, true, indent+1)
-//line views/vaction/Result.html:19
+//line views/vaction/Result.html:18
+		components.StreamIndent(qw422016, true, indent+1)
+//line views/vaction/Result.html:18
 		qw422016.N().S(`</ul>`)
-//line views/vaction/Result.html:21
-		vutil.StreamIndent(qw422016, true, indent)
-//line views/vaction/Result.html:21
+//line views/vaction/Result.html:20
+		components.StreamIndent(qw422016, true, indent)
+//line views/vaction/Result.html:20
 		qw422016.N().S(`</div>`)
-//line views/vaction/Result.html:23
+//line views/vaction/Result.html:22
 	}
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 }
 
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 func WriteResultChildren(qq422016 qtio422016.Writer, req *cutil.WorkspaceRequest, act *action.Action, indent int) {
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	StreamResultChildren(qw422016, req, act, indent)
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	qt422016.ReleaseWriter(qw422016)
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 }
 
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 func ResultChildren(req *cutil.WorkspaceRequest, act *action.Action, indent int) string {
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	WriteResultChildren(qb422016, req, act, indent)
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	qs422016 := string(qb422016.B)
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 	return qs422016
-//line views/vaction/Result.html:24
+//line views/vaction/Result.html:23
 }
 
-//line views/vaction/Result.html:26
+//line views/vaction/Result.html:25
 func StreamResultDebug(qw422016 *qt422016.Writer, req *cutil.WorkspaceRequest, act *action.Action) {
-//line views/vaction/Result.html:26
+//line views/vaction/Result.html:25
 	qw422016.N().S(`
   `)
-//line views/vaction/Result.html:27
+//line views/vaction/Result.html:26
 	components.StreamJSONModal(qw422016, "action", "Action", act, 1)
-//line views/vaction/Result.html:27
+//line views/vaction/Result.html:26
 	qw422016.N().S(`
 `)
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 }
 
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 func WriteResultDebug(qq422016 qtio422016.Writer, req *cutil.WorkspaceRequest, act *action.Action) {
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	StreamResultDebug(qw422016, req, act)
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	qt422016.ReleaseWriter(qw422016)
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 }
 
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 func ResultDebug(req *cutil.WorkspaceRequest, act *action.Action) string {
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	qb422016 := qt422016.AcquireByteBuffer()
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	WriteResultDebug(qb422016, req, act)
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	qs422016 := string(qb422016.B)
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	qt422016.ReleaseByteBuffer(qb422016)
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 	return qs422016
-//line views/vaction/Result.html:28
+//line views/vaction/Result.html:27
 }

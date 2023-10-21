@@ -15,7 +15,7 @@ import (
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/project"
 	"admini.dev/admini/app/source"
-	"admini.dev/admini/views/vutil"
+	"admini.dev/admini/views/components"
 )
 
 //line views/vproject/ActionAvailable.html:14
@@ -128,7 +128,7 @@ func streamitemModelPackage(qw422016 *qt422016.Writer, src *source.Source, pkg *
 //line views/vproject/ActionAvailable.html:36
 	for _, p := range pkg.ChildPackages {
 //line views/vproject/ActionAvailable.html:37
-		vutil.StreamIndent(qw422016, true, indent)
+		components.StreamIndent(qw422016, true, indent)
 //line views/vproject/ActionAvailable.html:38
 		streamitemModelPackage(qw422016, src, p, true, indent)
 //line views/vproject/ActionAvailable.html:39
@@ -136,7 +136,7 @@ func streamitemModelPackage(qw422016 *qt422016.Writer, src *source.Source, pkg *
 //line views/vproject/ActionAvailable.html:40
 	for _, m := range pkg.ChildModels {
 //line views/vproject/ActionAvailable.html:41
-		vutil.StreamIndent(qw422016, true, indent)
+		components.StreamIndent(qw422016, true, indent)
 //line views/vproject/ActionAvailable.html:42
 		streamitemTemplate(qw422016, action.TypeModel, fmt.Sprintf("model/%s/%s", src.Key, m.PathString()), m.Name(), indent)
 //line views/vproject/ActionAvailable.html:43
@@ -189,15 +189,15 @@ func streamitemTemplate(qw422016 *qt422016.Writer, t *action.Type, path string, 
 //line views/vproject/ActionAvailable.html:47
 	qw422016.N().S(`">`)
 //line views/vproject/ActionAvailable.html:48
-	vutil.StreamIndent(qw422016, true, indent+1)
+	components.StreamIndent(qw422016, true, indent+1)
 //line views/vproject/ActionAvailable.html:48
 	qw422016.N().S(`<div class="content">`)
 //line views/vproject/ActionAvailable.html:50
-	vutil.StreamIndent(qw422016, true, indent+2)
+	components.StreamIndent(qw422016, true, indent+2)
 //line views/vproject/ActionAvailable.html:50
 	qw422016.N().S(`<div class="handle">≡</div>`)
 //line views/vproject/ActionAvailable.html:52
-	vutil.StreamIndent(qw422016, true, indent+2)
+	components.StreamIndent(qw422016, true, indent+2)
 //line views/vproject/ActionAvailable.html:52
 	qw422016.N().S(`<div class="title">`)
 //line views/vproject/ActionAvailable.html:53
@@ -205,19 +205,19 @@ func streamitemTemplate(qw422016 *qt422016.Writer, t *action.Type, path string, 
 //line views/vproject/ActionAvailable.html:53
 	qw422016.N().S(`</div>`)
 //line views/vproject/ActionAvailable.html:54
-	vutil.StreamIndent(qw422016, true, indent+2)
+	components.StreamIndent(qw422016, true, indent+2)
 //line views/vproject/ActionAvailable.html:54
 	qw422016.N().S(`<div class="remove">×</div>`)
 //line views/vproject/ActionAvailable.html:56
-	vutil.StreamIndent(qw422016, true, indent+1)
+	components.StreamIndent(qw422016, true, indent+1)
 //line views/vproject/ActionAvailable.html:56
 	qw422016.N().S(`</div>`)
 //line views/vproject/ActionAvailable.html:58
-	vutil.StreamIndent(qw422016, true, indent+1)
+	components.StreamIndent(qw422016, true, indent+1)
 //line views/vproject/ActionAvailable.html:58
 	qw422016.N().S(`<div class="container"></div>`)
 //line views/vproject/ActionAvailable.html:60
-	vutil.StreamIndent(qw422016, true, indent)
+	components.StreamIndent(qw422016, true, indent)
 //line views/vproject/ActionAvailable.html:60
 	qw422016.N().S(`</div>`)
 //line views/vproject/ActionAvailable.html:62

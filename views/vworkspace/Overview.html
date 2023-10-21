@@ -4,7 +4,6 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/views/components"
   "admini.dev/admini/views/layout"
-  "admini.dev/admini/views/vutil"
 ) %}
 
 {% code type WorkspaceOverview struct {
@@ -24,26 +23,26 @@
   {% for _, act := range acts %}
     {% if act.TypeKey != action.TypeSeparator.Key %}
       {% if len(act.Children) == 0 %}
-        {%= vutil.Indent(true, indent + 1) %}
+        {%= components.Indent(true, indent + 1) %}
         <li><a href="{%s req.RouteAct(act, 0) %}">
           {%= components.SVGRef(act.IconWithFallback(), 16, 16, "icon", ps) %}
           {%s act.Name() %}
         </a></li>
       {% else %}
-        {%= vutil.Indent(true, indent + 1) %}
+        {%= components.Indent(true, indent + 1) %}
         <li>
-          {%= vutil.Indent(true, indent + 2) %}
+          {%= components.Indent(true, indent + 2) %}
           <a href="{%s req.RouteAct(act, 0) %}">
             {%= components.SVGRef(act.IconWithFallback(), 16, 16, "icon", ps) %}
             {%s act.Name() %}
           </a>
-          {%= vutil.Indent(true, indent + 2) %}
+          {%= components.Indent(true, indent + 2) %}
           {%= actionList(req, act.Children, ps, indent + 2) %}
-        {%= vutil.Indent(true, indent + 1) %}
+        {%= components.Indent(true, indent + 1) %}
         </li>
       {% endif %}
     {% endif %}
   {% endfor %}
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </ul>
 {% endstripspace %}{% endfunc %}

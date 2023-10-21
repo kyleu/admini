@@ -6,14 +6,13 @@
   "admini.dev/admini/app/qualify"
   "admini.dev/admini/views/components"
   "admini.dev/admini/views/components/fieldview"
-  "admini.dev/admini/views/vutil"
 ) %}
 
 {% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, indent int, showNum bool) %}{% stripspace %}
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   <tr>
     {% if showNum %}
-      {%= vutil.Indent(true, indent + 1) %}
+      {%= components.Indent(true, indent + 1) %}
       <th class="shrink"><em>{%d idx + 1 %}</em></th>
     {% endif %}
 
@@ -27,15 +26,15 @@
         {%= row(ws, act, idx, row, fields, m, fIdx, f, indent, showNum, false) %}
       {% endif %}
     {% endfor %}
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <td class="tfill"></td>
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}
 
 {% func row(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, fIdx int, f *field.Field, indent int, showNum bool, header bool) %}{% stripspace %}
   {%code col := row[fIdx] %}
-  {%= vutil.Indent(true, indent + 1) %}
+  {%= components.Indent(true, indent + 1) %}
   {% if header %}<th>{% else %}<td>{% endif %}
     {% if m == nil %}
       {%= fieldview.Any(col, f.Type) %}

@@ -9,69 +9,68 @@
   "admini.dev/admini/app/util"
   "admini.dev/admini/views/components"
   "admini.dev/admini/views/components/fieldview"
-  "admini.dev/admini/views/vutil"
 ) %}
 
 {% func Simple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   <div class="right">{%s util.StringPlural(len(r.Data), `row`) %}</div>
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   <h3>{%s r.Title %}</h3>
   {%= simpleTable(r, indent, false, nil, as, ps) %}
 {% endstripspace %}{% endfunc %}
 
 {% func simpleTable(r *result.Result, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   <table class="result-table">
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <thead>
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       <tr>
         {% if showNum %}
-          {%= vutil.Indent(true, indent + 3) %}
+          {%= components.Indent(true, indent + 3) %}
           <th class="no-padding"><div class="resize"></div></th>
         {% endif %}
         {% for fIdx, field := range r.Fields %}
-          {%= vutil.Indent(true, indent + 3) %}
+          {%= components.Indent(true, indent + 3) %}
           {% code tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, field.Key, fIdx, field.Type) %}
           {%= components.TableHeader("x", field.Key, field.Key, params, "", ps.URI, tooltip, false, "", true, ps) %}
         {% endfor %}
-        {%= vutil.Indent(true, indent + 3) %}
+        {%= components.Indent(true, indent + 3) %}
         <th class="tfill"></th>
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       </tr>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     </thead>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <tbody>
       {% for rIdx, row := range r.Data %}
         {%= simpleRow(rIdx, row, r.Fields, indent + 2, showNum, params, as, ps) %}
       {% endfor %}
 
       {% if params.HasNextPage(r.Count) || params.HasPreviousPage() %}
-        {%= vutil.Indent(true, indent + 2) %}
+        {%= components.Indent(true, indent + 2) %}
         <tr><td colspan="{%d len(r.Fields)+1 %}">{%= components.Pagination(r.Count, params, ps.URI) %}</td></tr>
       {% endif %}
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     </tbody>
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </table>
 {% endstripspace %}{% endfunc %}
 
 {% func simpleRow(idx int, row []any, fields field.Fields, indent int, showNum bool, params *filter.Params, as *app.State, ps *cutil.PageState) %}{% stripspace %}
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   <tr>
     {% if showNum %}
-      {%= vutil.Indent(true, indent + 1) %}
+      {%= components.Indent(true, indent + 1) %}
       <th><em>{%d idx + 1 %}</em></th>
     {% endif %}
 
     {% for fIdx, f := range fields %}
       {%code col := row[fIdx] %}
-      {%= vutil.Indent(true, indent + 1) %}
+      {%= components.Indent(true, indent + 1) %}
       <td>{%= fieldview.Any(col, f.Type) %}</td>
     {% endfor %}
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <td class="tfill"></td>
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}

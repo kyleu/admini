@@ -8,18 +8,17 @@
   "admini.dev/admini/app/lib/schema/model"
   "admini.dev/admini/app/result"
   "admini.dev/admini/views/components"
-  "admini.dev/admini/views/vutil"
 ) %}
 
 {% func WSTable(ws *cutil.WorkspaceRequest, act *action.Action, r *result.Result, m *model.Model, locs map[string]cutil.Locations, indent int, showNum bool, opts *filter.Options) %}{% stripspace %}
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   <table class="result-table">
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <thead>
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       <tr>
         {% if showNum %}
-          {%= vutil.Indent(true, indent + 3) %}
+          {%= components.Indent(true, indent + 3) %}
           <th class="no-padding"><div class="resize"></div></th>
         {% endif %}
         {% for fIdx, f := range r.Fields %}
@@ -32,30 +31,30 @@
             {%= tableHeader(ws, r, m, fIdx, f, locs[f.Key], false, indent + 3, opts.Params) %}
           {% endif %}
         {% endfor %}
-        {%= vutil.Indent(true, indent + 3) %}
+        {%= components.Indent(true, indent + 3) %}
         <th class="tfill"></th>
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       </tr>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     </thead>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <tbody>
       {% for rIdx, row := range r.Data %}
         {%= WSRow(ws, act, rIdx, row, r.Fields, m, indent + 2, showNum) %}
       {% endfor %}
 
       {% if opts.Params.HasNextPage(r.Count) || opts.Params.HasPreviousPage() %}
-        {%= vutil.Indent(true, indent + 2) %}
+        {%= components.Indent(true, indent + 2) %}
         <tr><td colspan="{%d len(r.Fields)+1 %}">{%= components.Pagination(r.Count, opts.Params, ws.PS.URI) %}</td></tr>
       {% endif %}
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     </tbody>
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </table>
 {% endstripspace %}{% endfunc %}
 
 {% func tableHeader(ws *cutil.WorkspaceRequest, r *result.Result, m *model.Model, fIdx int, f *field.Field, locs cutil.Locations, pk bool, indent int, params *filter.Params) %}{% stripspace %}
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   {% code
     tooltip := fmt.Sprintf(`%s: ordinal %d (%s)`, f.Key, fIdx, f.Type)
     srt := m != nil && f.Type.Sortable()

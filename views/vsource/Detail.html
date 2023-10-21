@@ -7,7 +7,6 @@
   "admini.dev/admini/app/util"
   "admini.dev/admini/views/components"
   "admini.dev/admini/views/layout"
-  "admini.dev/admini/views/vutil"
 ) %}
 
 {% code type Detail struct {
@@ -53,9 +52,9 @@
 
 {% func modelRow(srcKey string, m *model.Model, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
   <tr>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <td><a href="/source/{%s srcKey %}/model/{%s m.String() %}">{%s m.Key %}</a></td>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
 
     {% code sing, plur := util.StringForms(util.StringToTitle(m.Key)) %}
     <td>
@@ -65,7 +64,7 @@
         {%s m.Name() %}
       {% endif %}
     </td>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <td>
       {% if m.PluralName() == plur %}
         <em>{%s m.PluralName() %}</em>
@@ -73,8 +72,8 @@
         {%s m.PluralName() %}
       {% endif %}
     </td>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <td>{%s m.Pkg.ToPath() %}</td>
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </tr>
 {% endstripspace %}{% endfunc %}

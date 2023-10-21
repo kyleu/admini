@@ -3,16 +3,15 @@
   "admini.dev/admini/app/action"
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/views/components"
-  "admini.dev/admini/views/vutil"
 ) %}
 
 {% func ActionList(prj string, act *action.Action, as *app.State, ps *cutil.PageState, indent int) %}{% stripspace %}
   <div class="item" data-key="{%s act.Key %}" data-title="{%s act.Title %}" data-original-path="{%s act.Pkg.ToPath(act.Key) %}">
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     <div class="content">
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       <div class="handle">≡</div>
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       <div class="title">
         {%- if act.Type().Key == action.TypeSeparator.Key -%}
         <em>Separator</em>
@@ -23,22 +22,22 @@
         </a>
         {%- endif -%}
       </div>
-      {%= vutil.Indent(true, indent + 2) %}
+      {%= components.Indent(true, indent + 2) %}
       <div class="remove">×</div>
-      {%= vutil.Indent(true, indent + 1) %}
+      {%= components.Indent(true, indent + 1) %}
     </div>
-    {%= vutil.Indent(true, indent + 1) %}
+    {%= components.Indent(true, indent + 1) %}
     {% if len(act.Children) == 0 %}
       <div class="container"></div>
     {% else %}
       <div class="container">
         {% for _, kid := range act.Children %}
-          {%= vutil.Indent(true, indent + 2) %}
+          {%= components.Indent(true, indent + 2) %}
           {%= ActionList(prj, kid, as, ps, indent + 2) %}
         {% endfor %}
-      {%= vutil.Indent(true, indent + 1) %}
+      {%= components.Indent(true, indent + 1) %}
       </div>
     {% endif %}
-  {%= vutil.Indent(true, indent) %}
+  {%= components.Indent(true, indent) %}
   </div>
 {% endstripspace %}{% endfunc %}
