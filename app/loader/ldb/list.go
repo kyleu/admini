@@ -16,7 +16,7 @@ import (
 func List(ctx context.Context, db *database.Service, m *model.Model, opts *filter.Options, logger util.Logger) (*result.Result, error) {
 	p := opts.Params
 	if p != nil && p.Limit == 0 {
-		p.Limit = filter.MaxRowsDefault
+		p.Limit = filter.MaxRows
 	}
 	q := modelListQuery(db.Type, m, p)
 	rows, err := db.Query(ctx, q, nil, logger)
