@@ -13,7 +13,7 @@ import (
 )
 
 func (s *Schema) Hack(logger util.Logger) (string, error) {
-	ret := make([]util.ValueMap, 0, len(s.Models))
+	ret := make([]*util.OrderedMap[any], 0, len(s.Models))
 	for _, m := range s.Models {
 		if m.Type != model.TypeEnum {
 			md := hackModel(m, logger)
@@ -43,8 +43,8 @@ func (s *Schema) HackSvc(_ util.Logger) (string, error) {
 	return ret, nil
 }
 
-func hackModel(m *model.Model, logger util.Logger) util.ValueMap {
-	cols := make([]util.ValueMap, 0, len(m.Fields))
+func hackModel(m *model.Model, logger util.Logger) *util.OrderedMap[any] {
+	cols := make([]*util.OrderedMap[any], 0, len(m.Fields))
 	for _, f := range m.Fields {
 		cols = append(cols, hackField(m, f, logger))
 	}
@@ -52,27 +52,26 @@ func hackModel(m *model.Model, logger util.Logger) util.ValueMap {
 	for _, r := range m.Relationships {
 		rels = append(rels, hackRel(r))
 	}
-	return util.ValueMap{
-		"columns":     cols,
-		"description": m.Description(),
-		"icon":        "star",
-		"name":        m.Key,
-		"ordering":    []any{},
-		"package":     strings.ToLower(m.Key),
-		"relations":   rels,
-		"search":      []any{},
-	}
+	ret := util.NewOrderedMap[any](false, 8)
+	ret.Append("name", m.Key)
+	ret.Append("package", strings.ToLower(m.Key))
+	ret.Append("description", m.Description())
+	ret.Append("icon", "star")
+	ret.Append("ordering", []any{})
+	ret.Append("search", []any{})
+	ret.Append("columns", cols)
+	ret.Append("relations", rels)
+	return ret
 }
 
-func hackField(m *model.Model, f *field.Field, logger util.Logger) util.ValueMap {
-	ret := util.ValueMap{
-		"name":     f.Key,
-		"pk":       m.IsPK(f.Key, logger),
-		"nullable": f.Type.IsOption(),
-	}
-	ret["type"] = typeFor(f.Type)
+func hackField(m *model.Model, f *field.Field, logger util.Logger) *util.OrderedMap[any] {
+	ret := util.NewOrderedMap[any](false, 3)
+	ret.Append("name", f.Key)
+	ret.Append("type", typeFor(f.Type))
+	ret.Append("nullable", f.Type.IsOption())
+	ret.Append("pk", m.IsPK(f.Key, logger))
 	if f.Default != nil {
-		ret["sqlDefault"] = fmt.Sprint(f.Default)
+		ret.Append("sqlDefault", fmt.Sprint(f.Default))
 	}
 	return ret
 }

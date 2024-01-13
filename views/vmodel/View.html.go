@@ -14,7 +14,7 @@ import (
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/qualify"
 	"admini.dev/admini/views/components"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components/view"
 	"admini.dev/admini/views/layout"
 )
 
@@ -91,7 +91,7 @@ func (p *View) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
           <td>
             `)
 //line views/vmodel/View.html:41
-		fieldview.StreamAny(qw422016, p.Result[idx], f.Type)
+		view.StreamAny(qw422016, p.Result[idx], f.Type)
 //line views/vmodel/View.html:41
 		qw422016.N().S(`
 `)

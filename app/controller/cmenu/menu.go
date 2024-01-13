@@ -17,7 +17,7 @@ func MenuFor(
 ) (menu.Items, any, error) {
 	var ret menu.Items
 	var data any
-	// $PF_SECTION_START(routes)$
+	// $PF_SECTION_START(menu)$
 	prj := &menu.Item{Key: "projects", Title: "Projects", Description: "Projects!", Icon: "star", Route: "/project", Children: projectItems(ctx, as, logger)}
 	srcDesc := "Sources of data"
 	src := &menu.Item{Key: "sources", Title: "Sources", Description: srcDesc, Icon: "database", Route: "/source", Children: sourceItems(ctx, as, logger)}
@@ -32,6 +32,6 @@ func MenuFor(
 	}
 	const aboutDesc = "Get assistance and advice for using " + util.AppName
 	ret = append(ret, &menu.Item{Key: "about", Title: "About", Description: aboutDesc, Icon: "question", Route: "/about"})
-	// $PF_SECTION_END(routes)$
+	// $PF_SECTION_END(menu)$
 	return ret, data, nil
 }

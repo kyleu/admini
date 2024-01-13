@@ -7,7 +7,7 @@
   "admini.dev/admini/app/loader/lsqlite"
   "admini.dev/admini/app/loader/lsqlserver"
   "admini.dev/admini/app/source"
-  "admini.dev/admini/views/components"
+  "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -25,9 +25,9 @@
     <form class="mt" action="/source/{%s p.Source.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">
         <tbody>
-          {%= components.TableInput("title", "", "Title", p.Source.Title, 5) %}
-          {%= components.TableIcons("icon", "Icon", p.Source.Icon, ps, 5) %}
-          {%= components.TableInput("description", "", "Description", p.Source.Description, 5) %}
+          {%= edit.StringTable("title", "", "Title", p.Source.Title, 5) %}
+          {%= edit.IconsTable("icon", "Icon", p.Source.Icon, ps, 5) %}
+          {%= edit.StringTable("description", "", "Description", p.Source.Description, 5) %}
           {%- switch p.Source.Type -%}
           {%- case schema.OriginMySQL -%}
           {%= mySQLFields(p.Source.Config, 5) %}
@@ -52,26 +52,26 @@
   {% code
     cfg, _ := lpostgres.LoadConfig(b)
   %}
-  {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
-  {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
-  {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
-  {%= components.TableInputPassword("password", "", "Password", cfg.Password, indent) %}
-  {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
-  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
-  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+  {%= edit.StringTable("host", "", "Host", cfg.Host, indent) %}
+  {%= edit.IntTable("port", "", "Port", cfg.Port, indent) %}
+  {%= edit.StringTable("username", "", "Username", cfg.Username, indent) %}
+  {%= edit.PasswordTable("password", "", "Password", cfg.Password, indent) %}
+  {%= edit.StringTable("database", "", "Database", cfg.Database, indent) %}
+  {%= edit.StringTable("schema", "", "Schema", cfg.Schema, indent) %}
+  {%= edit.BoolTable("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}
 
 {% func mySQLFields(b []byte, indent int) %}{% stripspace %}
   {% code
     cfg, _ := lmysql.LoadConfig(b)
   %}
-  {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
-  {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
-  {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
-  {%= components.TableInputPassword("password", "", "Password", cfg.Password, indent) %}
-  {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
-  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
-  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+  {%= edit.StringTable("host", "", "Host", cfg.Host, indent) %}
+  {%= edit.IntTable("port", "", "Port", cfg.Port, indent) %}
+  {%= edit.StringTable("username", "", "Username", cfg.Username, indent) %}
+  {%= edit.PasswordTable("password", "", "Password", cfg.Password, indent) %}
+  {%= edit.StringTable("database", "", "Database", cfg.Database, indent) %}
+  {%= edit.StringTable("schema", "", "Schema", cfg.Schema, indent) %}
+  {%= edit.BoolTable("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}
 
 {% func sqliteFields(b []byte, indent int) %}{% stripspace %}
@@ -82,20 +82,20 @@
       panic(err)
     }
   %}
-  {%= components.TableInput("file", "", "File", cfg.File, indent) %}
-  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
-  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+  {%= edit.StringTable("file", "", "File", cfg.File, indent) %}
+  {%= edit.StringTable("schema", "", "Schema", cfg.Schema, indent) %}
+  {%= edit.BoolTable("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}
 
 {% func sqlServerFields(b []byte, indent int) %}{% stripspace %}
   {% code
     cfg, _ := lsqlserver.LoadConfig(b)
   %}
-  {%= components.TableInput("host", "", "Host", cfg.Host, indent) %}
-  {%= components.TableInputNumber("port", "", "Port", cfg.Port, indent) %}
-  {%= components.TableInput("username", "", "Username", cfg.Username, indent) %}
-  {%= components.TableInputPassword("password", "", "Password", cfg.Password, indent) %}
-  {%= components.TableInput("database", "", "Database", cfg.Database, indent) %}
-  {%= components.TableInput("schema", "", "Schema", cfg.Schema, indent) %}
-  {%= components.TableBoolean("debug", "Debug", cfg.Debug, indent) %}
+  {%= edit.StringTable("host", "", "Host", cfg.Host, indent) %}
+  {%= edit.IntTable("port", "", "Port", cfg.Port, indent) %}
+  {%= edit.StringTable("username", "", "Username", cfg.Username, indent) %}
+  {%= edit.PasswordTable("password", "", "Password", cfg.Password, indent) %}
+  {%= edit.StringTable("database", "", "Database", cfg.Database, indent) %}
+  {%= edit.StringTable("schema", "", "Schema", cfg.Schema, indent) %}
+  {%= edit.BoolTable("debug", "Debug", cfg.Debug, indent) %}
 {% endstripspace %}{% endfunc %}

@@ -6,7 +6,7 @@
   "admini.dev/admini/app/lib/schema"
   "admini.dev/admini/app/lib/schema/model"
   "admini.dev/admini/app/source"
-  "admini.dev/admini/views/components"
+  "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -32,11 +32,11 @@
         <tbody>
           <tr>
             <th class="shrink"><label for="input-{%s schema.KeyTitle %}">Title</label></th>
-            <td>{%= components.FormInput("title", "input-" + schema.KeyTitle, m.Name()) %}</td>
+            <td>{%= edit.String("title", "input-" + schema.KeyTitle, m.Name()) %}</td>
           </tr>
           <tr>
             <th class="shrink"><label for="input-{%s schema.KeyPlural %}">Plural</label></th>
-            <td>{%= components.FormInput("plural", "input-" + schema.KeyPlural, m.PluralName()) %}</td>
+            <td>{%= edit.String("plural", "input-" + schema.KeyPlural, m.PluralName()) %}</td>
           </tr>
         </tbody>
       </table>

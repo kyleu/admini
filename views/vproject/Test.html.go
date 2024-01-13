@@ -8,7 +8,7 @@ package vproject
 import (
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components"
 	"admini.dev/admini/views/layout"
 )
 
@@ -46,7 +46,7 @@ func (p *Test) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
 //line views/vproject/Test.html:17
 	if ps.Data != nil {
 //line views/vproject/Test.html:17
-		fieldview.StreamJSON(qw422016, ps.Data)
+		components.StreamJSON(qw422016, ps.Data)
 //line views/vproject/Test.html:17
 	}
 //line views/vproject/Test.html:17

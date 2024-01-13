@@ -5,8 +5,8 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/schema/model"
   "admini.dev/admini/app/util"
-  "admini.dev/admini/views/components"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components/edit"
+  "admini.dev/admini/views/components/view"
 ) %}
 
 {% func ModelFieldList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Fields) > 0 -%}
@@ -25,7 +25,7 @@
         {%- for _, f := range m.Fields -%}
           {%- code sing, plur := util.StringForms(util.StringToTitle(f.Key)) -%}
           <tr>
-            <td>{%= fieldview.String(f.Key) %}</td>
+            <td>{%= view.String(f.Key) %}</td>
             <td>
               <div class="toggle">
                 <input id="toggle-{%s f.Key %}-title" type="checkbox" hidden />
@@ -37,7 +37,7 @@
                   {%- endif -%}
                 </label>
                 <div class="x">
-                  {%= components.FormInput(fmt.Sprintf("f.%s.title", f.Key), f.Key + "-title", f.Name()) %}
+                  {%= edit.String(fmt.Sprintf("f.%s.title", f.Key), f.Key + "-title", f.Name()) %}
                 </div>
               </div>
             </td>
@@ -52,11 +52,11 @@
                   {%- endif -%}
                 </label>
                 <div class="x">
-                  {%= components.FormInput(fmt.Sprintf("f.%s.plural", f.Key), f.Key + "-plural", f.PluralName()) %}
+                  {%= edit.String(fmt.Sprintf("f.%s.plural", f.Key), f.Key + "-plural", f.PluralName()) %}
                 </div>
               </div>
             </td>
-            <td>{%= fieldview.Type(f.Type) %}</td>
+            <td>{%= view.Type(f.Type) %}</td>
           </tr>
         {%- endfor -%}
         </tbody>

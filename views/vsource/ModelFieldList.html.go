@@ -12,8 +12,8 @@ import (
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
-	"admini.dev/admini/views/components"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components/edit"
+	"admini.dev/admini/views/components/view"
 )
 
 //line views/vsource/ModelFieldList.html:12
@@ -60,7 +60,7 @@ func StreamModelFieldList(qw422016 *qt422016.Writer, m *model.Model, as *app.Sta
 			qw422016.N().S(`          <tr>
             <td>`)
 //line views/vsource/ModelFieldList.html:28
-			fieldview.StreamString(qw422016, f.Key)
+			view.StreamString(qw422016, f.Key)
 //line views/vsource/ModelFieldList.html:28
 			qw422016.N().S(`</td>
             <td>
@@ -101,7 +101,7 @@ func StreamModelFieldList(qw422016 *qt422016.Writer, m *model.Model, as *app.Sta
                 <div class="x">
                   `)
 //line views/vsource/ModelFieldList.html:40
-			components.StreamFormInput(qw422016, fmt.Sprintf("f.%s.title", f.Key), f.Key+"-title", f.Name())
+			edit.StreamString(qw422016, fmt.Sprintf("f.%s.title", f.Key), f.Key+"-title", f.Name())
 //line views/vsource/ModelFieldList.html:40
 			qw422016.N().S(`
                 </div>
@@ -145,7 +145,7 @@ func StreamModelFieldList(qw422016 *qt422016.Writer, m *model.Model, as *app.Sta
                 <div class="x">
                   `)
 //line views/vsource/ModelFieldList.html:55
-			components.StreamFormInput(qw422016, fmt.Sprintf("f.%s.plural", f.Key), f.Key+"-plural", f.PluralName())
+			edit.StreamString(qw422016, fmt.Sprintf("f.%s.plural", f.Key), f.Key+"-plural", f.PluralName())
 //line views/vsource/ModelFieldList.html:55
 			qw422016.N().S(`
                 </div>
@@ -153,7 +153,7 @@ func StreamModelFieldList(qw422016 *qt422016.Writer, m *model.Model, as *app.Sta
             </td>
             <td>`)
 //line views/vsource/ModelFieldList.html:59
-			fieldview.StreamType(qw422016, f.Type)
+			view.StreamType(qw422016, f.Type)
 //line views/vsource/ModelFieldList.html:59
 			qw422016.N().S(`</td>
           </tr>

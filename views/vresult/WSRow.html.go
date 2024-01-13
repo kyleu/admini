@@ -12,7 +12,7 @@ import (
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/qualify"
 	"admini.dev/admini/views/components"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components/view"
 )
 
 //line views/vresult/WSRow.html:11
@@ -123,7 +123,7 @@ func streamrow(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *actio
 //line views/vresult/WSRow.html:39
 	if m == nil {
 //line views/vresult/WSRow.html:40
-		fieldview.StreamAny(qw422016, col, f.Type)
+		view.StreamAny(qw422016, col, f.Type)
 //line views/vresult/WSRow.html:41
 	} else {
 //line views/vresult/WSRow.html:42
@@ -251,13 +251,13 @@ func streamcell(qw422016 *qt422016.Writer, ws *cutil.WorkspaceRequest, act *acti
 //line views/vresult/WSRow.html:90
 		qw422016.N().S(`" class="pklink">`)
 //line views/vresult/WSRow.html:91
-		fieldview.StreamAny(qw422016, col, f.Type)
+		view.StreamAny(qw422016, col, f.Type)
 //line views/vresult/WSRow.html:91
 		qw422016.N().S(`</a>`)
 //line views/vresult/WSRow.html:93
 	} else {
 //line views/vresult/WSRow.html:94
-		fieldview.StreamAny(qw422016, col, f.Type)
+		view.StreamAny(qw422016, col, f.Type)
 //line views/vresult/WSRow.html:95
 	}
 //line views/vresult/WSRow.html:96

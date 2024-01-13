@@ -4,7 +4,7 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/project"
   "admini.dev/admini/views/components"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -22,11 +22,11 @@
     <form class="mt" action="/project/{%s p.Project.Key %}/action/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">
         <tbody>
-          {%= components.TableInput("key", "", "Key", p.Act.Key, 5) %}
+          {%= edit.StringTable("key", "", "Key", p.Act.Key, 5) %}
           {%- if p.Act.TypeKey != action.TypeSeparator.Key -%}
-          {%= components.TableInput("title", "", "Title", p.Act.Title, 5) %}
-          {%= components.TableIcons("icon", "Icon", p.Act.Icon, ps, 5) %}
-          {%= components.TableTextarea("description", "", "Description", 8, p.Act.Description, 5) %}
+          {%= edit.StringTable("title", "", "Title", p.Act.Title, 5) %}
+          {%= edit.IconsTable("icon", "Icon", p.Act.Icon, ps, 5) %}
+          {%= edit.TextareaTable("description", "", "Description", 8, p.Act.Description, 5) %}
           {%- endif -%}
           {%- switch p.Act.TypeKey -%}
           {%- case action.TypeStatic.Key -%}
@@ -34,8 +34,8 @@
             format, _ := p.Act.Config["format"].(string)
             content, _ := p.Act.Config["content"].(string)
           -%}
-          {%= components.TableSelect("format", "", "Format", format, []string{"html", "text", "code"}, []string{"HTML", "Text", "Code"}, 5) %}
-          {%= components.TableTextarea("content", "", "Content", 8, content, 5) %}
+          {%= edit.SelectTable("format", "", "Format", format, []string{"html", "text", "code"}, []string{"HTML", "Text", "Code"}, 5) %}
+          {%= edit.TextareaTable("content", "", "Content", 8, content, 5) %}
           {%- endswitch -%}
         </tbody>
       </table>
@@ -47,6 +47,6 @@
   </div>
   <div class="card">
     <h3>Action JSON</h3>
-    {%= fieldview.JSON(p.Act) %}
+    {%= components.JSON(p.Act) %}
   </div>
 {% endfunc %}

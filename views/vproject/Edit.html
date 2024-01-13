@@ -3,7 +3,7 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/project"
   "admini.dev/admini/app/source"
-  "admini.dev/admini/views/components"
+  "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -22,10 +22,10 @@
     <form class="mt" action="/project/{%s p.Project.Key %}" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">
         <tbody>
-          {%= components.TableInput("title", "", "Title", p.Project.Title, 5) %}
-          {%= components.TableIcons("icon", "Icon", p.Project.Icon, ps, 5) %}
-          {%= components.TableInput("description", "", "Description", p.Project.Description, 5) %}
-          {%= components.TableCheckbox("sources", "Sources", p.Project.Sources, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5) %}
+          {%= edit.StringTable("title", "", "Title", p.Project.Title, 5) %}
+          {%= edit.IconsTable("icon", "Icon", p.Project.Icon, ps, 5) %}
+          {%= edit.StringTable("description", "", "Description", p.Project.Description, 5) %}
+          {%= edit.CheckboxTable("sources", "Sources", p.Project.Sources, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5) %}
         </tbody>
       </table>
       <div class="mt">

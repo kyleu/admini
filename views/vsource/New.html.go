@@ -9,7 +9,7 @@ import (
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema"
-	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/components/edit"
 	"admini.dev/admini/views/layout"
 )
 
@@ -43,27 +43,27 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
         <tbody>
           `)
 //line views/vsource/New.html:20
-	components.StreamTableInput(qw422016, "key", "", "Key", "", 5)
+	edit.StreamStringTable(qw422016, "key", "", "Key", "", 5)
 //line views/vsource/New.html:20
 	qw422016.N().S(`
           `)
 //line views/vsource/New.html:21
-	components.StreamTableInput(qw422016, "title", "", "Title", "", 5)
+	edit.StreamStringTable(qw422016, "title", "", "Title", "", 5)
 //line views/vsource/New.html:21
 	qw422016.N().S(`
           `)
 //line views/vsource/New.html:22
-	components.StreamTableIcons(qw422016, "icon", "Icon", "", ps, 5)
+	edit.StreamIconsTable(qw422016, "icon", "Icon", "", ps, 5)
 //line views/vsource/New.html:22
 	qw422016.N().S(`
           `)
 //line views/vsource/New.html:23
-	components.StreamTableTextarea(qw422016, "description", "", "Description", 8, "", 5)
+	edit.StreamTextareaTable(qw422016, "description", "", "Description", 8, "", 5)
 //line views/vsource/New.html:23
 	qw422016.N().S(`
           `)
 //line views/vsource/New.html:24
-	components.StreamTableRadio(qw422016, "type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5)
+	edit.StreamRadioTable(qw422016, "type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5)
 //line views/vsource/New.html:24
 	qw422016.N().S(`
         </tbody>

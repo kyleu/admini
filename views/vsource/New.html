@@ -2,7 +2,7 @@
   "admini.dev/admini/app"
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/schema"
-  "admini.dev/admini/views/components"
+  "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -17,11 +17,11 @@
     <form class="mt" action="/source" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">
         <tbody>
-          {%= components.TableInput("key", "", "Key", "", 5) %}
-          {%= components.TableInput("title", "", "Title", "", 5) %}
-          {%= components.TableIcons("icon", "Icon", "", ps, 5) %}
-          {%= components.TableTextarea("description", "", "Description", 8, "", 5) %}
-          {%= components.TableRadio("type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5) %}
+          {%= edit.StringTable("key", "", "Key", "", 5) %}
+          {%= edit.StringTable("title", "", "Title", "", 5) %}
+          {%= edit.IconsTable("icon", "Icon", "", ps, 5) %}
+          {%= edit.TextareaTable("description", "", "Description", 8, "", 5) %}
+          {%= edit.RadioTable("type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5) %}
         </tbody>
       </table>
       <button class="mt" type="submit">Save Changes</button>

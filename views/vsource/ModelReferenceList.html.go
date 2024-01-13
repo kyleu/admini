@@ -10,7 +10,7 @@ import (
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components/view"
 )
 
 //line views/vsource/ModelReferenceList.html:9
@@ -55,27 +55,27 @@ func StreamModelReferenceList(qw422016 *qt422016.Writer, m *model.Model, as *app
 			qw422016.N().S(`          <tr>
             <td>`)
 //line views/vsource/ModelReferenceList.html:25
-			fieldview.StreamString(qw422016, ref.Key)
+			view.StreamString(qw422016, ref.Key)
 //line views/vsource/ModelReferenceList.html:25
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelReferenceList.html:26
-			fieldview.StreamArrayString(qw422016, ref.TargetFields)
+			view.StreamStringArray(qw422016, ref.TargetFields)
 //line views/vsource/ModelReferenceList.html:26
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelReferenceList.html:27
-			fieldview.StreamPackage(qw422016, ref.SourcePkg)
+			view.StreamPackage(qw422016, ref.SourcePkg)
 //line views/vsource/ModelReferenceList.html:27
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelReferenceList.html:28
-			fieldview.StreamString(qw422016, ref.SourceModel)
+			view.StreamString(qw422016, ref.SourceModel)
 //line views/vsource/ModelReferenceList.html:28
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelReferenceList.html:29
-			fieldview.StreamArrayString(qw422016, ref.SourceFields)
+			view.StreamStringArray(qw422016, ref.SourceFields)
 //line views/vsource/ModelReferenceList.html:29
 			qw422016.N().S(`</td>
           </tr>

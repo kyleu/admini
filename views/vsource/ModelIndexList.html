@@ -3,7 +3,7 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/schema/model"
   "admini.dev/admini/app/util"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components/view"
 ) %}
 
 {% func ModelIndexList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.Indexes) > 0 -%}
@@ -21,10 +21,10 @@
         <tbody>
         {%- for _, idx := range m.Indexes -%}
           <tr>
-            <td>{%= fieldview.String(idx.Key) %}</td>
-            <td>{%= fieldview.ArrayString(idx.Fields) %}</td>
-            <td>{%= fieldview.Boolean(idx.Unique) %}</td>
-            <td>{%= fieldview.Boolean(idx.Primary) %}</td>
+            <td>{%= view.String(idx.Key) %}</td>
+            <td>{%= view.StringArray(idx.Fields) %}</td>
+            <td>{%= view.Bool(idx.Unique) %}</td>
+            <td>{%= view.Bool(idx.Primary) %}</td>
           </tr>
         {%- endfor -%}
         </tbody>

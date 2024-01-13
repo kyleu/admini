@@ -5,7 +5,7 @@
   "admini.dev/admini/app/lib/schema/model"
   "admini.dev/admini/app/qualify"
   "admini.dev/admini/views/components"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components/view"
 ) %}
 
 {% func WSRow(ws *cutil.WorkspaceRequest, act *action.Action, idx int, row []any, fields field.Fields, m *model.Model, indent int, showNum bool) %}{% stripspace %}
@@ -37,7 +37,7 @@
   {%= components.Indent(true, indent + 1) %}
   {% if header %}<th>{% else %}<td>{% endif %}
     {% if m == nil %}
-      {%= fieldview.Any(col, f.Type) %}
+      {%= view.Any(col, f.Type) %}
     {% else %}
       {% code rels := m.ApplicableRelations(f.Key) %}
       {% if len(rels) == 0 %}
@@ -88,9 +88,9 @@
       link := append([]string{`v`}, rowPK...)
     %}
     <a href="{%s ws.RouteAct(act, 0, link...) %}" class="pklink">
-      {%= fieldview.Any(col, f.Type) %}
+      {%= view.Any(col, f.Type) %}
     </a>
   {% else %}
-    {%= fieldview.Any(col, f.Type) %}
+    {%= view.Any(col, f.Type) %}
   {% endif %}
 {% endstripspace %}{% endfunc %}

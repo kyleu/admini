@@ -8,7 +8,7 @@
   "admini.dev/admini/app/result"
   "admini.dev/admini/app/util"
   "admini.dev/admini/views/components"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components/view"
 ) %}
 
 {% func Simple(r *result.Result, indent int, as *app.State, ps *cutil.PageState) %}{% stripspace %}
@@ -67,7 +67,7 @@
     {% for fIdx, f := range fields %}
       {%code col := row[fIdx] %}
       {%= components.Indent(true, indent + 1) %}
-      <td>{%= fieldview.Any(col, f.Type) %}</td>
+      <td>{%= view.Any(col, f.Type) %}</td>
     {% endfor %}
     {%= components.Indent(true, indent + 1) %}
     <td class="tfill"></td>

@@ -6,6 +6,7 @@
   "admini.dev/admini/app/lib/theme"
   "admini.dev/admini/app/lib/user"
   "admini.dev/admini/views/components"
+  "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
   "admini.dev/admini/views/vauth"
   "admini.dev/admini/views/vtheme"
@@ -32,7 +33,7 @@
       <div class="overflow full-width">
         <table class="mt expanded">
           <tbody>
-            {%= components.TableInput("name", "", "Name", ps.Username(), 5) %}
+            {%= edit.StringTable("name", "", "Name", ps.Username(), 5) %}
             <tr>
               <th class="shrink"><label>Mode</label></th>
               <td>

@@ -15,7 +15,7 @@ import (
 	"admini.dev/admini/app/result"
 	"admini.dev/admini/app/util"
 	"admini.dev/admini/views/components"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components/view"
 )
 
 //line views/vresult/Simple.html:14
@@ -214,7 +214,7 @@ func streamsimpleRow(qw422016 *qt422016.Writer, idx int, row []any, fields field
 //line views/vresult/Simple.html:69
 		qw422016.N().S(`<td>`)
 //line views/vresult/Simple.html:70
-		fieldview.StreamAny(qw422016, col, f.Type)
+		view.StreamAny(qw422016, col, f.Type)
 //line views/vresult/Simple.html:70
 		qw422016.N().S(`</td>`)
 //line views/vresult/Simple.html:71

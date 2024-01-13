@@ -3,7 +3,7 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/schema/model"
   "admini.dev/admini/app/util"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components/view"
 ) %}
 
 {% func ModelReferenceList(m *model.Model, as *app.State, ps *cutil.PageState) %}{%- if len(m.References) > 0 -%}
@@ -22,11 +22,11 @@
         <tbody>
         {%- for _, ref := range m.References -%}
           <tr>
-            <td>{%= fieldview.String(ref.Key) %}</td>
-            <td>{%= fieldview.ArrayString(ref.TargetFields) %}</td>
-            <td>{%= fieldview.Package(ref.SourcePkg) %}</td>
-            <td>{%= fieldview.String(ref.SourceModel) %}</td>
-            <td>{%= fieldview.ArrayString(ref.SourceFields) %}</td>
+            <td>{%= view.String(ref.Key) %}</td>
+            <td>{%= view.StringArray(ref.TargetFields) %}</td>
+            <td>{%= view.Package(ref.SourcePkg) %}</td>
+            <td>{%= view.String(ref.SourceModel) %}</td>
+            <td>{%= view.StringArray(ref.SourceFields) %}</td>
           </tr>
         {%- endfor -%}
         </tbody>

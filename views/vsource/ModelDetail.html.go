@@ -13,7 +13,7 @@ import (
 	"admini.dev/admini/app/lib/schema"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/source"
-	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/components/edit"
 	"admini.dev/admini/views/layout"
 )
 
@@ -96,7 +96,7 @@ func (p *ModelDetail) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *c
 	qw422016.N().S(`">Title</label></th>
             <td>`)
 //line views/vsource/ModelDetail.html:35
-	components.StreamFormInput(qw422016, "title", "input-"+schema.KeyTitle, m.Name())
+	edit.StreamString(qw422016, "title", "input-"+schema.KeyTitle, m.Name())
 //line views/vsource/ModelDetail.html:35
 	qw422016.N().S(`</td>
           </tr>
@@ -108,7 +108,7 @@ func (p *ModelDetail) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *c
 	qw422016.N().S(`">Plural</label></th>
             <td>`)
 //line views/vsource/ModelDetail.html:39
-	components.StreamFormInput(qw422016, "plural", "input-"+schema.KeyPlural, m.PluralName())
+	edit.StreamString(qw422016, "plural", "input-"+schema.KeyPlural, m.PluralName())
 //line views/vsource/ModelDetail.html:39
 	qw422016.N().S(`</td>
           </tr>

@@ -1,7 +1,7 @@
 {% import (
   "admini.dev/admini/app"
   "admini.dev/admini/app/controller/cutil"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -14,7 +14,7 @@
   <div class="card">
     <h3>Project Test</h3>
     <p>{%s p.Message %}</p>
-    {% if ps.Data != nil %}{%= fieldview.JSON(ps.Data) %}{% endif %}
+    {% if ps.Data != nil %}{%= components.JSON(ps.Data) %}{% endif %}
   </div>
 {% endfunc %}
 

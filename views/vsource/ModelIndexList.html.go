@@ -10,7 +10,7 @@ import (
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components/view"
 )
 
 //line views/vsource/ModelIndexList.html:9
@@ -54,22 +54,22 @@ func StreamModelIndexList(qw422016 *qt422016.Writer, m *model.Model, as *app.Sta
 			qw422016.N().S(`          <tr>
             <td>`)
 //line views/vsource/ModelIndexList.html:24
-			fieldview.StreamString(qw422016, idx.Key)
+			view.StreamString(qw422016, idx.Key)
 //line views/vsource/ModelIndexList.html:24
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelIndexList.html:25
-			fieldview.StreamArrayString(qw422016, idx.Fields)
+			view.StreamStringArray(qw422016, idx.Fields)
 //line views/vsource/ModelIndexList.html:25
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelIndexList.html:26
-			fieldview.StreamBoolean(qw422016, idx.Unique)
+			view.StreamBool(qw422016, idx.Unique)
 //line views/vsource/ModelIndexList.html:26
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelIndexList.html:27
-			fieldview.StreamBoolean(qw422016, idx.Primary)
+			view.StreamBool(qw422016, idx.Primary)
 //line views/vsource/ModelIndexList.html:27
 			qw422016.N().S(`</td>
           </tr>

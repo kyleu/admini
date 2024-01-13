@@ -7,7 +7,7 @@
   "admini.dev/admini/app/lib/schema/model"
   "admini.dev/admini/app/qualify"
   "admini.dev/admini/views/components"
-  "admini.dev/admini/views/components/fieldview"
+  "admini.dev/admini/views/components/view"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -38,7 +38,7 @@
         <tr>
           <th class="shrink">{%s f.Name() %}</th>
           <td>
-            {%= fieldview.Any(p.Result[idx], f.Type) %}
+            {%= view.Any(p.Result[idx], f.Type) %}
             {%- for _, rel := range p.Model.ApplicableRelations(f.Key) -%}
             {%- code
               quals, err := qualify.Handle(rel, p.Act, p.Req, p.Model, p.Result)

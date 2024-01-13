@@ -10,7 +10,7 @@ import (
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema/model"
 	"admini.dev/admini/app/util"
-	"admini.dev/admini/views/components/fieldview"
+	"admini.dev/admini/views/components/view"
 )
 
 //line views/vsource/ModelRelationshipList.html:9
@@ -55,27 +55,27 @@ func StreamModelRelationshipList(qw422016 *qt422016.Writer, m *model.Model, as *
 			qw422016.N().S(`          <tr>
             <td>`)
 //line views/vsource/ModelRelationshipList.html:25
-			fieldview.StreamString(qw422016, rel.Key)
+			view.StreamString(qw422016, rel.Key)
 //line views/vsource/ModelRelationshipList.html:25
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelRelationshipList.html:26
-			fieldview.StreamArrayString(qw422016, rel.SourceFields)
+			view.StreamStringArray(qw422016, rel.SourceFields)
 //line views/vsource/ModelRelationshipList.html:26
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelRelationshipList.html:27
-			fieldview.StreamPackage(qw422016, rel.TargetPkg)
+			view.StreamPackage(qw422016, rel.TargetPkg)
 //line views/vsource/ModelRelationshipList.html:27
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelRelationshipList.html:28
-			fieldview.StreamString(qw422016, rel.TargetModel)
+			view.StreamString(qw422016, rel.TargetModel)
 //line views/vsource/ModelRelationshipList.html:28
 			qw422016.N().S(`</td>
             <td>`)
 //line views/vsource/ModelRelationshipList.html:29
-			fieldview.StreamArrayString(qw422016, rel.TargetFields)
+			view.StreamStringArray(qw422016, rel.TargetFields)
 //line views/vsource/ModelRelationshipList.html:29
 			qw422016.N().S(`</td>
           </tr>

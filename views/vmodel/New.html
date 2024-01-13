@@ -3,7 +3,7 @@
   "admini.dev/admini/app/action"
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/schema/model"
-  "admini.dev/admini/views/components/fieldedit"
+  "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -24,7 +24,7 @@
           {% for idx, f := range p.Model.Fields %}
             <tr>
               <th class="shrink"><label><input type="checkbox" value="true" name="{%s f.Key %}--selected" /> {%s f.Key %}</label></th>
-              <td>{%= fieldedit.Any(p.Defaults[idx], f.Type, f.Key) %}</td>
+              <td>{%= edit.Any(f.Key, f.Key, p.Defaults[idx], f.Type) %}</td>
             </tr>
           {% endfor %}
         </tbody>

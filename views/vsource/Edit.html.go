@@ -14,7 +14,7 @@ import (
 	"admini.dev/admini/app/loader/lsqlite"
 	"admini.dev/admini/app/loader/lsqlserver"
 	"admini.dev/admini/app/source"
-	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/components/edit"
 	"admini.dev/admini/views/layout"
 )
 
@@ -67,17 +67,17 @@ func (p *Edit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
         <tbody>
           `)
 //line views/vsource/Edit.html:28
-	components.StreamTableInput(qw422016, "title", "", "Title", p.Source.Title, 5)
+	edit.StreamStringTable(qw422016, "title", "", "Title", p.Source.Title, 5)
 //line views/vsource/Edit.html:28
 	qw422016.N().S(`
           `)
 //line views/vsource/Edit.html:29
-	components.StreamTableIcons(qw422016, "icon", "Icon", p.Source.Icon, ps, 5)
+	edit.StreamIconsTable(qw422016, "icon", "Icon", p.Source.Icon, ps, 5)
 //line views/vsource/Edit.html:29
 	qw422016.N().S(`
           `)
 //line views/vsource/Edit.html:30
-	components.StreamTableInput(qw422016, "description", "", "Description", p.Source.Description, 5)
+	edit.StreamStringTable(qw422016, "description", "", "Description", p.Source.Description, 5)
 //line views/vsource/Edit.html:30
 	qw422016.N().S(`
 `)
@@ -166,19 +166,19 @@ func streampostgresFields(qw422016 *qt422016.Writer, b []byte, indent int) {
 	cfg, _ := lpostgres.LoadConfig(b)
 
 //line views/vsource/Edit.html:55
-	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
+	edit.StreamStringTable(qw422016, "host", "", "Host", cfg.Host, indent)
 //line views/vsource/Edit.html:56
-	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
+	edit.StreamIntTable(qw422016, "port", "", "Port", cfg.Port, indent)
 //line views/vsource/Edit.html:57
-	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
+	edit.StreamStringTable(qw422016, "username", "", "Username", cfg.Username, indent)
 //line views/vsource/Edit.html:58
-	components.StreamTableInputPassword(qw422016, "password", "", "Password", cfg.Password, indent)
+	edit.StreamPasswordTable(qw422016, "password", "", "Password", cfg.Password, indent)
 //line views/vsource/Edit.html:59
-	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+	edit.StreamStringTable(qw422016, "database", "", "Database", cfg.Database, indent)
 //line views/vsource/Edit.html:60
-	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
+	edit.StreamStringTable(qw422016, "schema", "", "Schema", cfg.Schema, indent)
 //line views/vsource/Edit.html:61
-	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+	edit.StreamBoolTable(qw422016, "debug", "Debug", cfg.Debug, indent)
 //line views/vsource/Edit.html:62
 }
 
@@ -214,19 +214,19 @@ func streammySQLFields(qw422016 *qt422016.Writer, b []byte, indent int) {
 	cfg, _ := lmysql.LoadConfig(b)
 
 //line views/vsource/Edit.html:68
-	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
+	edit.StreamStringTable(qw422016, "host", "", "Host", cfg.Host, indent)
 //line views/vsource/Edit.html:69
-	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
+	edit.StreamIntTable(qw422016, "port", "", "Port", cfg.Port, indent)
 //line views/vsource/Edit.html:70
-	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
+	edit.StreamStringTable(qw422016, "username", "", "Username", cfg.Username, indent)
 //line views/vsource/Edit.html:71
-	components.StreamTableInputPassword(qw422016, "password", "", "Password", cfg.Password, indent)
+	edit.StreamPasswordTable(qw422016, "password", "", "Password", cfg.Password, indent)
 //line views/vsource/Edit.html:72
-	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+	edit.StreamStringTable(qw422016, "database", "", "Database", cfg.Database, indent)
 //line views/vsource/Edit.html:73
-	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
+	edit.StreamStringTable(qw422016, "schema", "", "Schema", cfg.Schema, indent)
 //line views/vsource/Edit.html:74
-	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+	edit.StreamBoolTable(qw422016, "debug", "Debug", cfg.Debug, indent)
 //line views/vsource/Edit.html:75
 }
 
@@ -266,11 +266,11 @@ func streamsqliteFields(qw422016 *qt422016.Writer, b []byte, indent int) {
 	}
 
 //line views/vsource/Edit.html:85
-	components.StreamTableInput(qw422016, "file", "", "File", cfg.File, indent)
+	edit.StreamStringTable(qw422016, "file", "", "File", cfg.File, indent)
 //line views/vsource/Edit.html:86
-	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
+	edit.StreamStringTable(qw422016, "schema", "", "Schema", cfg.Schema, indent)
 //line views/vsource/Edit.html:87
-	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+	edit.StreamBoolTable(qw422016, "debug", "Debug", cfg.Debug, indent)
 //line views/vsource/Edit.html:88
 }
 
@@ -306,19 +306,19 @@ func streamsqlServerFields(qw422016 *qt422016.Writer, b []byte, indent int) {
 	cfg, _ := lsqlserver.LoadConfig(b)
 
 //line views/vsource/Edit.html:94
-	components.StreamTableInput(qw422016, "host", "", "Host", cfg.Host, indent)
+	edit.StreamStringTable(qw422016, "host", "", "Host", cfg.Host, indent)
 //line views/vsource/Edit.html:95
-	components.StreamTableInputNumber(qw422016, "port", "", "Port", cfg.Port, indent)
+	edit.StreamIntTable(qw422016, "port", "", "Port", cfg.Port, indent)
 //line views/vsource/Edit.html:96
-	components.StreamTableInput(qw422016, "username", "", "Username", cfg.Username, indent)
+	edit.StreamStringTable(qw422016, "username", "", "Username", cfg.Username, indent)
 //line views/vsource/Edit.html:97
-	components.StreamTableInputPassword(qw422016, "password", "", "Password", cfg.Password, indent)
+	edit.StreamPasswordTable(qw422016, "password", "", "Password", cfg.Password, indent)
 //line views/vsource/Edit.html:98
-	components.StreamTableInput(qw422016, "database", "", "Database", cfg.Database, indent)
+	edit.StreamStringTable(qw422016, "database", "", "Database", cfg.Database, indent)
 //line views/vsource/Edit.html:99
-	components.StreamTableInput(qw422016, "schema", "", "Schema", cfg.Schema, indent)
+	edit.StreamStringTable(qw422016, "schema", "", "Schema", cfg.Schema, indent)
 //line views/vsource/Edit.html:100
-	components.StreamTableBoolean(qw422016, "debug", "Debug", cfg.Debug, indent)
+	edit.StreamBoolTable(qw422016, "debug", "Debug", cfg.Debug, indent)
 //line views/vsource/Edit.html:101
 }
 

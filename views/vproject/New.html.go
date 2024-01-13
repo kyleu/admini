@@ -10,7 +10,7 @@ import (
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/project"
 	"admini.dev/admini/app/source"
-	"admini.dev/admini/views/components"
+	"admini.dev/admini/views/components/edit"
 	"admini.dev/admini/views/layout"
 )
 
@@ -45,27 +45,27 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
         <tbody>
           `)
 //line views/vproject/New.html:22
-	components.StreamTableInput(qw422016, "key", "", "Key", "", 5)
+	edit.StreamStringTable(qw422016, "key", "", "Key", "", 5)
 //line views/vproject/New.html:22
 	qw422016.N().S(`
           `)
 //line views/vproject/New.html:23
-	components.StreamTableInput(qw422016, "title", "", "Title", "", 5)
+	edit.StreamStringTable(qw422016, "title", "", "Title", "", 5)
 //line views/vproject/New.html:23
 	qw422016.N().S(`
           `)
 //line views/vproject/New.html:24
-	components.StreamTableIcons(qw422016, "icon", "Icon", "", ps, 5)
+	edit.StreamIconsTable(qw422016, "icon", "Icon", "", ps, 5)
 //line views/vproject/New.html:24
 	qw422016.N().S(`
           `)
 //line views/vproject/New.html:25
-	components.StreamTableInput(qw422016, "description", "", "Description", "", 5)
+	edit.StreamStringTable(qw422016, "description", "", "Description", "", 5)
 //line views/vproject/New.html:25
 	qw422016.N().S(`
           `)
 //line views/vproject/New.html:26
-	components.StreamTableCheckbox(qw422016, "sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5)
+	edit.StreamCheckboxTable(qw422016, "sources", "Sources", nil, p.AvailableSources.Keys(), p.AvailableSources.Names(), 5)
 //line views/vproject/New.html:26
 	qw422016.N().S(`
         </tbody>

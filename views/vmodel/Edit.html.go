@@ -13,7 +13,7 @@ import (
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/schema/model"
-	"admini.dev/admini/views/components/fieldedit"
+	"admini.dev/admini/views/components/edit"
 	"admini.dev/admini/views/layout"
 )
 
@@ -104,7 +104,7 @@ func (p *Edit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
 		qw422016.N().S(`</label></th>
             <td>`)
 //line views/vmodel/Edit.html:39
-		fieldedit.StreamAny(qw422016, p.Result[idx], f.Type, f.Key)
+		edit.StreamAny(qw422016, f.Key, f.Key, p.Result[idx], f.Type)
 //line views/vmodel/Edit.html:39
 		qw422016.N().S(`</td>
           </tr>
