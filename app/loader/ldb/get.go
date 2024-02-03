@@ -41,11 +41,7 @@ func modelGetByPKQuery(typ *database.DBType, m *model.Model, logger util.Logger)
 	}
 	where := make([]string, 0, len(pk))
 	for idx, pkf := range pk {
-		if typ.Placeholder == "?" {
-			where = append(where, fmt.Sprintf(`%s%s%s = ?`, typ.Quote, pkf, typ.Quote))
-		} else {
-			where = append(where, fmt.Sprintf(`%s%s%s = $%d`, typ.Quote, pkf, typ.Quote, idx+1))
-		}
+		where = append(where, fmt.Sprintf(`%s = %s`, typ.Quoted(pkf), typ.PlaceholderFor(idx+1)))
 	}
-	return database.SQLSelectSimple(cols, tbl, typ.Placeholder, strings.Join(where, " and ")), nil
+	return database.SQLSelectSimple(cols, tbl, typ, strings.Join(where, " and ")), nil
 }

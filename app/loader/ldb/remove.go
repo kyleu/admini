@@ -24,16 +24,9 @@ func Remove(ctx context.Context, db *database.Service, m *model.Model, fields []
 		if idx > 0 {
 			where.WriteString(" and ")
 		}
-		switch db.Placeholder() {
-		case "?":
-			where.WriteString(fmt.Sprintf(`%s%s%s = ?`, db.Type.Quote, x, db.Type.Quote))
-		case "@":
-			where.WriteString(fmt.Sprintf(`%s%s%s = @p%d`, db.Type.Quote, x, db.Type.Quote, idx+1))
-		default:
-			where.WriteString(fmt.Sprintf(`%s%s%s = $%d`, db.Type.Quote, x, db.Type.Quote, idx+1))
-		}
+		where.WriteString(fmt.Sprintf(`%s = %s`, db.Type.Quoted(x), db.Type.PlaceholderFor(idx+1)))
 	}
-	q := database.SQLDelete(m.Path().Quoted(db.Type.Quote), where.String(), db.Placeholder())
+	q := database.SQLDelete(m.Path().Quoted(db.Type.Quote), where.String(), db.Type)
 
 	rowsAffected, err := db.Delete(ctx, q, nil, expected, logger, values...)
 	if err != nil {
