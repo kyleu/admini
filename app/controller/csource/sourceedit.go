@@ -37,11 +37,11 @@ func SourceExample(rc *fasthttp.RequestCtx) {
 	controller.Act("source.example", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "Example Database"
 
-		data, _, err := assets.EmbedAsset("example.sqlite.gz")
+		ent, err := assets.Embed("example.sqlite.gz")
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load embedded example database")
 		}
-		b := bytes.NewBuffer(data)
+		b := bytes.NewBuffer(ent.Bytes)
 		zr, err := gzip.NewReader(b)
 		if err != nil {
 			return "", err
