@@ -4,6 +4,7 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/util"
   "admini.dev/admini/views/components"
+  "admini.dev/admini/views/components/view"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -12,7 +13,7 @@
 {% func (p *About) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <h3>{%= components.SVGRefIcon(`app`, ps) %}{%s util.AppName %}</h3>
-    <em>v{%s as.BuildInfo.Version %}, started {%s util.TimeRelative(&as.Started) %}</em>
+    <em>v{%s as.BuildInfo.Version %}, started {%= view.TimestampRelative(&as.Started, false) %}</em>
   </div>
   <div class="card">
     <h3>About</h3>

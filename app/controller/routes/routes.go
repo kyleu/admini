@@ -9,7 +9,6 @@ import (
 	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/clib"
 	"admini.dev/admini/app/controller/cutil"
-	"admini.dev/admini/app/lib/telemetry/httpmetrics"
 	"admini.dev/admini/app/util"
 )
 
@@ -57,8 +56,5 @@ func AppRoutes(as *app.State, logger util.Logger) fasthttp.RequestHandler {
 	r.OPTIONS("/{_:*}", controller.Options)
 	r.NotFound = controller.NotFoundAction
 
-	clib.AppRoutesList = r.List()
-
-	p := httpmetrics.NewMetrics(util.AppKey, logger)
-	return fasthttp.CompressHandlerLevel(p.WrapHandler(r, true), fasthttp.CompressBestSpeed)
+	return clib.WireRouter(r, logger)
 }
