@@ -1,22 +1,24 @@
 package routes
 
 import (
-	"github.com/fasthttp/router"
+	"net/http"
+
+	"github.com/gorilla/mux"
 
 	"admini.dev/admini/app/controller"
 	"admini.dev/admini/app/controller/cproject"
 )
 
-func projectRoutes(r *router.Router) {
-	r.GET("/project", cproject.ProjectList)
-	r.POST("/project", cproject.ProjectInsert)
-	r.GET("/project/_new", cproject.ProjectNew)
-	r.GET("/project/{key}", cproject.ProjectDetail)
-	r.POST("/project/{key}", cproject.ProjectSave)
-	r.GET("/project/{key}/edit", cproject.ProjectEdit)
-	r.POST("/project/{key}/actions", controller.ActionOrdering)
-	r.GET("/project/{key}/action/{path:*}", controller.ActionEdit)
-	r.POST("/project/{key}/action/{path:*}", controller.ActionSave)
-	r.GET("/project/{key}/test", cproject.ProjectTest)
-	r.GET("/project/{key}/delete", cproject.ProjectDelete)
+func projectRoutes(r *mux.Router) {
+	makeRoute(r, http.MethodGet, "/project", cproject.ProjectList)
+	makeRoute(r, http.MethodPost, "/project", cproject.ProjectInsert)
+	makeRoute(r, http.MethodGet, "/project/_new", cproject.ProjectNew)
+	makeRoute(r, http.MethodGet, "/project/{key}", cproject.ProjectDetail)
+	makeRoute(r, http.MethodPost, "/project/{key}", cproject.ProjectSave)
+	makeRoute(r, http.MethodGet, "/project/{key}/edit", cproject.ProjectEdit)
+	makeRoute(r, http.MethodPost, "/project/{key}/actions", controller.ActionOrdering)
+	makeRoute(r, http.MethodGet, "/project/{key}/action/{path:.*}", controller.ActionEdit)
+	makeRoute(r, http.MethodPost, "/project/{key}/action/{path:.*}", controller.ActionSave)
+	makeRoute(r, http.MethodGet, "/project/{key}/test", cproject.ProjectTest)
+	makeRoute(r, http.MethodGet, "/project/{key}/delete", cproject.ProjectDelete)
 }

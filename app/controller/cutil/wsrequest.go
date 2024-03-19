@@ -3,9 +3,8 @@ package cutil
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"path/filepath"
-
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/lib/schema"
@@ -14,16 +13,18 @@ import (
 )
 
 type WorkspaceRequest struct {
-	T        string               `json:"t"`
-	K        string               `json:"k"`
-	RC       *fasthttp.RequestCtx `json:"-"`
-	PS       *PageState           `json:"-"`
-	Item     any                  `json:"item,omitempty"`
-	Path     []string             `json:"path,omitempty"`
-	Project  *project.Project     `json:"-"`
-	Sources  source.Sources       `json:"-"`
-	Schemata schema.Schemata      `json:"-"`
-	Context  context.Context      `json:"-"` //nolint:containedctx // properly closed, never directly used
+	T        string              `json:"t"`
+	K        string              `json:"k"`
+	Req      *http.Request       `json:"-"`
+	ReqBody  []byte              `json:"-"`
+	Rsp      http.ResponseWriter `json:"-"`
+	PS       *PageState          `json:"-"`
+	Item     any                 `json:"item,omitempty"`
+	Path     []string            `json:"path,omitempty"`
+	Project  *project.Project    `json:"-"`
+	Sources  source.Sources      `json:"-"`
+	Schemata schema.Schemata     `json:"-"`
+	Context  context.Context     `json:"-"` //nolint:containedctx // properly closed, never directly used
 }
 
 func (r *WorkspaceRequest) Route(path ...string) string {
@@ -44,7 +45,7 @@ func (r *WorkspaceRequest) RouteAct(act *action.Action, drop int, path ...string
 
 func (r *WorkspaceRequest) Clone() *WorkspaceRequest {
 	return &WorkspaceRequest{
-		T: r.T, K: r.K, RC: r.RC, PS: r.PS,
+		T: r.T, K: r.K, Req: r.Req, ReqBody: r.ReqBody, Rsp: r.Rsp, PS: r.PS,
 		Item: r.Item, Path: r.Path, Project: r.Project,
 		Sources: r.Sources, Schemata: r.Schemata, Context: r.Context,
 	}

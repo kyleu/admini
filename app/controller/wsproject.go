@@ -2,10 +2,10 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
@@ -15,25 +15,25 @@ import (
 	"admini.dev/admini/app/workspace"
 )
 
-func actWorkspace(key string, rc *fasthttp.RequestCtx, f func(as *app.State, ps *cutil.PageState) (string, error)) {
+func actWorkspace(key string, w http.ResponseWriter, r *http.Request, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	as := _currentAppState
-	ps := cutil.LoadPageState(as, rc, key, _currentAppRootLogger)
-	actComplete(key, as, ps, rc, f)
+	ps := cutil.LoadPageState(as, w, r, key, _currentAppRootLogger)
+	actComplete(key, as, ps, w, r, f)
 }
 
-func WorkspaceProject(rc *fasthttp.RequestCtx) {
-	actWorkspace("workspace", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		projectKey, err := cutil.RCRequiredString(rc, "key", false)
+func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
+	actWorkspace("workspace", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		projectKey, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
 
-		paths := util.StringSplitAndTrim(string(rc.Path()), "/")
+		paths := util.StringSplitAndTrim(r.URL.Path, "/")
 		if len(paths) < 2 {
-			return ERsp("no project provided in path [%s]", string(rc.Path()))
+			return ERsp("no project provided in path [%s]", r.URL.Path)
 		}
 		if paths[0] != "x" {
-			return ERsp("provided path [%s] is not part of the project workspace", string(rc.Path()))
+			return ERsp("provided path [%s] is not part of the project workspace", r.URL.Path)
 		}
 
 		pv, err := as.Services.Projects.LoadView(projectKey, ps.Logger)
@@ -63,14 +63,14 @@ func WorkspaceProject(rc *fasthttp.RequestCtx) {
 		ps.Context = ctx
 		ps.Logger = logger
 		wr := &cutil.WorkspaceRequest{
-			T: "x", K: pv.Project.Key, RC: rc, PS: ps, Item: a, Path: remaining,
+			T: "x", K: pv.Project.Key, Req: r, ReqBody: ps.RequestBody, Rsp: w, PS: ps, Item: a, Path: remaining,
 			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
-		return handleAction(wr, a, rc, as)
+		return handleAction(wr, a, as)
 	})
 }
 
-func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.RequestCtx, as *app.State) (string, error) {
+func handleAction(req *cutil.WorkspaceRequest, act *action.Action, as *app.State) (string, error) {
 	if req == nil {
 		return "", errors.New("nil project request")
 	}
@@ -83,12 +83,12 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, rc *fasthttp.
 	}
 
 	if res.Redirect != "" {
-		return FlashAndRedir(true, res.Title, res.Redirect, rc, req.PS)
+		return FlashAndRedir(true, res.Title, res.Redirect, req.Rsp, req.PS)
 	}
 
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
 	req.PS.SearchPath = req.Route("search")
 
-	return Render(req.RC, as, res.Page, req.PS, res.Breadcrumbs...)
+	return Render(req.Rsp, req.Req, as, res.Page, req.PS, res.Breadcrumbs...)
 }

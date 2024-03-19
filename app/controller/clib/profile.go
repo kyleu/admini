@@ -2,10 +2,10 @@
 package clib
 
 import (
+	"net/http"
 	"net/url"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
@@ -15,19 +15,19 @@ import (
 	"admini.dev/admini/views/vprofile"
 )
 
-func Profile(rc *fasthttp.RequestCtx) {
-	controller.Act("profile", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		return profileAction(rc, as, ps)
+func Profile(w http.ResponseWriter, r *http.Request) {
+	controller.Act("profile", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		return profileAction(w, r, as, ps)
 	})
 }
 
-func ProfileSite(rc *fasthttp.RequestCtx) {
-	controller.ActSite("profile", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		return profileAction(rc, as, ps)
+func ProfileSite(w http.ResponseWriter, r *http.Request) {
+	controller.ActSite("profile", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		return profileAction(w, r, as, ps)
 	})
 }
 
-func profileAction(rc *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) (string, error) {
+func profileAction(w http.ResponseWriter, r *http.Request, as *app.State, ps *cutil.PageState) (string, error) {
 	ps.SetTitleAndData("Profile", ps.Profile)
 	thm := as.Themes.Get(ps.Profile.Theme, ps.Logger)
 
@@ -37,7 +37,7 @@ func profileAction(rc *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) 
 	}
 
 	redir := "/"
-	ref := string(rc.Request.Header.Peek("Referer"))
+	ref := r.Header.Get("Referer")
 	if ref != "" {
 		u, err := url.Parse(ref)
 		if err == nil && u != nil && u.Path != cutil.DefaultProfilePath {
@@ -46,12 +46,12 @@ func profileAction(rc *fasthttp.RequestCtx, as *app.State, ps *cutil.PageState) 
 	}
 	ps.DefaultNavIcon = "profile"
 	page := &vprofile.Profile{Profile: ps.Profile, Theme: thm, Providers: prvs, Referrer: redir}
-	return controller.Render(rc, as, page, ps, "Profile")
+	return controller.Render(w, r, as, page, ps, "Profile")
 }
 
-func ProfileSave(rc *fasthttp.RequestCtx) {
-	controller.Act("profile.save", rc, func(_ *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(rc)
+func ProfileSave(w http.ResponseWriter, r *http.Request) {
+	controller.Act("profile.save", w, r, func(_ *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(r, ps.RequestBody)
 		if err != nil {
 			return "", err
 		}
@@ -70,11 +70,11 @@ func ProfileSave(rc *fasthttp.RequestCtx) {
 			n.Theme = ""
 		}
 
-		err = csession.SaveProfile(n, rc, ps.Session, ps.Logger)
+		err = csession.SaveProfile(n, w, ps.Session, ps.Logger)
 		if err != nil {
 			return "", err
 		}
 
-		return controller.ReturnToReferrer("Saved profile", referrerDefault, rc, ps)
+		return controller.ReturnToReferrer("Saved profile", referrerDefault, w, ps)
 	})
 }

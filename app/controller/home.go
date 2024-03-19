@@ -1,9 +1,8 @@
 package controller
 
 import (
+	"net/http"
 	"net/url"
-
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
@@ -20,19 +19,19 @@ var homeContent = util.ValueMap{
 	},
 }
 
-func Home(rc *fasthttp.RequestCtx) {
-	Act("home", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Home(w http.ResponseWriter, r *http.Request) {
+	Act("home", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		projects, _ := as.Services.Projects.List(ps.Context, ps.Logger)
 		sources, _ := as.Services.Sources.List(ps.Logger)
 		ps.Data = homeContent
-		return Render(rc, as, &views.Home{Sources: sources, Projects: projects}, ps)
+		return Render(w, r, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
 }
 
-func Refresh(rc *fasthttp.RequestCtx) {
-	Act("refresh", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+func Refresh(w http.ResponseWriter, r *http.Request) {
+	Act("refresh", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		redir := "/"
-		ref := string(rc.Request.Header.Peek("Referer"))
+		ref := r.Header.Get("Referer")
 		if ref != "" {
 			u, err := url.Parse(ref)
 			if err == nil && u != nil {
@@ -44,6 +43,6 @@ func Refresh(rc *fasthttp.RequestCtx) {
 		as.Services.Sources.Clear()
 		as.Services.Projects.Clear()
 		const msg = "Cleared all caches"
-		return FlashAndRedir(true, msg, redir, rc, ps)
+		return FlashAndRedir(true, msg, redir, w, ps)
 	})
 }

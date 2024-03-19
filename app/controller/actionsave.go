@@ -2,23 +2,23 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
 	"admini.dev/admini/app/controller/cutil"
 )
 
-func ActionSave(rc *fasthttp.RequestCtx) {
-	Act("action.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, a, _, err := loadAction(rc, as, ps.Logger)
+func ActionSave(w http.ResponseWriter, r *http.Request) {
+	Act("action.save", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		p, a, _, err := loadAction(r, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
 		}
 
-		frm, err := cutil.ParseForm(rc)
+		frm, err := cutil.ParseForm(r, ps.RequestBody)
 		if err != nil {
 			return "", err
 		}
@@ -61,6 +61,6 @@ func ActionSave(rc *fasthttp.RequestCtx) {
 			return "", err
 		}
 
-		return FlashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), rc, ps)
+		return FlashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), w, ps)
 	})
 }

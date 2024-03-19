@@ -1,8 +1,9 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
@@ -12,21 +13,21 @@ import (
 	"admini.dev/admini/views/vproject"
 )
 
-func ActionEdit(rc *fasthttp.RequestCtx) {
-	Act("action.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		p, a, _, err := loadAction(rc, as, ps.Logger)
+func ActionEdit(w http.ResponseWriter, r *http.Request) {
+	Act("action.edit", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		p, a, _, err := loadAction(r, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "error loading project and action")
 		}
 		ps.Title = a.Name()
 		ps.Data = a
 		page := &vproject.ActionEdit{Project: p, Act: a}
-		return Render(rc, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
+		return Render(w, r, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
 	})
 }
 
-func loadAction(rc *fasthttp.RequestCtx, as *app.State, logger util.Logger) (*project.Project, *action.Action, []string, error) {
-	key, err := cutil.RCRequiredString(rc, "key", false)
+func loadAction(r *http.Request, as *app.State, logger util.Logger) (*project.Project, *action.Action, []string, error) {
+	key, err := cutil.RCRequiredString(r, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -35,7 +36,7 @@ func loadAction(rc *fasthttp.RequestCtx, as *app.State, logger util.Logger) (*pr
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}
 
-	path, err := cutil.RCRequiredString(rc, "path", false)
+	path, err := cutil.RCRequiredString(r, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

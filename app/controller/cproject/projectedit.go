@@ -2,9 +2,9 @@ package cproject
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
@@ -13,8 +13,8 @@ import (
 	"admini.dev/admini/views/vproject"
 )
 
-func ProjectNew(rc *fasthttp.RequestCtx) {
-	controller.Act("project.new", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+func ProjectNew(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.new", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		ps.Title = "New Project"
 		p := &project.Project{}
 		ps.Data = p
@@ -22,19 +22,19 @@ func ProjectNew(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return controller.Render(rc, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
+		return controller.Render(w, r, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
 	})
 }
 
-func ProjectInsert(rc *fasthttp.RequestCtx) {
-	controller.Act("project.insert", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(rc)
+func ProjectInsert(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.insert", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(r, ps.RequestBody)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return controller.FlashAndRedir(false, err.Error(), "/project/_new", rc, ps)
+			return controller.FlashAndRedir(false, err.Error(), "/project/_new", w, ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")
@@ -48,13 +48,13 @@ func ProjectInsert(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
-		return controller.FlashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), rc, ps)
+		return controller.FlashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), w, ps)
 	})
 }
 
-func ProjectEdit(rc *fasthttp.RequestCtx) {
-	controller.Act("project.edit", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func ProjectEdit(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.edit", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -69,18 +69,18 @@ func ProjectEdit(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return controller.Render(rc, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
+		return controller.Render(w, r, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
 	})
 }
 
-func ProjectSave(rc *fasthttp.RequestCtx) {
-	controller.Act("project.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		frm, err := cutil.ParseForm(rc)
+func ProjectSave(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.save", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		frm, err := cutil.ParseForm(r, ps.RequestBody)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key, err := cutil.RCRequiredString(rc, "key", false)
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -104,13 +104,13 @@ func ProjectSave(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`saved project %q`, key)
-		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), w, ps)
 	})
 }
 
-func ProjectDelete(rc *fasthttp.RequestCtx) {
-	controller.Act("project.delete", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func ProjectDelete(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.delete", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -120,6 +120,6 @@ func ProjectDelete(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf(`deleted project %q`, key)
-		return controller.FlashAndRedir(true, msg, "/project", rc, ps)
+		return controller.FlashAndRedir(true, msg, "/project", w, ps)
 	})
 }

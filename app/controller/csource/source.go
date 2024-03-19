@@ -2,9 +2,9 @@ package csource
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
@@ -15,21 +15,21 @@ import (
 
 const sourceKey = "source"
 
-func SourceList(rc *fasthttp.RequestCtx) {
-	controller.Act("source.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+func SourceList(w http.ResponseWriter, r *http.Request) {
+	controller.Act("source.list", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		s, err := as.Services.Sources.List(ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load source list")
 		}
 		ps.Title = "Sources"
 		ps.Data = s
-		return controller.Render(rc, as, &vsource.List{Sources: s}, ps, "sources")
+		return controller.Render(w, r, as, &vsource.List{Sources: s}, ps, "sources")
 	})
 }
 
-func SourceDetail(rc *fasthttp.RequestCtx) {
-	controller.Act("source.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func SourceDetail(w http.ResponseWriter, r *http.Request) {
+	controller.Act("source.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -43,13 +43,13 @@ func SourceDetail(rc *fasthttp.RequestCtx) {
 		}
 		ps.Title = src.Name()
 		ps.Data = util.ValueMap{sourceKey: src, "schema": sch}
-		return controller.Render(rc, as, &vsource.Detail{Source: src, Schema: sch}, ps, "sources", src.Key)
+		return controller.Render(w, r, as, &vsource.Detail{Source: src, Schema: sch}, ps, "sources", src.Key)
 	})
 }
 
-func SourceRefresh(rc *fasthttp.RequestCtx) {
-	controller.Act("source.refresh", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func SourceRefresh(w http.ResponseWriter, r *http.Request) {
+	controller.Act("source.refresh", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -59,13 +59,13 @@ func SourceRefresh(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf("refreshed in [%.3fms]", elapsedMillis)
-		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), rc, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), w, ps)
 	})
 }
 
-func SourceHack(rc *fasthttp.RequestCtx) {
-	controller.Act("source.hack", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func SourceHack(w http.ResponseWriter, r *http.Request) {
+	controller.Act("source.hack", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -73,12 +73,12 @@ func SourceHack(rc *fasthttp.RequestCtx) {
 		if err != nil {
 			return "", errors.Wrapf(err, "unable to load schema for source [%s]", key)
 		}
-		if string(rc.URI().QueryArgs().Peek("x")) == "svc" {
+		if r.URL.Query().Get("x") == "svc" {
 			ret, e := sch.HackSvc(ps.Logger)
 			if e != nil {
 				return "", errors.Wrapf(e, "unable to run schema hack for source [%s]", key)
 			}
-			rc.Response.SetBodyRaw([]byte(ret))
+			_, _ = w.Write([]byte(ret))
 			return "", nil
 		}
 		ret, err := sch.Hack(ps.Logger)
@@ -86,6 +86,6 @@ func SourceHack(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to run schema hack for source [%s]", key)
 		}
 		ps.Data = ret
-		return controller.Render(rc, as, &vsource.Hack{Schema: sch, Result: ret}, ps, "sources", key, "hack")
+		return controller.Render(w, r, as, &vsource.Hack{Schema: sch, Result: ret}, ps, "sources", key, "hack")
 	})
 }

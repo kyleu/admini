@@ -2,10 +2,10 @@ package csource
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
@@ -17,9 +17,9 @@ import (
 	"admini.dev/admini/views/vsource"
 )
 
-func SourceModelDetail(rc *fasthttp.RequestCtx) {
-	controller.Act("source.model.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		src, sch, m, err := loadSourceModel(rc, as, ps.Logger)
+func SourceModelDetail(w http.ResponseWriter, r *http.Request) {
+	controller.Act("source.model.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		src, sch, m, err := loadSourceModel(r, as, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "")
 		}
@@ -27,18 +27,18 @@ func SourceModelDetail(rc *fasthttp.RequestCtx) {
 		ps.Title = src.Name()
 		ps.Data = util.ValueMap{sourceKey: src, "schema": sch}
 		page := &vsource.ModelDetail{Source: src, Schema: sch, Model: m}
-		return controller.Render(rc, as, page, ps, "sources", src.Key)
+		return controller.Render(w, r, as, page, ps, "sources", src.Key)
 	})
 }
 
-func SourceModelSave(rc *fasthttp.RequestCtx) {
-	controller.Act("source.model.save", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		src, _, m, err := loadSourceModel(rc, as, ps.Logger)
+func SourceModelSave(w http.ResponseWriter, r *http.Request) {
+	controller.Act("source.model.save", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		src, _, m, err := loadSourceModel(r, as, ps.Logger)
 		if err != nil {
 			return "", err
 		}
 
-		frm, err := cutil.ParseForm(rc)
+		frm, err := cutil.ParseForm(r, ps.RequestBody)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
@@ -64,7 +64,7 @@ func SourceModelSave(rc *fasthttp.RequestCtx) {
 		}
 
 		msg := fmt.Sprintf("saved model [%s] with [%d] overrides", m.Name(), len(overrides))
-		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), rc, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), w, ps)
 	})
 }
 
@@ -123,8 +123,8 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 	return m, ret, nil
 }
 
-func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State, logger util.Logger) (*source.Source, *schema.Schema, *model.Model, error) {
-	key, err := cutil.RCRequiredString(rc, "key", false)
+func loadSourceModel(r *http.Request, as *app.State, logger util.Logger) (*source.Source, *schema.Schema, *model.Model, error) {
+	key, err := cutil.RCRequiredString(r, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -136,7 +136,7 @@ func loadSourceModel(rc *fasthttp.RequestCtx, as *app.State, logger util.Logger)
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load schema for source [%s]", key)
 	}
-	path, err := cutil.RCRequiredString(rc, "path", false)
+	path, err := cutil.RCRequiredString(r, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

@@ -2,13 +2,13 @@
 package clib
 
 import (
-	"github.com/valyala/fasthttp"
+	"net/http"
 
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/util"
 )
 
-func Healthcheck(rc *fasthttp.RequestCtx) {
+func Healthcheck(w http.ResponseWriter, r *http.Request) {
 	x := util.ValueMap{"status": "OK"}
-	_, _ = cutil.RespondJSON(rc, "", x)
+	_, _ = cutil.RespondJSON(w, "", x)
 }

@@ -40,7 +40,7 @@ func processModelEdit(req *cutil.WorkspaceRequest, act *action.Action, srcKey st
 }
 
 func processModelSave(req *cutil.WorkspaceRequest, act *action.Action, srcKey string, m *model.Model, idStrings []string, as *app.State) (*Result, error) {
-	changes, err := cutil.ParseFormAsChanges(req.RC)
+	changes, err := cutil.ParseFormAsChanges(req.Req, req.ReqBody)
 	if err != nil {
 		return ErrResult(req, act, err)
 	}

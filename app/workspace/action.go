@@ -87,9 +87,9 @@ func process(req *cutil.WorkspaceRequest, act *action.Action, pkg *model.Package
 	case *model.Package:
 		return processPackage(req, act, t)
 	case error:
-		return ErrResult(req, act, errors.Wrapf(t, "provided path [%s] can't be loaded", string(req.RC.URI().Path())))
+		return ErrResult(req, act, errors.Wrapf(t, "provided path [%s] can't be loaded", req.Req.URL.Path))
 	case nil:
-		return ErrResult(req, act, errors.Errorf("nil path [%s] can't be loaded", string(req.RC.URI().Path())))
+		return ErrResult(req, act, errors.Errorf("nil path [%s] can't be loaded", req.Req.URL.Path))
 	default:
 		return ErrResult(req, act, errors.Errorf("unhandled type for processing: %T", t))
 	}

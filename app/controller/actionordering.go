@@ -2,10 +2,10 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
@@ -13,9 +13,9 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-func ActionOrdering(rc *fasthttp.RequestCtx) {
-	Act("action.ordering", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func ActionOrdering(w http.ResponseWriter, r *http.Request) {
+	Act("action.ordering", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -24,7 +24,7 @@ func ActionOrdering(rc *fasthttp.RequestCtx) {
 			return "", errors.Wrapf(err, "unable to load project [%s]", key)
 		}
 
-		frm, err := cutil.ParseForm(rc)
+		frm, err := cutil.ParseForm(r, ps.RequestBody)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
@@ -53,6 +53,6 @@ func ActionOrdering(rc *fasthttp.RequestCtx) {
 		}
 		count := prj.Actions.Size()
 		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.StringPlural(count, "action"), elapsedMillis)
-		return FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), rc, ps)
+		return FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), w, ps)
 	})
 }

@@ -1,22 +1,24 @@
 package routes
 
 import (
-	"github.com/fasthttp/router"
+	"net/http"
+
+	"github.com/gorilla/mux"
 
 	"admini.dev/admini/app/controller/csource"
 )
 
-func sourceRoutes(r *router.Router) {
-	r.GET("/source", csource.SourceList)
-	r.POST("/source", csource.SourceInsert)
-	r.GET("/source/_new", csource.SourceNew)
-	r.GET("/source/_example", csource.SourceExample)
-	r.GET("/source/{key}", csource.SourceDetail)
-	r.GET("/source/{key}/edit", csource.SourceEdit)
-	r.POST("/source/{key}", csource.SourceSave)
-	r.GET("/source/{key}/refresh", csource.SourceRefresh)
-	r.GET("/source/{key}/delete", csource.SourceDelete)
-	r.GET("/source/{key}/hack", csource.SourceHack)
-	r.GET("/source/{key}/model/{path:*}", csource.SourceModelDetail)
-	r.POST("/source/{key}/model/{path:*}", csource.SourceModelSave)
+func sourceRoutes(r *mux.Router) {
+	makeRoute(r, http.MethodGet, "/source", csource.SourceList)
+	makeRoute(r, http.MethodPost, "/source", csource.SourceInsert)
+	makeRoute(r, http.MethodGet, "/source/_new", csource.SourceNew)
+	makeRoute(r, http.MethodGet, "/source/_example", csource.SourceExample)
+	makeRoute(r, http.MethodGet, "/source/{key}", csource.SourceDetail)
+	makeRoute(r, http.MethodGet, "/source/{key}/edit", csource.SourceEdit)
+	makeRoute(r, http.MethodPost, "/source/{key}", csource.SourceSave)
+	makeRoute(r, http.MethodGet, "/source/{key}/refresh", csource.SourceRefresh)
+	makeRoute(r, http.MethodGet, "/source/{key}/delete", csource.SourceDelete)
+	makeRoute(r, http.MethodGet, "/source/{key}/hack", csource.SourceHack)
+	makeRoute(r, http.MethodGet, "/source/{key}/model/{path:.*}", csource.SourceModelDetail)
+	makeRoute(r, http.MethodPost, "/source/{key}/model/{path:.*}", csource.SourceModelSave)
 }

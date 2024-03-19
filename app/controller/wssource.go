@@ -2,9 +2,9 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
@@ -12,14 +12,14 @@ import (
 	"admini.dev/admini/app/workspace"
 )
 
-func WorkspaceSource(rc *fasthttp.RequestCtx) {
-	actWorkspace("workspace.source", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		sourceKey, err := cutil.RCRequiredString(rc, "key", false)
+func WorkspaceSource(w http.ResponseWriter, r *http.Request) {
+	actWorkspace("workspace.source", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		sourceKey, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
 
-		path := string(rc.Request.URI().Path())
+		path := r.URL.Path
 		paths := util.StringSplitAndTrim(path, "/")
 		if len(paths) < 2 {
 			return ERsp("no source provided in path [%s]", path)
@@ -51,10 +51,10 @@ func WorkspaceSource(rc *fasthttp.RequestCtx) {
 		a, remaining := pv.Project.Actions.Get(paths)
 
 		wr := &cutil.WorkspaceRequest{
-			T: "s", K: sourceKey, RC: rc, PS: ps, Item: a, Path: remaining,
+			T: "s", K: sourceKey, Req: r, ReqBody: ps.RequestBody, Rsp: w, PS: ps, Item: a, Path: remaining,
 			Project: pv.Project, Sources: pv.Sources, Schemata: pv.Schemata, Context: ps.Context,
 		}
 
-		return handleAction(wr, a, rc, as)
+		return handleAction(wr, a, as)
 	})
 }

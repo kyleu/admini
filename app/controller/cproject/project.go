@@ -2,9 +2,9 @@ package cproject
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/action"
@@ -15,21 +15,21 @@ import (
 	"admini.dev/admini/views/vproject"
 )
 
-func ProjectList(rc *fasthttp.RequestCtx) {
-	controller.Act("project.list", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
+func ProjectList(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.list", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		p, err := as.Services.Projects.List(ps.Context, ps.Logger)
 		if err != nil {
 			return "", errors.Wrap(err, "unable to load project list")
 		}
 		ps.Title = "Projects"
 		ps.Data = p
-		return controller.Render(rc, as, &vproject.List{Projects: p}, ps, "projects")
+		return controller.Render(w, r, as, &vproject.List{Projects: p}, ps, "projects")
 	})
 }
 
-func ProjectDetail(rc *fasthttp.RequestCtx) {
-	controller.Act("project.detail", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func ProjectDetail(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -39,13 +39,13 @@ func ProjectDetail(rc *fasthttp.RequestCtx) {
 		}
 		ps.Title = prj.Project.Name()
 		ps.Data = prj.Project
-		return controller.Render(rc, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
+		return controller.Render(w, r, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
 	})
 }
 
-func ProjectTest(rc *fasthttp.RequestCtx) {
-	controller.Act("project.test", rc, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(rc, "key", false)
+func ProjectTest(w http.ResponseWriter, r *http.Request) {
+	controller.Act("project.test", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
+		key, err := cutil.RCRequiredString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -78,6 +78,6 @@ func ProjectTest(rc *fasthttp.RequestCtx) {
 		}
 
 		view := &vproject.Test{Message: fmt.Sprintf("Project [%s]: OK", v.Project.Key)}
-		return controller.Render(rc, as, view, ps, "projects", v.Project.Key, "test")
+		return controller.Render(w, r, as, view, ps, "projects", v.Project.Key, "test")
 	})
 }
