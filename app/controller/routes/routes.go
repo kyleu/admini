@@ -48,11 +48,7 @@ func AppRoutes(as *app.State, logger util.Logger) (http.Handler, error) {
 	r.PathPrefix("/s/{key}/").Methods(http.MethodGet, http.MethodPost).HandlerFunc(controller.WorkspaceSource)
 	// $PF_SECTION_END(routes)$
 
-	makeRoute(r, http.MethodGet, "/admin", clib.Admin)
-	makeRoute(r, http.MethodGet, "/admin/", clib.Admin)
-	makeRoute(r, http.MethodPost, "/admin/", clib.Admin)
-	makeRoute(r, http.MethodGet, "/admin/sandbox", controller.SandboxList)
-	makeRoute(r, http.MethodGet, "/admin/sandbox/{key}", controller.SandboxRun)
+	adminRoutes(r)
 
 	makeRoute(r, http.MethodGet, "/favicon.ico", clib.Favicon)
 	makeRoute(r, http.MethodGet, "/robots.txt", clib.RobotsTxt)
