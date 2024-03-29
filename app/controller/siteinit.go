@@ -2,13 +2,16 @@
 package controller
 
 import (
+	"context"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/util"
 )
 
 // Initialize system dependencies for the marketing site.
-func initSite(_ *app.State, _ util.Logger) {
+func initSite(_ context.Context, _ *app.State, _ util.Logger) error {
+	return nil
 }
 
 // Configure marketing site data for each request.

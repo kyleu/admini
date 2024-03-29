@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"context"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/user"
@@ -8,8 +10,9 @@ import (
 )
 
 // Initialize app-specific system dependencies.
-func initApp(*app.State, util.Logger) {
+func initApp(_ context.Context, _ *app.State, _ util.Logger) error {
 	user.SetPermissions(true, user.Perm("/admin", "*", true))
+	return nil
 }
 
 // Configure app-specific data for each request.
