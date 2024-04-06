@@ -27,7 +27,7 @@ func ActionEdit(w http.ResponseWriter, r *http.Request) {
 }
 
 func loadAction(r *http.Request, as *app.State, logger util.Logger) (*project.Project, *action.Action, []string, error) {
-	key, err := cutil.RCRequiredString(r, "key", false)
+	key, err := cutil.PathString(r, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -36,7 +36,7 @@ func loadAction(r *http.Request, as *app.State, logger util.Logger) (*project.Pr
 		return nil, nil, nil, errors.Wrapf(err, "unable to load project [%s]", key)
 	}
 
-	path, err := cutil.RCRequiredString(r, "path", false)
+	path, err := cutil.PathString(r, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

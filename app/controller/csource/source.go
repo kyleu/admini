@@ -29,7 +29,7 @@ func SourceList(w http.ResponseWriter, r *http.Request) {
 
 func SourceDetail(w http.ResponseWriter, r *http.Request) {
 	controller.Act("source.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -49,7 +49,7 @@ func SourceDetail(w http.ResponseWriter, r *http.Request) {
 
 func SourceRefresh(w http.ResponseWriter, r *http.Request) {
 	controller.Act("source.refresh", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -65,7 +65,7 @@ func SourceRefresh(w http.ResponseWriter, r *http.Request) {
 
 func SourceHack(w http.ResponseWriter, r *http.Request) {
 	controller.Act("source.hack", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}

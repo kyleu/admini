@@ -29,7 +29,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request) {
 
 func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 	controller.Act("project.detail", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -45,7 +45,7 @@ func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 
 func ProjectTest(w http.ResponseWriter, r *http.Request) {
 	controller.Act("project.test", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}

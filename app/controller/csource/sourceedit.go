@@ -97,7 +97,7 @@ func SourceInsert(w http.ResponseWriter, r *http.Request) {
 
 func SourceEdit(w http.ResponseWriter, r *http.Request) {
 	controller.Act("source.edit", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -126,7 +126,7 @@ func SourceSave(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -203,7 +203,7 @@ func SourceSave(w http.ResponseWriter, r *http.Request) {
 
 func SourceDelete(w http.ResponseWriter, r *http.Request) {
 	controller.Act("source.delete", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}

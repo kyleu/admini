@@ -124,7 +124,7 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 }
 
 func loadSourceModel(r *http.Request, as *app.State, logger util.Logger) (*source.Source, *schema.Schema, *model.Model, error) {
-	key, err := cutil.RCRequiredString(r, "key", false)
+	key, err := cutil.PathString(r, "key", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -136,7 +136,7 @@ func loadSourceModel(r *http.Request, as *app.State, logger util.Logger) (*sourc
 	if err != nil {
 		return nil, nil, nil, errors.Wrapf(err, "unable to load schema for source [%s]", key)
 	}
-	path, err := cutil.RCRequiredString(r, "path", false)
+	path, err := cutil.PathString(r, "path", false)
 	if err != nil {
 		return nil, nil, nil, err
 	}

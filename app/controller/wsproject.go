@@ -23,7 +23,7 @@ func actWorkspace(key string, w http.ResponseWriter, r *http.Request, f func(as 
 
 func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
 	actWorkspace("workspace", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		projectKey, err := cutil.RCRequiredString(r, "key", false)
+		projectKey, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}

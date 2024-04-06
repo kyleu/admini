@@ -15,7 +15,7 @@ import (
 
 func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 	Act("action.ordering", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}

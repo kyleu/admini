@@ -54,7 +54,7 @@ func ProjectInsert(w http.ResponseWriter, r *http.Request) {
 
 func ProjectEdit(w http.ResponseWriter, r *http.Request) {
 	controller.Act("project.edit", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -80,7 +80,7 @@ func ProjectSave(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to parse form")
 		}
 
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
@@ -110,7 +110,7 @@ func ProjectSave(w http.ResponseWriter, r *http.Request) {
 
 func ProjectDelete(w http.ResponseWriter, r *http.Request) {
 	controller.Act("project.delete", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		key, err := cutil.RCRequiredString(r, "key", false)
+		key, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}

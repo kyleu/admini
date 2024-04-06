@@ -14,7 +14,7 @@ import (
 
 func WorkspaceSource(w http.ResponseWriter, r *http.Request) {
 	actWorkspace("workspace.source", w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
-		sourceKey, err := cutil.RCRequiredString(r, "key", false)
+		sourceKey, err := cutil.PathString(r, "key", false)
 		if err != nil {
 			return "", err
 		}
