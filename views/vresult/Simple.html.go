@@ -214,7 +214,7 @@ func streamsimpleRow(qw422016 *qt422016.Writer, idx int, row []any, fields field
 //line views/vresult/Simple.html:69
 		qw422016.N().S(`<td>`)
 //line views/vresult/Simple.html:70
-		view.StreamAny(qw422016, col, f.Type)
+		view.StreamAnyByType(qw422016, col, f.Type)
 //line views/vresult/Simple.html:70
 		qw422016.N().S(`</td>`)
 //line views/vresult/Simple.html:71
