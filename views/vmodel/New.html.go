@@ -70,7 +70,7 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
 		qw422016.N().S(`</label></th>
               <td>`)
 //line views/vmodel/New.html:27
-		edit.StreamAny(qw422016, f.Key, f.Key, p.Defaults[idx], f.Type)
+		edit.StreamAnyByType(qw422016, f.Key, f.Key, p.Defaults[idx], f.Type)
 //line views/vmodel/New.html:27
 		qw422016.N().S(`</td>
             </tr>

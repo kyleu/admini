@@ -5,6 +5,7 @@
   "admini.dev/admini/app"
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/util"
+  "admini.dev/admini/views/components"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -15,7 +16,7 @@
 
 {% func (p *Logs) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>Recent Logs</h3>
+    <h3>{%= components.SVGRefIcon(`filter`, ps) %}Recent Logs</h3>
     {%= logTable(p.Logs) %}
   </div>
 {% endfunc %}

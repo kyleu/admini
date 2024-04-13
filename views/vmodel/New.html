@@ -24,7 +24,7 @@
           {% for idx, f := range p.Model.Fields %}
             <tr>
               <th class="shrink"><label><input type="checkbox" value="true" name="{%s f.Key %}--selected" /> {%s f.Key %}</label></th>
-              <td>{%= edit.Any(f.Key, f.Key, p.Defaults[idx], f.Type) %}</td>
+              <td>{%= edit.AnyByType(f.Key, f.Key, p.Defaults[idx], f.Type) %}</td>
             </tr>
           {% endfor %}
         </tbody>

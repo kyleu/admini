@@ -4,6 +4,7 @@
   "admini.dev/admini/app/controller/cutil"
   "admini.dev/admini/app/lib/theme"
   "admini.dev/admini/app/util"
+  "admini.dev/admini/views/components"
   "admini.dev/admini/views/layout"
 ) %}
 
@@ -15,7 +16,7 @@
 
 {% func (p *Add) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>Choose Theme</h3>
+    <h3>{%= components.SVGRefIcon(`eye`, ps) %}Choose Theme</h3>
     <form action="/theme" method="post">
       <input type="hidden" name="palette" value="{%s p.Palette %}" />
       <div class="overflow full-width">
