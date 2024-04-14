@@ -63,7 +63,7 @@ func (p *New) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pag
 	qw422016.N().S(`
           `)
 //line views/vsource/New.html:24
-	edit.StreamRadioTable(qw422016, "type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5)
+	edit.StreamRadioTable(qw422016, "type", "Type", p.Origin.Key, schema.AllOrigins.Keys(), schema.AllOrigins.Titles(), 5)
 //line views/vsource/New.html:24
 	qw422016.N().S(`
         </tbody>

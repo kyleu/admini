@@ -21,7 +21,7 @@
           {%= edit.StringTable("title", "", "Title", "", 5) %}
           {%= edit.IconsTable("icon", "Icon", "", ps, 5) %}
           {%= edit.TextareaTable("description", "", "Description", 8, "", 5) %}
-          {%= edit.RadioTable("type", "Type", p.Origin.Key, schema.OriginKeys(), schema.OriginTitles(), 5) %}
+          {%= edit.RadioTable("type", "Type", p.Origin.Key, schema.AllOrigins.Keys(), schema.AllOrigins.Titles(), 5) %}
         </tbody>
       </table>
       <button class="mt" type="submit">Save Changes</button>
