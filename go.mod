@@ -13,7 +13,6 @@ require (
 	github.com/dustin/go-humanize v1.0.1
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/go-ini/ini v1.67.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gomarkdown/markdown v0.0.0-20240328165702-4d01890c35c0
 	github.com/google/go-github/v39 v39.2.0
