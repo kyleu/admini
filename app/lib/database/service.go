@@ -64,7 +64,7 @@ func (s *Service) Healthcheck(dbName string, db *sqlx.DB) error {
 		if strings.Contains(err.Error(), "does not exist") {
 			return errors.Wrapf(err, "database does not exist")
 		}
-		return errors.Wrapf(err, "unable to run healthcheck [%s]", q)
+		return errors.Wrapf(err, "unable to run healthcheck [%s] for database [%s]", q, dbName)
 	}
 	defer func() { _ = res.Close() }()
 	return nil
