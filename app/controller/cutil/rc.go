@@ -14,7 +14,7 @@ import (
 	"admini.dev/admini/app/util"
 )
 
-func RequestCtxToMap(r *http.Request, as *app.State, ps *PageState) util.ValueMap {
+func RequestCtxToMap(r *http.Request, _ *app.State, ps *PageState) util.ValueMap {
 	req := util.ValueMap{
 		"url": r.URL.String(), "protocol": r.URL.Scheme,
 		"host": r.URL.Host, "path": r.URL.Path,
