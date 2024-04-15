@@ -22,7 +22,7 @@ func ActionEdit(w http.ResponseWriter, r *http.Request) {
 		ps.Title = a.Name()
 		ps.Data = a
 		page := &vproject.ActionEdit{Project: p, Act: a}
-		return Render(w, r, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
+		return Render(r, as, page, ps, append([]string{"projects", p.Key}, a.Path()...)...)
 	})
 }
 

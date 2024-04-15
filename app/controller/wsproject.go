@@ -17,8 +17,9 @@ import (
 
 func actWorkspace(key string, w http.ResponseWriter, r *http.Request, f func(as *app.State, ps *cutil.PageState) (string, error)) {
 	as := _currentAppState
-	ps := cutil.LoadPageState(as, w, r, key, _currentAppRootLogger)
-	actComplete(key, as, ps, w, r, f)
+	wc := cutil.NewWriteCounter(w)
+	ps := cutil.LoadPageState(as, wc, r, key, _currentAppRootLogger)
+	actComplete(key, as, ps, wc, r, f)
 }
 
 func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
@@ -83,12 +84,12 @@ func handleAction(req *cutil.WorkspaceRequest, act *action.Action, as *app.State
 	}
 
 	if res.Redirect != "" {
-		return FlashAndRedir(true, res.Title, res.Redirect, req.Rsp, req.PS)
+		return FlashAndRedir(true, res.Title, res.Redirect, req.PS)
 	}
 
 	req.PS.Title = res.Title
 	req.PS.Data = res.Data
 	req.PS.SearchPath = req.Route("search")
 
-	return Render(req.Rsp, req.Req, as, res.Page, req.PS, res.Breadcrumbs...)
+	return Render(req.Req, as, res.Page, req.PS, res.Breadcrumbs...)
 }

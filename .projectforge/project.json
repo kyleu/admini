@@ -18,7 +18,6 @@
     "oauth",
     "postgres",
     "sandbox",
-    "schema",
     "search",
     "sqlite",
     "sqlserver",

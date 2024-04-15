@@ -27,7 +27,7 @@ func SourceModelDetail(w http.ResponseWriter, r *http.Request) {
 		ps.Title = src.Name()
 		ps.Data = util.ValueMap{sourceKey: src, "schema": sch}
 		page := &vsource.ModelDetail{Source: src, Schema: sch, Model: m}
-		return controller.Render(w, r, as, page, ps, "sources", src.Key)
+		return controller.Render(r, as, page, ps, "sources", src.Key)
 	})
 }
 
@@ -64,7 +64,7 @@ func SourceModelSave(w http.ResponseWriter, r *http.Request) {
 		}
 
 		msg := fmt.Sprintf("saved model [%s] with [%d] overrides", m.Name(), len(overrides))
-		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), w, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", src.Key), ps)
 	})
 }
 

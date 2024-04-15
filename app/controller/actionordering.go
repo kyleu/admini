@@ -53,6 +53,6 @@ func ActionOrdering(w http.ResponseWriter, r *http.Request) {
 		}
 		count := prj.Actions.Size()
 		msg := fmt.Sprintf("saved [%d] %s in [%.3fms]", count, util.StringPlural(count, "action"), elapsedMillis)
-		return FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), w, ps)
+		return FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), ps)
 	})
 }

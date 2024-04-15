@@ -18,7 +18,6 @@ The following modules were used to build this project:
 - [oauth](./doc/module/oauth.md)
 - [postgres](./doc/module/postgres.md)
 - [sandbox](./doc/module/sandbox.md)
-- [schema](./doc/module/schema.md)
 - [search](./doc/module/search.md)
 - [sqlite](./doc/module/sqlite.md)
 - [sqlserver](./doc/module/sqlserver.md)

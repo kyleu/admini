@@ -18,7 +18,6 @@ func sourceRoutes(r *mux.Router) {
 	makeRoute(r, http.MethodPost, "/source/{key}", csource.SourceSave)
 	makeRoute(r, http.MethodGet, "/source/{key}/refresh", csource.SourceRefresh)
 	makeRoute(r, http.MethodGet, "/source/{key}/delete", csource.SourceDelete)
-	makeRoute(r, http.MethodGet, "/source/{key}/hack", csource.SourceHack)
 	makeRoute(r, http.MethodGet, "/source/{key}/model/{path:.*}", csource.SourceModelDetail)
 	makeRoute(r, http.MethodPost, "/source/{key}/model/{path:.*}", csource.SourceModelSave)
 }

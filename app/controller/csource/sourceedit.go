@@ -29,7 +29,7 @@ func SourceNew(w http.ResponseWriter, r *http.Request) {
 		t := schema.OriginPostgres
 		s := &source.Source{Type: t}
 		ps.Data = s
-		return controller.Render(w, r, as, &vsource.New{Origin: t}, ps, "sources", "New")
+		return controller.Render(r, as, &vsource.New{Origin: t}, ps, "sources", "New")
 	})
 }
 
@@ -67,7 +67,7 @@ func SourceExample(w http.ResponseWriter, r *http.Request) {
 			return "", errors.Wrap(err, "unable to save example database")
 		}
 		ps.Data = ret
-		return controller.FlashAndRedir(true, "saved example source", "/source/example", w, ps)
+		return controller.FlashAndRedir(true, "saved example source", "/source/example", ps)
 	})
 }
 
@@ -80,7 +80,7 @@ func SourceInsert(w http.ResponseWriter, r *http.Request) {
 
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return controller.FlashAndRedir(false, err.Error(), "/source/_new", w, ps)
+			return controller.FlashAndRedir(false, err.Error(), "/source/_new", ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")
@@ -91,7 +91,7 @@ func SourceInsert(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save source")
 		}
-		return controller.FlashAndRedir(true, "saved new source", fmt.Sprintf("/source/%s", key), w, ps)
+		return controller.FlashAndRedir(true, "saved new source", fmt.Sprintf("/source/%s", key), ps)
 	})
 }
 
@@ -111,10 +111,10 @@ func SourceEdit(w http.ResponseWriter, r *http.Request) {
 		switch src.Type {
 		case schema.OriginPostgres, schema.OriginSQLite, schema.OriginMySQL, schema.OriginSQLServer:
 			page := &vsource.Edit{Source: src}
-			return controller.Render(w, r, as, page, ps, "sources", src.Key, "Edit")
+			return controller.Render(r, as, page, ps, "sources", src.Key, "Edit")
 		default:
 			msg := fmt.Sprintf("unhandled source type [%s]", src.Type.String())
-			return controller.FlashAndRedir(false, msg, "/source", w, ps)
+			return controller.FlashAndRedir(false, msg, "/source", ps)
 		}
 	})
 }
@@ -197,7 +197,7 @@ func SourceSave(w http.ResponseWriter, r *http.Request) {
 		}
 
 		msg := fmt.Sprintf(`saved source %q`, key)
-		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), w, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/source/%s", key), ps)
 	})
 }
 
@@ -213,6 +213,6 @@ func SourceDelete(w http.ResponseWriter, r *http.Request) {
 		}
 
 		msg := fmt.Sprintf(`deleted source %q`, key)
-		return controller.FlashAndRedir(true, msg, "/source", w, ps)
+		return controller.FlashAndRedir(true, msg, "/source", ps)
 	})
 }

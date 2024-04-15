@@ -22,7 +22,7 @@ func ProjectNew(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return controller.Render(w, r, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
+		return controller.Render(r, as, &vproject.New{Project: p, AvailableSources: avail}, ps, "projects", "New")
 	})
 }
 
@@ -34,7 +34,7 @@ func ProjectInsert(w http.ResponseWriter, r *http.Request) {
 		}
 		key, err := frm.GetString("key", false)
 		if err != nil {
-			return controller.FlashAndRedir(false, err.Error(), "/project/_new", w, ps)
+			return controller.FlashAndRedir(false, err.Error(), "/project/_new", ps)
 		}
 		title := frm.GetStringOpt("title")
 		icon := frm.GetStringOpt("icon")
@@ -48,7 +48,7 @@ func ProjectInsert(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to save project")
 		}
-		return controller.FlashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), w, ps)
+		return controller.FlashAndRedir(true, "saved new project", fmt.Sprintf("/project/%s", key), ps)
 	})
 }
 
@@ -69,7 +69,7 @@ func ProjectEdit(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", errors.Wrap(err, "unable to list sources")
 		}
-		return controller.Render(w, r, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
+		return controller.Render(r, as, &vproject.Edit{Project: prj, AvailableSources: avail}, ps, "projects", prj.Key, "Edit")
 	})
 }
 
@@ -104,7 +104,7 @@ func ProjectSave(w http.ResponseWriter, r *http.Request) {
 		}
 
 		msg := fmt.Sprintf(`saved project %q`, key)
-		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), w, ps)
+		return controller.FlashAndRedir(true, msg, fmt.Sprintf("/project/%s", key), ps)
 	})
 }
 
@@ -120,6 +120,6 @@ func ProjectDelete(w http.ResponseWriter, r *http.Request) {
 		}
 
 		msg := fmt.Sprintf(`deleted project %q`, key)
-		return controller.FlashAndRedir(true, msg, "/project", w, ps)
+		return controller.FlashAndRedir(true, msg, "/project", ps)
 	})
 }

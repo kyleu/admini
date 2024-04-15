@@ -61,6 +61,6 @@ func ActionSave(w http.ResponseWriter, r *http.Request) {
 			return "", err
 		}
 
-		return FlashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), w, ps)
+		return FlashAndRedir(true, "saved action", fmt.Sprintf("/project/%s", p.Key), ps)
 	})
 }

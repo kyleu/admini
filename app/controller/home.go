@@ -24,7 +24,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		projects, _ := as.Services.Projects.List(ps.Context, ps.Logger)
 		sources, _ := as.Services.Sources.List(ps.Logger)
 		ps.Data = homeContent
-		return Render(w, r, as, &views.Home{Sources: sources, Projects: projects}, ps)
+		return Render(r, as, &views.Home{Sources: sources, Projects: projects}, ps)
 	})
 }
 
@@ -43,6 +43,6 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		as.Services.Sources.Clear()
 		as.Services.Projects.Clear()
 		const msg = "Cleared all caches"
-		return FlashAndRedir(true, msg, redir, w, ps)
+		return FlashAndRedir(true, msg, redir, ps)
 	})
 }

@@ -23,7 +23,7 @@ func ProjectList(w http.ResponseWriter, r *http.Request) {
 		}
 		ps.Title = "Projects"
 		ps.Data = p
-		return controller.Render(w, r, as, &vproject.List{Projects: p}, ps, "projects")
+		return controller.Render(r, as, &vproject.List{Projects: p}, ps, "projects")
 	})
 }
 
@@ -39,7 +39,7 @@ func ProjectDetail(w http.ResponseWriter, r *http.Request) {
 		}
 		ps.Title = prj.Project.Name()
 		ps.Data = prj.Project
-		return controller.Render(w, r, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
+		return controller.Render(r, as, &vproject.Detail{View: prj}, ps, "projects", prj.Project.Key)
 	})
 }
 
@@ -78,6 +78,6 @@ func ProjectTest(w http.ResponseWriter, r *http.Request) {
 		}
 
 		view := &vproject.Test{Message: fmt.Sprintf("Project [%s]: OK", v.Project.Key)}
-		return controller.Render(w, r, as, view, ps, "projects", v.Project.Key, "test")
+		return controller.Render(r, as, view, ps, "projects", v.Project.Key, "test")
 	})
 }
