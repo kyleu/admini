@@ -106,6 +106,9 @@ func SQLUpdateReturning(table string, columns []string, where string, returned [
 }
 
 func SQLUpsert(table string, columns []string, rows int, conflicts []string, updates []string, dbt *DBType) string {
+	if dbt.Placeholder == "@" {
+		return sqlServerUpsert(table, columns, rows, conflicts, updates, dbt)
+	}
 	q := SQLInsert(table, columns, rows, dbt)
 	q += " on conflict (" + strings.Join(conflicts, ", ") + ") do update set "
 	lo.ForEach(updates, func(x string, idx int) {
@@ -115,6 +118,30 @@ func SQLUpsert(table string, columns []string, rows int, conflicts []string, upd
 		q += fmt.Sprintf("%s = excluded.%s", x, x)
 	})
 	return q
+}
+
+func sqlServerUpsert(table string, columns []string, rows int, conflicts []string, updates []string, dbt *DBType) string {
+	colNames := strings.Join(columns, ", ")
+	params := make([]string, 0, rows)
+	for rowIdx := range lo.Range(rows) {
+		cols := make([]string, 0, len(columns))
+		for colIdx := range columns {
+			cols = append(cols, fmt.Sprintf("@p%d", (rowIdx*len(columns))+colIdx+1))
+		}
+		params = append(params, fmt.Sprintf("(%s)", strings.Join(cols, ", ")))
+	}
+	atSymbols := strings.Join(params, ", ")
+	sourceJoin := strings.Join(lo.Map(conflicts, func(pk string, _ int) string {
+		return fmt.Sprintf("%s.%s = source.%s", table, pk, pk)
+	}), " and ")
+	assignments := strings.Join(lo.Map(updates, func(c string, _ int) string {
+		return fmt.Sprintf("%s = \"source\".%s", c, c)
+	}), ", ")
+	vals := strings.Join(lo.Map(updates, func(c string, _ int) string {
+		return fmt.Sprintf("source.%s", c)
+	}), ", ")
+	sql := `merge into %s using (values %s) as source (%s) on %s when matched then update set %s when not matched then insert (%s) values (%s);`
+	return fmt.Sprintf(sql, table, atSymbols, colNames, sourceJoin, assignments, colNames, vals)
 }
 
 func SQLDelete(table string, where string, _ *DBType) string {
