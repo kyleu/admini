@@ -101,3 +101,7 @@ var SVGLibrary = map[string]string{
 
 //nolint:lll
 var SVGIconKeys = []string{"android", "app", "apple", "archive", "backward", "bell", "bolt", "bookmark", "calendar", "camera", "cart", "check", "clock", "code", "cog", "comment", "compass", "database", "desktop", "dna", "dot", "down", "download", "edit", "export", "eye", "file", "file-text", "filter", "fingerprint", "fire", "flag", "folder", "folder-open", "forward", "gift", "github", "graph", "grid", "handle", "happy", "hashtag", "heart", "image", "import", "info", "left", "link", "linux", "list", "location", "lock", "mail", "mail-open", "medal", "meh", "microphone", "minus", "mobile", "pencil", "play", "plus", "poo", "print", "profile", "question", "refresh", "reply", "right", "robot", "sad", "searchbox", "server", "settings", "share", "social", "sort", "star", "struct", "tag", "thumbs-down", "thumbs-up", "times", "tools", "trash", "trophy", "unlock", "up", "upload", "users", "warning", "windows", "world", "wrench"}
+
+func RandomIcon() string {
+	return SVGIconKeys[RandomInt(len(SVGIconKeys))]
+}
