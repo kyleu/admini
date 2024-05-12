@@ -9,6 +9,7 @@ import (
 
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/controller"
+	"admini.dev/admini/app/controller/csession"
 	"admini.dev/admini/app/controller/cutil"
 	"admini.dev/admini/app/lib/auth"
 	"admini.dev/admini/app/util"
@@ -22,8 +23,14 @@ func AuthDetail(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", err
 		}
-		u, _, err := auth.CompleteUserAuth(prv, w, r, ps.Session, ps.Logger)
+		n, u, _, err := auth.CompleteUserAuth(prv, w, r, ps.Session, ps.Logger)
 		if err == nil {
+			if ps.Profile.SetName(n) {
+				err = csession.SaveProfile(ps.Profile, w, ps.Session, ps.Logger)
+				if err != nil {
+					return "", err
+				}
+			}
 			msg := fmt.Sprintf(signinMsg, auth.AvailableProviderNames[prv.ID], u.Email)
 			return controller.ReturnToReferrer(msg, cutil.DefaultProfilePath, ps)
 		}
@@ -37,9 +44,15 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return "", err
 		}
-		u, _, err := auth.CompleteUserAuth(prv, w, r, ps.Session, ps.Logger)
+		n, u, _, err := auth.CompleteUserAuth(prv, w, r, ps.Session, ps.Logger)
 		if err != nil {
 			return "", err
+		}
+		if ps.Profile.SetName(n) {
+			err = csession.SaveProfile(ps.Profile, w, ps.Session, ps.Logger)
+			if err != nil {
+				return "", err
+			}
 		}
 		msg := fmt.Sprintf(signinMsg, auth.AvailableProviderNames[prv.ID], u.Email)
 		return controller.ReturnToReferrer(msg, cutil.DefaultProfilePath, ps)
