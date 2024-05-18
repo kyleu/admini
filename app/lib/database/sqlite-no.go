@@ -1,6 +1,7 @@
 //go:build aix || android || dragonfly || freebsd || js || illumos || (linux && ppc64) || (linux && mips) || (linux && mipsle) || (linux && mips64) || (linux && mips64le) || (linux && ppc64) || (linux && ppc64le) || (linux && s390x) || (linux && loong64) || netbsd || openbsd || plan9 || solaris || (windows && 386) || (windows && arm) || (windows && arm64)
 
 // Package database - Content managed by Project Forge, see [projectforge.md] for details.
+
 package database
 
 import (
@@ -12,6 +13,8 @@ import (
 )
 
 const SQLiteEnabled = false
+
+var TypeSQLite = &DBType{Key: "sqlite", Title: "SQLite", Quote: `"`, Placeholder: "$", SupportsReturning: true}
 
 func OpenSQLiteDatabase(ctx context.Context, key string, params *SQLiteParams, logger util.Logger) (*Service, error) {
 	return nil, errors.New("SQLite is not enabled in this build")
