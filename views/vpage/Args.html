@@ -4,6 +4,7 @@
 
   "admini.dev/admini/app"
   "admini.dev/admini/app/controller/cutil"
+  "admini.dev/admini/app/util"
   "admini.dev/admini/views/components/edit"
   "admini.dev/admini/views/layout"
 ) %}
@@ -28,10 +29,7 @@
           <tbody>
             {%- for _, arg := range p.ArgRes.Args -%}
             {%- code
-              v := p.ArgRes.Values.GetStringOpt(arg.Key)
-              if v == "" {
-                v = arg.Default
-              }
+              v := util.OrDefault(p.ArgRes.Values.GetStringOpt(arg.Key), arg.Default)
               title := arg.Title
               if len(title) > 50 {
                 title = title[:50] + "..."
