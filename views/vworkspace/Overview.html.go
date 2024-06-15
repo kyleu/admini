@@ -39,7 +39,9 @@ func (p *WorkspaceOverview) StreamBody(qw422016 *qt422016.Writer, as *app.State,
   <div class="card">
     <h3>`)
 //line views/vworkspace/Overview.html:16
-	components.StreamSVGRef(qw422016, p.Req.Project.IconWithFallback(), 20, 20, "icon", ps)
+	components.StreamSVGIcon(qw422016, p.Req.Project.IconWithFallback(), ps)
+//line views/vworkspace/Overview.html:16
+	qw422016.N().S(` `)
 //line views/vworkspace/Overview.html:16
 	qw422016.E().S(p.Req.Project.Name())
 //line views/vworkspace/Overview.html:16

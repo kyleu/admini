@@ -50,6 +50,8 @@ func (p *Detail) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.
 //line views/vsource/Detail.html:21
 	components.StreamSVGRef(qw422016, p.Source.IconWithFallback(), 20, 20, `icon`, ps)
 //line views/vsource/Detail.html:21
+	qw422016.N().S(` `)
+//line views/vsource/Detail.html:21
 	qw422016.E().S(p.Source.Name())
 //line views/vsource/Detail.html:21
 	qw422016.N().S(`</h3>

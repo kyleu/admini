@@ -15,7 +15,7 @@
 {% func (p *Detail) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><a href="/project/{%s p.View.Project.Key %}/edit"><button type="button">Edit</button></a></div>
-    <h3>{%= components.SVGRef(p.View.Project.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.View.Project.Name() %}</h3>
+    <h3>{%= components.SVGIcon(p.View.Project.IconWithFallback(), ps) %} {%s p.View.Project.Name() %}</h3>
     {% if p.View.Project.Description != "" %}<em>{%s p.View.Project.Description %}</em>{% endif %}
     <p>
       <a href="/x/{%s p.View.Project.Key %}"><button type="button">Workspace</button></a>
@@ -30,7 +30,7 @@
     <h3>{%s util.StringPlural(len(p.View.Sources), `source`) %} in project</h3>
     <ul>
     {%- for _, s := range p.View.Sources -%}
-      <li><a href="/source/{%s s.Key %}">{%= components.SVGRef(s.IconWithFallback(), 16, 16, "icon", ps) %}{%s s.Name() %}</a></li>
+      <li><a href="/source/{%s s.Key %}">{%= components.SVGRef(s.IconWithFallback(), 16, 16, "icon", ps) %} {%s s.Name() %}</a></li>
     {%- endfor -%}
     </ul>
     {%- endif -%}

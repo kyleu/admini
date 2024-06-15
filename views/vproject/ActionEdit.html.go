@@ -47,7 +47,9 @@ func (p *ActionEdit) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cu
 	qw422016.N().S(`</em></div>
     <h3>`)
 //line views/vproject/ActionEdit.html:20
-	components.StreamSVGRef(qw422016, p.Act.IconWithFallback(), 20, 20, "icon", ps)
+	components.StreamSVGIcon(qw422016, p.Act.IconWithFallback(), ps)
+//line views/vproject/ActionEdit.html:20
+	qw422016.N().S(` `)
 //line views/vproject/ActionEdit.html:20
 	qw422016.E().S(p.Act.Name())
 //line views/vproject/ActionEdit.html:20

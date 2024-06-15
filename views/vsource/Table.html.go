@@ -52,6 +52,8 @@ func StreamTable(qw422016 *qt422016.Writer, sources source.Sources, as *app.Stat
 //line views/vsource/Table.html:22
 		components.StreamSVGRef(qw422016, s.IconWithFallback(), 16, 16, "icon", ps)
 //line views/vsource/Table.html:22
+		qw422016.N().S(` `)
+//line views/vsource/Table.html:22
 		qw422016.E().S(s.Name())
 //line views/vsource/Table.html:22
 		qw422016.N().S(`</a>

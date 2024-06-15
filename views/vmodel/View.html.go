@@ -60,7 +60,9 @@ func (p *View) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
 	qw422016.N().S(`"><button>Edit</button></a></div>
     <h3>`)
 //line views/vmodel/View.html:31
-	components.StreamSVGRef(qw422016, p.Act.IconWithFallback(), 20, 20, "icon", ps)
+	components.StreamSVGIcon(qw422016, p.Act.IconWithFallback(), ps)
+//line views/vmodel/View.html:31
+	qw422016.N().S(` `)
 //line views/vmodel/View.html:31
 	qw422016.E().S(strings.Join(rowPK, "/"))
 //line views/vmodel/View.html:31

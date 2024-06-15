@@ -17,7 +17,7 @@
       <tbody>
         {%- for _, p := range projects -%}
         <tr>
-          <td><a href="/project/{%s p.Key %}">{%= components.SVGRef(p.IconWithFallback(), 16, 16, "icon", ps) %}{%s p.Name() %}</a></td>
+          <td><a href="/project/{%s p.Key %}">{%= components.SVGRef(p.IconWithFallback(), 16, 16, "icon", ps) %} {%s p.Name() %}</a></td>
           <td>{%s p.Description %}</td>
           <td class="shrink">
             <a href="/x/{%s p.Key %}"><button type="button">workspace</button></a>

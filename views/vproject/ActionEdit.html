@@ -17,7 +17,7 @@
 {% func (p *ActionEdit) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
     <div class="right"><em>{%s p.Act.Type().Title %}</em></div>
-    <h3>{%= components.SVGRef(p.Act.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Act.Name() %}</h3>
+    <h3>{%= components.SVGIcon(p.Act.IconWithFallback(), ps) %} {%s p.Act.Name() %}</h3>
     <em>{%s p.Act.ConfigString() %}</em>
     <form class="mt" action="/project/{%s p.Project.Key %}/action/{%s p.Act.Pkg.ToPath(p.Act.Key) %}" method="post" enctype="application/x-www-form-urlencoded">
       <table class="expanded">

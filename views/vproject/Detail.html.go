@@ -45,7 +45,9 @@ func (p *Detail) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.
 	qw422016.N().S(`/edit"><button type="button">Edit</button></a></div>
     <h3>`)
 //line views/vproject/Detail.html:18
-	components.StreamSVGRef(qw422016, p.View.Project.IconWithFallback(), 20, 20, "icon", ps)
+	components.StreamSVGIcon(qw422016, p.View.Project.IconWithFallback(), ps)
+//line views/vproject/Detail.html:18
+	qw422016.N().S(` `)
 //line views/vproject/Detail.html:18
 	qw422016.E().S(p.View.Project.Name())
 //line views/vproject/Detail.html:18
@@ -104,6 +106,8 @@ func (p *Detail) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.
 			qw422016.N().S(`">`)
 //line views/vproject/Detail.html:33
 			components.StreamSVGRef(qw422016, s.IconWithFallback(), 16, 16, "icon", ps)
+//line views/vproject/Detail.html:33
+			qw422016.N().S(` `)
 //line views/vproject/Detail.html:33
 			qw422016.E().S(s.Name())
 //line views/vproject/Detail.html:33

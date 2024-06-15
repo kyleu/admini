@@ -13,7 +13,7 @@
 
 {% func (p *WorkspaceOverview) Body(as *app.State, ps *cutil.PageState) %}
   <div class="card">
-    <h3>{%= components.SVGRef(p.Req.Project.IconWithFallback(), 20, 20, "icon", ps) %}{%s p.Req.Project.Name() %}</h3>
+    <h3>{%= components.SVGIcon(p.Req.Project.IconWithFallback(), ps) %} {%s p.Req.Project.Name() %}</h3>
     {%= actionList(p.Req, p.Req.Project.Actions, ps, 2) %}
   </div>
 {% endfunc %}

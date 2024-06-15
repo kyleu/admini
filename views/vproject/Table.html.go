@@ -50,6 +50,8 @@ func StreamTable(qw422016 *qt422016.Writer, projects project.Projects, as *app.S
 //line views/vproject/Table.html:20
 		components.StreamSVGRef(qw422016, p.IconWithFallback(), 16, 16, "icon", ps)
 //line views/vproject/Table.html:20
+		qw422016.N().S(` `)
+//line views/vproject/Table.html:20
 		qw422016.E().S(p.Name())
 //line views/vproject/Table.html:20
 		qw422016.N().S(`</a></td>

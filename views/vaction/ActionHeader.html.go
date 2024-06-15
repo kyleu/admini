@@ -31,7 +31,9 @@ func StreamActionHeader(qw422016 *qt422016.Writer, act *action.Action, subtitle 
   <div class="right"><a href="#modal-action"><button type="button">Action</button></a></div>
   <h3>`)
 //line views/vaction/ActionHeader.html:9
-	components.StreamSVGRef(qw422016, act.IconWithFallback(), 20, 20, "icon", ps)
+	components.StreamSVGIcon(qw422016, act.IconWithFallback(), ps)
+//line views/vaction/ActionHeader.html:9
+	qw422016.N().S(` `)
 //line views/vaction/ActionHeader.html:9
 	qw422016.E().S(act.Name())
 //line views/vaction/ActionHeader.html:9
