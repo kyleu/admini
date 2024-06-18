@@ -1,4 +1,3 @@
-<!--- Content managed by Project Forge, see [projectforge.md] for details. -->
 # SQL Server
 
 This is a module for [Project Forge](https://projectforge.dev). It provides an API for accessing Microsoft SQL Server databases.
