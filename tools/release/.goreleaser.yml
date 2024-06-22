@@ -1,4 +1,6 @@
 # http://goreleaser.com
+version: 2
+
 project_name: admini
 
 archives:
@@ -15,7 +17,7 @@ brews:
     commit_author:
       name: "Kyle U"
       email: "kyle@kyleu.com"
-    folder: Formula
+    directory: Formula
     homepage: "https://admini.dev"
     description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     license: "MIT"
