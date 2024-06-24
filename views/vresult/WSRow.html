@@ -37,7 +37,7 @@
   {%= components.Indent(true, indent + 1) %}
   {% if header %}<th>{% else %}<td>{% endif %}
     {% if m == nil %}
-      {%= view.AnyByType(col, f.Type) %}
+      {%= view.AnyByType(col, f.Type, ws.PS) %}
     {% else %}
       {% code rels := m.ApplicableRelations(f.Key) %}
       {% if len(rels) == 0 %}
@@ -88,9 +88,9 @@
       link := append([]string{`v`}, rowPK...)
     %}
     <a href="{%s ws.RouteAct(act, 0, link...) %}" class="pklink">
-      {%= view.AnyByType(col, f.Type) %}
+      {%= view.AnyByType(col, f.Type, ws.PS) %}
     </a>
   {% else %}
-    {%= view.AnyByType(col, f.Type) %}
+    {%= view.AnyByType(col, f.Type, ws.PS) %}
   {% endif %}
 {% endstripspace %}{% endfunc %}

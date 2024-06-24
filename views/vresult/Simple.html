@@ -67,7 +67,7 @@
     {% for fIdx, f := range fields %}
       {%code col := row[fIdx] %}
       {%= components.Indent(true, indent + 1) %}
-      <td>{%= view.AnyByType(col, f.Type) %}</td>
+      <td>{%= view.AnyByType(col, f.Type, ps) %}</td>
     {% endfor %}
     {%= components.Indent(true, indent + 1) %}
     <td class="tfill"></td>

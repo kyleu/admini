@@ -38,7 +38,7 @@
         <tr>
           <th class="shrink">{%s f.Name() %}</th>
           <td>
-            {%= view.AnyByType(p.Result[idx], f.Type) %}
+            {%= view.AnyByType(p.Result[idx], f.Type, ps) %}
             {%- for _, rel := range p.Model.ApplicableRelations(f.Key) -%}
             {%- code
               quals, err := qualify.Handle(rel, p.Act, p.Req, p.Model, p.Result)

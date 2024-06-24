@@ -93,7 +93,7 @@ func (p *View) StreamBody(qw422016 *qt422016.Writer, as *app.State, ps *cutil.Pa
           <td>
             `)
 //line views/vmodel/View.html:41
-		view.StreamAnyByType(qw422016, p.Result[idx], f.Type)
+		view.StreamAnyByType(qw422016, p.Result[idx], f.Type, ps)
 //line views/vmodel/View.html:41
 		qw422016.N().S(`
 `)
