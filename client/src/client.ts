@@ -13,7 +13,7 @@ import {themeInit} from "./theme";
 import {appInit} from "./app";
 
 declare global {
-  interface Window {
+  interface Window { // eslint-disable-line @typescript-eslint/consistent-type-definitions
     "admini": {
       wireTime: (el: HTMLElement) => void;
       relativeTime: (el: HTMLElement) => string;
