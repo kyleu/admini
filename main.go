@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	version = "0.4.21" // updated by bin/tag.sh and ldflags
+	version = "0.4.22" // updated by bin/tag.sh and ldflags
 	commit  = ""
 	date    = "unknown"
 )
