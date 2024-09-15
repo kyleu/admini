@@ -1,6 +1,10 @@
 package filter
 
-import "admini.dev/admini/app/util"
+import (
+	"github.com/samber/lo"
+
+	"admini.dev/admini/app/util"
+)
 
 var OrderingFieldDescs = util.FieldDescs{
 	{Key: "column", Title: "Column", Description: "The name of the column to sort by"},
@@ -20,3 +24,9 @@ func (o Ordering) String() string {
 }
 
 type Orderings []*Ordering
+
+func (o Orderings) Get(key string) *Ordering {
+	return lo.FindOrElse(o, nil, func(x *Ordering) bool {
+		return x.Column == key
+	})
+}
