@@ -9,6 +9,10 @@ cd "$dir/.."
 # $PF_SECTION_START(keys)$
 # $PF_SECTION_END(keys)$
 
+if command -v title &> /dev/null; then
+  title "admini"
+fi
+
 [[ -f "$HOME/bin/oauth" ]] && . "$HOME/bin/oauth"
 export admini_encryption_key=TEMP_SECRET_KEY
 
