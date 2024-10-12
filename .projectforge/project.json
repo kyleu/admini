@@ -2,7 +2,7 @@
   "key": "admini",
   "name": "Admini",
   "icon": "compass",
-  "version": "0.4.29",
+  "version": "0.4.30",
   "package": "admini.dev/admini",
   "port": 14000,
   "modules": [
