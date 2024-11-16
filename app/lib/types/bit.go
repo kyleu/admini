@@ -1,5 +1,7 @@
 package types
 
+import "admini.dev/admini/app/util"
+
 const KeyBit = "bit"
 
 type Bit struct{}
@@ -23,6 +25,9 @@ func (x *Bit) String() string {
 }
 
 func (x *Bit) From(v any) any {
+	if x, err := util.ParseBool(v, "", true); err == nil {
+		return x
+	}
 	return invalidInput(x.Key(), v)
 }
 
