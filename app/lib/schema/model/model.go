@@ -69,7 +69,7 @@ func (m *Model) OrderedMap(data []any) (*util.OrderedMap[any], error) {
 	}
 	ret := util.NewOrderedMap[any](false, len(m.Fields))
 	lo.ForEach(m.Fields, func(f *field.Field, idx int) {
-		ret.Append(f.Key, data[idx])
+		ret.Set(f.Key, data[idx])
 	})
 	return ret, nil
 }
