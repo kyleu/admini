@@ -8,6 +8,7 @@ import (
 
 	"admini.dev/admini/app/lib/auth"
 	"admini.dev/admini/app/lib/filesystem"
+	"admini.dev/admini/app/lib/log"
 	"admini.dev/admini/app/lib/telemetry"
 	"admini.dev/admini/app/lib/theme"
 	"admini.dev/admini/app/util"
@@ -93,4 +94,24 @@ func Bootstrap(bi *BuildInfo, cfgDir string, port uint16, debug bool, logger uti
 	st.Services = svcs
 
 	return st, nil
+}
+
+func BootstrapRunDefault[T any](bi *BuildInfo, fn func(as *State, logger util.Logger) (T, error)) (T, error) {
+	logger, _ := log.InitLogging(false)
+	as, err := Bootstrap(bi, util.ConfigDir, 0, false, logger)
+	if err != nil {
+		var dflt T
+		return dflt, err
+	}
+	ret, err := fn(as, logger)
+	if err != nil {
+		var dflt T
+		return dflt, err
+	}
+	err = as.Close(context.Background(), logger)
+	if err != nil {
+		var dflt T
+		return dflt, err
+	}
+	return ret, nil
 }
