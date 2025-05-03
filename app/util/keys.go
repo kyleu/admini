@@ -28,6 +28,11 @@ const (
 	OK    = "ok"
 	Error = "error"
 
+	DatabaseMySQL = "mysql"
+	DatabasePostgreSQL = "postgres"
+	DatabaseSQLite = "sqlite"
+	DatabaseSQLServer = "sqlserver"
+	
 	// $PF_SECTION_START(keys)$
 	// $PF_SECTION_END(keys)$.
 )
