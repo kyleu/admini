@@ -2,6 +2,7 @@
   "strings"
 
   "admini.dev/admini/app/controller/cutil"
+  "admini.dev/admini/app/util"
   "admini.dev/admini/views/components"
 ) %}
 
@@ -19,7 +20,7 @@
       if ok {
         curr += ","
       }
-      curr += strings.Join(v, ",")
+      curr += util.StringJoin(v, ",")
       m[k] = curr
   }
   %}
