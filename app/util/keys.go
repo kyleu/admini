@@ -32,7 +32,7 @@ const (
 	DatabasePostgreSQL = "postgres"
 	DatabaseSQLite = "sqlite"
 	DatabaseSQLServer = "sqlserver"
-	
+
 	// $PF_SECTION_START(keys)$
 	// $PF_SECTION_END(keys)$.
 )
