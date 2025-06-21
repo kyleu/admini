@@ -5,6 +5,7 @@ const (
 	AppName    = "Admini"
 	AppSummary = "Use Admini to explore and manage your data as fast and easily as possible"
 	AppPort    = 14000
+	AppCmd     = AppKey
 	AppContact = "Kyle U <kyle@kyleu.com>"
 	AppURL     = "https://admini.dev"
 	AppSource  = "https://github.com/kyleu/admini"
