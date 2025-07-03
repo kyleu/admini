@@ -1,6 +1,8 @@
 package main // import admini.dev/admini
 
 import (
+	"context"
+
 	"admini.dev/admini/app"
 	"admini.dev/admini/app/cmd"
 )
@@ -12,5 +14,5 @@ var (
 )
 
 func main() {
-	cmd.Entrypoint(&app.BuildInfo{Version: version, Commit: commit, Date: date})
+	cmd.Entrypoint(context.Background(), &app.BuildInfo{Version: version, Commit: commit, Date: date})
 }
