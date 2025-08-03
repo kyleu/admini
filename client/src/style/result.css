@@ -6,11 +6,13 @@
   margin: var(--padding);
 }
 
-.result-table tbody tr:hover, .result-table tbody tr:hover th {
+.result-table tbody tr:hover,
+.result-table tbody tr:hover th {
   background-color: var(--color-background-muted);
 }
 
-.result-table th, .result-table td {
+.result-table th,
+.result-table td {
   border-right: var(--border);
 }
 
@@ -35,13 +37,15 @@
   border-right: var(--border);
 }
 
-.result-table .pklink, .result-table .val {
+.result-table .pklink,
+.result-table .val {
   display: block;
   width: calc(100% - 16px);
   float: left;
 }
 
-.result-table th, .result-table td {
+.result-table th,
+.result-table td {
   vertical-align: top;
   white-space: nowrap;
 }

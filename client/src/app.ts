@@ -1,4 +1,4 @@
-import {sortableInit} from "./sortable";
+import { sortableInit } from "./sortable";
 
 export function appInit(): void {
   sortableInit();

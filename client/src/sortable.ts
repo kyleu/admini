@@ -25,21 +25,40 @@ function sortableCreate(dd: Element) {
     const onAdd = (ev: Event) => {
       const i = (ev as any).item as HTMLElement;
       new Sortable(i.querySelector(".container"), lOpts);
-      (i.querySelector(".remove") as HTMLElement).onclick = function() { remove(dd, i); };
+      (i.querySelector(".remove") as HTMLElement).onclick = function () {
+        remove(dd, i);
+      };
       update(dd);
     };
-    const lOpts = {group: {name: 'nested'}, handle: '.handle', onAdd: onAdd, onUpdate: () => update(dd), animation: 150, fallbackOnBody: true, swapThreshold: 0.65};
-    for (const c of Array.from(l.getElementsByClassName('container'))) {
+    const lOpts = {
+      group: { name: "nested" },
+      handle: ".handle",
+      onAdd: onAdd,
+      onUpdate: () => update(dd),
+      animation: 150,
+      fallbackOnBody: true,
+      swapThreshold: 0.65
+    };
+    for (const c of Array.from(l.getElementsByClassName("container"))) {
       new Sortable(c, lOpts);
     }
     for (const rem of Array.from(l.getElementsByClassName("remove"))) {
-      (rem as HTMLElement).onclick = function() { remove(dd, rem.parentElement?.parentElement!); };
+      (rem as HTMLElement).onclick = function () {
+        remove(dd, rem.parentElement?.parentElement!);
+      };
     }
 
     const r = dd.querySelector(".r");
     if (r) {
-      const rOpts = {group: {name: 'nested', pull: "clone", put: false}, handle: '.handle', animation: 150, fallbackOnBody: true, swapThreshold: 0.65, sort: false};
-      for (const c of Array.from(r.getElementsByClassName('container'))) {
+      const rOpts = {
+        group: { name: "nested", pull: "clone", put: false },
+        handle: ".handle",
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65,
+        sort: false
+      };
+      for (const c of Array.from(r.getElementsByClassName("container"))) {
         new Sortable(c, rOpts);
       }
     }
@@ -62,28 +81,28 @@ function update(dd: Element) {
   const [i, count] = readContainer(trackedEl);
   const js = JSON.stringify(i);
   if (origEl) {
-    const changed = origEl.value !== js
+    const changed = origEl.value !== js;
     if (origEl.value.length === 0) {
       origEl.value = js;
     }
     const aEl = document.querySelector(".drag-actions") as HTMLElement;
     if (aEl) {
       if (changed) {
-        aEl.classList.remove('no-changes');
+        aEl.classList.remove("no-changes");
       } else {
-        aEl.classList.add('no-changes');
+        aEl.classList.add("no-changes");
       }
     }
     const sEl = document.querySelector(".drag-tracked-size") as HTMLElement;
     if (sEl) {
       if (count === 1) {
-        sEl.innerText = count.toString(10) + (sEl.dataset.sing ? " " + sEl.dataset.sing: "");
+        sEl.innerText = count.toString(10) + (sEl.dataset.sing ? " " + sEl.dataset.sing : "");
       } else {
-        sEl.innerText = count.toString(10) + (sEl.dataset.plur ? " " + sEl.dataset.plur: "");
+        sEl.innerText = count.toString(10) + (sEl.dataset.plur ? " " + sEl.dataset.plur : "");
       }
     }
     if (changed) {
-      window.onbeforeunload = function() {
+      window.onbeforeunload = function () {
         return true;
       };
     } else {
@@ -95,10 +114,10 @@ function update(dd: Element) {
 }
 
 interface Item {
-  k: string
-  t: string
-  p: string
-  c?: Item[]
+  k: string;
+  t: string;
+  p: string;
+  c?: Item[];
 }
 
 function readContainer(c: Element): [Item[], number] {
