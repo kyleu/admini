@@ -1,7 +1,7 @@
 // Content managed by Project Forge, see [projectforge.md] for details.
 module admini.dev/admini/tools/desktop
 
-go 1.24.4
+go 1.25.0
 
 require (
 	admini.dev/admini v0.0.0
