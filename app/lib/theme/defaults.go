@@ -15,11 +15,11 @@ const (
 )
 
 var Default = func() *Theme {
-	nbl := "#8eb6bd"
+	nbl := "#93aeb3"
 	if o := util.GetEnv("app_nav_color_light"); o != "" {
 		nbl = o
 	}
-	nbd := "#495f64"
+	nbd := "#102a2e"
 	if o := util.GetEnv("app_nav_color_dark"); o != "" {
 		nbd = o
 	}
@@ -28,22 +28,22 @@ var Default = func() *Theme {
 		Key: "default",
 		Light: &Colors{
 			Border: "1px solid #dddddd", LinkDecoration: "none",
-			Foreground: "#000000", ForegroundMuted: "#999999",
-			Background: "#ffffff", BackgroundMuted: "#eeeeee",
-			LinkForeground: "#2d414e", LinkVisitedForeground: "#406379",
-			NavForeground: "#000000", NavBackground: nbl,
+			Foreground: "#000000", ForegroundMuted: "#2f3d3f",
+			Background: "#ffffff", BackgroundMuted: "#e9eeef",
+			LinkForeground: "#102326", LinkVisitedForeground: "#102326",
+			NavForeground: "#2a2a2a", NavBackground: nbl,
 			MenuForeground: "#000000", MenuSelectedForeground: "#000000",
-			MenuBackground: "#c1e3e8", MenuSelectedBackground: "#8eb6bd",
+			MenuBackground: "#d3dee0", MenuSelectedBackground: "#a8bec2",
 			ModalBackdrop: "rgba(77, 77, 77, .7)", Success: "#008000", Error: "#ff0000",
 		},
 		Dark: &Colors{
 			Border: "1px solid #666666", LinkDecoration: "none",
-			Foreground: "#ffffff", ForegroundMuted: "#999999",
-			Background: "#121212", BackgroundMuted: "#333333",
-			LinkForeground: "#2d414e", LinkVisitedForeground: "#aaaaaa",
-			NavForeground: "#ffffff", NavBackground: nbd,
-			MenuForeground: "#eeeeee", MenuSelectedForeground: "#ffffff",
-			MenuBackground: "#171f24", MenuSelectedBackground: "#333333",
+			Foreground: "#dddddd", ForegroundMuted: "#94a4a7",
+			Background: "#121212", BackgroundMuted: "#0f1c1e",
+			LinkForeground: "#d3dee0", LinkVisitedForeground: "#93aeb3",
+			NavForeground: "#f8f9fa", NavBackground: nbd,
+			MenuForeground: "#eeeeee", MenuSelectedForeground: "#dddddd",
+			MenuBackground: "#102326", MenuSelectedBackground: "#526c71",
 			ModalBackdrop: "rgba(33, 33, 33, .7)", Success: "#008000", Error: "#ff0000",
 		},
 	}
