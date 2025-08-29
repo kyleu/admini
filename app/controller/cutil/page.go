@@ -18,6 +18,7 @@ import (
 	"admini.dev/admini/app/lib/theme"
 	"admini.dev/admini/app/lib/user"
 	"admini.dev/admini/app/util"
+	"admini.dev/admini/assets"
 )
 
 const (
@@ -197,4 +198,12 @@ func (p *PageState) MainClasses() string {
 		ret = append(ret, "nomenu")
 	}
 	return util.StringJoin(ret, " ")
+}
+
+func (p *PageState) AddHeaderScript(path string, deferFlag bool) {
+	p.HeaderContent += "\n  " + assets.ScriptElement(path, deferFlag)
+}
+
+func (p *PageState) AddHeaderStylesheet(path string) {
+	p.HeaderContent += "\n  " + assets.StylesheetElement(path)
 }
