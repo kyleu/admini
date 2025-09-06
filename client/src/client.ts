@@ -1,19 +1,19 @@
 import "./client.css";
-import { audit } from "./audit";
-import { menuInit } from "./menu";
-import { modeInit } from "./mode";
-import { flashInit } from "./flash";
-import { linkInit } from "./link";
-import { timeInit } from "./time";
-import { autocompleteInit } from "./autocomplete";
-import { modalInit } from "./modal";
-import { tagsInit } from "./tags";
-import { formInit } from "./form";
-import { themeInit } from "./theme";
 import { appInit } from "./app";
+import { audit } from "./audit";
+import { autocompleteInit } from "./autocomplete";
+import { flashInit } from "./flash";
+import { formInit } from "./form";
+import { linkInit } from "./link";
+import { menuInit } from "./menu";
+import { modalInit } from "./modal";
+import { modeInit } from "./mode";
+import { tagsInit } from "./tags";
+import { themeInit } from "./theme";
+import { timeInit } from "./time";
 
 declare global {
-  // eslint-disable-line @typescript-eslint/consistent-type-definitions
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Window {
     admini: {
       wireTime: (el: HTMLElement) => void;
@@ -30,7 +30,8 @@ declare global {
       flash: (key: string, level: "success" | "error", msg: string) => void;
       tags: (el: HTMLElement) => void;
     };
-    audit: (s: string, ...args: any) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    audit: (s: string, ...args: any) => void;
   }
 }
 
