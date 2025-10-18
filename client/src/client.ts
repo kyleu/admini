@@ -13,7 +13,6 @@ import { themeInit } from "./theme";
 import { timeInit } from "./time";
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Window {
     admini: {
       wireTime: (el: HTMLElement) => void;
