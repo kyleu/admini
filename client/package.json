@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "type": "module",
   "description": "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface",
   "repository": {
