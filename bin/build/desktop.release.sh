@@ -46,8 +46,8 @@ cp -R "./template/darwin/icons.icns" "./Admini.app/Contents/Resources/icons.icns
 cp "admini.darwin" "./Admini.app/Contents/MacOS/admini"
 
 echo "signing amd64 desktop binary..."
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s "${APPLE_SIGNING_IDENTITY}" "./Admini.app/Contents/MacOS/admini"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s "${APPLE_SIGNING_IDENTITY}" "./Admini.app"
 
 cp "./template/darwin/appdmg.config.json" "./appdmg.config.json"
 
@@ -59,8 +59,8 @@ zip -r "admini_${TGT}_darwin_amd64_desktop.zip" "./Admini.app"
 cp "admini.darwin.arm64" "./Admini.app/Contents/MacOS/admini"
 
 echo "signing arm64 desktop binary..."
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s "${APPLE_SIGNING_IDENTITY}" "./Admini.app/Contents/MacOS/admini"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s "${APPLE_SIGNING_IDENTITY}" "./Admini.app"
 
 echo "building macOS arm64 DMG..."
 appdmg "appdmg.config.json" "./admini_${TGT}_darwin_arm64_desktop.dmg"
@@ -71,8 +71,8 @@ rm "./Admini.app/Contents/MacOS/admini"
 lipo -create -output "./Admini.app/Contents/MacOS/admini" admini.darwin admini.darwin.arm64
 
 echo "signing universal desktop binary..."
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app/Contents/MacOS/admini"
-codesign -f --options=runtime --verbose=4 --deep --force --strict -s 'Developer ID Application: Kyle Unverferth (C6S478FYLD)' "./Admini.app"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s "${APPLE_SIGNING_IDENTITY}" "./Admini.app/Contents/MacOS/admini"
+codesign -f --options=runtime --verbose=4 --deep --force --strict -s "${APPLE_SIGNING_IDENTITY}" "./Admini.app"
 
 echo "building macOS universal DMG..."
 appdmg "appdmg.config.json" "./admini_${TGT}_darwin_all_desktop.dmg"
