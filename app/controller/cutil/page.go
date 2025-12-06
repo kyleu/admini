@@ -76,6 +76,7 @@ type PageState struct {
 	Started        time.Time         `json:"started,omitzero"`
 	RenderElapsed  float64           `json:"renderElapsed,omitzero"`
 	ResponseBytes  int64             `json:"responseBytes,omitzero"`
+	ExtraContent   map[string]string `json:"extraContent,omitzero"`
 	RequestBody    []byte            `json:"-"`
 	W              *WriteCounter     `json:"-"`
 	Logger         util.Logger       `json:"-"`
@@ -200,6 +201,11 @@ func (p *PageState) MainClasses() string {
 		ret = append(ret, "nomenu")
 	}
 	return util.StringJoin(ret, " ")
+}
+
+func (p *PageState) Extra(key string) string {
+	ret, ok := p.ExtraContent[key]
+	return util.Choose(ok, ret, "")
 }
 
 func (p *PageState) AddHeaderScript(path string, deferFlag bool) {
