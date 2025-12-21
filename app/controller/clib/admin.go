@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"runtime"
 	"runtime/pprof"
-	"strings"
 
 	"github.com/pkg/errors"
 
@@ -21,10 +20,10 @@ import (
 const keyAdmin = "admin"
 
 func Admin(w http.ResponseWriter, r *http.Request) {
-	path := util.StringSplitAndTrim(strings.TrimPrefix(r.URL.Path, "/admin"), "/")
+	path := util.RS(r.URL.Path).TrimPrefix("/admin").SplitAndTrim("/")
 	key := keyAdmin
 	if len(path) > 0 {
-		key += "." + util.StringJoin(path, ".")
+		key += "." + path.Join(".").String()
 	}
 	controller.Act(key, w, r, func(as *app.State, ps *cutil.PageState) (string, error) {
 		if len(path) == 0 {

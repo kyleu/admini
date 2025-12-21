@@ -1,8 +1,6 @@
 package auth
 
-import (
-	"admini.dev/admini/app/util"
-)
+import "admini.dev/admini/app/util"
 
 type Service struct {
 	baseURL   string

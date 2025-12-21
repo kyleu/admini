@@ -1,8 +1,6 @@
 package cmenu
 
-import (
-	"admini.dev/admini/app/lib/menu"
-)
+import "admini.dev/admini/app/lib/menu"
 
 type Breadcrumbs []string
 

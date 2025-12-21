@@ -1,8 +1,6 @@
 package qualify
 
-import (
-	"admini.dev/admini/app/util"
-)
+import "admini.dev/admini/app/util"
 
 type Request struct {
 	Type   string        `json:"type"`

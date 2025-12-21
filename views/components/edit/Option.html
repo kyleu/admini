@@ -1,6 +1,4 @@
-{% import (
-  "admini.dev/admini/app/lib/types"
-) %}
+{% import "admini.dev/admini/app/lib/types" %}
 
 {% func Option(key string, id string, x any, t *types.Option) %}{% stripspace %}
   {% switch t.V.Key() %}

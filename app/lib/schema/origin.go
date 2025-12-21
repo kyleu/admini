@@ -1,8 +1,6 @@
 package schema
 
-import (
-	"github.com/samber/lo"
-)
+import "github.com/samber/lo"
 
 type Origin struct {
 	Key         string `json:"key"`
