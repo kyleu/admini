@@ -19,7 +19,7 @@ func actWorkspace(key string, w http.ResponseWriter, r *http.Request, f func(as 
 	as := _currentAppState
 	wc := cutil.NewWriteCounter(w)
 	ps := cutil.LoadPageState(as, wc, r, key, _currentAppRootLogger)
-	actComplete(key, as, ps, wc, r, f)
+	actComplete(as, key, ps, wc, r, f)
 }
 
 func WorkspaceProject(w http.ResponseWriter, r *http.Request) {
