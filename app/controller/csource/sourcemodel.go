@@ -92,7 +92,7 @@ func applyOverrides(frm util.ValueMap, m *model.Model) (*model.Model, schema.Ove
 				m.Plural = s
 			}
 		case strings.HasPrefix(k, "f."):
-			fs, prop := util.StringSplitLast(k, '.', true)
+			fs, prop := util.StringCutLast(k, '.', true)
 			fs = strings.TrimPrefix(fs, "f.")
 			_, f := m.Fields.Get(fs)
 			if f == nil {
