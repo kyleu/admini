@@ -16,7 +16,7 @@
     {
       "mode": "auto",
       "name": "Start Admini",
-      "program": "Admini",
+      "program": "main.go",
       "request": "launch",
       "substitutePath": [
         {
@@ -31,8 +31,8 @@
         "upgrade"
       ],
       "mode": "auto",
-      "name": "Start Admini",
-      "program": "Admini",
+      "name": "Upgrade Admini",
+      "program": "main.go",
       "request": "launch",
       "substitutePath": [
         {
