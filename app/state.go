@@ -66,7 +66,7 @@ func NewState(ctx context.Context, debug bool, bi *BuildInfo, f filesystem.FileL
 	}, nil
 }
 
-func (s State) Close(ctx context.Context, logger util.Logger) error {
+func (s *State) Close(ctx context.Context, logger util.Logger) error {
 	defer func() { _ = telemetry.Close(ctx) }()
 	return s.Services.Close(ctx, logger)
 }
@@ -77,7 +77,7 @@ func Bootstrap(ctx context.Context, bi *BuildInfo, cfgDir string, port uint16, d
 		return nil, err
 	}
 
-	telemetryDisabled := util.GetEnvBool("disable_telemetry", false)
+	telemetryDisabled := util.GetEnvBoolAny(false, "disable_telemetry", "telemetry_disabled")
 	st, err := NewState(ctx, debug, bi, fs, !telemetryDisabled, port, logger)
 	if err != nil {
 		return nil, err
