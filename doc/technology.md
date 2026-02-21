@@ -9,7 +9,8 @@ Admini relies on a ton of open source projects. First among them is the [Go lang
 - [goth][5]
 - [zap][6]
 - [goreleaser][7]
-- [coral][8]
+- [cobra][8]
+- [fang][24]
 - [dateparse][9]
 - [go-pluralize][10]
 - [go-humanize][11]
@@ -33,7 +34,7 @@ Admini relies on a ton of open source projects. First among them is the [Go lang
 [5]: https://github.com/markbates/goth "Handles OAuth for dozens of providers, works every time"
 [6]: https://go.uber.org/zap "Crazy fast logging, with a custom encoder to dump tons of debug info"
 [7]: https://goreleaser.com "Builds projects in all sorts of formats"
-[8]: https://github.com/muesli/coral "Provides a CLI interface without the bloat"
+[8]: https://github.com/spf13/cobra "Provides a CLI interface and command tree framework"
 [9]: https://github.com/araddon/dateparse "Parses dates in all sorts of formats"
 [10]: https://github.com/gertd/go-pluralize "Provides plural forms of English words"
 [11]: https://github.com/dustin/go-humanize "Displays friendly relative time formats"
@@ -49,3 +50,4 @@ Admini relies on a ton of open source projects. First among them is the [Go lang
 [21]: https://github.com/go-sql-driver/mysql "The Golang MySQL driver, does what it says on the tin"
 [22]: https://modernc.org/sqlite "A version of SQLite that was compiled to Go by a machine"
 [23]: https://github.com/yonaskolb/XcodeGen "Generates messy iOS XCode projects"
+[24]: https://github.com/charmbracelet/fang "Provides pretty, styled help and usage output for Cobra CLIs"
