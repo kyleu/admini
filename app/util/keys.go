@@ -29,10 +29,10 @@ const (
 	ExtJSON     = ".json"
 	ExtMarkdown = ".md"
 
-	DatabaseMySQL = "mysql"
+	DatabaseMySQL      = "mysql"
 	DatabasePostgreSQL = "postgres"
-	DatabaseSQLite = "sqlite"
-	DatabaseSQLServer = "sqlserver"
+	DatabaseSQLite     = "sqlite"
+	DatabaseSQLServer  = "sqlserver"
 
 	// $PF_SECTION_START(keys)$
 	// $PF_SECTION_END(keys)$.

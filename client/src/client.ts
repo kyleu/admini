@@ -29,8 +29,7 @@ declare global {
       flash: (key: string, level: "success" | "error", msg: string) => void;
       tags: (el: HTMLElement) => void;
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    audit: (s: string, ...args: any) => void;
+    audit: (s: string, ...args: unknown[]) => void;
   }
 }
 

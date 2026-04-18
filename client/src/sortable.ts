@@ -1,6 +1,33 @@
+interface SortableEvent {
+  item: HTMLElement;
+}
+
+interface SortableOptions {
+  group: {
+    name: string;
+    pull?: "clone";
+    put?: boolean;
+  };
+  handle: string;
+  onAdd?: (ev: SortableEvent) => void;
+  onUpdate?: () => void;
+  animation: number;
+  fallbackOnBody: boolean;
+  swapThreshold: number;
+  sort?: boolean;
+}
+
+type SortableConstructor = new (el: Element, options: SortableOptions) => unknown;
+
+declare global {
+  interface Window {
+    Sortable?: SortableConstructor;
+  }
+}
+
 export function sortableInit() {
-  if ((window as any).Sortable) {
-    (window as any).admini.sortableEdit = sortableEdit;
+  if (window.Sortable) {
+    (window.admini as Record<string, unknown>).sortableEdit = sortableEdit;
     for (const dd of Array.from(document.getElementsByClassName("sortable"))) {
       sortableCreate(dd);
     }
@@ -16,21 +43,27 @@ export function sortableEdit(el: Element) {
 }
 
 function sortableCreate(dd: Element) {
-  const Sortable = (window as any).Sortable;
+  const { Sortable } = window;
   if (Sortable) {
     let l = dd.querySelector(".l");
     if (!l) {
       l = dd;
     }
-    const onAdd = (ev: Event) => {
-      const i = (ev as any).item as HTMLElement;
-      new Sortable(i.querySelector(".container"), lOpts);
-      (i.querySelector(".remove") as HTMLElement).onclick = function () {
-        remove(dd, i);
-      };
+    const onAdd = (ev: SortableEvent) => {
+      const i = ev.item;
+      const container = i.querySelector(".container");
+      if (container) {
+        new Sortable(container, lOpts);
+      }
+      const removeButton = i.querySelector(".remove");
+      if (removeButton instanceof HTMLElement) {
+        removeButton.onclick = function () {
+          remove(dd, i);
+        };
+      }
       update(dd);
     };
-    const lOpts = {
+    const lOpts: SortableOptions = {
       group: { name: "nested" },
       handle: ".handle",
       onAdd: onAdd,
@@ -43,14 +76,19 @@ function sortableCreate(dd: Element) {
       new Sortable(c, lOpts);
     }
     for (const rem of Array.from(l.getElementsByClassName("remove"))) {
-      (rem as HTMLElement).onclick = function () {
-        remove(dd, rem.parentElement?.parentElement!);
-      };
+      if (rem instanceof HTMLElement) {
+        rem.onclick = function () {
+          const item = rem.parentElement?.parentElement;
+          if (item) {
+            remove(dd, item);
+          }
+        };
+      }
     }
 
     const r = dd.querySelector(".r");
     if (r) {
-      const rOpts = {
+      const rOpts: SortableOptions = {
         group: { name: "nested", pull: "clone", put: false },
         handle: ".handle",
         animation: 150,
@@ -140,7 +178,7 @@ function readContainer(c: Element): [Item[], number] {
 
 function readItem(i: HTMLElement): [Item | undefined, number] {
   let count = 1;
-  let ret: Item = {
+  const ret: Item = {
     k: i.dataset.key as string,
     t: i.dataset.title as string,
     p: i.dataset.originalPath as string
