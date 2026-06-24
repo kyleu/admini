@@ -4,12 +4,12 @@ version: 2
 project_name: admini
 
 archives:
-  - format: zip
+  - formats: ["zip"]
     wrap_in_directory: "false"
     files:
       - none*
 
-brews:
+homebrew_casks:
   -
     repository:
       owner: "kyleu"
@@ -17,12 +17,13 @@ brews:
     commit_author:
       name: "Kyle U"
       email: "kyle@kyleu.com"
-    directory: Formula
+    directory: Casks
     homepage: "https://admini.dev"
     description: "Explore and manage your data as fast and easily as possible. Supports PostgreSQL, MySQL, and SQLite data sources, and provides a lightning-fast web interface"
     license: "MIT"
     skip_upload: "false"
-    install: "bin.install \"admini\""
+    binaries:
+      - "admini"
 
 changelog:
   disable: true
@@ -39,16 +40,22 @@ checksum:
     # $PF_SECTION_START(checksums)$
     # $PF_SECTION_END(checksums)$
 
-dockers:
+dockers_v2:
   -
-    image_templates:
-      - "ghcr.io/kyleu/admini:{{ trimprefix .Tag \"v\" }}"
-      - "ghcr.io/kyleu/admini:latest"
+    id: release
+    images:
+      - "ghcr.io/kyleu/admini"
+    tags:
+      - "{{ trimprefix .Tag \"v\" }}"
+      - "latest"
     dockerfile: ./tools/release/Dockerfile.release
   -
-    image_templates:
-      - "ghcr.io/kyleu/admini:{{ trimprefix .Tag \"v\" }}-debug"
-      - "ghcr.io/kyleu/admini:latest-debug"
+    id: debug
+    images:
+      - "ghcr.io/kyleu/admini"
+    tags:
+      - "{{ trimprefix .Tag \"v\" }}-debug"
+      - "latest-debug"
     dockerfile: ./tools/release/Dockerfile.debug
 
 dist: "build/dist"

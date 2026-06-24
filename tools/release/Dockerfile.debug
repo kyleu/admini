@@ -25,4 +25,6 @@ WORKDIR /
 
 ENTRYPOINT ["/admini", "-a", "0.0.0.0"]
 
-COPY admini /
+ARG TARGETPLATFORM
+
+COPY $TARGETPLATFORM/admini /
